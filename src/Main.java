@@ -1,3 +1,5 @@
 public class Main {
- Teste
+ public static void main(String[] args) {
+
+ }
 }

@@ -8,7 +8,8 @@ public class Painel extends JPanel implements Runnable {
     JPanel jPanel = new JPanel();
 
 // Chamada de classe
-    UI ui = new UI(this);
+    private UI ui = new UI(this);
+    private Controles controles = new Controles(this);
 
 // Definição da tela
     private final int originalTileSize = 16;
@@ -21,12 +22,20 @@ public class Painel extends JPanel implements Runnable {
 // Game State
     private int gameState;
     private final int titleState = 0;
+    private final int playState = 1;
 
     public Painel(){
-     //Estabelecimento dos dados da tela
+     // Estabelecimento dos dados da tela
         jPanel.setBounds(0, 0, getLargura(), getAltura());
         this.setPreferredSize(new Dimension(larguraTela, alturaTela));
         this.setBackground(Color.black);
+
+    // Dica recebida: Buffering mais preciso
+        this.setDoubleBuffered(true);
+
+    // Traz os controles e "foca" a classe em receber o input
+        this.addKeyListener(controles);
+        this.setFocusable(true);
     }
 
 // Inicialização do jogo e aplicação da Thread
@@ -85,6 +94,9 @@ public class Painel extends JPanel implements Runnable {
     }
     public int getTitleState() {
         return titleState;
+    }
+    public int getPlayState() {
+        return playState;
     }
 
 

@@ -6,6 +6,7 @@ public class UI {
     Graphics2D g2;
     Font pixelsans_30, pixelsans_60B;
 
+    public int numComando = 0;
     private int telaInicialState = 0;
 
     public UI(Painel painel) {
@@ -21,11 +22,17 @@ public class UI {
         g2.setFont(pixelsans_30);
         g2.setColor(Color.white);
 
-        //Title state
+    // Title state
         int gameState = painel.getGameState();
         int titleState = painel.getTitleState();
         if (gameState == titleState) {
             mostrarTelaInicial();
+        }
+
+    // Play state
+        int playState = painel.getPlayState();
+        if (gameState == playState) {
+
         }
     }
 
@@ -35,7 +42,7 @@ public class UI {
         int larguraTela = painel.getLargura();
         int alturaTela = painel.getAltura();
 
-
+    // Tela inicial 1 (entrada)
         if (getTelaInicialState() == 0) {
 
             // Título
@@ -47,6 +54,10 @@ public class UI {
             int x = coordenadaXParaTextoCentralizado(texto);
             int y = tileSize * 5;
 
+            //Sombra
+            g2.setColor((Color.darkGray));
+            g2.drawString(texto, x + 5, y + 5);
+
             g2.setColor(Color.white);
             g2.drawString(texto, x, y);
 
@@ -57,16 +68,75 @@ public class UI {
             x = coordenadaXParaTextoCentralizado(texto);
             y += tileSize * 2;
             g2.drawString(texto, x, y);
+            if (getNumComando() == 0) {
+                g2.drawString(">", x - tileSize, y);
+            }
 
             texto = "CARREGAR JOGO";
             x = coordenadaXParaTextoCentralizado(texto);
             y += tileSize;
             g2.drawString(texto, x, y);
+            if (getNumComando() == 1) {
+                g2.drawString(">", x - tileSize, y);
+            }
 
             texto = "SAIR";
             x = coordenadaXParaTextoCentralizado(texto);
             y += tileSize;
             g2.drawString(texto, x, y);
+            if (getNumComando() == 2) {
+                g2.drawString(">", x - tileSize, y);
+            }
+        }
+    // Tela inicial 2 (seleção de personagem)
+        else if(getTelaInicialState() == 1) {
+            g2.setColor(Color.white);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+
+            String texto = "Escolha seu personagem.";
+            int x = coordenadaXParaTextoCentralizado(texto);
+            int y = tileSize*3;
+            g2.drawString(texto, x, y);
+
+            texto = "A Guerreira";
+            x = coordenadaXParaTextoCentralizado(texto);
+            y += tileSize*3;
+            g2.drawString(texto, x, y);
+            if (getNumComando() == 0) {
+                g2.drawString(">", x - tileSize, y);
+            }
+
+            texto = "O Sobrevivente";
+            x = coordenadaXParaTextoCentralizado(texto);
+            y += tileSize;
+            g2.drawString(texto, x, y);
+            if (getNumComando() == 1) {
+                g2.drawString(">", x - tileSize, y);
+            }
+
+            texto = "O Médico";
+            x = coordenadaXParaTextoCentralizado(texto);
+            y += tileSize;
+            g2.drawString(texto, x, y);
+            if (getNumComando() == 2) {
+                g2.drawString(">", x - tileSize, y);
+            }
+
+            texto = "A Fora da Lei";
+            x = coordenadaXParaTextoCentralizado(texto);
+            y += tileSize;
+            g2.drawString(texto, x, y);
+            if (getNumComando() == 3) {
+                g2.drawString(">", x - tileSize, y);
+            }
+
+            texto = "Voltar";
+            x = coordenadaXParaTextoCentralizado(texto);
+            y += tileSize*2;
+            g2.drawString(texto, x, y);
+            if (getNumComando() == 4) {
+                g2.drawString(">", x - tileSize, y);
+            }
         }
     }
 
@@ -86,6 +156,13 @@ public class UI {
     }
     public void setTelaInicialState(int telaInicialState) {
         this.telaInicialState = telaInicialState;
+    }
+
+    public int getNumComando() {
+        return numComando;
+    }
+    public void setNumComando(int numComando) {
+        this.numComando = numComando;
     }
 
 }

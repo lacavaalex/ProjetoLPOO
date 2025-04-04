@@ -1,23 +1,28 @@
-import javax.swing.JFrame; // Importei a classe JFrame, que me permite criar uma janela
-import java.awt.Color;
+import javax.swing.*;
 
 public class Main {
 
  public static void main(String[] args) {
 
-  //Abertura e título da janela
+  //Chamada de classes externas de swing (JFrame para a janela e JPanel para recurso visual)
   JFrame janela = new JFrame();
+
+  //Abertura e título da janela
   janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-  janela.getContentPane().setBackground(Color.black);
   janela.setTitle("O MUNDO FUNESTO");
+
+  //Integração das funcionalidades do painel na janela
+  Painel painel = new Painel();
+  janela.add(painel);
 
   // Tamanho e localização da janela na tela (central)
   janela.pack();
   janela.setLocationRelativeTo(null);
   janela.setVisible(true);
   janela.setResizable(false);
-  janela.setSize(900, 700);
 
-
+  //Rodar o jogo
+  painel.setupJogo();
+  painel.iniciarGameThread();
  }
 }

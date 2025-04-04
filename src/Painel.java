@@ -8,9 +8,13 @@ public class Painel extends JPanel implements Runnable {
     JPanel jPanel = new JPanel();
 
 // Chamada de classe
-    private UI ui = new UI(this);
+    UI ui = new UI(this);
 
 // Definição da tela
+    private final int originalTileSize = 16;
+    private final int escala = 3; // tornar 48x48
+    private int tileSize = originalTileSize * escala;
+
     private int larguraTela = 900;
     private int alturaTela = 700;
 
@@ -37,8 +41,28 @@ public class Painel extends JPanel implements Runnable {
     public void run() {
     }
 
+// Visualização (paint component)
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        Graphics2D g2 = (Graphics2D) g;
+
+        // Tela inicial
+        if (gameState == titleState) {
+            ui.mostrar(g2);
+        }
+
+        g2.dispose();
+    }
+
 
 // Getters e setters
+    public int getTileSize() {
+        return tileSize;
+    }
+    public void setTileSize(int tileSize) {
+        this.tileSize = tileSize;
+    }
     public int getLargura() {
         return larguraTela;
     }
@@ -50,6 +74,17 @@ public class Painel extends JPanel implements Runnable {
     }
     public void setAltura(int altura) {
         this.alturaTela = altura;
+    }
+
+
+    public int getGameState() {
+        return gameState;
+    }
+    public void setGameState(int gameState) {
+        this.gameState = gameState;
+    }
+    public int getTitleState() {
+        return titleState;
     }
 
 

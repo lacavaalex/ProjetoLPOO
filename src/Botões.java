@@ -5,9 +5,15 @@ public class Botões extends JPanel {
 
     JPanel painelBotaoContinuar;
     JButton botaoContinuar;
-    Font pixelsans_20 = new Font("Pixel Sans Serif", Font.PLAIN, 20);
+    Font pixelsans_15 = new Font("Pixel Sans Serif", Font.PLAIN, 15);
 
-    public Botões() {
+    Painel painel;
+    FunçãoBotão fB;
+
+    public Botões(Painel painel) {
+        this.painel = painel;
+        this.fB = new FunçãoBotão(painel);
+
         setLayout(null);
         setOpaque(false);
         continuar();
@@ -16,12 +22,11 @@ public class Botões extends JPanel {
         setBounds(0, 0, painel.getLargura(), painel.getAltura());
     }
 
-
     public void continuar() {
 
     //Painel de local do botão continuar
         painelBotaoContinuar = new JPanel();
-        painelBotaoContinuar.setBounds(600, 560, 250, 75);
+        painelBotaoContinuar.setBounds(620, 600, 200, 65);
         painelBotaoContinuar.setBackground(Color.BLACK);
         painelBotaoContinuar.setLayout(new BorderLayout());
 
@@ -29,7 +34,10 @@ public class Botões extends JPanel {
         botaoContinuar = new JButton("Continuar");
         botaoContinuar.setBackground(Color.BLACK);
         botaoContinuar.setForeground(Color.WHITE);
-        botaoContinuar.setFont(pixelsans_20);
+        botaoContinuar.setFont(pixelsans_15);
+
+    // Atribui a ação do action listener ao botao
+        botaoContinuar.addActionListener(fB);
 
         this.add(painelBotaoContinuar);
         painelBotaoContinuar.add(botaoContinuar, BorderLayout.CENTER);

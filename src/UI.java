@@ -1,13 +1,10 @@
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class UI {
 
     Painel painel;
     Jogador jogador;
-    Botões botoes = new Botões();
+    Botões botoes;
 
     Graphics2D g2;
     Font pixelsans_30, pixelsans_60B;
@@ -24,6 +21,8 @@ public class UI {
 
         pixelsans_30 = new Font("Pixel Sans Serif", Font.PLAIN, 30);
         pixelsans_60B = new Font("Pixel Sans Serif", Font.BOLD, 60);
+
+        botoes = new Botões(painel);
     }
 
     public void mostrar(Graphics2D g2) {
@@ -39,10 +38,22 @@ public class UI {
             mostrarTelaInicial();
         }
 
+    // Opening state
+        int openingState = painel.getOpeningState();
+        if (gameState == openingState) {
+            mostrarAbertura();
+        }
+
     // Play state
         int playState = painel.getPlayState();
         if (gameState == playState) {
-            mostrarAbertura();
+
+        }
+
+    // Card da floresta
+        int florestaCardState = painel.getFlorestaCardState();
+        if (gameState == florestaCardState) {
+            mostrarCardFloresta();
         }
     }
 
@@ -158,17 +169,14 @@ public class UI {
         larguraTela = painel.getLargura();
         alturaTela = painel.getAltura();
 
-        // Título
         g2.setColor(new Color(0, 0, 0));
         g2.fillRect(0, 0, larguraTela, alturaTela);
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-        String texto = "Você é: ";
-        int x = coordenadaXParaTextoCentralizado(texto);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));;
         int y = tileSize * 2;
         g2.setColor(Color.white);
-        g2.drawString(texto, x, y);
 
+        escreverTexto("Você é: ", y += tileSize);
         escreverTexto("Você acorda em um mundo desconhecido e inóspito.", y += tileSize);
         escreverTexto("O chão treme ao andar sobre ele,", y += tileSize);
         escreverTexto("e o céu vasto aparenta ter ânsia em te engolir.", y += tileSize);
@@ -182,6 +190,36 @@ public class UI {
         botoes.mostrarBotao();
     }
 
+    public void mostrarCardFloresta() {
+
+        Ambiente ambienteFloresta = painel.getAmbiente();
+
+        tileSize = painel.getTileSize();
+        larguraTela = painel.getLargura();
+        alturaTela = painel.getAltura();
+
+        g2.setColor(new Color(5, 10, 5));
+        g2.fillRect(0, 0, larguraTela, alturaTela);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+
+        int y = tileSize * 4;
+        g2.setColor(Color.white);
+        escreverTexto(ambienteFloresta.getNome(), y += tileSize);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+        y = tileSize * 5;
+
+        escreverTexto(ambienteFloresta.getDescricao(), y += tileSize);
+        escreverTexto(" ", y += tileSize);
+        escreverTexto("Condições de exploração: " + ambienteFloresta.getDificuldade(), y += tileSize);
+        escreverTexto("Recursos possíveis: " + ambienteFloresta.getRecursos(), y += tileSize);
+        escreverTexto("Ecossistema: " + ambienteFloresta.getFrequenciaEventos(), y += tileSize);
+        escreverTexto("Clima: " + ambienteFloresta.getClima(), y += tileSize);
+
+        botoes.mostrarBotao();
+    }
+
     public int coordenadaXParaTextoCentralizado(String texto) {
 
         int larguraTela = painel.getLargura();
@@ -191,6 +229,7 @@ public class UI {
         return x;
 
     }
+
     public String escreverTexto(String texto, int y) {
         tileSize = painel.getTileSize();
         int x = coordenadaXParaTextoCentralizado(texto);

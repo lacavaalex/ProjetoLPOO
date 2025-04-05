@@ -6,15 +6,6 @@ public class Painel extends JPanel implements Runnable {
 // Construtor de classes externas
     Thread gameThread;
 
-// Definição de FPS
-    private final int fps = 60;
-
-// Chamada de classe
-    private Jogador jogador = new Jogador();
-    private UI ui = new UI(this);
-    private Teclado teclado = new Teclado(this);
-    private Botões botoes = new Botões();
-
 // Definição da tela
     private final int originalTileSize = 16;
     private final int escala = 3; // tornar 48x48
@@ -23,18 +14,34 @@ public class Painel extends JPanel implements Runnable {
     private int larguraTela = 900;
     private int alturaTela = 700;
 
+// Definição de FPS
+    private final int fps = 60;
+
+// Chamada de classe
+    private Jogador jogador = new Jogador();
+    private UI ui = new UI(this);
+    private Teclado teclado = new Teclado(this);
+    private Botões botoes = new Botões(this);
+    private Ambiente ambiente = new Ambiente();
+
+
 // Game State
     private int gameState;
     private final int titleState = 0;
-    private final int playState = 1;
+    private final int openingState = 1;
+    private final int florestaCardState = 2;
+    private final int playState = 10;
 
     public Painel(){
-     // Estabelecimento dos dados da tela
+
+    // Estabelecimento dos dados da tela
         this.setPreferredSize(new Dimension(larguraTela, alturaTela));
         this.setBackground(Color.black);
+        this.setLayout(null);
+
         botoes.configurarComPainel(this);
-        this.add(botoes);
         botoes.setVisible(true);
+        this.add(botoes);
         botoes.mostrarBotao();
 
     // Dica recebida: Buffering mais preciso
@@ -43,6 +50,14 @@ public class Painel extends JPanel implements Runnable {
     // Traz os controles e "foca" a classe em receber o input
         this.addKeyListener(teclado);
         this.setFocusable(true);
+
+    // Adição do ambiente
+        ambiente.setBounds(0, 0, larguraTela, alturaTela);
+        ambiente.setVisible(false);
+        this.add(ambiente);
+
+
+
     }
 
 // Inicialização do jogo e aplicação da Thread
@@ -89,10 +104,10 @@ public class Painel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if (gameState == playState) {
-            botoes.setVisible(true);
-        } else {
+        if (gameState == titleState) {
             botoes.setVisible(false);
+        } else {
+            botoes.setVisible(true);
         }
     }
 
@@ -102,12 +117,7 @@ public class Painel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // Tela inicial
-        if (gameState == titleState) {
-            ui.mostrar(g2);
-            g2.dispose();
-        }
-        if (gameState == playState) {
+        if (gameState == titleState || gameState == openingState || gameState == florestaCardState) {
             ui.mostrar(g2);
         }
     }
@@ -140,14 +150,22 @@ public class Painel extends JPanel implements Runnable {
     public void setGameState(int gameState) {
         this.gameState = gameState;
 
-        if (gameState == playState) {
+        if (gameState == openingState) {
             botoes.setVisible(true);
         } else {
             botoes.setVisible(false);
         }
+
+        if (gameState == florestaCardState) {
+            botoes.setVisible(true);
+            ambiente.ambienteFloresta();
+        }
     }
     public int getTitleState() {
         return titleState;
+    }
+    public int getOpeningState() {
+        return openingState;
     }
     public int getPlayState() {
         return playState;
@@ -159,5 +177,13 @@ public class Painel extends JPanel implements Runnable {
     }
     public void setUi(UI ui) {
         this.ui = ui;
+    }
+
+    public Ambiente getAmbiente() {
+        return ambiente;
+    }
+
+    public int getFlorestaCardState() {
+        return florestaCardState;
     }
 }

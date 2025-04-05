@@ -4,6 +4,7 @@ import java.awt.event.KeyListener;
 public class Teclado implements KeyListener {
 
     Painel painel;
+    Jogador jogador = new Jogador();
 
     public Teclado(Painel painel) {
         this.painel = painel;
@@ -69,7 +70,8 @@ public class Teclado implements KeyListener {
                 }
                 if (code == KeyEvent.VK_ENTER) {
                     if (numComando == 0) {
-                        System.out.println("A Guerreira");
+                        jogador.setNome("Colérica, a Guerreira");
+                        System.out.println(jogador.getNome());
                         painel.setGameState(playState);
                     }
                     if (numComando == 1) {

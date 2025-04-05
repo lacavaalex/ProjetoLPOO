@@ -10,6 +10,7 @@ public class Painel extends JPanel implements Runnable {
     private final int fps = 60;
 
 // Chamada de classe
+    private Jogador jogador = new Jogador();
     private UI ui = new UI(this);
     private Teclado teclado = new Teclado(this);
     private Botões botoes = new Botões();
@@ -31,6 +32,10 @@ public class Painel extends JPanel implements Runnable {
      // Estabelecimento dos dados da tela
         this.setPreferredSize(new Dimension(larguraTela, alturaTela));
         this.setBackground(Color.black);
+        botoes.configurarComPainel(this);
+        this.add(botoes);
+        botoes.setVisible(true);
+        botoes.mostrarBotao();
 
     // Dica recebida: Buffering mais preciso
         this.setDoubleBuffered(true);
@@ -45,9 +50,8 @@ public class Painel extends JPanel implements Runnable {
         gameState = titleState;
 
         this.setLayout(null);
-        this.add(botoes);
         botoes.setBounds(0, 0, larguraTela, alturaTela);
-        botoes.setVisible(false);
+        this.add(botoes);
     }
 
     public void iniciarGameThread() {
@@ -96,11 +100,15 @@ public class Painel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        Graphics2D g2 = (Graphics2D) g;
+
         // Tela inicial
         if (gameState == titleState) {
-            Graphics2D g2 = (Graphics2D) g;
             ui.mostrar(g2);
             g2.dispose();
+        }
+        if (gameState == playState) {
+            ui.mostrar(g2);
         }
     }
 

@@ -19,7 +19,7 @@ public class Teclado implements KeyListener {
 
         int gameState = painel.getGameState();
         int titleState = painel.getTitleState();
-        int playState = painel.getPlayState();
+        int openingState = painel.getOpeningState();
 
         UI  ui = painel.getUi();
         int telaInicialState = ui.getTelaInicialState();
@@ -72,19 +72,19 @@ public class Teclado implements KeyListener {
                     if (numComando == 0) {
                         jogador.setNome("Colérica, a Guerreira");
                         System.out.println(jogador.getNome());
-                        painel.setGameState(playState);
+                        painel.setGameState(openingState);
                     }
                     if (numComando == 1) {
                         System.out.println("O Sobrevivente");
-                        painel.setGameState(playState);
+                        painel.setGameState(openingState);
                     }
                     if (numComando == 2) {
                         System.out.println("O Médico");
-                        painel.setGameState(playState);
+                        painel.setGameState(openingState);
                     }
                     if (numComando == 3) {
                         System.out.println("A Fora da Lei");
-                        painel.setGameState(playState);
+                        painel.setGameState(openingState);
                     }
                     if (numComando == 4) {
                         telaInicialState = 0;
@@ -99,10 +99,6 @@ public class Teclado implements KeyListener {
     // Atualização gráfica
         painel.repaint();
 
-    // Play state
-        if (gameState == playState) {
-
-        }
     }
 
     public void keyReleased(KeyEvent e) {

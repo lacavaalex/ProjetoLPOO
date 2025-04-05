@@ -5,11 +5,14 @@ public class Painel extends JPanel implements Runnable {
 
 // Construtor de classes externas
     Thread gameThread;
-    JPanel jPanel = new JPanel();
+
+// Definição de FPS
+    private final int fps = 60;
 
 // Chamada de classe
     private UI ui = new UI(this);
-    private Controles controles = new Controles(this);
+    private Teclado teclado = new Teclado(this);
+    private Botões botoes = new Botões();
 
 // Definição da tela
     private final int originalTileSize = 16;
@@ -26,7 +29,6 @@ public class Painel extends JPanel implements Runnable {
 
     public Painel(){
      // Estabelecimento dos dados da tela
-        jPanel.setBounds(0, 0, getLargura(), getAltura());
         this.setPreferredSize(new Dimension(larguraTela, alturaTela));
         this.setBackground(Color.black);
 
@@ -34,34 +36,72 @@ public class Painel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
 
     // Traz os controles e "foca" a classe em receber o input
-        this.addKeyListener(controles);
+        this.addKeyListener(teclado);
         this.setFocusable(true);
     }
 
 // Inicialização do jogo e aplicação da Thread
     public void setupJogo() {
         gameState = titleState;
+
+        this.setLayout(null);
+        this.add(botoes);
+        botoes.setBounds(0, 0, larguraTela, alturaTela);
+        botoes.setVisible(false);
     }
 
     public void iniciarGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
+
+// Implementação do game loop
     public void run() {
+        double intervalo = 1000000000 / fps;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+        long timer = 0;
+        int drawCount = 0;
+
+        while(gameThread != null) {
+            currentTime = System.nanoTime();
+            delta += (currentTime - lastTime) / intervalo;
+            timer += (currentTime - lastTime);
+            lastTime = currentTime;
+
+            if(delta >= 1) {
+                update();
+                repaint();
+                delta--;
+                drawCount++;
+            }
+
+            if (timer >= 1000000000) {
+                drawCount = 0;
+                timer = 0;
+            }
+        }
+    }
+
+    public void update() {
+        if (gameState == playState) {
+            botoes.setVisible(true);
+        } else {
+            botoes.setVisible(false);
+        }
     }
 
 // Visualização (paint component)
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D) g;
-
         // Tela inicial
         if (gameState == titleState) {
+            Graphics2D g2 = (Graphics2D) g;
             ui.mostrar(g2);
+            g2.dispose();
         }
-
-        g2.dispose();
     }
 
 
@@ -91,6 +131,12 @@ public class Painel extends JPanel implements Runnable {
     }
     public void setGameState(int gameState) {
         this.gameState = gameState;
+
+        if (gameState == playState) {
+            botoes.setVisible(true);
+        } else {
+            botoes.setVisible(false);
+        }
     }
     public int getTitleState() {
         return titleState;

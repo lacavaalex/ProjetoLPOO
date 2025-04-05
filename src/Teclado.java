@@ -1,11 +1,11 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Controles implements KeyListener {
+public class Teclado implements KeyListener {
 
     Painel painel;
 
-    public Controles(Painel painel) {
+    public Teclado(Painel painel) {
         this.painel = painel;
     }
 
@@ -24,7 +24,7 @@ public class Controles implements KeyListener {
         int telaInicialState = ui.getTelaInicialState();
         int numComando = ui.getNumComando();
 
-    //Tela inicial
+    // Tela inicial
         if (gameState == titleState) {
 
             if (telaInicialState == 0) {
@@ -96,6 +96,11 @@ public class Controles implements KeyListener {
         ui.setTelaInicialState(telaInicialState);
     // Atualização gráfica
         painel.repaint();
+
+    // Play state
+        if (gameState == playState) {
+
+        }
     }
 
     public void keyReleased(KeyEvent e) {

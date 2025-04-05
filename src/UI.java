@@ -1,10 +1,20 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class UI {
 
     Painel painel;
+    Jogador jogador;
+    Botões botoes = new Botões();
+
     Graphics2D g2;
     Font pixelsans_30, pixelsans_60B;
+
+    private int tileSize;
+    private int larguraTela;
+    private int alturaTela;
 
     public int numComando = 0;
     private int telaInicialState = 0;
@@ -32,18 +42,20 @@ public class UI {
     // Play state
         int playState = painel.getPlayState();
         if (gameState == playState) {
-
+            mostrarAbertura();
         }
     }
 
     public void mostrarTelaInicial() {
 
-        int tileSize = painel.getTileSize();
-        int larguraTela = painel.getLargura();
-        int alturaTela = painel.getAltura();
+        botoes.esconderBotao();
 
     // Tela inicial 1 (entrada)
         if (getTelaInicialState() == 0) {
+
+            tileSize = painel.getTileSize();
+            larguraTela = painel.getLargura();
+            alturaTela = painel.getAltura();
 
             // Título
             g2.setColor(new Color(20, 0, 10));
@@ -140,6 +152,36 @@ public class UI {
         }
     }
 
+    public void mostrarAbertura() {
+
+        tileSize = painel.getTileSize();
+        larguraTela = painel.getLargura();
+        alturaTela = painel.getAltura();
+
+        // Título
+        g2.setColor(new Color(0, 0, 0));
+        g2.fillRect(0, 0, larguraTela, alturaTela);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+        String texto = "Você é: ";
+        int x = coordenadaXParaTextoCentralizado(texto);
+        int y = tileSize * 2;
+        g2.setColor(Color.white);
+        g2.drawString(texto, x, y);
+
+        escreverTexto("Você acorda em um mundo desconhecido e inóspito.", y += tileSize);
+        escreverTexto("O chão treme ao andar sobre ele,", y += tileSize);
+        escreverTexto("e o céu vasto aparenta ter ânsia em te engolir.", y += tileSize);
+        escreverTexto(" ", y += tileSize);
+        escreverTexto("Seus arredores lembram uma clareira. Há uma luz à distância.", y += tileSize);
+        escreverTexto("Sem memória de como chegou aqui, ou idéia de como escapar,", y += tileSize);
+        escreverTexto("sua única opção é descobrir explorando.", y += tileSize);
+        escreverTexto(" ", y += tileSize);
+        escreverTexto("Você adentra a FLORESTA MACABRA...", y += tileSize);
+
+        botoes.mostrarBotao();
+    }
+
     public int coordenadaXParaTextoCentralizado(String texto) {
 
         int larguraTela = painel.getLargura();
@@ -148,6 +190,12 @@ public class UI {
         int x = larguraTela / 2 - comprimento / 2;
         return x;
 
+    }
+    public String escreverTexto(String texto, int y) {
+        tileSize = painel.getTileSize();
+        int x = coordenadaXParaTextoCentralizado(texto);
+        g2.drawString(texto, x, y);
+        return texto;
     }
 
 // Getters e setters
@@ -165,4 +213,7 @@ public class UI {
         this.numComando = numComando;
     }
 
+    public Botões getBotoes() {
+        return botoes;
+    }
 }

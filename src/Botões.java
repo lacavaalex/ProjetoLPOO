@@ -10,17 +10,21 @@ public class Botões extends JPanel {
     public Botões() {
         setLayout(null);
         setOpaque(false);
-
         continuar();
     }
+    public void configurarComPainel(Painel painel) {
+        setBounds(0, 0, painel.getLargura(), painel.getAltura());
+    }
+
 
     public void continuar() {
 
     //Painel de local do botão continuar
-        setLayout(null);
         painelBotaoContinuar = new JPanel();
-        painelBotaoContinuar.setBounds(600, 560, 250, 100);
+        painelBotaoContinuar.setBounds(600, 560, 250, 75);
         painelBotaoContinuar.setBackground(Color.BLACK);
+        painelBotaoContinuar.setLayout(new BorderLayout());
+
     // Botão continuar
         botaoContinuar = new JButton("Continuar");
         botaoContinuar.setBackground(Color.BLACK);
@@ -28,7 +32,19 @@ public class Botões extends JPanel {
         botaoContinuar.setFont(pixelsans_20);
 
         this.add(painelBotaoContinuar);
-        painelBotaoContinuar.add(botaoContinuar);
-        this.repaint();
+        painelBotaoContinuar.add(botaoContinuar, BorderLayout.CENTER);
+
+        painelBotaoContinuar.setVisible(false);
+    }
+
+    public void mostrarBotao() {
+        painelBotaoContinuar.setVisible(true);
+    }
+    public void esconderBotao() {
+        painelBotaoContinuar.setVisible(false);
+    }
+
+    public JButton getBotaoContinuar() {
+        return botaoContinuar;
     }
 }

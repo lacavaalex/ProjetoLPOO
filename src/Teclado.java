@@ -122,6 +122,25 @@ public class Teclado implements KeyListener {
                     painel.getUi().numComando = 0;
                 }
             }
+            if (subState == 20) {
+                if (code == KeyEvent.VK_W) {
+                    painel.getUi().numComando--;
+                    if (painel.getUi().numComando < 0) {
+                        painel.getUi().numComando = 1;
+                    }
+                }
+                if (code == KeyEvent.VK_S) {
+                    painel.getUi().numComando++;
+                    if (painel.getUi().numComando > 1) {
+                        painel.getUi().numComando = 0;
+                    }
+                }
+                if (code == KeyEvent.VK_ENTER) {
+                    int opcao = painel.getUi().numComando;
+                    painel.setPlaySubState(opcao + 21);
+                    painel.getUi().numComando = 0;
+                }
+            }
         }
 
     }

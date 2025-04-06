@@ -20,12 +20,14 @@ public class Teclado implements KeyListener {
         int gameState = painel.getGameState();
         int titleState = painel.getTitleState();
         int openingState = painel.getOpeningState();
+        int playState = painel.getPlayState();
+        int subState = painel.getPlaySubState();
 
-        UI  ui = painel.getUi();
+        UI ui = painel.getUi();
         int telaInicialState = ui.getTelaInicialState();
         int numComando = ui.getNumComando();
 
-    // Tela inicial
+        // Tela inicial
         if (gameState == titleState) {
 
             if (telaInicialState == 0) {
@@ -63,7 +65,7 @@ public class Teclado implements KeyListener {
                     }
                 }
                 if (code == KeyEvent.VK_S) {
-                   numComando++;
+                    numComando++;
                     if (numComando > 4) {
                         numComando = 0;
                     }
@@ -93,11 +95,34 @@ public class Teclado implements KeyListener {
             }
         }
 
-    // Jogar a atualização dos valores dessas duas variáveis à sua classe natal
+        // Jogar a atualização dos valores dessas duas variáveis à sua classe natal
         ui.setNumComando(numComando);
         ui.setTelaInicialState(telaInicialState);
-    // Atualização gráfica
+        // Atualização gráfica
         painel.repaint();
+
+        // Play state
+        if (gameState == playState) {
+            if (subState == 0) {
+                if (code == KeyEvent.VK_W) {
+                    painel.getUi().numComando--;
+                    if (painel.getUi().numComando < 0) {
+                        painel.getUi().numComando = 2;
+                    }
+                }
+                if (code == KeyEvent.VK_S) {
+                    painel.getUi().numComando++;
+                    if (painel.getUi().numComando > 2) {
+                        painel.getUi().numComando = 0;
+                    }
+                }
+                if (code == KeyEvent.VK_ENTER) {
+                    int opcao = painel.getUi().numComando;
+                    painel.setPlaySubState(opcao + 1);
+                    painel.getUi().numComando = 0;
+                }
+            }
+        }
 
     }
 

@@ -30,7 +30,8 @@ public class Painel extends JPanel implements Runnable {
     private final int titleState = 0;
     private final int openingState = 1;
     private final int florestaCardState = 2;
-    private final int playState = 10;
+    private final int playState = 3;
+    private int playSubState = 0;
 
     public Painel(){
 
@@ -42,7 +43,7 @@ public class Painel extends JPanel implements Runnable {
         botoes.configurarComPainel(this);
         botoes.setVisible(true);
         this.add(botoes);
-        botoes.mostrarBotao();
+        botoes.mostrarBotaoContinuar();
 
     // Dica recebida: Buffering mais preciso
         this.setDoubleBuffered(true);
@@ -117,7 +118,7 @@ public class Painel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        if (gameState == titleState || gameState == openingState || gameState == florestaCardState) {
+        if (gameState == titleState || gameState == openingState || gameState == florestaCardState || gameState == playState) {
             ui.mostrar(g2);
         }
     }
@@ -160,6 +161,11 @@ public class Painel extends JPanel implements Runnable {
             botoes.setVisible(true);
             ambiente.ambienteFloresta();
         }
+
+        if (gameState == playState) {
+            botoes.setVisible(true);
+            botoes.esconderBotaoContinuar();
+        }
     }
     public int getTitleState() {
         return titleState;
@@ -169,6 +175,18 @@ public class Painel extends JPanel implements Runnable {
     }
     public int getPlayState() {
         return playState;
+    }
+    public int getPlaySubState() {
+        return playSubState;
+    }
+    public void setPlaySubState(int novoSubState) {
+        this.playSubState = novoSubState;
+
+        if (novoSubState > 0) {
+            botoes.mostrarBotaoContinuar();
+        } else {
+            botoes.esconderBotaoContinuar();
+        }
     }
 
 

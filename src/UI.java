@@ -47,7 +47,7 @@ public class UI {
     // Play state
         int playState = painel.getPlayState();
         if (gameState == playState) {
-
+            mostrarPlayState();
         }
 
     // Card da floresta
@@ -59,7 +59,7 @@ public class UI {
 
     public void mostrarTelaInicial() {
 
-        botoes.esconderBotao();
+        botoes.esconderBotaoContinuar();
 
     // Tela inicial 1 (entrada)
         if (getTelaInicialState() == 0) {
@@ -187,7 +187,56 @@ public class UI {
         escreverTexto(" ", y += tileSize);
         escreverTexto("Você adentra a FLORESTA MACABRA...", y += tileSize);
 
-        botoes.mostrarBotao();
+        botoes.mostrarBotaoContinuar();
+    }
+
+    public void mostrarPlayState() {
+
+        tileSize = painel.getTileSize();
+        larguraTela = painel.getLargura();
+        alturaTela = painel.getAltura();
+
+        g2.setColor(Color.black);
+        g2.fillRect(0, 0, larguraTela, alturaTela);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
+        int y = tileSize;
+        g2.setColor(Color.white);
+
+        int subState = painel.getPlaySubState();
+
+        if (subState == 0) {
+
+            escreverTexto("A luz misteriosa brilha à distância, floresta adentro.", y += tileSize);
+            escreverTexto("Espalhaadas pelo chão, há coisas que parecem ser úteis.", y += tileSize);
+            escreverTexto("Uma brecha por entre as árvores revela uma montanha próxima.", y += tileSize);
+            escreverTexto("Altitude pode ser uma vantagem.", y += tileSize);
+            escreverTexto("Um chiado estranho parece se aproximar...", y += tileSize);
+            escreverTexto("O que fazer?", y += tileSize);
+
+
+            String[] opcoes = {"Seguir luz", "Coletar recursos", "Ir até montanha"};
+
+            y += tileSize*2;
+            for (int i = 0; i < opcoes.length; i++) {
+                String texto = opcoes[i];
+                int x = coordenadaXParaTextoCentralizado(texto);
+
+                if (numComando == i) {
+                    g2.drawString(">", x - tileSize, y);
+                }
+                g2.drawString(texto, x, y);
+                y += tileSize;
+            }
+
+        } else if (subState == 1) {
+            escreverTexto("Você se aproxima da luz...", tileSize * 4);
+        } else if (subState == 2) {
+            escreverTexto("Você busca por recursos.", tileSize * 4);
+            escreverTexto("Encontrou: 2 madeiras e 1 pedra.", tileSize * 5);
+        } else if (subState == 3) {
+            escreverTexto("Você se direciona até a montanha", tileSize * 4);
+        }
     }
 
     public void mostrarCardFloresta() {
@@ -217,7 +266,7 @@ public class UI {
         escreverTexto("Ecossistema: " + ambienteFloresta.getFrequenciaEventos(), y += tileSize);
         escreverTexto("Clima: " + ambienteFloresta.getClima(), y += tileSize);
 
-        botoes.mostrarBotao();
+        botoes.mostrarBotaoContinuar();
     }
 
     public int coordenadaXParaTextoCentralizado(String texto) {

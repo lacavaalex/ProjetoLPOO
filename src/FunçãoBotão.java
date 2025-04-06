@@ -13,7 +13,7 @@ public class FunçãoBotão implements ActionListener {
 
         int gameState = painel.getGameState();
         gameState = gameState + 1;
-        painel.setGameState(gameState);
+        painel.setGameState(gameState++);
         System.out.println(gameState);
     }
 }

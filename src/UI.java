@@ -215,9 +215,9 @@ public class UI {
             escreverTexto("O que fazer?", y += tileSize);
 
 
-            String[] opcoes = {"Seguir luz", "Coletar recursos", "Ir até montanha"};
+            String[] opcoes = {"Seguir luz", "Ficar e coletar recursos", "Ir até montanha"};
 
-            y += tileSize*2;
+            y += tileSize * 2;
             for (int i = 0; i < opcoes.length; i++) {
                 String texto = opcoes[i];
                 int x = coordenadaXParaTextoCentralizado(texto);
@@ -231,14 +231,68 @@ public class UI {
 
         } else if (subState == 1) {
             escreverTexto("Você se aproxima da luz...", tileSize * 4);
+
         } else if (subState == 2) {
             escreverTexto("Você busca por recursos.", tileSize * 4);
             escreverTexto("Encontrou: 2 madeiras e 1 pedra.", tileSize * 5);
 
             painel.getJogador().adicionarItem("Madeira", 2);
             painel.getJogador().adicionarItem("Pedra", 1);
+
+            painel.setPlaySubState(20);
+
         } else if (subState == 3) {
             escreverTexto("Você se direciona até a montanha", tileSize * 4);
+        }
+
+        else if (subState == 20) {
+
+            escreverTexto("Aquele chiado... parece estar tão perto...", y += tileSize);
+            g2.setColor(Color.red);
+            escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y += tileSize);
+            g2.setColor(Color.white);
+            escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
+            escreverTexto("", y += tileSize);
+            g2.setColor(Color.red);
+            escreverTexto("Víbora-Rubro: 3HP / 5 ATK", y += tileSize);
+            g2.setColor(Color.white);
+            escreverTexto("O que fazer?", y += tileSize);
+
+
+            String[] opcoes = {"Atacar", "Fugir"};
+
+            y += tileSize * 2;
+            for (int i = 0; i < opcoes.length; i++) {
+                String texto = opcoes[i];
+                int x = coordenadaXParaTextoCentralizado(texto);
+
+                if (numComando == i) {
+                    g2.drawString(">", x - tileSize, y);
+                }
+                g2.drawString(texto, x, y);
+                y += tileSize;
+            }
+        }
+
+        else if (subState == 21) {
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F)); escreverTexto("COMBATE", tileSize * 2);
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F)); escreverTexto("Você a atacou!", tileSize * 3);
+            g2.setColor(Color.red); escreverTexto("-1HP", y += tileSize * 3);
+            g2.setColor(Color.red); escreverTexto("Víbora-Rubro: 2HP", y += tileSize);
+            g2.setColor(Color.white); escreverTexto("-Após notar sua investida, ela foge! HA!", y += tileSize);
+            escreverTexto("", y += tileSize);
+            escreverTexto("FIM DE COMBATE.", y += tileSize);
+            escreverTexto("", y += tileSize);
+            escreverTexto("DESFECHO: Você está levemente ENVENENADO.", y += tileSize);
+        }
+        else if (subState == 22) {
+            escreverTexto("Você pensa em fugir, mas se sente meio tonto...",tileSize * 2);
+            escreverTexto("Porcaria, a mordida da víbora o deixou", y += tileSize * 2);
+            g2.setColor(Color.red); escreverTexto("envenenado.", y += tileSize);
+            g2.setColor(Color.white); escreverTexto("", y += tileSize);
+            escreverTexto("Ela é rápida, e você está abatido(a). É melhor não arriscar.", y += tileSize);
+
+            botoes.mostrarBotaoVoltar();
         }
     }
 

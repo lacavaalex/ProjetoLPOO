@@ -153,6 +153,7 @@ public class Painel extends JPanel implements Runnable {
 
         if (gameState == openingState) {
             botoes.setVisible(true);
+
         } else {
             botoes.setVisible(false);
         }
@@ -182,10 +183,16 @@ public class Painel extends JPanel implements Runnable {
     public void setPlaySubState(int novoSubState) {
         this.playSubState = novoSubState;
 
-        if (novoSubState > 0) {
+        if (novoSubState > 0 && novoSubState < 10) {
             botoes.mostrarBotaoContinuar();
         } else {
             botoes.esconderBotaoContinuar();
+        }
+        if (novoSubState == 20) {
+            botoes.esconderBotaoContinuar();
+        }
+        if (novoSubState == 22) {
+            botoes.mostrarBotaoVoltar();
         }
     }
 

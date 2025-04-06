@@ -128,7 +128,7 @@ public class Teclado implements KeyListener {
                     painel.getUi().numComando = 0;
                 }
             }
-            if (subState == 20) {
+            if (subState == 10 || subState == 20) {
                 if (code == KeyEvent.VK_W) {
                     painel.getUi().numComando--;
                     if (painel.getUi().numComando < 0) {
@@ -143,7 +143,7 @@ public class Teclado implements KeyListener {
                 }
                 if (code == KeyEvent.VK_ENTER) {
                     int opcao = painel.getUi().numComando;
-                    painel.setPlaySubState(opcao + 21);
+                    painel.setPlaySubState(painel.getPlaySubState()+(opcao+1));
                     painel.getUi().numComando = 0;
                 }
             }

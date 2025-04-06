@@ -25,7 +25,7 @@ public class Painel extends JPanel implements Runnable {
 
 // Chamada de classe
     private Jogador jogador = new Jogador();
-    private UI ui = new UI(this);
+    private UI ui = new UI(this, jogador);
     private Teclado teclado = new Teclado(this);
     private Botões botoes = new Botões(this);
     private Ambiente ambiente = new Ambiente();

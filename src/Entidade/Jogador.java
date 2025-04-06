@@ -9,7 +9,9 @@ public class Jogador {
     //Rastreador, mecanico, sobrevivent
 
     private String nome, localizacao;
-    private int vida, fome, sede, energia;
+    private int vida = 10;
+    private boolean sede = false;
+    private int fome, energia;
     private boolean sanidade;
     private HashMap<String, Item> inventario = new HashMap<>();
 
@@ -38,5 +40,18 @@ public class Jogador {
     }
     public void setLocalizacao(String nome) {
         this.localizacao = localizacao;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+    public boolean getSede() {
+        return sede;
+    }
+    public void setSede(boolean sede) {
+        this.sede = sede;
     }
 }

@@ -21,8 +21,20 @@ public class FunçãoBotão implements ActionListener {
         Object fonte = e.getSource();
 
         if (fonte == botoes.getBotaoContinuar()) {
-            painel.setGameState(painel.getGameState() + 1);
-            System.out.println("Clicou em CONTINUAR: \n" + painel.getGameState());
+            if (gameState == painel.getPlayState()) {
+                int subState = painel.getPlaySubState();
+                if (subState == 1) {
+                    painel.setPlaySubState(10);
+                }
+                else if (subState == 2) {
+                    painel.setPlaySubState(20);
+                }
+            }
+            else {
+                painel.setGameState(painel.getGameState() + 1);
+            }
+
+
         } else if (fonte == botoes.getBotaoVoltar()) {
             painel.setPlaySubState(painel.getPlaySubState() - 2);
             System.out.println("Clicou em VOLTAR: \n" + painel.getGameState());

@@ -9,7 +9,7 @@ import java.awt.*;
 public class UI {
 
     Painel painel;
-    Jogador jogador;
+    Jogador jogador = new Jogador();
     Botões botoes;
 
     Graphics2D g2;
@@ -22,8 +22,9 @@ public class UI {
     public int numComando = 0;
     private int telaInicialState = 0;
 
-    public UI(Painel painel) {
+    public UI(Painel painel, Jogador jogador) {
         this.painel = painel;
+        this.jogador = jogador;
 
         pixelsans_30 = new Font("Pixel Sans Serif", Font.PLAIN, 30);
         pixelsans_60B = new Font("Pixel Sans Serif", Font.BOLD, 60);
@@ -37,31 +38,37 @@ public class UI {
         g2.setFont(pixelsans_30);
         g2.setColor(Color.white);
 
-    // Title state
         int gameState = painel.getGameState();
         int titleState = painel.getTitleState();
+        int openingState = painel.getOpeningState();
+        int playState = painel.getPlayState();
+        int florestaCardState = painel.getFlorestaCardState();
+
+    // Informações do jogador
+        if (gameState != titleState && gameState!= openingState && gameState!=florestaCardState) {
+        }
+
+    // Title state
         if (gameState == titleState) {
             mostrarTelaInicial();
         }
 
     // Opening state
-        int openingState = painel.getOpeningState();
         if (gameState == openingState) {
             mostrarAbertura();
         }
 
     // Play state
-        int playState = painel.getPlayState();
         if (gameState == playState) {
             mostrarPlayState();
         }
 
     // Card da floresta
-        int florestaCardState = painel.getFlorestaCardState();
         if (gameState == florestaCardState) {
             mostrarCardFloresta();
         }
     }
+
 
     public void mostrarTelaInicial() {
 
@@ -214,7 +221,7 @@ public class UI {
         if (subState == 0) {
 
             escreverTexto("A luz misteriosa brilha à distância, floresta adentro.", y += tileSize);
-            escreverTexto("Espalhaadas pelo chão, há coisas que parecem ser úteis.", y += tileSize);
+            escreverTexto("Espalhwadas pelo chão, há coisas que parecem ser úteis.", y += tileSize);
             escreverTexto("Uma brecha por entre as árvores revela uma montanha próxima.", y += tileSize);
             escreverTexto("Altitude pode ser uma vantagem.", y += tileSize);
             escreverTexto("Um chiado estranho parece se aproximar...", y += tileSize);
@@ -236,7 +243,11 @@ public class UI {
             }
 
         } else if (subState == 1) {
-            escreverTexto("Você se aproxima da luz...", tileSize * 4);
+            escreverTexto("Você deixa a luz te guiar...", tileSize * 4);
+            escreverTexto(". . .", tileSize * 5);
+            escreverTexto("Encontrou no caminho: 1 pedra.", tileSize * 6);
+            painel.getJogador().adicionarItem("Pedra", 1);
+
 
         } else if (subState == 2) {
             escreverTexto("Você busca por recursos.", tileSize * 4);
@@ -245,17 +256,47 @@ public class UI {
             painel.getJogador().adicionarItem("Madeira", 2);
             painel.getJogador().adicionarItem("Pedra", 1);
 
-            painel.setPlaySubState(20);
 
         } else if (subState == 3) {
             escreverTexto("Você se direciona até a montanha", tileSize * 4);
         }
 
-        else if (subState == 20) {
+        else if (subState == 10) {
+            escreverTexto("Arbustos chacoalham ao seu redor enquanto anda.", y += tileSize);
+            escreverTexto("...", y += tileSize);
+            escreverTexto("Você está perto o suficiente da luz... é uma fogueira", y += tileSize);
+            escreverTexto("Nínguem a vista, só uma tigela com água.", y += tileSize);
+            escreverTexto("Talvez haja algum lago próximo.", y += tileSize);
+            escreverTexto("O que fazer?", y += tileSize);
+            escreverTexto("", y += tileSize);
 
+
+            String[] opcoes = {"Beber água", "Explorar arredores"};
+
+            y += tileSize;
+            for (int i = 0; i < opcoes.length; i++) {
+                String texto = opcoes[i];
+                int x = coordenadaXParaTextoCentralizado(texto);
+
+                if (numComando == i) {
+                    g2.drawString(">", x - tileSize, y);
+                }
+                g2.drawString(texto, x, y);
+                y += tileSize;
+            }
+
+        }
+        else if (subState == 11) {
+            escreverTexto("Você bebe água.", tileSize * 2);
+            jogador.setSede(false);
+            escreverTexto("Hidratação no máximo.",tileSize * 3);
+        }
+
+        else if (subState == 20) {
             escreverTexto("Aquele chiado... parece estar tão perto...", y += tileSize);
             g2.setColor(Color.red);
             escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y += tileSize);
+            jogador.setVida(jogador.getVida() - 1);
             g2.setColor(Color.white);
             escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
             escreverTexto("", y += tileSize);

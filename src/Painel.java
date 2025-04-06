@@ -193,8 +193,8 @@ public class Painel extends JPanel implements Runnable {
     public UI getUi() {
         return ui;
     }
-    public void setUi(UI ui) {
-        this.ui = ui;
+    public Jogador getJogador() {
+        return jogador;
     }
 
     public Ambiente getAmbiente() {

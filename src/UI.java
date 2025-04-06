@@ -234,6 +234,9 @@ public class UI {
         } else if (subState == 2) {
             escreverTexto("Você busca por recursos.", tileSize * 4);
             escreverTexto("Encontrou: 2 madeiras e 1 pedra.", tileSize * 5);
+
+            painel.getJogador().adicionarItem("Madeira", 2);
+            painel.getJogador().adicionarItem("Pedra", 1);
         } else if (subState == 3) {
             escreverTexto("Você se direciona até a montanha", tileSize * 4);
         }

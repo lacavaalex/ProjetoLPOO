@@ -1,3 +1,9 @@
+package Main;
+
+import Controles.*;
+import Entidade.*;
+import Ambiente.*;
+
 import javax.swing.*;
 import java.awt.*;
 

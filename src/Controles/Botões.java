@@ -1,3 +1,7 @@
+package Controles;
+
+import Main.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -24,7 +28,7 @@ public class Botões extends JPanel {
     }
 
     public void continuar() {
-    // Painel de local do botão continuar
+    // Main.Painel de local do botão continuar
         painelBotaoContinuar = new JPanel();
         painelBotaoContinuar.setBounds(620, 600, 200, 50);
         painelBotaoContinuar.setBackground(Color.BLACK);
@@ -46,7 +50,7 @@ public class Botões extends JPanel {
     }
 
     public void voltar() {
-    // Painel de local do botão voltar
+    // Main.Painel de local do botão voltar
         painelBotaoVoltar = new JPanel();
         painelBotaoVoltar.setBounds(120, 600, 200, 50);
         painelBotaoVoltar.setBackground(Color.BLACK);

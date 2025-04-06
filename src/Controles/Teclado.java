@@ -1,3 +1,9 @@
+package Controles;
+
+import Entidade.Jogador;
+import Main.Painel;
+import Main.UI;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

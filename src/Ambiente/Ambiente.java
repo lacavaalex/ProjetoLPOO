@@ -1,3 +1,7 @@
+package Ambiente;
+
+import Main.*;
+
 import javax.swing.*;
 import java.awt.*;
 

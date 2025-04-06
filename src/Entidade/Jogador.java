@@ -1,3 +1,7 @@
+package Entidade;
+
+import Ambiente.*;
+
 import java.util.HashMap;
 
 public class Jogador {

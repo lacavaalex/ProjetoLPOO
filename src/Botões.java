@@ -45,10 +45,10 @@ public class Botões extends JPanel {
         painelBotaoContinuar.setVisible(false);
     }
 
-    public void mostrarBotao() {
+    public void mostrarBotaoContinuar() {
         painelBotaoContinuar.setVisible(true);
     }
-    public void esconderBotao() {
+    public void esconderBotaoContinuar() {
         painelBotaoContinuar.setVisible(false);
     }
 

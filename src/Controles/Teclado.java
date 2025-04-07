@@ -149,6 +149,29 @@ public class Teclado implements KeyListener {
                     painel.getUi().numComando = 0;
                 }
             }
+            if (subState == 1213) {
+                if (code == KeyEvent.VK_W) {
+                    painel.getUi().numComando--;
+                    if (painel.getUi().numComando < 0) {
+                        painel.getUi().numComando = 1;
+                    }
+                }
+                if (code == KeyEvent.VK_S) {
+                    painel.getUi().numComando++;
+                    if (painel.getUi().numComando > 1) {
+                        painel.getUi().numComando = 0;
+                    }
+                }
+                if (code == KeyEvent.VK_ENTER) {
+                    if (numComando == 0) {
+                        painel.setPlaySubState(11);
+                        painel.getUi().numComando = 0;
+                    }
+                    if (numComando == 1) {
+                        painel.setGameState(painel.getLagoCardState());
+                    }
+                }
+            }
         }
 
     }

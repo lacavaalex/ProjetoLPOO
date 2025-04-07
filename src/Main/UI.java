@@ -11,7 +11,8 @@ public class UI {
     Painel painel;
     Jogador jogador = new Jogador();
     Botões botoes;
-    Teclado teclado;
+    Criatura criatura;
+    Evento evento;
 
     Graphics2D g2;
     Font pixelsans_30, pixelsans_60B;
@@ -31,6 +32,8 @@ public class UI {
         pixelsans_60B = new Font("Pixel Sans Serif", Font.BOLD, 60);
 
         botoes = new Botões(painel);
+        criatura = new Criatura();
+        evento = new Evento(painel, this, jogador, criatura);
     }
 
     public void mostrar(Graphics2D g2) {
@@ -258,32 +261,8 @@ public class UI {
         }
 
         else if (subState == 20) {
-            escreverTexto("Aquele chiado... parece estar tão perto...", y += tileSize);
-            g2.setColor(Color.red);
-            escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y += tileSize);
-            jogador.setVida(jogador.getVida() - 1);
-            g2.setColor(Color.white);
-            escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
-            escreverTexto("", y += tileSize);
-            g2.setColor(Color.red);
-            escreverTexto("Víbora-Rubro: 3HP / 5 ATK", y += tileSize);
-            g2.setColor(Color.white);
-            escreverTexto("O que fazer?", y += tileSize);
-
-
-            String[] opcoes = {"Atacar", "Fugir"};
-
-            y += tileSize * 2;
-            for (int i = 0; i < opcoes.length; i++) {
-                String texto = opcoes[i];
-                int x = coordenadaXParaTextoCentralizado(texto);
-
-                if (numComando == i) {
-                    g2.drawString(">", x - tileSize, y);
-                }
-                g2.drawString(texto, x, y);
-                y += tileSize;
-            }
+            escreverTexto("Aquele chiado... parece estar tão perto...", tileSize * 2);
+            evento.viboraRubroFloresta(g2);
         }
 
         else if (subState == 21) {

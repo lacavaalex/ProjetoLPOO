@@ -14,7 +14,7 @@ public class Painel extends JPanel implements Runnable {
 
 // Definição da tela
     private final int originalTileSize = 16;
-    private final int escala = 3; // tornar 48x48
+    private final int escala = 3;
     private int tileSize = originalTileSize * escala;
 
     private int larguraTela = 900;
@@ -202,7 +202,8 @@ public class Painel extends JPanel implements Runnable {
     public void setPlaySubState(int novoSubState) {
         this.playSubState = novoSubState;
 
-        if (novoSubState > 0 && novoSubState < 10 || novoSubState == 12 || novoSubState == 31) {
+        if (novoSubState > 0 && novoSubState < 10 || novoSubState == 12 || novoSubState == 31
+        || novoSubState == 32) {
             botoes.mostrarBotaoContinuar();
         } else {
             botoes.esconderBotaoContinuar();
@@ -211,7 +212,7 @@ public class Painel extends JPanel implements Runnable {
             botoes.esconderBotaoContinuar();
         }
 
-        if (novoSubState == 22 || novoSubState == 1212 || novoSubState == 3131) {
+        if (novoSubState == 11 || novoSubState == 22 || novoSubState == 1212 || novoSubState == 3131) {
             botoes.mostrarBotaoVoltar();
         }
         if (novoSubState == 10 || novoSubState == 32 || novoSubState == 1213) {

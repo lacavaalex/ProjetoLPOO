@@ -32,6 +32,7 @@ public class FunçãoBotão implements ActionListener {
                     case 102: painel.setGameState(1212); break;
                     case 31: painel.setGameState(103); break;
                     case 103: painel.setGameState(3131); break;
+                    case 32: painel.setPlaySubState(33); break;
                     default: System.out.println("Caso default"); break;
                 }
             }
@@ -53,16 +54,11 @@ public class FunçãoBotão implements ActionListener {
 
 
         } else if (fonte == botoes.getBotaoVoltar()) {
-            if (painel.getPlaySubState() == 1212) {
+            if (painel.getPlaySubState() == 1212 || painel.getPlaySubState() == 11) {
                 painel.setPlaySubState(1213);
             }
-            if (painel.getPlaySubState() == 3131) {
+            else if (painel.getPlaySubState() == 3131) {
                 painel.setPlaySubState(32);
-            }
-            else {
-                painel.setPlaySubState(painel.getPlaySubState() - 2);
-                System.out.println("Clicou em VOLTAR: \n" + painel.getGameState());
-                botoes.esconderBotaoVoltar();
             }
         }
 

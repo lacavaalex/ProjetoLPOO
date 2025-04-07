@@ -18,6 +18,11 @@ public class Criatura {
         setVidaCriatura(3);
         setAtaqueCriatura(5);
     }
+    public void setUrsoPai() {
+        setNomeCriatura("Urso Pai");
+        setVidaCriatura(100);
+        setAtaqueCriatura(100);
+    }
 
 
     public String getDescricao() {

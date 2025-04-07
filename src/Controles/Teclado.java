@@ -130,7 +130,8 @@ public class Teclado implements KeyListener {
                     painel.getUi().numComando = 0;
                 }
             }
-            if (subState == 10 || subState == 20 || subState == 30) {
+            if (subState == 10 || subState == 20 || subState == 30
+                || subState == 33) {
                 if (code == KeyEvent.VK_W) {
                     painel.getUi().numComando--;
                     if (painel.getUi().numComando < 0) {
@@ -144,9 +145,14 @@ public class Teclado implements KeyListener {
                     }
                 }
                 if (code == KeyEvent.VK_ENTER) {
-                    int opcao = painel.getUi().numComando;
-                    painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
-                    painel.getUi().numComando = 0;
+                    if (subState == 33){
+                        painel.setPlaySubState(34);
+                    }
+                    else {
+                        int opcao = painel.getUi().numComando;
+                        painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
+                        painel.getUi().numComando = 0;
+                    }
                 }
             }
             if (subState == 1213) {

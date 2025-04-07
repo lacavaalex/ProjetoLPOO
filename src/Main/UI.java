@@ -47,6 +47,7 @@ public class UI {
         int openingState = painel.getOpeningState();
         int playState = painel.getPlayState();
         int florestaCardState = painel.getFlorestaCardState();
+        int lagoCardState = painel.getLagoCardState();
 
     // Informações do jogador
         if (gameState != titleState && gameState!= openingState && gameState!=florestaCardState) {
@@ -67,9 +68,12 @@ public class UI {
             mostrarPlayState();
         }
 
-    // Card da floresta
+    // Cards de ambiente
         if (gameState == florestaCardState) {
             mostrarCardFloresta();
+        }
+        if (gameState == lagoCardState) {
+            mostrarCardLago();
         }
     }
 
@@ -189,7 +193,7 @@ public class UI {
         if (subState == 0) {
 
             escreverTexto("A luz misteriosa brilha à distância, floresta adentro.", y += tileSize);
-            escreverTexto("Espalhwadas pelo chão, há coisas que parecem ser úteis.", y += tileSize);
+            escreverTexto("Espalhadas pelo chão, há coisas que parecem ser úteis.", y += tileSize);
             escreverTexto("Uma brecha por entre as árvores revela uma montanha próxima.", y += tileSize);
             escreverTexto("Altitude pode ser uma vantagem.", y += tileSize);
             escreverTexto("Um chiado estranho parece se aproximar...", y += tileSize);
@@ -233,8 +237,7 @@ public class UI {
             escreverTexto("Arbustos chacoalham ao seu redor enquanto anda.", y += tileSize);
             escreverTexto("...", y += tileSize);
             escreverTexto("Você está perto o suficiente da luz... é uma fogueira", y += tileSize);
-            escreverTexto("Nínguem a vista, só uma tigela com água.", y += tileSize);
-            escreverTexto("Talvez haja algum lago próximo.", y += tileSize);
+            escreverTexto("Nínguem a vista, mas há uma tigela com água...", y += tileSize);
             escreverTexto("O que fazer?", y += tileSize);
             escreverTexto("", y += tileSize);
 
@@ -254,17 +257,50 @@ public class UI {
             }
 
         }
+
         else if (subState == 11) {
-            escreverTexto("Você bebe água.", tileSize * 2);
+            escreverTexto("Você bebe água.", y);
             jogador.setSede(false);
-            escreverTexto("Hidratação no máximo.",tileSize * 3);
+            escreverTexto("Hidratação no máximo.", y += tileSize);
         }
+        else if (subState == 12) {
+            escreverTexto("Melhor não mexer com o que não é seu.",tileSize * 2);
+            escreverTexto("(e, afinal, quem sabe de quem pode ser...)",tileSize * 3);
+            escreverTexto("",tileSize * 4);
+            escreverTexto("Em torno dessa fogueira há vegetação baixa.",tileSize * 5);
+            escreverTexto("Há um cervo à distância, mas você não tem equipamento para caça.",tileSize * 6);
+            escreverTexto("",tileSize * 7);
+            escreverTexto("Mais adiante, um barulho animador: água corrente!",tileSize * 8);
+            escreverTexto("Apressando o passo, em minutos você chega ao lago.",tileSize * 9);
+        }
+        else if (subState == 1212) {
+            escreverTexto("Este é o lago.",tileSize * 2);
+            escreverTexto("Você pode ficar e descansar, ou retornar à fogueira.",tileSize * 3);
+        }
+        else if (subState == 1213) {
+            escreverTexto("Você retorna à fogueira.", y += tileSize);
+
+
+            String[] opcoes = {"Beber água", "Voltar ao lago"};
+
+            y += tileSize;
+            for (int i = 0; i < opcoes.length; i++) {
+                String texto = opcoes[i];
+                int x = coordenadaXParaTextoCentralizado(texto);
+
+                if (numComando == i) {
+                    g2.drawString(">", x - tileSize, y);
+                }
+                g2.drawString(texto, x, y);
+                y += tileSize;
+            }
+        }
+
 
         else if (subState == 20) {
             escreverTexto("Aquele chiado... parece estar tão perto...", tileSize * 2);
             evento.viboraRubroFloresta(g2);
         }
-
         else if (subState == 21) {
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F)); escreverTexto("COMBATE", tileSize * 2);
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F)); escreverTexto("Você a atacou!", tileSize * 3);
@@ -286,6 +322,7 @@ public class UI {
             botoes.mostrarBotaoVoltar();
         }
     }
+
 
     public void mostrarCardFloresta() {
 
@@ -316,6 +353,37 @@ public class UI {
 
         botoes.mostrarBotaoContinuar();
     }
+
+    public void mostrarCardLago() {
+
+        Ambiente ambienteLago = painel.getAmbiente();
+
+        tileSize = painel.getTileSize();
+        larguraTela = painel.getLargura();
+        alturaTela = painel.getAltura();
+
+        g2.setColor(new Color(0, 20, 70));
+        g2.fillRect(0, 0, larguraTela, alturaTela);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+
+        int y = tileSize * 4;
+        g2.setColor(Color.white);
+        escreverTexto(ambienteLago.getNome(), y += tileSize);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+        y = tileSize * 5;
+
+        escreverTexto(ambienteLago.getDescricao(), y += tileSize);
+        escreverTexto(" ", y += tileSize);
+        escreverTexto("Condições de exploração: " + ambienteLago.getDificuldade(), y += tileSize);
+        escreverTexto("Recursos possíveis: " + ambienteLago.getRecursos(), y += tileSize);
+        escreverTexto("Ecossistema: " + ambienteLago.getFrequenciaEventos(), y += tileSize);
+        escreverTexto("Clima: " + ambienteLago.getClima(), y += tileSize);
+
+        botoes.mostrarBotaoContinuar();
+    }
+
 
     public int coordenadaXParaTextoCentralizado(String texto) {
 

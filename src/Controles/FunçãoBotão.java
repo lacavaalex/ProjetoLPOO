@@ -29,16 +29,34 @@ public class FunçãoBotão implements ActionListener {
                 else if (subState == 2) {
                     painel.setPlaySubState(20);
                 }
+                else if (subState == 12) {
+                    painel.setGameState(102);
+                }
+                else if (subState == 102) {
+                    painel.setGameState(1212);
+                }
             }
-            else {
-                painel.setGameState(painel.getGameState() + 1);
+            else if (gameState == painel.getOpeningState()) {
+                painel.setGameState(painel.getFlorestaCardState());
+            }
+            else if (gameState == painel.getFlorestaCardState()) {
+                painel.setGameState(painel.getPlayState());
+            }
+            else if (gameState == painel.getLagoCardState()) {
+                painel.setPlaySubState(1212);
+                painel.setGameState(painel.getPlayState());
             }
 
 
         } else if (fonte == botoes.getBotaoVoltar()) {
-            painel.setPlaySubState(painel.getPlaySubState() - 2);
-            System.out.println("Clicou em VOLTAR: \n" + painel.getGameState());
-            botoes.esconderBotaoVoltar();
+            if (painel.getPlaySubState() == 1212) {
+                painel.setPlaySubState(1213);
+            }
+            else {
+                painel.setPlaySubState(painel.getPlaySubState() - 2);
+                System.out.println("Clicou em VOLTAR: \n" + painel.getGameState());
+                botoes.esconderBotaoVoltar();
+            }
         }
 
         System.out.println(gameState);

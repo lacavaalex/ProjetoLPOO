@@ -39,6 +39,7 @@ public class Painel extends JPanel implements Runnable {
     private int playSubState = 0;
     private final int florestaCardState = 101;
     private final int lagoCardState = 102;
+    private final int montanhaCardState = 103;
 
     public Painel(){
 
@@ -126,7 +127,7 @@ public class Painel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         if (gameState == titleState || gameState == openingState || gameState == playState ||
-                gameState == florestaCardState || gameState == lagoCardState) {
+                gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
             ui.mostrar(g2);
         }
     }
@@ -175,6 +176,11 @@ public class Painel extends JPanel implements Runnable {
             ambiente.ambienteLago();
             botoes.mostrarBotaoContinuar();
         }
+        if (gameState == montanhaCardState) {
+            botoes.setVisible(true);
+            ambiente.ambienteMontanha();
+            botoes.mostrarBotaoContinuar();
+        }
 
         if (gameState == playState) {
             botoes.setVisible(true);
@@ -196,7 +202,7 @@ public class Painel extends JPanel implements Runnable {
     public void setPlaySubState(int novoSubState) {
         this.playSubState = novoSubState;
 
-        if (novoSubState > 0 && novoSubState < 10 || novoSubState == 12) {
+        if (novoSubState > 0 && novoSubState < 10 || novoSubState == 12 || novoSubState == 31) {
             botoes.mostrarBotaoContinuar();
         } else {
             botoes.esconderBotaoContinuar();
@@ -205,10 +211,10 @@ public class Painel extends JPanel implements Runnable {
             botoes.esconderBotaoContinuar();
         }
 
-        if (novoSubState == 22 || novoSubState == 1212) {
+        if (novoSubState == 22 || novoSubState == 1212 || novoSubState == 3131) {
             botoes.mostrarBotaoVoltar();
         }
-        if (novoSubState == 10 || novoSubState == 1213) {
+        if (novoSubState == 10 || novoSubState == 32 || novoSubState == 1213) {
             botoes.esconderBotaoVoltar();
         }
     }
@@ -230,5 +236,8 @@ public class Painel extends JPanel implements Runnable {
     }
     public int getLagoCardState() {
         return lagoCardState;
+    }
+    public int getMontanhaCardState() {
+        return montanhaCardState;
     }
 }

@@ -48,6 +48,7 @@ public class UI {
         int playState = painel.getPlayState();
         int florestaCardState = painel.getFlorestaCardState();
         int lagoCardState = painel.getLagoCardState();
+        int montanhaCardState = painel.getMontanhaCardState();
 
     // Informações do jogador
         if (gameState != titleState && gameState!= openingState && gameState!=florestaCardState) {
@@ -74,6 +75,9 @@ public class UI {
         }
         if (gameState == lagoCardState) {
             mostrarCardLago();
+        }
+        if (gameState == montanhaCardState) {
+            mostrarCardMontanha();
         }
     }
 
@@ -163,9 +167,8 @@ public class UI {
 
         escreverTexto("Você é: " + painel.getJogador().getNome(), y += tileSize);
         escreverTexto("Você acorda em um mundo desconhecido e inóspito.", y += tileSize);
-        escreverTexto("O chão treme ao andar sobre ele,", y += tileSize);
+        escreverTexto("É noite. O chão treme ao andar sobre ele,", y += tileSize);
         escreverTexto("e o céu vasto aparenta ter ânsia em te engolir.", y += tileSize);
-        escreverTexto(" ", y += tileSize);
         escreverTexto("Seus arredores lembram uma clareira. Há uma luz à distância.", y += tileSize);
         escreverTexto("Sem memória de como chegou aqui, ou idéia de como escapar,", y += tileSize);
         escreverTexto("sua única opção é descobrir explorando.", y += tileSize);
@@ -185,141 +188,196 @@ public class UI {
         g2.fillRect(0, 0, larguraTela, alturaTela);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
-        int y = tileSize;
         g2.setColor(Color.white);
 
         int subState = painel.getPlaySubState();
+        int y = tileSize;
 
-        if (subState == 0) {
+        switch (subState) {
+            case 0:
+                escreverTexto("A luz misteriosa brilha à distância, floresta adentro.", y += tileSize);
+                escreverTexto("Espalhadas pelo chão, há coisas que parecem ser úteis.", y += tileSize);
+                escreverTexto("Uma brecha por entre as árvores revela uma montanha próxima.", y += tileSize);
+                escreverTexto("Altitude pode ser uma vantagem.", y += tileSize);
+                escreverTexto("Um chiado estranho parece se aproximar...", y += tileSize);
+                escreverTexto("O que fazer?", y += tileSize);
 
-            escreverTexto("A luz misteriosa brilha à distância, floresta adentro.", y += tileSize);
-            escreverTexto("Espalhadas pelo chão, há coisas que parecem ser úteis.", y += tileSize);
-            escreverTexto("Uma brecha por entre as árvores revela uma montanha próxima.", y += tileSize);
-            escreverTexto("Altitude pode ser uma vantagem.", y += tileSize);
-            escreverTexto("Um chiado estranho parece se aproximar...", y += tileSize);
-            escreverTexto("O que fazer?", y += tileSize);
+
+                String[] opcoes0 = {"Seguir luz", "Ficar e coletar recursos", "Ir até montanha"};
+
+                y += tileSize * 2;
+                for (int i = 0; i < opcoes0.length; i++) {
+                    String texto = opcoes0[i];
+                    int x = coordenadaXParaTextoCentralizado(texto);
+
+                    if (numComando == i) {
+                        g2.drawString(">", x - tileSize, y);
+                    }
+                    g2.drawString(texto, x, y);
+                    y += tileSize;
+                } break;
+
+            case 1:
+                escreverTexto("Você deixa a luz te guiar...", y += tileSize);
+                escreverTexto(". . .", y += tileSize);
+                escreverTexto("Encontrou no caminho: 1 pedra.", y += tileSize);
+                painel.getJogador().adicionarItem("Pedra", 1);
+                break;
+
+            case 2:
+                escreverTexto("Você busca por recursos.", y += tileSize);
+                escreverTexto("Encontrou: 2 madeiras e 1 pedra.", y += tileSize);
+
+                painel.getJogador().adicionarItem("Madeira", 2);
+                painel.getJogador().adicionarItem("Pedra", 1);
+                break;
+
+            case 3:
+                escreverTexto("Você se direciona até a montanha", y += tileSize);
+                escreverTexto(". . .", y += tileSize);
+                escreverTexto("Algo não parce certo.", y += tileSize);
+                escreverTexto("Um movimento suspeito te acompanha.", y += tileSize);
+                escreverTexto("Nada se revela, mas você não está sozinho.", y += tileSize);
+                escreverTexto(". . .", y += tileSize);
+                break;
+
+            case 10:
+                escreverTexto("Arbustos chacoalham ao seu redor enquanto anda.", y += tileSize);
+                escreverTexto("...", y += tileSize);
+                escreverTexto("Você está perto o suficiente da luz... é uma fogueira", y += tileSize);
+                escreverTexto("Nínguem a vista, mas há uma tigela com água...", y += tileSize);
+                escreverTexto("O que fazer?", y += tileSize);
+                escreverTexto("", y += tileSize);
 
 
-            String[] opcoes = {"Seguir luz", "Ficar e coletar recursos", "Ir até montanha"};
+                String[] opcoes10 = {"Beber água", "Explorar arredores"};
 
-            y += tileSize * 2;
-            for (int i = 0; i < opcoes.length; i++) {
-                String texto = opcoes[i];
-                int x = coordenadaXParaTextoCentralizado(texto);
+                y += tileSize * 2;
+                for (int i = 0; i < opcoes10.length; i++) {
+                    String texto = opcoes10[i];
+                    int x = coordenadaXParaTextoCentralizado(texto);
 
-                if (numComando == i) {
-                    g2.drawString(">", x - tileSize, y);
-                }
-                g2.drawString(texto, x, y);
+                    if (numComando == i) {
+                        g2.drawString(">", x - tileSize, y);
+                    }
+                    g2.drawString(texto, x, y);
+                    y += tileSize;
+                } break;
+
+            case 11:
+                escreverTexto("Você bebe água.", y += tileSize);
+                jogador.setSede(false);
+                escreverTexto("Hidratação no máximo.", y += tileSize);
+                break;
+
+            case 12:
+                escreverTexto("Melhor não mexer com o que não é seu.",y += tileSize);
+                escreverTexto("(e, afinal, quem sabe de quem pode ser...)",tileSize * 3);
+                escreverTexto("",tileSize * 4);
+                escreverTexto("Em torno dessa fogueira há vegetação baixa.",tileSize * 5);
+                escreverTexto("Há um cervo à distância, mas você não tem equipamento para caça.",tileSize * 6);
+                escreverTexto("",tileSize * 7);
+                escreverTexto("Mais adiante, um barulho animador: água corrente!",tileSize * 8);
+                escreverTexto("Apressando o passo, em minutos você chega ao lago.",tileSize * 9);
+                break;
+            case 1212:
+                escreverTexto("Este é o lago.",tileSize * 2);
+                escreverTexto("Você pode ficar e descansar, ou retornar à fogueira.",tileSize * 3);
+                break;
+            case 1213:
+                escreverTexto("Você retorna à fogueira.", y += tileSize);
+
+                String[] opcoes1213 = {"Beber água", "Voltar ao lago"};
+
                 y += tileSize;
-            }
+                for (int i = 0; i < opcoes1213.length; i++) {
+                    String texto = opcoes1213[i];
+                    int x = coordenadaXParaTextoCentralizado(texto);
 
-        } else if (subState == 1) {
-            escreverTexto("Você deixa a luz te guiar...", tileSize * 4);
-            escreverTexto(". . .", tileSize * 5);
-            escreverTexto("Encontrou no caminho: 1 pedra.", tileSize * 6);
-            painel.getJogador().adicionarItem("Pedra", 1);
+                    if (numComando == i) {
+                        g2.drawString(">", x - tileSize, y);
+                    }
+                    g2.drawString(texto, x, y);
+                    y += tileSize;
+                } break;
 
+            case 20:
+                escreverTexto("Aquele chiado... parece estar tão perto...", tileSize * 2);
+                evento.viboraRubroFloresta(g2);
+                break;
 
-        } else if (subState == 2) {
-            escreverTexto("Você busca por recursos.", tileSize * 4);
-            escreverTexto("Encontrou: 2 madeiras e 1 pedra.", tileSize * 5);
+            case 21:
+                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F)); escreverTexto("COMBATE", y += tileSize);
+                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F)); escreverTexto("Você a atacou!", y += tileSize);
+                g2.setColor(Color.red); escreverTexto("-1HP", y += tileSize);
+                g2.setColor(Color.red); escreverTexto("Víbora-Rubro: 2HP", y += tileSize);
+                g2.setColor(Color.white); escreverTexto("-Após notar sua investida, ela foge! HA!", y += tileSize);
+                escreverTexto("", y += tileSize);
+                escreverTexto("FIM DE COMBATE.", y += tileSize);
+                escreverTexto("", y += tileSize);
+                escreverTexto("DESFECHO: Você está levemente ENVENENADO.", y += tileSize);
+                break;
 
-            painel.getJogador().adicionarItem("Madeira", 2);
-            painel.getJogador().adicionarItem("Pedra", 1);
+            case 22:
+                escreverTexto("Você pensa em fugir, mas se sente meio tonto...",tileSize * 2);
+                escreverTexto("Porcaria, a mordida da víbora o deixou", y += tileSize * 2);
+                g2.setColor(Color.red); escreverTexto("envenenado.", y += tileSize);
+                g2.setColor(Color.white); escreverTexto("", y += tileSize);
+                escreverTexto("Ela é rápida, e você está abatido(a). É melhor não arriscar.", y += tileSize);
 
-
-        } else if (subState == 3) {
-            escreverTexto("Você se direciona até a montanha", tileSize * 4);
-        }
-
-        else if (subState == 10) {
-            escreverTexto("Arbustos chacoalham ao seu redor enquanto anda.", y += tileSize);
-            escreverTexto("...", y += tileSize);
-            escreverTexto("Você está perto o suficiente da luz... é uma fogueira", y += tileSize);
-            escreverTexto("Nínguem a vista, mas há uma tigela com água...", y += tileSize);
-            escreverTexto("O que fazer?", y += tileSize);
-            escreverTexto("", y += tileSize);
-
-
-            String[] opcoes = {"Beber água", "Explorar arredores"};
-
-            y += tileSize;
-            for (int i = 0; i < opcoes.length; i++) {
-                String texto = opcoes[i];
-                int x = coordenadaXParaTextoCentralizado(texto);
-
-                if (numComando == i) {
-                    g2.drawString(">", x - tileSize, y);
-                }
-                g2.drawString(texto, x, y);
-                y += tileSize;
-            }
-
-        }
-
-        else if (subState == 11) {
-            escreverTexto("Você bebe água.", y);
-            jogador.setSede(false);
-            escreverTexto("Hidratação no máximo.", y += tileSize);
-        }
-        else if (subState == 12) {
-            escreverTexto("Melhor não mexer com o que não é seu.",tileSize * 2);
-            escreverTexto("(e, afinal, quem sabe de quem pode ser...)",tileSize * 3);
-            escreverTexto("",tileSize * 4);
-            escreverTexto("Em torno dessa fogueira há vegetação baixa.",tileSize * 5);
-            escreverTexto("Há um cervo à distância, mas você não tem equipamento para caça.",tileSize * 6);
-            escreverTexto("",tileSize * 7);
-            escreverTexto("Mais adiante, um barulho animador: água corrente!",tileSize * 8);
-            escreverTexto("Apressando o passo, em minutos você chega ao lago.",tileSize * 9);
-        }
-        else if (subState == 1212) {
-            escreverTexto("Este é o lago.",tileSize * 2);
-            escreverTexto("Você pode ficar e descansar, ou retornar à fogueira.",tileSize * 3);
-        }
-        else if (subState == 1213) {
-            escreverTexto("Você retorna à fogueira.", y += tileSize);
+                botoes.mostrarBotaoVoltar();
+                break;
 
 
-            String[] opcoes = {"Beber água", "Voltar ao lago"};
-
-            y += tileSize;
-            for (int i = 0; i < opcoes.length; i++) {
-                String texto = opcoes[i];
-                int x = coordenadaXParaTextoCentralizado(texto);
-
-                if (numComando == i) {
-                    g2.drawString(">", x - tileSize, y);
-                }
-                g2.drawString(texto, x, y);
-                y += tileSize;
-            }
-        }
+            case 30:
+                escreverTexto("Atingido o pé da montanha, você enxerga um trecho de subida.", y += tileSize);
+                escreverTexto("O que quer que estava te seguindo aparenta ter parado...", y += tileSize);
+                escreverTexto("Não há nada de destaque neste local, além de uma rocha firme.", y += tileSize);
+                escreverTexto("Sua formação pode conceder um abrigo com boa visibilidade.", y += tileSize);
+                escreverTexto("O que fazer?", y += tileSize);
+                escreverTexto("", y += tileSize);
 
 
-        else if (subState == 20) {
-            escreverTexto("Aquele chiado... parece estar tão perto...", tileSize * 2);
-            evento.viboraRubroFloresta(g2);
-        }
-        else if (subState == 21) {
-            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F)); escreverTexto("COMBATE", tileSize * 2);
-            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F)); escreverTexto("Você a atacou!", tileSize * 3);
-            g2.setColor(Color.red); escreverTexto("-1HP", y += tileSize * 3);
-            g2.setColor(Color.red); escreverTexto("Víbora-Rubro: 2HP", y += tileSize);
-            g2.setColor(Color.white); escreverTexto("-Após notar sua investida, ela foge! HA!", y += tileSize);
-            escreverTexto("", y += tileSize);
-            escreverTexto("FIM DE COMBATE.", y += tileSize);
-            escreverTexto("", y += tileSize);
-            escreverTexto("DESFECHO: Você está levemente ENVENENADO.", y += tileSize);
-        }
-        else if (subState == 22) {
-            escreverTexto("Você pensa em fugir, mas se sente meio tonto...",tileSize * 2);
-            escreverTexto("Porcaria, a mordida da víbora o deixou", y += tileSize * 2);
-            g2.setColor(Color.red); escreverTexto("envenenado.", y += tileSize);
-            g2.setColor(Color.white); escreverTexto("", y += tileSize);
-            escreverTexto("Ela é rápida, e você está abatido(a). É melhor não arriscar.", y += tileSize);
+                String[] opcoes30 = {"Subir pelo trecho", "Descansar até o amanhecer"};
 
-            botoes.mostrarBotaoVoltar();
+                y += tileSize * 2;
+                for (int i = 0; i < opcoes30.length; i++) {
+                    String texto = opcoes30[i];
+                    int x = coordenadaXParaTextoCentralizado(texto);
+
+                    if (numComando == i) {
+                        g2.drawString(">", x - tileSize, y);
+                    }
+                    g2.drawString(texto, x, y);
+                    y += tileSize;
+                } break;
+
+            case 31:
+                escreverTexto("Você sobe o trecho semi-íngreme.", y += tileSize);
+                escreverTexto("Olhando pra trás, há um olhar a espreita.", y += tileSize);
+                escreverTexto("(Ainda bem que não fiquei).", y += tileSize);
+                escreverTexto("", y += tileSize);
+                escreverTexto("Você chega num paredão.", y += tileSize);
+                break;
+            case 3131:
+                escreverTexto("O trecho acabou. O único caminho para além daqui...",tileSize * 2);
+                escreverTexto("é para cima. A montanha sussura seu nome...",tileSize * 3);
+                escreverTexto("",tileSize * 4);
+                escreverTexto("Seria fatal escalar o paredão sem equipamentos e preparação.",tileSize * 5);
+                escreverTexto("E ficar congelando aqui não é uma opção.",tileSize * 6);
+                escreverTexto("Isso é um beco sem saída. Melhor retornar.",tileSize * 7);
+                break;
+
+            case 32:
+                escreverTexto("Você se dirige àquela rocha para um abrigo temporário.", y += tileSize);
+                escreverTexto("Vai ter que servir. Você já se afastou demais da clareira.", y += tileSize);
+                escreverTexto("A energia aqui não é ideal, mas não parece ter mais nada à espreita", y += tileSize);
+                escreverTexto("De olhos entreabertos, você deita para descansar...", y += tileSize);
+                break;
+
+
+
+            default: System.out.println("Caso default"); break;
         }
     }
 
@@ -380,6 +438,36 @@ public class UI {
         escreverTexto("Recursos possíveis: " + ambienteLago.getRecursos(), y += tileSize);
         escreverTexto("Ecossistema: " + ambienteLago.getFrequenciaEventos(), y += tileSize);
         escreverTexto("Clima: " + ambienteLago.getClima(), y += tileSize);
+
+        botoes.mostrarBotaoContinuar();
+    }
+
+    public void mostrarCardMontanha() {
+
+        Ambiente ambienteMontanha = painel.getAmbiente();
+
+        tileSize = painel.getTileSize();
+        larguraTela = painel.getLargura();
+        alturaTela = painel.getAltura();
+
+        g2.setColor(new Color(160, 190, 255));
+        g2.fillRect(0, 0, larguraTela, alturaTela);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+
+        int y = tileSize * 4;
+        g2.setColor(Color.white);
+        escreverTexto(ambienteMontanha.getNome(), y += tileSize);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+        y = tileSize * 5;
+
+        escreverTexto(ambienteMontanha.getDescricao(), y += tileSize);
+        escreverTexto(" ", y += tileSize);
+        escreverTexto("Condições de exploração: " + ambienteMontanha.getDificuldade(), y += tileSize);
+        escreverTexto("Recursos possíveis: " + ambienteMontanha.getRecursos(), y += tileSize);
+        escreverTexto("Ecossistema: " + ambienteMontanha.getFrequenciaEventos(), y += tileSize);
+        escreverTexto("Clima: " + ambienteMontanha.getClima(), y += tileSize);
 
         botoes.mostrarBotaoContinuar();
     }

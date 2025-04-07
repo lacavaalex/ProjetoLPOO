@@ -28,6 +28,14 @@ public class Ambiente extends JPanel {
         this.frequenciaEventos = "quieto, um certo ar de misticismo.";
         this.clima = "levemente frio";
     }
+    public void ambienteMontanha() {
+        this.nome = "MONTANHA EPOPEICA";
+        this.descricao = "Imponente, desafiadora, majestosa.";
+        this.dificuldade = "perigosas.";
+        this.recursos = "indefinido.";
+        this.frequenciaEventos = "desastres naturais, perigos escondidos.";
+        this.clima = "altamente frio, piora com altitude.";
+    }
 
     public String getNome() {
         return nome;

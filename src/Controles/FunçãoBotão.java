@@ -23,19 +23,19 @@ public class FunçãoBotão implements ActionListener {
         if (fonte == botoes.getBotaoContinuar()) {
             if (gameState == painel.getPlayState()) {
                 int subState = painel.getPlaySubState();
-                if (subState == 1) {
-                    painel.setPlaySubState(10);
-                }
-                else if (subState == 2) {
-                    painel.setPlaySubState(20);
-                }
-                else if (subState == 12) {
-                    painel.setGameState(102);
-                }
-                else if (subState == 102) {
-                    painel.setGameState(1212);
+
+                switch (subState) {
+                    case 1: painel.setPlaySubState(10); break;
+                    case 2: painel.setPlaySubState(20); break;
+                    case 3: painel.setPlaySubState(30); break;
+                    case 12: painel.setGameState(102); break;
+                    case 102: painel.setGameState(1212); break;
+                    case 31: painel.setGameState(103); break;
+                    case 103: painel.setGameState(3131); break;
+                    default: System.out.println("Caso default"); break;
                 }
             }
+
             else if (gameState == painel.getOpeningState()) {
                 painel.setGameState(painel.getFlorestaCardState());
             }
@@ -46,11 +46,18 @@ public class FunçãoBotão implements ActionListener {
                 painel.setPlaySubState(1212);
                 painel.setGameState(painel.getPlayState());
             }
+            else if (gameState == painel.getMontanhaCardState()) {
+                painel.setPlaySubState(3131);
+                painel.setGameState(painel.getPlayState());
+            }
 
 
         } else if (fonte == botoes.getBotaoVoltar()) {
             if (painel.getPlaySubState() == 1212) {
                 painel.setPlaySubState(1213);
+            }
+            if (painel.getPlaySubState() == 3131) {
+                painel.setPlaySubState(32);
             }
             else {
                 painel.setPlaySubState(painel.getPlaySubState() - 2);

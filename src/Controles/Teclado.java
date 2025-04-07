@@ -130,7 +130,7 @@ public class Teclado implements KeyListener {
                     painel.getUi().numComando = 0;
                 }
             }
-            if (subState == 10 || subState == 20) {
+            if (subState == 10 || subState == 20 || subState == 30) {
                 if (code == KeyEvent.VK_W) {
                     painel.getUi().numComando--;
                     if (painel.getUi().numComando < 0) {

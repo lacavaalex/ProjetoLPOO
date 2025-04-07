@@ -284,10 +284,11 @@ public class UI {
                 escreverTexto("Este é o lago.",tileSize * 2);
                 escreverTexto("Você pode ficar e descansar, ou retornar à fogueira.",tileSize * 3);
                 break;
-            case 1213:
-                escreverTexto("Você retorna à fogueira.", y += tileSize);
 
-                String[] opcoes1213 = {"Beber água", "Voltar ao lago"};
+            case 1213:
+                escreverTexto("Você retorna a atenção à fogueira.", y += tileSize);
+
+                String[] opcoes1213 = {"Beber a água", "Voltar ao lago"};
 
                 y += tileSize;
                 for (int i = 0; i < opcoes1213.length; i++) {
@@ -304,6 +305,7 @@ public class UI {
             case 20:
                 escreverTexto("Aquele chiado... parece estar tão perto...", tileSize * 2);
                 evento.viboraRubroFloresta(g2);
+                // NÃO DEFINI PROBABILIDADE POIS SEMPRE QUERO QUE ESTE EVENTO ACONTECA NESSE CASO
                 break;
 
             case 21:
@@ -375,9 +377,18 @@ public class UI {
                 escreverTexto("De olhos entreabertos, você deita para descansar...", y += tileSize);
                 break;
 
+            case 33:
+                // Deixei de lado a questão de probabilidade por enquanto, mas será implementada aqui
+                    evento.ursoPai(g2);
+                break;
+            case 34:
+                escreverTexto("Você tenta--", y += tileSize);
+                g2.setColor(Color.red); escreverTexto("O urso irrompe um golpe fatal. -10HP", y += tileSize);
+                break;
 
 
-            default: System.out.println("Caso default"); break;
+
+            default: System.out.println("default"); System.out.println(painel.getPlaySubState()); break;
         }
     }
 

@@ -10,10 +10,13 @@ import java.awt.event.KeyListener;
 public class Teclado implements KeyListener {
 
     Painel painel;
-    Jogador jogador = new Jogador();
+    Jogador jogador;
+
+    private String nomeEscolhido1, nomeEscolhido2, nomeEscolhido3, nomeEscolhido4;
 
     public Teclado(Painel painel) {
         this.painel = painel;
+        this.jogador = painel.getJogador();
     }
 
     public void keyTyped(KeyEvent e) {
@@ -78,20 +81,19 @@ public class Teclado implements KeyListener {
                 }
                 if (code == KeyEvent.VK_ENTER) {
                     if (numComando == 0) {
-                        jogador.setNome("Colérica, a Guerreira");
-                        System.out.println(jogador.getNome());
+                        painel.getJogador().setNome("Irah, a guerreira");
                         painel.setGameState(openingState);
                     }
                     if (numComando == 1) {
-                        System.out.println("O Sobrevivente");
+                        painel.getJogador().setNome("Ben, o Sobrevivente");
                         painel.setGameState(openingState);
                     }
                     if (numComando == 2) {
-                        System.out.println("O Médico");
+                        painel.getJogador().setNome("Dr. Corvus, o médico");
                         painel.setGameState(openingState);
                     }
                     if (numComando == 3) {
-                        System.out.println("A Fora da Lei");
+                        painel.getJogador().setNome("Liz, a fora da lei");
                         painel.setGameState(openingState);
                     }
                     if (numComando == 4) {
@@ -143,7 +145,7 @@ public class Teclado implements KeyListener {
                 }
                 if (code == KeyEvent.VK_ENTER) {
                     int opcao = painel.getUi().numComando;
-                    painel.setPlaySubState(painel.getPlaySubState()+(opcao+1));
+                    painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
                     painel.getUi().numComando = 0;
                 }
             }

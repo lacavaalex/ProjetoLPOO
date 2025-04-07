@@ -11,6 +11,7 @@ public class UI {
     Painel painel;
     Jogador jogador = new Jogador();
     Botões botoes;
+    Teclado teclado;
 
     Graphics2D g2;
     Font pixelsans_30, pixelsans_60B;
@@ -84,99 +85,63 @@ public class UI {
             // Título
             g2.setColor(new Color(20, 0, 10));
             g2.fillRect(0, 0, larguraTela, alturaTela);
-
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 35F));
-            String texto = "O MUNDO FUNESTO.";
-            int x = coordenadaXParaTextoCentralizado(texto);
             int y = tileSize * 5;
+            int x = coordenadaXParaTextoCentralizado("O MUNDO FUNESTO");
 
             //Sombra
             g2.setColor((Color.darkGray));
-            g2.drawString(texto, x + 5, y + 5);
+            g2.drawString("O MUNDO FUNESTO", x + 5, y + 5);
 
             g2.setColor(Color.white);
-            g2.drawString(texto, x, y);
+            escreverTexto("O MUNDO FUNESTO", y);
 
-            // MENU (AINDA SEM COMANDOS)
+            //MENU
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
-            texto = "NOVO JOGO";
-            x = coordenadaXParaTextoCentralizado(texto);
+            String[] opcoes = {"NOVO JOGO", "CARREGAR JOGO", "SAIR"};
+
             y += tileSize * 2;
-            g2.drawString(texto, x, y);
-            if (getNumComando() == 0) {
-                g2.drawString(">", x - tileSize, y);
-            }
+            for (int i = 0; i < opcoes.length; i++) {
+                String texto = opcoes[i];
+                x = coordenadaXParaTextoCentralizado(texto);
 
-            texto = "CARREGAR JOGO";
-            x = coordenadaXParaTextoCentralizado(texto);
-            y += tileSize;
-            g2.drawString(texto, x, y);
-            if (getNumComando() == 1) {
-                g2.drawString(">", x - tileSize, y);
-            }
-
-            texto = "SAIR";
-            x = coordenadaXParaTextoCentralizado(texto);
-            y += tileSize;
-            g2.drawString(texto, x, y);
-            if (getNumComando() == 2) {
-                g2.drawString(">", x - tileSize, y);
+                if (numComando == i) {
+                    g2.drawString(">", x - tileSize, y);
+                }
+                g2.drawString(texto, x, y);
+                y += tileSize;
             }
         }
+
+
     // Tela inicial 2 (seleção de personagem)
         else if(getTelaInicialState() == 1) {
             g2.setColor(Color.white);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
-            String texto = "Escolha seu personagem.";
-            int x = coordenadaXParaTextoCentralizado(texto);
-            int y = tileSize*3;
-            g2.drawString(texto, x, y);
+            int y;
+            escreverTexto("Escolha seu personagem.", y = tileSize*3);
 
-            texto = "A Guerreira";
-            x = coordenadaXParaTextoCentralizado(texto);
-            y += tileSize*3;
-            g2.drawString(texto, x, y);
-            if (getNumComando() == 0) {
-                g2.drawString(">", x - tileSize, y);
-            }
+            String[] opcoes = {"A Guerreira", "O Sobrevivente", "O Médico", "A Fora da Lei", "Voltar"};
 
-            texto = "O Sobrevivente";
-            x = coordenadaXParaTextoCentralizado(texto);
-            y += tileSize;
-            g2.drawString(texto, x, y);
-            if (getNumComando() == 1) {
-                g2.drawString(">", x - tileSize, y);
-            }
+            y += tileSize * 3;
+            for (int i = 0; i < opcoes.length; i++) {
+                String texto = opcoes[i];
+                int x = coordenadaXParaTextoCentralizado(texto);
 
-            texto = "O Médico";
-            x = coordenadaXParaTextoCentralizado(texto);
-            y += tileSize;
-            g2.drawString(texto, x, y);
-            if (getNumComando() == 2) {
-                g2.drawString(">", x - tileSize, y);
-            }
-
-            texto = "A Fora da Lei";
-            x = coordenadaXParaTextoCentralizado(texto);
-            y += tileSize;
-            g2.drawString(texto, x, y);
-            if (getNumComando() == 3) {
-                g2.drawString(">", x - tileSize, y);
-            }
-
-            texto = "Voltar";
-            x = coordenadaXParaTextoCentralizado(texto);
-            y += tileSize*2;
-            g2.drawString(texto, x, y);
-            if (getNumComando() == 4) {
-                g2.drawString(">", x - tileSize, y);
+                if (numComando == i) {
+                    g2.drawString(">", x - tileSize, y);
+                }
+                g2.drawString(texto, x, y);
+                y += tileSize;
             }
         }
     }
 
     public void mostrarAbertura() {
+
+        Teclado teclado = new Teclado(painel);
 
         tileSize = painel.getTileSize();
         larguraTela = painel.getLargura();
@@ -189,7 +154,7 @@ public class UI {
         int y = tileSize * 2;
         g2.setColor(Color.white);
 
-        escreverTexto("Você é: ", y += tileSize);
+        escreverTexto("Você é: " + painel.getJogador().getNome(), y += tileSize);
         escreverTexto("Você acorda em um mundo desconhecido e inóspito.", y += tileSize);
         escreverTexto("O chão treme ao andar sobre ele,", y += tileSize);
         escreverTexto("e o céu vasto aparenta ter ânsia em te engolir.", y += tileSize);

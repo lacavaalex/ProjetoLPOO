@@ -36,6 +36,7 @@ public class Painel extends JPanel implements Runnable {
     private final int titleState = 0;
     private final int openingState = 1;
     private final int playState = 3;
+    private final int gameOverState = 4;
     private int playSubState = 0;
     private final int florestaCardState = 101;
     private final int lagoCardState = 102;
@@ -126,7 +127,7 @@ public class Painel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        if (gameState == titleState || gameState == openingState || gameState == playState ||
+        if (gameState == titleState || gameState == openingState || gameState == playState ||  gameState == gameOverState ||
                 gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
             ui.mostrar(g2);
         }
@@ -160,9 +161,16 @@ public class Painel extends JPanel implements Runnable {
     public void setGameState(int gameState) {
         this.gameState = gameState;
         botoes.setVisible(false);
+        botoes.esconderBotaoInicio();
 
         if (gameState == openingState) {
             botoes.setVisible(true);
+        }
+        if (gameState == gameOverState) {
+            botoes.setVisible(true);
+            botoes.mostrarBotaoInicio();
+            botoes.esconderBotaoContinuar();
+            botoes.esconderBotaoVoltar();
         }
 
         // Cards de ambiente
@@ -187,11 +195,16 @@ public class Painel extends JPanel implements Runnable {
             botoes.esconderBotaoContinuar();
         }
     }
+
+
     public int getTitleState() {
         return titleState;
     }
     public int getOpeningState() {
         return openingState;
+    }
+    public int getGameOverState() {
+        return gameOverState;
     }
     public int getPlayState() {
         return playState;
@@ -203,7 +216,7 @@ public class Painel extends JPanel implements Runnable {
         this.playSubState = novoSubState;
 
         if (novoSubState > 0 && novoSubState < 10 || novoSubState == 12 || novoSubState == 31
-        || novoSubState == 32) {
+        || novoSubState == 32 || novoSubState == 34) {
             botoes.mostrarBotaoContinuar();
         } else {
             botoes.esconderBotaoContinuar();
@@ -215,7 +228,7 @@ public class Painel extends JPanel implements Runnable {
         if (novoSubState == 11 || novoSubState == 22 || novoSubState == 1212 || novoSubState == 3131) {
             botoes.mostrarBotaoVoltar();
         }
-        if (novoSubState == 10 || novoSubState == 32 || novoSubState == 1213) {
+        if (novoSubState == 10 || novoSubState == 20 || novoSubState == 32 || novoSubState == 1213) {
             botoes.esconderBotaoVoltar();
         }
     }

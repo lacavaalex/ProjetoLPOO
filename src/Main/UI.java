@@ -46,6 +46,7 @@ public class UI {
         int titleState = painel.getTitleState();
         int openingState = painel.getOpeningState();
         int playState = painel.getPlayState();
+        int gameOverState = painel.getGameOverState();
         int florestaCardState = painel.getFlorestaCardState();
         int lagoCardState = painel.getLagoCardState();
         int montanhaCardState = painel.getMontanhaCardState();
@@ -67,6 +68,11 @@ public class UI {
     // Play state
         if (gameState == playState) {
             mostrarPlayState();
+        }
+
+    // Game over
+        if (gameState == gameOverState) {
+            mostrarGameOverScreen();
         }
 
     // Cards de ambiente
@@ -148,6 +154,29 @@ public class UI {
                 y += tileSize;
             }
         }
+    }
+
+    public void mostrarGameOverScreen() {
+
+        tileSize = painel.getTileSize();
+        larguraTela = painel.getLargura();
+        alturaTela = painel.getAltura();
+
+        g2.setColor(new Color(0, 0, 0));
+        g2.fillRect(0, 0, larguraTela, alturaTela);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));;
+        int y = tileSize * 4;
+        g2.setColor(Color.red);
+
+        escreverTexto("FIM DE JOGO", y += tileSize);
+        escreverTexto("VOCÊ MORREU", y += tileSize);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 10F));;
+        g2.setColor(Color.lightGray);
+        escreverTexto("Em outra vida, talvez, você soubesse qual o sentido de tudo isso...", y += tileSize);
+
+
+        botoes.mostrarBotaoContinuar();
     }
 
     public void mostrarAbertura() {

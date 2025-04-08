@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class Botões extends JPanel {
 
-    JPanel painelBotaoContinuar, painelBotaoVoltar;
-    JButton botaoContinuar, botaoVoltar;
+    JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio;
+    JButton botaoContinuar, botaoVoltar, botaoInicio;
     Font pixelsans_15 = new Font("Pixel Sans Serif", Font.PLAIN, 15);
 
     Painel painel;
@@ -22,6 +22,7 @@ public class Botões extends JPanel {
         setOpaque(false);
         continuar();
         voltar();
+        voltarAoInicio();
     }
     public void configurarComPainel(Painel painel) {
         setBounds(0, 0, painel.getLargura(), painel.getAltura());
@@ -71,6 +72,28 @@ public class Botões extends JPanel {
         painelBotaoVoltar.setVisible(false);
     }
 
+    public void voltarAoInicio() {
+    // Main.Painel de local do botão
+        painelBotaoInicio = new JPanel();
+        painelBotaoInicio.setBounds(120, 600, 300, 50);
+        painelBotaoInicio.setBackground(Color.BLACK);
+        painelBotaoInicio.setLayout(new BorderLayout());
+
+    // Botão
+        botaoInicio = new JButton("Voltar ao início");
+        botaoInicio.setBackground(Color.BLACK);
+        botaoInicio.setForeground(Color.WHITE);
+        botaoInicio.setFont(pixelsans_15);
+
+    // Atribui a ação do action listener ao botao
+        botaoInicio.addActionListener(fB);
+
+        this.add(painelBotaoInicio);
+        painelBotaoInicio.add(botaoInicio, BorderLayout.CENTER);
+
+        painelBotaoInicio.setVisible(false);
+    }
+
 
 // Visibilidade/uso dos botões
     public void mostrarBotaoContinuar() {
@@ -87,11 +110,20 @@ public class Botões extends JPanel {
         painelBotaoVoltar.setVisible(false);
     }
 
+    public void mostrarBotaoInicio() {
+        painelBotaoInicio.setVisible(true);
+    }
+    public void esconderBotaoInicio() {
+        painelBotaoInicio.setVisible(false);
+    }
 
     public JButton getBotaoContinuar() {
         return botaoContinuar;
     }
     public JButton getBotaoVoltar() {
         return botaoVoltar;
+    }
+    public JButton getBotaoInicio() {
+        return botaoInicio;
     }
 }

@@ -9,6 +9,7 @@ public class FunçãoBotão implements ActionListener {
 
     Painel painel;
     Botões botoes;
+    UI ui;
 
     public FunçãoBotão(Painel painel, Botões botoes) {
         this.painel = painel;
@@ -33,6 +34,7 @@ public class FunçãoBotão implements ActionListener {
                     case 31: painel.setGameState(103); break;
                     case 103: painel.setGameState(3131); break;
                     case 32: painel.setPlaySubState(33); break;
+                    case 34: painel.setGameState(4); break;
                     default: System.out.println("Caso default"); break;
                 }
             }
@@ -51,15 +53,24 @@ public class FunçãoBotão implements ActionListener {
                 painel.setPlaySubState(3131);
                 painel.setGameState(painel.getPlayState());
             }
+        }
 
 
-        } else if (fonte == botoes.getBotaoVoltar()) {
+        else if (fonte == botoes.getBotaoVoltar()) {
             if (painel.getPlaySubState() == 1212 || painel.getPlaySubState() == 11) {
                 painel.setPlaySubState(1213);
             }
             else if (painel.getPlaySubState() == 3131) {
                 painel.setPlaySubState(32);
             }
+            else if (painel.getPlaySubState() == 22) {
+                painel.setPlaySubState(20);
+            }
+        }
+
+
+        else if (fonte == botoes.getBotaoInicio()) {
+            painel.setGameState(painel.getTitleState());
         }
 
         System.out.println(gameState);

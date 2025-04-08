@@ -11,12 +11,14 @@ public class Teclado implements KeyListener {
 
     Painel painel;
     Jogador jogador;
+    UI ui;
 
     private String nomeEscolhido1, nomeEscolhido2, nomeEscolhido3, nomeEscolhido4;
 
     public Teclado(Painel painel) {
         this.painel = painel;
         this.jogador = painel.getJogador();
+        this.ui = painel.getUi();
     }
 
     public void keyTyped(KeyEvent e) {
@@ -83,18 +85,22 @@ public class Teclado implements KeyListener {
                     if (numComando == 0) {
                         painel.getJogador().setNome("Irah, a guerreira");
                         painel.setGameState(openingState);
+                        telaInicialState = 0;
                     }
                     if (numComando == 1) {
                         painel.getJogador().setNome("Ben, o Sobrevivente");
                         painel.setGameState(openingState);
+                        telaInicialState = 0;
                     }
                     if (numComando == 2) {
                         painel.getJogador().setNome("Dr. Corvus, o médico");
                         painel.setGameState(openingState);
+                        telaInicialState = 0;
                     }
                     if (numComando == 3) {
                         painel.getJogador().setNome("Liz, a fora da lei");
                         painel.setGameState(openingState);
+                        telaInicialState = 0;
                     }
                     if (numComando == 4) {
                         telaInicialState = 0;
@@ -138,7 +144,7 @@ public class Teclado implements KeyListener {
                         painel.getUi().numComando = 1;
                     }
                 }
-                if (code == KeyEvent.VK_S) {
+                if (code == KeyEvent.VK_S ) {
                     painel.getUi().numComando++;
                     if (painel.getUi().numComando > 1) {
                         painel.getUi().numComando = 0;

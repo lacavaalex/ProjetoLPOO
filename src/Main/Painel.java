@@ -17,7 +17,7 @@ public class Painel extends JPanel implements Runnable {
     private final int escala = 3;
     private int tileSize = originalTileSize * escala;
 
-    private int larguraTela = 900;
+    private int larguraTela = 1300;
     private int alturaTela = 700;
 
 // Definição de FPS
@@ -34,6 +34,7 @@ public class Painel extends JPanel implements Runnable {
 // Game State
     private int gameState;
     private final int titleState = 0;
+    private final int tutorialControles = 1000;
     private final int openingState = 1;
     private final int playState = 3;
     private final int gameOverState = 4;
@@ -127,7 +128,8 @@ public class Painel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        if (gameState == titleState || gameState == openingState || gameState == playState ||  gameState == gameOverState ||
+        if (gameState == titleState || gameState == openingState || gameState == playState ||
+                gameState == gameOverState || gameState == tutorialControles ||
                 gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
             ui.mostrar(g2);
         }
@@ -166,6 +168,12 @@ public class Painel extends JPanel implements Runnable {
         if (gameState == openingState) {
             botoes.setVisible(true);
             botoes.mostrarBotaoContinuar();
+            botoes.esconderBotaoVoltar();
+        }
+        if (gameState == tutorialControles) {
+            botoes.setVisible(true);
+            botoes.mostrarBotaoVoltar();
+            botoes.esconderBotaoContinuar();
         }
         if (gameState == gameOverState) {
             botoes.setVisible(true);
@@ -200,6 +208,9 @@ public class Painel extends JPanel implements Runnable {
 
     public int getTitleState() {
         return titleState;
+    }
+    public int getTutorialControles() {
+        return tutorialControles;
     }
     public int getOpeningState() {
         return openingState;

@@ -5,8 +5,14 @@ import Entidade.*;
 import Ambiente.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+
 
 public class UI {
+
+    BufferedImage titleBackground;
 
     Painel painel;
     Jogador jogador = new Jogador();
@@ -34,6 +40,12 @@ public class UI {
         botoes = new Botões(painel);
         criatura = new Criatura();
         evento = new Evento(painel, this, jogador, criatura);
+
+        try {
+            titleBackground = ImageIO.read(getClass().getResource("/Imagens/fundo_mao_1.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void mostrar(Graphics2D g2) {
@@ -43,6 +55,7 @@ public class UI {
         g2.setColor(Color.white);
 
         int gameState = painel.getGameState();
+        int tutorialControles = painel.getTutorialControles();
         int titleState = painel.getTitleState();
         int openingState = painel.getOpeningState();
         int playState = painel.getPlayState();
@@ -59,24 +72,24 @@ public class UI {
         if (gameState == titleState) {
             mostrarTelaInicial();
         }
-
+    // Tela de controles
+        if (gameState == tutorialControles) {
+            mostrarTutorialControles();
+        }
     // Opening state
         if (gameState == openingState) {
             mostrarAbertura();
         }
-
     // Play state
         if (gameState == playState) {
             mostrarPlayState();
         }
-
     // Game over
         if (gameState == gameOverState) {
             mostrarGameOverScreen();
             painel.resetPlayState();
             jogador.resetVida();
         }
-
     // Cards de ambiente
         if (gameState == florestaCardState) {
             mostrarCardFloresta();
@@ -88,7 +101,6 @@ public class UI {
             mostrarCardMontanha();
         }
     }
-
 
     public void mostrarTelaInicial() {
 
@@ -102,14 +114,13 @@ public class UI {
             alturaTela = painel.getAltura();
 
             // Título
-            g2.setColor(new Color(20, 0, 10));
-            g2.fillRect(0, 0, larguraTela, alturaTela);
+            desenharFundoMao();
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 35F));
             int y = tileSize * 5;
             int x = coordenadaXParaTextoCentralizado("O MUNDO FUNESTO");
 
             //Sombra
-            g2.setColor((Color.darkGray));
+            g2.setColor((Color.black));
             g2.drawString("O MUNDO FUNESTO", x + 5, y + 5);
 
             g2.setColor(Color.white);
@@ -118,7 +129,7 @@ public class UI {
             //MENU
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
-            String[] opcoes = {"NOVO JOGO", "CARREGAR JOGO", "SAIR"};
+            String[] opcoes = {"NOVO JOGO", "CONTROLES", "SAIR"};
 
             y += tileSize * 2;
             for (int i = 0; i < opcoes.length; i++) {
@@ -136,13 +147,14 @@ public class UI {
 
     // Tela inicial 2 (seleção de personagem)
         else if(getTelaInicialState() == 1) {
+            desenharFundoMao();
             g2.setColor(Color.white);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
             int y;
             escreverTexto("Escolha seu personagem.", y = tileSize*3);
 
-            String[] opcoes = {"A Guerreira", "O Sobrevivente", "O Médico", "A Fora da Lei", "Voltar"};
+            String[] opcoes = {"A GUERREIRA", "O SOBREVIVENTE", "O MÉDICO", "A CAÇADORA", "Voltar ao início"};
 
             y += tileSize * 3;
             for (int i = 0; i < opcoes.length; i++) {
@@ -156,6 +168,27 @@ public class UI {
                 y += tileSize;
             }
         }
+    }
+
+    public void mostrarTutorialControles() {
+        tileSize = painel.getTileSize();
+        larguraTela = painel.getLargura();
+        alturaTela = painel.getAltura();
+
+        g2.setColor(new Color(20, 0, 10));
+        g2.fillRect(0, 0, larguraTela, alturaTela);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        int y = tileSize * 4;
+        g2.setColor(Color.white);
+        escreverTexto("CONTROLES", y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));;
+        escreverTexto(" ", y += tileSize);
+        escreverTexto("- A tecla [W] sobe a seleção no painel de opções", y += tileSize);
+        escreverTexto("- A tecla [S] desce a seleção no painel de opções.", y += tileSize);
+        escreverTexto("- Pressione [ENTER] no painel para escolher sua opção.", y += tileSize);
+        escreverTexto("- Clique em botões ([CONTINUAR] / [VOLTAR]) com o cursor do mouse.", y += tileSize);
     }
 
     public void mostrarGameOverScreen() {
@@ -189,7 +222,7 @@ public class UI {
         larguraTela = painel.getLargura();
         alturaTela = painel.getAltura();
 
-        g2.setColor(new Color(0, 0, 0));
+        g2.setColor(new Color(20, 0, 10));
         g2.fillRect(0, 0, larguraTela, alturaTela);
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));;
@@ -437,7 +470,7 @@ public class UI {
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
 
-        int y = tileSize * 4;
+        int y = tileSize * 3;
         g2.setColor(Color.white);
         escreverTexto(ambienteFloresta.getNome(), y += tileSize);
 
@@ -467,7 +500,7 @@ public class UI {
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
 
-        int y = tileSize * 4;
+        int y = tileSize * 3;
         g2.setColor(Color.white);
         escreverTexto(ambienteLago.getNome(), y += tileSize);
 
@@ -497,7 +530,7 @@ public class UI {
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
 
-        int y = tileSize * 4;
+        int y = tileSize * 3;
         g2.setColor(Color.white);
         escreverTexto(ambienteMontanha.getNome(), y += tileSize);
 
@@ -530,6 +563,10 @@ public class UI {
         int x = coordenadaXParaTextoCentralizado(texto);
         g2.drawString(texto, x, y);
         return texto;
+    }
+
+    public void desenharFundoMao() {
+        g2.drawImage(titleBackground, 0, 0, larguraTela, alturaTela, null);
     }
 
 // Getters e setters

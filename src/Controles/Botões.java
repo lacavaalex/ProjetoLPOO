@@ -31,7 +31,7 @@ public class Botões extends JPanel {
     public void continuar() {
     // Main.Painel de local do botão continuar
         painelBotaoContinuar = new JPanel();
-        painelBotaoContinuar.setBounds(620, 600, 200, 50);
+        painelBotaoContinuar.setBounds(1020, 600, 200, 50);
         painelBotaoContinuar.setBackground(Color.BLACK);
         painelBotaoContinuar.setLayout(new BorderLayout());
 

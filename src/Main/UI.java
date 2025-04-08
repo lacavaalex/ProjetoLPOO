@@ -73,6 +73,8 @@ public class UI {
     // Game over
         if (gameState == gameOverState) {
             mostrarGameOverScreen();
+            painel.resetPlayState();
+            jogador.resetVida();
         }
 
     // Cards de ambiente
@@ -317,7 +319,7 @@ public class UI {
             case 1213:
                 escreverTexto("Você retorna a atenção à fogueira.", y += tileSize);
 
-                String[] opcoes1213 = {"Beber a água", "Voltar ao lago"};
+                String[] opcoes1213 = {"Beber a água", "Ir ao lago"};
 
                 y += tileSize;
                 for (int i = 0; i < opcoes1213.length; i++) {

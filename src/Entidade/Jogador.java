@@ -10,7 +10,8 @@ public class Jogador {
 
     private String nome;
     private String localizacao;
-    private int vida = 10;
+    private int vidaMax = 10;
+    private int vida;
     private boolean sede = false;
     private int fome, energia;
     private boolean sanidade;
@@ -50,6 +51,18 @@ public class Jogador {
     public void setVida(int vida) {
         this.vida = vida;
     }
+    public void resetVida() {
+        setVida(vidaMax);
+    }
+    public int getVidaMax() {
+        return vidaMax;
+    }
+    public void setVidaMax() {
+        this.vidaMax = vidaMax;
+    }
+
+
+
     public boolean getSede() {
         return sede;
     }
@@ -57,3 +70,4 @@ public class Jogador {
         this.sede = sede;
     }
 }
+

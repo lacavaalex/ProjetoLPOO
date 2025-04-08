@@ -28,6 +28,10 @@ public class Evento {
         this.criatura = criatura;
     }
 
+    public void consumoPodre() {
+        //A editar
+    }
+
     // Evento de encontro surpresa com a víbora
     public void viboraRubroFloresta(Graphics2D g2) {
 
@@ -59,7 +63,6 @@ public class Evento {
 
         g2.setColor(Color.red);
         ui.escreverTexto("*GROAAAAAR*", y);
-        //jogador.setVida(jogador.getVida() - 1);
         g2.setColor(Color.white);
         ui.escreverTexto("O RUGIDO ESTREMECE TODA A FLORESTA. VOCÊ PULA EM DESESPERO.", y += tileSize);
         ui.escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
@@ -71,7 +74,12 @@ public class Evento {
         ui.escreverTexto("O que fazer?", y += tileSize);
 
         opcoesCombate(g2, y);
+        if (painel.getPlaySubState() == 34) {
+            jogador.setVida(jogador.getVida() - jogador.getVidaMax());
+        }
     }
+
+
 
 // Opcoes no combate
     public void opcoesCombate(Graphics2D g2, int y) {

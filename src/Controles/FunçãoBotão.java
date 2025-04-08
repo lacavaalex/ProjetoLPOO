@@ -66,6 +66,9 @@ public class FunçãoBotão implements ActionListener {
             else if (painel.getPlaySubState() == 22) {
                 painel.setPlaySubState(20);
             }
+            else if (painel.getGameState() == painel.getTutorialControles()) {
+                painel.setGameState(painel.getTitleState());
+            }
         }
 
 

@@ -56,12 +56,15 @@ public class Teclado implements KeyListener {
                     }
                 }
                 if (code == KeyEvent.VK_ENTER) {
+                    // Novo jogo
                     if (numComando == 0) {
                         telaInicialState = 1;
                     }
+                    // Controles
                     if (numComando == 1) {
-
+                        painel.setGameState(painel.getTutorialControles());
                     }
+                    // Sair
                     if (numComando == 2) {
                         System.exit(0);
                     }
@@ -83,22 +86,22 @@ public class Teclado implements KeyListener {
                 }
                 if (code == KeyEvent.VK_ENTER) {
                     if (numComando == 0) {
-                        painel.getJogador().setNome("Irah, a guerreira");
+                        painel.getJogador().setNome("Coleen, a guerreira");
                         painel.setGameState(openingState);
                         telaInicialState = 0;
                     }
                     if (numComando == 1) {
-                        painel.getJogador().setNome("Ben, o Sobrevivente");
+                        painel.getJogador().setNome("Ben, o sobrevivente");
                         painel.setGameState(openingState);
                         telaInicialState = 0;
                     }
                     if (numComando == 2) {
-                        painel.getJogador().setNome("Dr. Corvus, o médico");
+                        painel.getJogador().setNome("Dr. Murphy, o médico");
                         painel.setGameState(openingState);
                         telaInicialState = 0;
                     }
                     if (numComando == 3) {
-                        painel.getJogador().setNome("Liz, a fora da lei");
+                        painel.getJogador().setNome("Alice, a caçadora");
                         painel.setGameState(openingState);
                         telaInicialState = 0;
                     }

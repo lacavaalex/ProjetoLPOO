@@ -13,8 +13,6 @@ public class Teclado implements KeyListener {
     Jogador jogador;
     UI ui;
 
-    private String nomeEscolhido1, nomeEscolhido2, nomeEscolhido3, nomeEscolhido4;
-
     public Teclado(Painel painel) {
         this.painel = painel;
         this.jogador = painel.getJogador();

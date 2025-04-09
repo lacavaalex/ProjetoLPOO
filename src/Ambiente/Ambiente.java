@@ -7,9 +7,6 @@ import java.awt.*;
 
 public class Ambiente extends JPanel {
 
-    Painel painel;
-    Font pixelsans_10;
-
     private String nome, descricao, dificuldade, recursos, frequenciaEventos, clima;
 
     public void ambienteFloresta() {

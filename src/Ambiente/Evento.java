@@ -13,7 +13,6 @@ public class Evento {
     UI ui;
     Jogador jogador;
     Criatura criatura;
-    Graphics2D g2;
 
     private int tipo;
     private int probabilidade;

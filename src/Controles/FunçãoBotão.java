@@ -9,7 +9,6 @@ public class FunçãoBotão implements ActionListener {
 
     Painel painel;
     Botões botoes;
-    UI ui;
 
     public FunçãoBotão(Painel painel, Botões botoes) {
         this.painel = painel;
@@ -76,6 +75,6 @@ public class FunçãoBotão implements ActionListener {
             painel.setGameState(painel.getTitleState());
         }
 
-        System.out.println(gameState);
+        //System.out.println(gameState);
     }
 }

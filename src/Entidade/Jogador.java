@@ -6,8 +6,6 @@ import java.util.HashMap;
 
 public class Jogador {
 
-    //Rastreador, mecanico, sobrevivent
-
     private String nome;
     private String localizacao;
     private int vidaMax = 10;

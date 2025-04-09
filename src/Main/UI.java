@@ -137,7 +137,10 @@ public class UI {
                 x = coordenadaXParaTextoCentralizado(texto);
 
                 if (numComando == i) {
-                    g2.drawString(">", x - tileSize, y);
+                    g2.setColor(new Color(120, 0, 40));
+                    g2.drawString("->", x + 3 - tileSize, y + 3);
+                    g2.setColor((Color.white));
+                    g2.drawString("->", x - tileSize, y);
                 }
                 g2.drawString(texto, x, y);
                 y += tileSize;
@@ -465,7 +468,7 @@ public class UI {
         larguraTela = painel.getLargura();
         alturaTela = painel.getAltura();
 
-        g2.setColor(new Color(5, 10, 5));
+        g2.setColor(new Color(5, 20, 5));
         g2.fillRect(0, 0, larguraTela, alturaTela);
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
@@ -495,7 +498,7 @@ public class UI {
         larguraTela = painel.getLargura();
         alturaTela = painel.getAltura();
 
-        g2.setColor(new Color(0, 20, 70));
+        g2.setColor(new Color(115, 155, 255));
         g2.fillRect(0, 0, larguraTela, alturaTela);
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
@@ -525,7 +528,7 @@ public class UI {
         larguraTela = painel.getLargura();
         alturaTela = painel.getAltura();
 
-        g2.setColor(new Color(160, 190, 255));
+        g2.setColor(new Color(180, 180, 180));
         g2.fillRect(0, 0, larguraTela, alturaTela);
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));

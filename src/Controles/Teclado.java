@@ -105,6 +105,7 @@ public class Teclado implements KeyListener {
                     }
                     if (numComando == 4) {
                         telaInicialState = 0;
+                        numComando = 0;
                     }
                 }
             }
@@ -138,7 +139,7 @@ public class Teclado implements KeyListener {
                 }
             }
             if (subState == 10 || subState == 20 || subState == 30
-                || subState == 33) {
+                    || subState == 33) {
                 if (code == KeyEvent.VK_W) {
                     painel.getUi().numComando--;
                     if (painel.getUi().numComando < 0) {

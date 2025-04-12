@@ -1,4 +1,4 @@
-package Ambiente;
+package Itens;
 
 public class Item {
     private String nome;

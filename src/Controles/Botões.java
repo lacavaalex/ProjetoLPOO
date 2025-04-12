@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class Botões extends JPanel {
 
-    JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio;
-    JButton botaoContinuar, botaoVoltar, botaoInicio;
+    JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio, painelMochila, painelBotaoSair;
+    JButton botaoContinuar, botaoVoltar, botaoInicio, botaoMochila, botaoSair;
     Font pixelsans_15 = new Font("Pixel Sans Serif", Font.PLAIN, 15);
 
     Painel painel;
@@ -22,6 +22,8 @@ public class Botões extends JPanel {
         setOpaque(false);
         continuar();
         voltar();
+        botaoInventario();
+        sair();
         voltarAoInicio();
     }
     public void configurarComPainel(Painel painel) {
@@ -53,7 +55,7 @@ public class Botões extends JPanel {
     public void voltar() {
     // Main.Painel de local do botão voltar
         painelBotaoVoltar = new JPanel();
-        painelBotaoVoltar.setBounds(120, 600, 200, 50);
+        painelBotaoVoltar.setBounds(100, 600, 200, 50);
         painelBotaoVoltar.setBackground(Color.BLACK);
         painelBotaoVoltar.setLayout(new BorderLayout());
 
@@ -72,10 +74,50 @@ public class Botões extends JPanel {
         painelBotaoVoltar.setVisible(false);
     }
 
+    public void botaoInventario() {
+        painelMochila = new JPanel();
+        painelMochila.setBounds(painel.getLargura()/2 - 140/2, 600, 140, 50);
+        painelMochila.setBackground(Color.BLACK);
+        painelMochila.setLayout(new BorderLayout());
+
+        botaoMochila = new JButton("Mochila");
+        botaoMochila.setBackground(Color.BLACK);
+        botaoMochila.setForeground(Color.WHITE);
+        botaoMochila.setFont(pixelsans_15);
+
+    // Atribui a ação do action listener ao botao
+        botaoMochila.addActionListener(fB);
+
+        this.add(painelMochila);
+        painelMochila.add(botaoMochila, BorderLayout.CENTER);
+
+        painelMochila.setVisible(false);
+    }
+
+    public void sair() {
+        painelBotaoSair = new JPanel();
+        painelBotaoSair.setBounds(100, 600, 150, 50);
+        painelBotaoSair.setBackground(Color.BLACK);
+        painelBotaoSair.setLayout(new BorderLayout());
+
+        botaoSair = new JButton("Sair");
+        botaoSair.setBackground(Color.BLACK);
+        botaoSair.setForeground(Color.WHITE);
+        botaoSair.setFont(pixelsans_15);
+
+        botaoSair.addActionListener(fB);
+
+        this.add(painelBotaoSair);
+        painelBotaoSair.add(botaoSair, BorderLayout.CENTER);
+
+        painelBotaoSair.setVisible(false);
+    }
+
+
     public void voltarAoInicio() {
     // Main.Painel de local do botão
         painelBotaoInicio = new JPanel();
-        painelBotaoInicio.setBounds(120, 600, 300, 50);
+        painelBotaoInicio.setBounds(100, 600, 300, 50);
         painelBotaoInicio.setBackground(Color.BLACK);
         painelBotaoInicio.setLayout(new BorderLayout());
 
@@ -96,34 +138,25 @@ public class Botões extends JPanel {
 
 
 // Visibilidade/uso dos botões
-    public void mostrarBotaoContinuar() {
-        painelBotaoContinuar.setVisible(true);
-    }
-    public void esconderBotaoContinuar() {
-        painelBotaoContinuar.setVisible(false);
-    }
+    public void mostrarBotaoContinuar() { painelBotaoContinuar.setVisible(true); }
+    public void esconderBotaoContinuar() { painelBotaoContinuar.setVisible(false); }
 
-    public void mostrarBotaoVoltar() {
-        painelBotaoVoltar.setVisible(true);
-    }
-    public void esconderBotaoVoltar() {
-        painelBotaoVoltar.setVisible(false);
-    }
+    public void mostrarBotaoVoltar() { painelBotaoVoltar.setVisible(true); }
+    public void esconderBotaoVoltar() { painelBotaoVoltar.setVisible(false); }
 
-    public void mostrarBotaoInicio() {
-        painelBotaoInicio.setVisible(true);
-    }
-    public void esconderBotaoInicio() {
-        painelBotaoInicio.setVisible(false);
-    }
+    public void mostrarBotaoMochila() { painelMochila.setVisible(true); }
+    public void esconderBotaoMochila() { painelMochila.setVisible(false); }
 
-    public JButton getBotaoContinuar() {
-        return botaoContinuar;
-    }
-    public JButton getBotaoVoltar() {
-        return botaoVoltar;
-    }
-    public JButton getBotaoInicio() {
-        return botaoInicio;
-    }
+    public void mostrarBotaoSair() { painelBotaoSair.setVisible(true); }
+    public void esconderBotaoSair() { painelBotaoSair.setVisible(false); }
+
+    public void mostrarBotaoInicio() { painelBotaoInicio.setVisible(true); }
+    public void esconderBotaoInicio() { painelBotaoInicio.setVisible(false); }
+
+    public JButton getBotaoContinuar() { return botaoContinuar; }
+    public JButton getBotaoVoltar() { return botaoVoltar; }
+    public JButton getBotaoInicio() { return botaoInicio; }
+    public JButton getBotaoMochila() { return botaoMochila; }
+    public JButton getBotaoSair() { return botaoSair; }
+
 }

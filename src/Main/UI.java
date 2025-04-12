@@ -64,33 +64,33 @@ public class UI {
         int lagoCardState = painel.getLagoCardState();
         int montanhaCardState = painel.getMontanhaCardState();
 
-    // Informações do jogador
+        // Informações do jogador
         if (gameState != titleState && gameState!= openingState && gameState!=florestaCardState) {
         }
 
-    // Title state
+        // Title state
         if (gameState == titleState) {
             mostrarTelaInicial();
         }
-    // Tela de controles
+        // Tela de controles
         if (gameState == tutorialControles) {
             mostrarTutorialControles();
         }
-    // Opening state
+        // Opening state
         if (gameState == openingState) {
             mostrarAbertura();
         }
-    // Play state
+        // Play state
         if (gameState == playState) {
             mostrarPlayState();
         }
-    // Game over
+        // Game over
         if (gameState == gameOverState) {
             mostrarGameOverScreen();
             painel.resetPlayState();
             jogador.resetVida();
         }
-    // Cards de ambiente
+        // Cards de ambiente
         if (gameState == florestaCardState) {
             mostrarCardFloresta();
         }
@@ -102,11 +102,16 @@ public class UI {
         }
     }
 
+    public void mostrarInventario() {
+        painel.getInvent().abrir();
+        painel.repaint();
+    }
+
     public void mostrarTelaInicial() {
 
         botoes.esconderBotaoContinuar();
 
-    // Tela inicial 1 (entrada)
+        // Tela inicial 1 (entrada)
         if (getTelaInicialState() == 0) {
 
             tileSize = painel.getTileSize();
@@ -148,7 +153,7 @@ public class UI {
         }
 
 
-    // Tela inicial 2 (seleção de personagem)
+        // Tela inicial 2 (seleção de personagem)
         else if(getTelaInicialState() == 1) {
             desenharFundoMao();
             g2.setColor(Color.white);
@@ -288,15 +293,15 @@ public class UI {
                 escreverTexto("Você deixa a luz te guiar...", y += tileSize);
                 escreverTexto(". . .", y += tileSize);
                 escreverTexto("Encontrou no caminho: 1 pedra.", y += tileSize);
-                painel.getJogador().adicionarItem("Pedra", 1);
+                painel.getInvent().adicionarItem("Pedra", 1);
                 break;
 
             case 2:
                 escreverTexto("Você busca por recursos.", y += tileSize);
                 escreverTexto("Encontrou: 2 madeiras e 1 pedra.", y += tileSize);
 
-                painel.getJogador().adicionarItem("Madeira", 2);
-                painel.getJogador().adicionarItem("Pedra", 1);
+                painel.getInvent().adicionarItem("Madeira", 2);
+                painel.getInvent().adicionarItem("Pedra", 1);
                 break;
 
             case 3:
@@ -446,7 +451,7 @@ public class UI {
 
             case 33:
                 // Deixei de lado a questão de probabilidade por enquanto, mas será implementada aqui
-                    evento.ursoPai(g2);
+                evento.ursoPai(g2);
                 break;
             case 34:
                 escreverTexto("Você tenta--", y += tileSize);
@@ -572,7 +577,8 @@ public class UI {
         g2.drawImage(titleBackground, 0, 0, larguraTela, alturaTela, null);
     }
 
-// Getters e setters
+
+    // Getters e setters
     public int getTelaInicialState() {
         return telaInicialState;
     }
@@ -585,9 +591,5 @@ public class UI {
     }
     public void setNumComando(int numComando) {
         this.numComando = numComando;
-    }
-
-    public Botões getBotoes() {
-        return botoes;
     }
 }

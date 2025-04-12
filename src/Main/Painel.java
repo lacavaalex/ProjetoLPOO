@@ -3,6 +3,7 @@ package Main;
 import Controles.*;
 import Entidade.*;
 import Ambiente.*;
+import Itens.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,7 @@ public class Painel extends JPanel implements Runnable {
     private Teclado teclado = new Teclado(this);
     private Botões botoes = new Botões(this);
     private Ambiente ambiente = new Ambiente();
+    private Inventario invent = new Inventario(this, botoes);
 
 
 // Game State
@@ -133,6 +135,9 @@ public class Painel extends JPanel implements Runnable {
                 gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
             ui.mostrar(g2);
         }
+        if (!invent.isFechado()) {
+            invent.telaDeInventario(g2, ui);
+        }
     }
 
 
@@ -140,20 +145,11 @@ public class Painel extends JPanel implements Runnable {
     public int getTileSize() {
         return tileSize;
     }
-    public void setTileSize(int tileSize) {
-        this.tileSize = tileSize;
-    }
     public int getLargura() {
         return larguraTela;
     }
-    public void setLargura(int largura) {
-        this.larguraTela = largura;
-    }
     public int getAltura() {
         return alturaTela;
-    }
-    public void setAltura(int altura) {
-        this.alturaTela = altura;
     }
 
 
@@ -162,24 +158,25 @@ public class Painel extends JPanel implements Runnable {
     }
     public void setGameState(int gameState) {
         this.gameState = gameState;
+
         botoes.setVisible(false);
         botoes.esconderBotaoInicio();
+        botoes.esconderBotaoMochila();
+        botoes.esconderBotaoVoltar();
+        botoes.esconderBotaoContinuar();
 
+        // No-play states
         if (gameState == openingState) {
             botoes.setVisible(true);
             botoes.mostrarBotaoContinuar();
-            botoes.esconderBotaoVoltar();
         }
         if (gameState == tutorialControles) {
             botoes.setVisible(true);
             botoes.mostrarBotaoVoltar();
-            botoes.esconderBotaoContinuar();
         }
         if (gameState == gameOverState) {
             botoes.setVisible(true);
             botoes.mostrarBotaoInicio();
-            botoes.esconderBotaoContinuar();
-            botoes.esconderBotaoVoltar();
         }
 
         // Cards de ambiente
@@ -199,9 +196,10 @@ public class Painel extends JPanel implements Runnable {
             botoes.mostrarBotaoContinuar();
         }
 
+        // Play state
         if (gameState == playState) {
             botoes.setVisible(true);
-            botoes.esconderBotaoContinuar();
+            botoes.mostrarBotaoMochila();
         }
     }
 
@@ -224,6 +222,7 @@ public class Painel extends JPanel implements Runnable {
     public int getPlaySubState() {
         return playSubState;
     }
+
     public void setPlaySubState(int novoSubState) {
         this.playSubState = novoSubState;
 
@@ -238,6 +237,7 @@ public class Painel extends JPanel implements Runnable {
         }
 
         if (novoSubState == 11 || novoSubState == 22 || novoSubState == 1212 || novoSubState == 3131) {
+            botoes.esconderBotaoMochila();
             botoes.mostrarBotaoVoltar();
         }
         if (novoSubState == 10 || novoSubState == 20 || novoSubState == 32 || novoSubState == 1213) {
@@ -255,6 +255,7 @@ public class Painel extends JPanel implements Runnable {
     public Jogador getJogador() {
         return jogador;
     }
+    public Inventario getInvent() { return invent; }
 
     public Ambiente getAmbiente() {
         return ambiente;

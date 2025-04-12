@@ -56,25 +56,31 @@ public class FunçãoBotão implements ActionListener {
 
 
         else if (fonte == botoes.getBotaoVoltar()) {
-            if (painel.getPlaySubState() == 1212 || painel.getPlaySubState() == 11) {
-                painel.setPlaySubState(1213);
-            }
-            else if (painel.getPlaySubState() == 3131) {
-                painel.setPlaySubState(32);
-            }
-            else if (painel.getPlaySubState() == 22) {
-                painel.setPlaySubState(20);
-            }
-            else if (painel.getGameState() == painel.getTutorialControles()) {
+            if (painel.getGameState() == painel.getTutorialControles()) {
                 painel.setGameState(painel.getTitleState());
+            } else {
+                botoes.mostrarBotaoMochila();
+
+                if (painel.getPlaySubState() == 1212 || painel.getPlaySubState() == 11) {
+                    painel.setPlaySubState(1213);
+                } else if (painel.getPlaySubState() == 3131) {
+                    painel.setPlaySubState(32);
+                } else if (painel.getPlaySubState() == 22) {
+                    painel.setPlaySubState(20);
+                }
             }
         }
 
-
-        else if (fonte == botoes.getBotaoInicio()) {
-            painel.setGameState(painel.getTitleState());
+        else if (fonte == botoes.getBotaoMochila()) {
+            painel.getUi().mostrarInventario();
+            botoes.esconderBotaoMochila();
+        }
+        else if (fonte == botoes.getBotaoSair()) {
+            painel.getInvent().fechar();
+            botoes.mostrarBotaoMochila();
         }
 
-        //System.out.println(gameState);
+        else if (fonte == botoes.getBotaoInicio()) { painel.setGameState(painel.getTitleState()); }
+
     }
 }

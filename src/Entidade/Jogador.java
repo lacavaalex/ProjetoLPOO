@@ -1,8 +1,6 @@
 package Entidade;
 
-import Ambiente.*;
-
-import java.util.HashMap;
+import Itens.Item;
 
 public class Jogador {
 
@@ -13,19 +11,7 @@ public class Jogador {
     private boolean sede = false;
     private int fome, energia;
     private boolean sanidade;
-    private HashMap<String, Item> inventario = new HashMap<>();
 
-    public void adicionarItem(String nome, int quantidade) {
-        if (this.inventario.containsKey(nome)) {
-            inventario.get(nome).setQuantidade(quantidade);
-        } else {
-            inventario.put(nome, new Item(nome, quantidade));
-        }
-    }
-
-    public HashMap<String, Item> getInventario() {
-        return inventario;
-    }
 
 // Getters e setters
     public String getNome() {
@@ -58,8 +44,6 @@ public class Jogador {
     public void setVidaMax() {
         this.vidaMax = vidaMax;
     }
-
-
 
     public boolean getSede() {
         return sede;

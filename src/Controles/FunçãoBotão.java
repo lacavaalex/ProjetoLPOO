@@ -22,6 +22,8 @@ public class FunçãoBotão implements ActionListener {
 
         if (fonte == botoes.getBotaoContinuar()) {
             if (gameState == painel.getPlayState()) {
+                botoes.mostrarBotaoMochila();
+
                 int subState = painel.getPlaySubState();
 
                 switch (subState) {

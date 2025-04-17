@@ -239,9 +239,8 @@ public class Painel extends JPanel implements Runnable {
 
         if (novoSubState > 0 && novoSubState < 10 || novoSubState == 12 || novoSubState == 31
         || novoSubState == 32 || novoSubState == 34) {
+            botoes.esconderBotaoMochila();
             botoes.mostrarBotaoContinuar();
-        } else {
-            botoes.esconderBotaoContinuar();
         }
         if (novoSubState == 20) {
             botoes.esconderBotaoContinuar();

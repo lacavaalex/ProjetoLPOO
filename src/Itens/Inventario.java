@@ -15,6 +15,7 @@ public class Inventario {
     Graphics2D g2;
 
     private boolean fechado = true;
+    
     private HashMap<String, Item> invent = new HashMap<>();
 
     public Inventario(Painel painel, Botões botoes) {
@@ -30,8 +31,14 @@ public class Inventario {
         }
     }
 
-    public void removerItem(String nome, int quantidade) {
-        invent.get(nome).setQuantidade(quantidade);
+    public void removerItem(String nome, int quantidadeParaRemover) {
+        int total = invent.get(nome).getQuantidade() - quantidadeParaRemover;
+        invent.get(nome).setQuantidade(total);
+
+        if (invent.get(nome).getQuantidade() == 0) {
+            invent.remove(nome);
+        }
+
     }
 
     public void telaDeInventario(Graphics2D g2, UI ui) {
@@ -48,11 +55,19 @@ public class Inventario {
             g2.fillRect(0, 0, larguraTela, alturaTela);
 
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-            int y = tileSize * 2;
             g2.setColor(Color.white);
-            ui.escreverTexto("Inventario", y);
+            ui.escreverTexto("Inventario", tileSize * 2);
 
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));;
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));
+            int y = tileSize * 3;
+
+            // Lista de itens
+            for (String nome : invent.keySet()) {
+                Item item = invent.get(nome);
+                String linha = nome + " x" + item.getQuantidade();
+                g2.drawString(linha, (painel.getLargura() - (painel.getLargura() - tileSize)), y);
+                y += tileSize;
+            }
         }
     }
 

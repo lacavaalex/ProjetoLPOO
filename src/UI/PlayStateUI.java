@@ -6,6 +6,9 @@ import java.awt.*;
 
 public class PlayStateUI extends UI {
 
+    private boolean recursosColetados = false;
+    private boolean recursosGastos = false;
+
     public PlayStateUI(Painel painel, Jogador jogador) {
         super(painel, jogador);
     }
@@ -26,6 +29,7 @@ public class PlayStateUI extends UI {
         int y = tileSize;
 
         switch (subState) {
+            // PONTO INICIAL
             case 0:
                 escreverTexto("A luz misteriosa brilha à distância, floresta adentro.", y += tileSize);
                 escreverTexto("Espalhadas pelo chão, há coisas que parecem ser úteis.", y += tileSize);
@@ -49,28 +53,12 @@ public class PlayStateUI extends UI {
                     y += tileSize;
                 } break;
 
+            // BRANCH DA LUZ
             case 1:
                 escreverTexto("Você deixa a luz te guiar...", y += tileSize);
                 escreverTexto(". . .", y += tileSize);
                 escreverTexto("Encontrou no caminho: 1 pedra.", y += tileSize);
                 painel.getInvent().adicionarItem("Pedra", 1);
-                break;
-
-            case 2:
-                escreverTexto("Você busca por recursos.", y += tileSize);
-                escreverTexto("Encontrou: 2 madeiras e 1 pedra.", y += tileSize);
-
-                painel.getInvent().adicionarItem("Madeira", 2);
-                painel.getInvent().adicionarItem("Pedra", 1);
-                break;
-
-            case 3:
-                escreverTexto("Você se direciona até a montanha", y += tileSize);
-                escreverTexto(". . .", y += tileSize);
-                escreverTexto("Algo não parce certo.", y += tileSize);
-                escreverTexto("Um movimento suspeito te acompanha.", y += tileSize);
-                escreverTexto("Nada se revela, mas você não está sozinho.", y += tileSize);
-                escreverTexto(". . .", y += tileSize);
                 break;
 
             case 10:
@@ -134,6 +122,20 @@ public class PlayStateUI extends UI {
                     y += tileSize;
                 } break;
 
+
+            // BRANCH DA VÍBORA
+            case 2:
+                escreverTexto("Você busca por recursos.", y += tileSize);
+                escreverTexto("Encontrou: 7 madeiras, 2 pedras, 1 galho pontiagudo.", y += tileSize);
+
+                if (!recursosColetados) {
+                    painel.getInvent().adicionarItem("Madeira", 7);
+                    painel.getInvent().adicionarItem("Pedra", 2);
+                    painel.getInvent().adicionarItem("Galho pontiagudo", 1);
+                    recursosColetados = true;
+                }
+                break;
+
             case 20:
                 escreverTexto("Aquele chiado... parece estar tão perto...", tileSize * 2);
                 evento.viboraRubroFloresta(g2);
@@ -142,7 +144,7 @@ public class PlayStateUI extends UI {
 
             case 21:
                 g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F)); escreverTexto("COMBATE", y += tileSize);
-                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F)); escreverTexto("Você a atacou!", y += tileSize);
+                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F)); escreverTexto("Você a atacou com o GALHO PONTIAGUDO!", y += tileSize);
                 g2.setColor(Color.red); escreverTexto("-1HP", y += tileSize);
                 g2.setColor(Color.red); escreverTexto("Víbora-Rubro: 2HP", y += tileSize);
                 g2.setColor(Color.white); escreverTexto("-Após notar sua investida, ela foge! HA!", y += tileSize);
@@ -150,6 +152,13 @@ public class PlayStateUI extends UI {
                 escreverTexto("FIM DE COMBATE.", y += tileSize);
                 escreverTexto("", y += tileSize);
                 escreverTexto("DESFECHO: Você está levemente ENVENENADO.", y += tileSize);
+                escreverTexto("e seu galho se quebrou na batalha.", y += tileSize);
+
+                if (!recursosGastos) {
+                    painel.getInvent().removerItem("Galho pontiagudo", 1);
+                    recursosGastos = true;
+                }
+
                 break;
 
             case 22:
@@ -162,6 +171,16 @@ public class PlayStateUI extends UI {
                 botoes.mostrarBotaoVoltar();
                 break;
 
+
+            // BRANCH DA MONTANHA
+            case 3:
+                escreverTexto("Você se direciona até a montanha", y += tileSize);
+                escreverTexto(". . .", y += tileSize);
+                escreverTexto("Algo não parce certo.", y += tileSize);
+                escreverTexto("Um movimento suspeito te acompanha.", y += tileSize);
+                escreverTexto("Nada se revela, mas você não está sozinho.", y += tileSize);
+                escreverTexto(". . .", y += tileSize);
+                break;
 
             case 30:
                 escreverTexto("Atingido o pé da montanha, você enxerga um trecho de subida.", y += tileSize);

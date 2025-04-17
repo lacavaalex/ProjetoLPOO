@@ -4,6 +4,7 @@ import Controles.*;
 import Entidade.*;
 import Ambiente.*;
 import Itens.*;
+import UI.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,10 +28,14 @@ public class Painel extends JPanel implements Runnable {
 // Chamada de classe
     private Jogador jogador = new Jogador();
     private UI ui = new UI(this, jogador);
+
     private Teclado teclado = new Teclado(this);
     private Botões botoes = new Botões(this);
-    private Ambiente ambiente = new Ambiente();
     private Inventario invent = new Inventario(this, botoes);
+
+    private Ambiente ambiente = new Ambiente();
+    private PlayStateUI playStateUI;
+    private CardsAmbienteUI cardsAmbienteUI;
 
 
 // Game State
@@ -59,8 +64,7 @@ public class Painel extends JPanel implements Runnable {
 
     // Dica recebida: Buffering mais preciso
         this.setDoubleBuffered(true);
-
-    // Traz os controles e "foca" a classe em receber o input
+    // Traz os controles e "foca" a classe em receber o input de teclado devido à presença de botões
         this.addKeyListener(teclado);
         this.setFocusable(true);
 
@@ -69,7 +73,12 @@ public class Painel extends JPanel implements Runnable {
         ambiente.setVisible(false);
         this.add(ambiente);
 
+    // Adição das outras UIs
+        playStateUI = new PlayStateUI(this, jogador);
+        ui.setPlayStateUI(playStateUI);
 
+        cardsAmbienteUI = new CardsAmbienteUI(this, jogador);
+        ui.setCardsAmbienteUI(cardsAmbienteUI);
 
     }
 
@@ -138,6 +147,8 @@ public class Painel extends JPanel implements Runnable {
         if (!invent.isFechado()) {
             invent.telaDeInventario(g2, ui);
         }
+
+        this.requestFocusInWindow();
     }
 
 

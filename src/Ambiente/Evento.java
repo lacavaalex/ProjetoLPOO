@@ -3,6 +3,7 @@ package Ambiente;
 import Entidade.Criatura;
 import Entidade.Jogador;
 import Main.*;
+import UI.UI;
 
 import java.awt.*;
 import java.util.Random;

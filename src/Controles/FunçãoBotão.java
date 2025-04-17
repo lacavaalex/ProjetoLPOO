@@ -45,13 +45,14 @@ public class FunçãoBotão implements ActionListener {
                 painel.setGameState(painel.getPlayState());
             }
             else if (gameState == painel.getLagoCardState()) {
-                painel.setPlaySubState(1212);
                 painel.setGameState(painel.getPlayState());
+                painel.setPlaySubState(1212);
             }
             else if (gameState == painel.getMontanhaCardState()) {
-                painel.setPlaySubState(3131);
                 painel.setGameState(painel.getPlayState());
+                painel.setPlaySubState(3131);
             }
+            System.out.println(painel.getPlaySubState());
         }
 
 

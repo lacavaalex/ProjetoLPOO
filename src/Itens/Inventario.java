@@ -2,6 +2,7 @@ package Itens;
 
 import Main.*;
 import Controles.*;
+import UI.UI;
 
 import java.awt.*;
 import java.util.HashMap;

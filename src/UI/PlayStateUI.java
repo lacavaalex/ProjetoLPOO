@@ -1,6 +1,7 @@
 package UI;
 
 import Main.Painel;
+import Ambiente.*;
 import Entidade.Jogador;
 import java.awt.*;
 
@@ -138,7 +139,8 @@ public class PlayStateUI extends UI {
 
             case 20:
                 escreverTexto("Aquele chiado... parece estar tão perto...", tileSize * 2);
-                evento.viboraRubroFloresta(g2);
+                Evento eventoVibora = new EventoCriatura(painel, this, jogador, criatura, 1);
+                eventoVibora.executar(g2);
                 // NÃO DEFINI PROBABILIDADE POIS SEMPRE QUERO QUE ESTE EVENTO ACONTECA NESSE CASO
                 break;
 
@@ -230,7 +232,8 @@ public class PlayStateUI extends UI {
 
             case 33:
                 // Deixei de lado a questão de probabilidade por enquanto, mas será implementada aqui
-                evento.ursoPai(g2);
+                Evento eventoUrso = new EventoCriatura(painel, this, jogador, criatura, 2);
+                eventoUrso.executar(g2);
                 break;
             case 34:
                 escreverTexto("Você tenta--", y += tileSize);

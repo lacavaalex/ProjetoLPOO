@@ -8,18 +8,12 @@ import UI.UI;
 import java.awt.*;
 import java.util.Random;
 
-public class Evento {
+public abstract class Evento {
 
     Painel painel;
     UI ui;
     Jogador jogador;
     Criatura criatura;
-
-    private int tipo;
-    private int probabilidade;
-    private Random random = new Random();
-
-
 
     public Evento(Painel painel, UI ui, Jogador jogador, Criatura criatura) {
         this.painel = painel;
@@ -28,58 +22,7 @@ public class Evento {
         this.criatura = criatura;
     }
 
-    public void consumoPodre() {
-        //A editar
-    }
-
-    // Evento de encontro surpresa com a víbora
-    public void viboraRubroFloresta(Graphics2D g2) {
-
-        int tileSize = painel.getTileSize();
-        int y = tileSize * 3;
-
-        g2.setColor(Color.red);
-        ui.escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y);
-        jogador.setVida(jogador.getVida() - 1);
-        g2.setColor(Color.white);
-        ui.escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
-        ui.escreverTexto("", y += tileSize);
-        g2.setColor(Color.red);
-        criatura.setViboraRubro();
-        ui.escreverTexto(criatura.getDescricao(), y += tileSize);
-        g2.setColor(Color.white);
-        ui.escreverTexto("O que fazer?", y += tileSize);
-
-        String[] opcoes = {"Atacar", "Fugir"};
-
-        opcoesCombate(g2, y);
-    }
-
-    // Evento de encontro surpresa com o urso
-    public void ursoPai(Graphics2D g2) {
-
-        int tileSize = painel.getTileSize();
-        int y = tileSize * 3;
-
-        g2.setColor(Color.red);
-        ui.escreverTexto("*GROAAAAAR*", y);
-        g2.setColor(Color.white);
-        ui.escreverTexto("O RUGIDO ESTREMECE TODA A FLORESTA. VOCÊ PULA EM DESESPERO.", y += tileSize);
-        ui.escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
-        ui.escreverTexto("", y += tileSize);
-        g2.setColor(Color.red);
-        criatura.setUrsoPai();
-        ui.escreverTexto(criatura.getDescricao(), y += tileSize);
-        g2.setColor(Color.white);
-        ui.escreverTexto("O que fazer?", y += tileSize);
-
-        opcoesCombate(g2, y);
-        if (painel.getPlaySubState() == 34) {
-            jogador.setVida(jogador.getVida() - jogador.getVidaMax());
-        }
-    }
-
-
+    public abstract void executar(Graphics2D g2);
 
 // Opcoes no combate
     public void opcoesCombate(Graphics2D g2, int y) {
@@ -100,4 +43,10 @@ public class Evento {
             y += tileSize;
         }
     }
+
+// Getters e setters
+    public Painel getPainel() { return painel; }
+    public UI getUi() { return ui; }
+    public Jogador getJogador() { return jogador; }
+    public Criatura getCriatura() { return criatura; }
 }

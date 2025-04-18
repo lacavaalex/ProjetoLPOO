@@ -42,7 +42,6 @@ public class UI {
 
         botoes = new Botões(painel);
         criatura = new Criatura();
-        evento = new Evento(painel, this, jogador, criatura);
 
         try {
             titleBackground = ImageIO.read(getClass().getResource("/Imagens/fundo_mao_1.png"));

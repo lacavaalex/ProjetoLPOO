@@ -1,4 +1,4 @@
-package Ambiente;
+package Evento;
 
 import Entidade.Criatura;
 import Entidade.Jogador;

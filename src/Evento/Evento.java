@@ -1,4 +1,4 @@
-package Ambiente;
+package Evento;
 
 import Entidade.Criatura;
 import Entidade.Jogador;
@@ -6,7 +6,6 @@ import Main.*;
 import UI.UI;
 
 import java.awt.*;
-import java.util.Random;
 
 public abstract class Evento {
 

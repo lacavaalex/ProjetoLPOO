@@ -1,7 +1,7 @@
 package UI;
 
+import Evento.*;
 import Main.Painel;
-import Ambiente.*;
 import Entidade.Jogador;
 import java.awt.*;
 

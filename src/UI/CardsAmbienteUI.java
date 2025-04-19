@@ -12,28 +12,6 @@ public class CardsAmbienteUI extends UI {
         super(painel, jogador);
     }
 
-    public void cardFloresta() {
-        g2.setColor(new Color(5, 20, 5));
-        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
-
-        Ambiente floresta = painel.getAmbiente();
-        construirCard(floresta);
-    }
-    public void cardLago() {
-        g2.setColor(new Color(115, 155, 255));
-        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
-
-        Ambiente lago = painel.getAmbiente();
-        construirCard(lago);
-    }
-    public void cardMontanha() {
-        g2.setColor(new Color(180, 180, 180));
-        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
-
-        Ambiente montanha = painel.getAmbiente();
-        construirCard(montanha);
-    }
-
     public void construirCard(Ambiente ambiente) {
         ambiente = painel.getAmbiente();
 
@@ -55,5 +33,27 @@ public class CardsAmbienteUI extends UI {
         escreverTexto("Clima: " + ambiente.getClima(), y += tileSize);
 
         botoes.mostrarBotaoContinuar();
+    }
+
+    public void cardFloresta() {
+        g2.setColor(new Color(5, 20, 5));
+        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+
+        Ambiente floresta = painel.getAmbiente();
+        construirCard(floresta);
+    }
+    public void cardLago() {
+        g2.setColor(new Color(115, 155, 255));
+        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+
+        Ambiente lago = painel.getAmbiente();
+        construirCard(lago);
+    }
+    public void cardMontanha() {
+        g2.setColor(new Color(180, 180, 180));
+        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+
+        Ambiente montanha = painel.getAmbiente();
+        construirCard(montanha);
     }
 }

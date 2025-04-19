@@ -2,7 +2,7 @@ package UI;
 
 import Controles.*;
 import Entidade.*;
-import Ambiente.*;
+import Evento.Evento;
 import Main.Painel;
 
 import java.awt.*;

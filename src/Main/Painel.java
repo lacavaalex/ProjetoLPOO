@@ -193,17 +193,32 @@ public class Painel extends JPanel implements Runnable {
         // Cards de ambiente
         if (gameState == florestaCardState) {
             botoes.setVisible(true);
-            ambiente.ambienteFloresta();
+
+            Ambiente floresta = new AmbienteFloresta();
+            floresta.descreverAmbiente();
+
+            setAmbiente(floresta);
+
             botoes.mostrarBotaoContinuar();
         }
         if (gameState == lagoCardState) {
             botoes.setVisible(true);
-            ambiente.ambienteLago();
+
+            Ambiente lago = new AmbienteLago();
+            lago.descreverAmbiente();
+
+            setAmbiente(lago);
+
             botoes.mostrarBotaoContinuar();
         }
         if (gameState == montanhaCardState) {
             botoes.setVisible(true);
-            ambiente.ambienteMontanha();
+
+            Ambiente montanha = new AmbienteMontanha();
+            montanha.descreverAmbiente();
+
+            setAmbiente(montanha);
+
             botoes.mostrarBotaoContinuar();
         }
 
@@ -270,6 +285,7 @@ public class Painel extends JPanel implements Runnable {
     public Ambiente getAmbiente() {
         return ambiente;
     }
+    public void setAmbiente(Ambiente ambiente) { this.ambiente = ambiente; }
 
     public int getFlorestaCardState() {
         return florestaCardState;

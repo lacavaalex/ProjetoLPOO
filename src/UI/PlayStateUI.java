@@ -39,20 +39,8 @@ public class PlayStateUI extends UI {
                 escreverTexto("Um chiado estranho parece se aproximar...", y += tileSize);
                 escreverTexto("O que fazer?", y += tileSize);
 
-
-                String[] opcoes0 = {"Seguir luz", "Ficar e coletar recursos", "Ir até montanha"};
-
-                y += tileSize * 2;
-                for (int i = 0; i < opcoes0.length; i++) {
-                    String texto = opcoes0[i];
-                    int x = coordenadaXParaTextoCentralizado(texto);
-
-                    if (numComando == i) {
-                        g2.drawString(">", x - tileSize, y);
-                    }
-                    g2.drawString(texto, x, y);
-                    y += tileSize;
-                } break;
+                desenharOpcoes(new String[]{"Seguir luz", "Ficar e coletar recursos", "Ir até montanha"},  y += tileSize * 2);
+                break;
 
             // BRANCH DA LUZ
             case 1:
@@ -70,20 +58,8 @@ public class PlayStateUI extends UI {
                 escreverTexto("O que fazer?", y += tileSize);
                 escreverTexto("", y += tileSize);
 
-
-                String[] opcoes10 = {"Beber água", "Explorar arredores"};
-
-                y += tileSize * 2;
-                for (int i = 0; i < opcoes10.length; i++) {
-                    String texto = opcoes10[i];
-                    int x = coordenadaXParaTextoCentralizado(texto);
-
-                    if (numComando == i) {
-                        g2.drawString(">", x - tileSize, y);
-                    }
-                    g2.drawString(texto, x, y);
-                    y += tileSize;
-                } break;
+                desenharOpcoes(new String[]{"Beber água", "Explorar arredores"},  y += tileSize * 2);
+                break;
 
             case 11:
                 escreverTexto("Você bebe água.", y += tileSize);
@@ -109,19 +85,8 @@ public class PlayStateUI extends UI {
             case 1213:
                 escreverTexto("Você retorna a atenção à fogueira.", y += tileSize);
 
-                String[] opcoes1213 = {"Beber a água", "Ir ao lago"};
-
-                y += tileSize;
-                for (int i = 0; i < opcoes1213.length; i++) {
-                    String texto = opcoes1213[i];
-                    int x = coordenadaXParaTextoCentralizado(texto);
-
-                    if (numComando == i) {
-                        g2.drawString(">", x - tileSize, y);
-                    }
-                    g2.drawString(texto, x, y);
-                    y += tileSize;
-                } break;
+                desenharOpcoes(new String[]{"Beber a água", "Ir ao lago"},  y += tileSize);
+                break;
 
 
             // BRANCH DA VÍBORA
@@ -192,20 +157,8 @@ public class PlayStateUI extends UI {
                 escreverTexto("O que fazer?", y += tileSize);
                 escreverTexto("", y += tileSize);
 
-
-                String[] opcoes30 = {"Subir pelo trecho", "Descansar até o amanhecer"};
-
-                y += tileSize * 2;
-                for (int i = 0; i < opcoes30.length; i++) {
-                    String texto = opcoes30[i];
-                    int x = coordenadaXParaTextoCentralizado(texto);
-
-                    if (numComando == i) {
-                        g2.drawString(">", x - tileSize, y);
-                    }
-                    g2.drawString(texto, x, y);
-                    y += tileSize;
-                } break;
+                desenharOpcoes(new String[]{"Subir pelo trecho", "Descansar até o amanhecer"},  y += tileSize * 2);
+                break;
 
             case 31:
                 escreverTexto("Você sobe o trecho semi-íngreme.", y += tileSize);

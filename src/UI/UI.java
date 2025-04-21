@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class UI {
 
-    BufferedImage titleBackground;
+    BufferedImage titleBackground, chama1, chama2, chama3;
 
     Painel painel;
     Jogador jogador = new Jogador();
@@ -31,6 +31,8 @@ public class UI {
     private int alturaTela;
 
     public int numComando = 0;
+    private int frame = 1;
+    private int contadorChama = 1;
     private int telaInicialState = 0;
 
     public UI(Painel painel, Jogador jogador) {
@@ -43,11 +45,10 @@ public class UI {
         botoes = new Botões(painel);
         criatura = new Criatura();
 
-        try {
-            titleBackground = ImageIO.read(getClass().getResource("/Imagens/fundo_mao_1.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        titleBackground = setup("/Imagens/fundo_mao_1");
+        chama1 = setup("/Imagens/chama-1");
+        chama2 = setup("/Imagens/chama-2");
+        chama3 = setup("/Imagens/chama-3");
     }
 
     public void mostrar(Graphics2D g2) {
@@ -140,24 +141,7 @@ public class UI {
             escreverTexto("O MUNDO FUNESTO", y);
 
             //MENU
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-
-            String[] opcoes = {"NOVO JOGO", "CONTROLES", "SAIR"};
-
-            y += tileSize * 2;
-            for (int i = 0; i < opcoes.length; i++) {
-                String texto = opcoes[i];
-                x = coordenadaXParaTextoCentralizado(texto);
-
-                if (numComando == i) {
-                    g2.setColor(new Color(120, 0, 40));
-                    g2.drawString("->", x + 3 - tileSize, y + 3);
-                    g2.setColor((Color.white));
-                    g2.drawString("->", x - tileSize, y);
-                }
-                g2.drawString(texto, x, y);
-                y += tileSize;
-            }
+            desenharOpcoes(new String[]{"NOVO JOGO", "CONTROLES", "SAIR"}, y += tileSize * 2);
         }
 
 
@@ -170,19 +154,7 @@ public class UI {
             int y;
             escreverTexto("Escolha seu personagem.", y = tileSize*3);
 
-            String[] opcoes = {"A GUERREIRA", "O SOBREVIVENTE", "O MÉDICO", "A CAÇADORA", "Voltar ao início"};
-
-            y += tileSize * 3;
-            for (int i = 0; i < opcoes.length; i++) {
-                String texto = opcoes[i];
-                int x = coordenadaXParaTextoCentralizado(texto);
-
-                if (numComando == i) {
-                    g2.drawString(">", x - tileSize, y);
-                }
-                g2.drawString(texto, x, y);
-                y += tileSize;
-            }
+            desenharOpcoes(new String[]{"A GUERREIRA", "O SOBREVIVENTE", "O MÉDICO", "A CAÇADORA", "Voltar ao início"}, y += tileSize * 3);
         }
     }
 
@@ -238,9 +210,9 @@ public class UI {
         g2.setColor(Color.white);
 
         escreverTexto("Você é: " + painel.getJogador().getNome(), y += tileSize);
-        escreverTexto("Você acorda em um mundo desconhecido e inóspito.", y += tileSize);
-        escreverTexto("É noite. O chão treme ao andar sobre ele,", y += tileSize);
-        escreverTexto("e o céu vasto aparenta ter ânsia em te engolir.", y += tileSize);
+        escreverTexto("Você acorda em um mundo desconhecido e inóspito. Está de noite.", y += tileSize);
+        escreverTexto("O chão treme ao andar sobre ele, e o céu vasto aparenta ter", y += tileSize);
+        escreverTexto("ânsia em te engolir. Tudo que você tem é uma mochila vazia.", y += tileSize);
         escreverTexto("Seus arredores lembram uma clareira. Há uma luz à distância.", y += tileSize);
         escreverTexto("Sem memória de como chegou aqui, ou idéia de como escapar,", y += tileSize);
         escreverTexto("sua única opção é descobrir explorando.", y += tileSize);
@@ -250,6 +222,17 @@ public class UI {
         botoes.mostrarBotaoContinuar();
     }
 
+    public BufferedImage setup(String caminhoImagem) {
+        BufferedImage imagem = null;
+
+        try {
+            imagem = ImageIO.read(getClass().getResource(caminhoImagem + ".png"));
+
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
+        return imagem;
+    }
 
     public int coordenadaXParaTextoCentralizado(String texto) {
 
@@ -268,8 +251,48 @@ public class UI {
         return texto;
     }
 
+    public void desenharOpcoes(String[] opcoes, int yInicial) {
+
+        update();
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+
+        int y = yInicial;
+
+        for (int i = 0; i < opcoes.length; i++) {
+            String texto = opcoes[i];
+            int x = coordenadaXParaTextoCentralizado(texto);
+
+            if (numComando == i) {
+                switch (contadorChama) {
+                    case 1:
+                        g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null);
+                        break;
+                    case 2:
+                        g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null);
+                        break;
+                    case 3:
+                        g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null);
+                        break;
+                }
+            }
+            g2.drawString(texto, x, y);
+            y += tileSize;
+        }
+    }
+
     public void desenharFundoMao() {
         g2.drawImage(titleBackground, 0, 0, larguraTela, alturaTela, null);
+    }
+
+    public void update() {
+        frame++;
+        if (frame % 20 == 0) { // muda a cada 10 frames
+            contadorChama++;
+            if (contadorChama > 3) {
+                contadorChama = 1;
+            }
+        }
     }
 
 

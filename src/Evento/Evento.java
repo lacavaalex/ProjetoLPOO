@@ -1,6 +1,5 @@
 package Evento;
 
-import Entidade.Criatura;
 import Entidade.Jogador;
 import Main.*;
 import UI.UI;
@@ -12,13 +11,11 @@ public abstract class Evento {
     Painel painel;
     UI ui;
     Jogador jogador;
-    Criatura criatura;
 
-    public Evento(Painel painel, UI ui, Jogador jogador, Criatura criatura) {
+    public Evento(Painel painel, UI ui, Jogador jogador) {
         this.painel = painel;
         this.ui = ui;
         this.jogador = jogador;
-        this.criatura = criatura;
     }
 
     public abstract void executar(Graphics2D g2);
@@ -34,6 +31,4 @@ public abstract class Evento {
 // Getters e setters
     public Painel getPainel() { return painel; }
     public UI getUi() { return ui; }
-    public Jogador getJogador() { return jogador; }
-    public Criatura getCriatura() { return criatura; }
 }

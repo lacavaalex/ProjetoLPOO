@@ -9,12 +9,15 @@ import java.awt.*;
 
 public class EventoCriatura extends Evento {
 
+    Criatura criatura;
+
     private int tipo;
     private int probabilidade;
 
     public EventoCriatura(Painel painel, UI ui, Jogador jogador, Criatura criatura, int tipo) {
-        super(painel, ui, jogador, criatura);
+        super(painel, ui, jogador);
         this.tipo = tipo;
+        this.criatura = criatura;
     }
 
     public void executar(Graphics2D g2) {
@@ -44,8 +47,6 @@ public class EventoCriatura extends Evento {
         g2.setColor(Color.white);
         ui.escreverTexto("O que fazer?", y += tileSize);
 
-        String[] opcoes = {"Atacar", "Fugir"};
-
         opcoesCombate(g2, y);
     }
 
@@ -72,4 +73,5 @@ public class EventoCriatura extends Evento {
             jogador.setVida(jogador.getVida() - jogador.getVidaMax());
         }
     }
+    public Criatura getCriatura() { return criatura; }
 }

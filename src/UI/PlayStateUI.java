@@ -1,11 +1,14 @@
 package UI;
 
 import Evento.*;
+import Itens.ItemCombate;
 import Main.Painel;
 import Entidade.Jogador;
 import java.awt.*;
 
 public class PlayStateUI extends UI {
+
+    ItemCombate item;
 
     private boolean recursosColetados = false;
     private boolean recursosGastos = false;
@@ -39,7 +42,7 @@ public class PlayStateUI extends UI {
                 escreverTexto("Um chiado estranho parece se aproximar...", y += tileSize);
                 escreverTexto("O que fazer?", y += tileSize);
 
-                desenharOpcoes(new String[]{"Seguir luz", "Ficar e coletar recursos", "Ir até montanha"},  y += tileSize * 2);
+                desenharOpcoes(new String[]{"Seguir luz", "Ficar e coletar recursos", "Ir até montanha"}, y += tileSize * 2);
                 break;
 
             // BRANCH DA LUZ
@@ -54,38 +57,39 @@ public class PlayStateUI extends UI {
                 escreverTexto("Arbustos chacoalham ao seu redor enquanto anda.", y += tileSize);
                 escreverTexto("...", y += tileSize);
                 escreverTexto("Você está perto o suficiente da luz... é uma fogueira", y += tileSize);
-                escreverTexto("Nínguem a vista, mas há uma tigela com água...", y += tileSize);
+                escreverTexto("Nínguem a vista, mas há um cantil com água...", y += tileSize);
                 escreverTexto("O que fazer?", y += tileSize);
                 escreverTexto("", y += tileSize);
 
-                desenharOpcoes(new String[]{"Beber água", "Explorar arredores"},  y += tileSize * 2);
+                desenharOpcoes(new String[]{"Pegar água", "Explorar arredores"}, y += tileSize * 2);
                 break;
 
             case 11:
-                escreverTexto("Você bebe água.", y += tileSize);
+                painel.getInvent().adicionarItem("Cantil", 1);
+                escreverTexto("Você pega o cantil e toma um gole d'água.", y += tileSize);
                 jogador.setSede(false);
                 escreverTexto("Hidratação no máximo.", y += tileSize);
                 break;
 
             case 12:
-                escreverTexto("Melhor não mexer com o que não é seu.",y += tileSize);
-                escreverTexto("(e, afinal, quem sabe de quem pode ser...)",tileSize * 3);
-                escreverTexto("",tileSize * 4);
-                escreverTexto("Em torno dessa fogueira há vegetação baixa.",tileSize * 5);
-                escreverTexto("Há um cervo à distância, mas você não tem equipamento para caça.",tileSize * 6);
-                escreverTexto("",tileSize * 7);
-                escreverTexto("Mais adiante, um barulho animador: água corrente!",tileSize * 8);
-                escreverTexto("Apressando o passo, em minutos você chega ao lago.",tileSize * 9);
+                escreverTexto("Melhor não mexer com o que não é seu.", y += tileSize);
+                escreverTexto("(e, afinal, quem sabe de quem pode ser...)", tileSize * 3);
+                escreverTexto("", tileSize * 4);
+                escreverTexto("Em torno dessa fogueira há vegetação baixa.", tileSize * 5);
+                escreverTexto("Há um cervo à distância, mas você não tem equipamento para caça.", tileSize * 6);
+                escreverTexto("", tileSize * 7);
+                escreverTexto("Mais adiante, um barulho animador: água corrente!", tileSize * 8);
+                escreverTexto("Apressando o passo, em minutos você chega ao lago.", tileSize * 9);
                 break;
             case 1212:
-                escreverTexto("Este é o lago.",tileSize * 2);
-                escreverTexto("Você pode ficar e descansar, ou retornar à fogueira.",tileSize * 3);
+                escreverTexto("Este é o lago.", tileSize * 2);
+                escreverTexto("Você pode ficar e descansar, ou retornar à fogueira.", tileSize * 3);
                 break;
 
             case 1213:
                 escreverTexto("Você retorna a atenção à fogueira.", y += tileSize);
 
-                desenharOpcoes(new String[]{"Beber a água", "Ir ao lago"},  y += tileSize);
+                desenharOpcoes(new String[]{"Ir ao lago"}, y += tileSize);
                 break;
 
 
@@ -110,11 +114,16 @@ public class PlayStateUI extends UI {
                 break;
 
             case 21:
-                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F)); escreverTexto("COMBATE", y += tileSize);
-                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F)); escreverTexto("Você a atacou com o GALHO PONTIAGUDO!", y += tileSize);
-                g2.setColor(Color.red); escreverTexto("-1HP", y += tileSize);
-                g2.setColor(Color.red); escreverTexto("Víbora-Rubro: 2HP", y += tileSize);
-                g2.setColor(Color.white); escreverTexto("-Após notar sua investida, ela foge! HA!", y += tileSize);
+                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F));
+                escreverTexto("COMBATE", y += tileSize);
+                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
+                escreverTexto("Você a atacou com o GALHO PONTIAGUDO!", y += tileSize);
+                g2.setColor(Color.red);
+                escreverTexto("-1HP", y += tileSize);
+                g2.setColor(Color.red);
+                escreverTexto("Víbora-Rubro: 2HP", y += tileSize);
+                g2.setColor(Color.white);
+                escreverTexto("-Após notar sua investida, ela foge! HA!", y += tileSize);
                 escreverTexto("", y += tileSize);
                 escreverTexto("FIM DE COMBATE.", y += tileSize);
                 escreverTexto("", y += tileSize);
@@ -129,10 +138,12 @@ public class PlayStateUI extends UI {
                 break;
 
             case 22:
-                escreverTexto("Você pensa em fugir, mas se sente meio tonto...",tileSize * 2);
+                escreverTexto("Você pensa em fugir, mas se sente meio tonto...", tileSize * 2);
                 escreverTexto("Porcaria, a mordida da víbora o deixou", y += tileSize * 2);
-                g2.setColor(Color.red); escreverTexto("envenenado.", y += tileSize);
-                g2.setColor(Color.white); escreverTexto("", y += tileSize);
+                g2.setColor(Color.red);
+                escreverTexto("envenenado.", y += tileSize);
+                g2.setColor(Color.white);
+                escreverTexto("", y += tileSize);
                 escreverTexto("Ela é rápida, e você está abatido(a). É melhor não arriscar.", y += tileSize);
 
                 botoes.mostrarBotaoVoltar();
@@ -157,7 +168,7 @@ public class PlayStateUI extends UI {
                 escreverTexto("O que fazer?", y += tileSize);
                 escreverTexto("", y += tileSize);
 
-                desenharOpcoes(new String[]{"Subir pelo trecho", "Descansar até o amanhecer"},  y += tileSize * 2);
+                desenharOpcoes(new String[]{"Subir pelo trecho", "Descansar até o amanhecer"}, y += tileSize * 2);
                 break;
 
             case 31:
@@ -168,12 +179,12 @@ public class PlayStateUI extends UI {
                 escreverTexto("Você chega num paredão.", y += tileSize);
                 break;
             case 3131:
-                escreverTexto("O trecho acabou. O único caminho para além daqui...",tileSize * 2);
-                escreverTexto("é para cima. A montanha sussura seu nome...",tileSize * 3);
-                escreverTexto("",tileSize * 4);
-                escreverTexto("Seria fatal escalar o paredão sem equipamentos e preparação.",tileSize * 5);
-                escreverTexto("E ficar congelando aqui não é uma opção.",tileSize * 6);
-                escreverTexto("Isso é um beco sem saída. Melhor retornar.",tileSize * 7);
+                escreverTexto("O trecho acabou. O único caminho para além daqui...", tileSize * 2);
+                escreverTexto("é para cima. A montanha sussura seu nome...", tileSize * 3);
+                escreverTexto("", tileSize * 4);
+                escreverTexto("Seria fatal escalar o paredão sem equipamentos e preparação.", tileSize * 5);
+                escreverTexto("E ficar congelando aqui não é uma opção.", tileSize * 6);
+                escreverTexto("Isso é um beco sem saída. Melhor retornar.", tileSize * 7);
                 break;
 
             case 32:
@@ -190,12 +201,19 @@ public class PlayStateUI extends UI {
                 break;
             case 34:
                 escreverTexto("Você tenta--", y += tileSize);
-                g2.setColor(Color.red); escreverTexto("O urso irrompe um golpe fatal. -10HP", y += tileSize);
+                g2.setColor(Color.red);
+                escreverTexto("O urso irrompe um golpe fatal. -10HP", y += tileSize);
                 break;
 
+            case 999:
+                Evento eventoChuva = new EventoClimatico(painel, this, jogador, botoes, 1);
+                eventoChuva.executar(g2);
+                break;
 
-
-            default: System.out.println("default"); System.out.println(painel.getPlaySubState()); break;
+            default:
+                System.out.println("default");
+                System.out.println(painel.getPlaySubState());
+                break;
         }
     }
 }

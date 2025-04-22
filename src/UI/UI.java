@@ -276,6 +276,11 @@ public class UI {
                         break;
                 }
             }
+            if (numComando == i) {
+                g2.setColor(Color.red);
+            } else {
+                g2.setColor(Color.white);
+            }
             g2.drawString(texto, x, y);
             y += tileSize;
         }

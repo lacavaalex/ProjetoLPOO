@@ -25,30 +25,34 @@ public class Painel extends JPanel implements Runnable {
 // Definição de FPS
     private final int fps = 60;
 
-// Chamada de classe
+// Chamada de classes
+    private Ambiente ambiente = new Ambiente();
     private Jogador jogador = new Jogador();
-    private UI ui = new UI(this, jogador);
 
     private Teclado teclado = new Teclado(this);
     private Botões botoes = new Botões(this);
+
     private Inventario invent = new Inventario(this, botoes);
 
-    private Ambiente ambiente = new Ambiente();
+    private UI ui = new UI(this, jogador);
     private PlayStateUI playStateUI;
     private CardsAmbienteUI cardsAmbienteUI;
 
 
-// Game State
+// Game States
     private int gameState;
     private final int titleState = 0;
-    private final int tutorialControles = 1000;
-    private final int openingState = 1;
+    private final int gameOverState = 1;
+    private final int openingState = 2;
     private final int playState = 3;
-    private final int gameOverState = 4;
     private int playSubState = 0;
-    private final int florestaCardState = 101;
-    private final int lagoCardState = 102;
-    private final int montanhaCardState = 103;
+
+    private final int tutorialControles = 1000;
+    private final int florestaCardState = 1001;
+    private final int lagoCardState = 1002;
+    private final int montanhaCardState = 1003;
+
+
 
     public Painel(){
 
@@ -62,9 +66,9 @@ public class Painel extends JPanel implements Runnable {
         this.add(botoes);
         botoes.mostrarBotaoContinuar();
 
-    // Dica recebida: Buffering mais preciso
+    // Buffering mais preciso
         this.setDoubleBuffered(true);
-    // Traz os controles e "foca" a classe em receber o input de teclado devido à presença de botões
+    // Faz a classe priorizar o input do teclado mesmo na presença de botões
         this.addKeyListener(teclado);
         this.setFocusable(true);
 
@@ -98,6 +102,7 @@ public class Painel extends JPanel implements Runnable {
 
 // Implementação do game loop
     public void run() {
+
         double intervalo = 1000000000 / fps;
         double delta = 0;
         long lastTime = System.nanoTime();
@@ -125,6 +130,7 @@ public class Painel extends JPanel implements Runnable {
         }
     }
 
+// Atualização inicial e contínua
     public void update() {
         if (gameState == titleState) {
             botoes.setVisible(false);
@@ -144,6 +150,8 @@ public class Painel extends JPanel implements Runnable {
                 gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
             ui.mostrar(g2);
         }
+
+    // Desenha a tela de inventário à frente do resto
         if (!invent.isFechado()) {
             invent.telaDeInventario(g2, ui);
         }
@@ -153,17 +161,6 @@ public class Painel extends JPanel implements Runnable {
 
 
 // Getters e setters
-    public int getTileSize() {
-        return tileSize;
-    }
-    public int getLargura() {
-        return larguraTela;
-    }
-    public int getAltura() {
-        return alturaTela;
-    }
-
-
     public int getGameState() {
         return gameState;
     }
@@ -176,7 +173,7 @@ public class Painel extends JPanel implements Runnable {
         botoes.esconderBotaoVoltar();
         botoes.esconderBotaoContinuar();
 
-        // No-play states
+        // Não-play states
         if (gameState == openingState) {
             botoes.setVisible(true);
             botoes.mostrarBotaoContinuar();
@@ -229,26 +226,9 @@ public class Painel extends JPanel implements Runnable {
         }
     }
 
-
-    public int getTitleState() {
-        return titleState;
-    }
-    public int getTutorialControles() {
-        return tutorialControles;
-    }
-    public int getOpeningState() {
-        return openingState;
-    }
-    public int getGameOverState() {
-        return gameOverState;
-    }
-    public int getPlayState() {
-        return playState;
-    }
     public int getPlaySubState() {
         return playSubState;
     }
-
     public void setPlaySubState(int novoSubState) {
         this.playSubState = novoSubState;
 
@@ -269,10 +249,26 @@ public class Painel extends JPanel implements Runnable {
             botoes.esconderBotaoVoltar();
         }
     }
+
+    public int getPlayState() {
+        return playState;
+    }
     public void resetPlayState() {
         setPlaySubState(0);
     }
 
+    public int getTitleState() {
+        return titleState;
+    }
+    public int getTutorialControles() {
+        return tutorialControles;
+    }
+    public int getOpeningState() {
+        return openingState;
+    }
+    public int getGameOverState() {
+        return gameOverState;
+    }
 
     public UI getUi() {
         return ui;
@@ -281,7 +277,6 @@ public class Painel extends JPanel implements Runnable {
         return jogador;
     }
     public Inventario getInvent() { return invent; }
-
     public Ambiente getAmbiente() {
         return ambiente;
     }
@@ -295,5 +290,15 @@ public class Painel extends JPanel implements Runnable {
     }
     public int getMontanhaCardState() {
         return montanhaCardState;
+    }
+
+    public int getTileSize() {
+        return tileSize;
+    }
+    public int getLargura() {
+        return larguraTela;
+    }
+    public int getAltura() {
+        return alturaTela;
     }
 }

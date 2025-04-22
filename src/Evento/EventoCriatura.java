@@ -12,7 +12,6 @@ public class EventoCriatura extends Evento {
     Criatura criatura;
 
     private int tipo;
-    private int probabilidade;
 
     public EventoCriatura(Painel painel, UI ui, Jogador jogador, Criatura criatura, int tipo) {
         super(painel, ui, jogador);
@@ -20,6 +19,7 @@ public class EventoCriatura extends Evento {
         this.criatura = criatura;
     }
 
+    @Override
     public void executar(Graphics2D g2) {
         if (tipo == 1) {
             viboraRubroFloresta(g2);
@@ -29,7 +29,7 @@ public class EventoCriatura extends Evento {
         }
     }
 
-    // Evento de encontro surpresa com a víbora
+// Evento de encontro surpresa com a víbora
     public void viboraRubroFloresta(Graphics2D g2) {
 
         int tileSize = painel.getTileSize();
@@ -50,7 +50,7 @@ public class EventoCriatura extends Evento {
         opcoesCombate(g2, y);
     }
 
-    // Evento de encontro surpresa com o urso
+// Evento de encontro surpresa com o urso
     public void ursoPai(Graphics2D g2) {
 
         int tileSize = painel.getTileSize();
@@ -73,5 +73,7 @@ public class EventoCriatura extends Evento {
             jogador.setVida(jogador.getVida() - jogador.getVidaMax());
         }
     }
+
+// Getters e setters
     public Criatura getCriatura() { return criatura; }
 }

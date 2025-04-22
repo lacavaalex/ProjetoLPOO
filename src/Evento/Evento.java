@@ -18,14 +18,14 @@ public abstract class Evento {
         this.jogador = jogador;
     }
 
+// Metodo-base para o polimorfismo da superclasse
     public abstract void executar(Graphics2D g2);
 
-    // Opcoes no combate
+// Menu de opcoes no combate
     public void opcoesCombate(Graphics2D g2, int y) {
 
         int tileSize = painel.getTileSize();
         ui.desenharOpcoes(new String[]{"Atacar", "Fugir"},  y += tileSize * 2);
-
     }
 
 // Getters e setters

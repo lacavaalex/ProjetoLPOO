@@ -12,6 +12,7 @@ public class CardsAmbienteUI extends UI {
         super(painel, jogador);
     }
 
+// Estrutura dos cards
     public void construirCard(Ambiente ambiente) {
         ambiente = painel.getAmbiente();
 
@@ -35,6 +36,7 @@ public class CardsAmbienteUI extends UI {
         botoes.mostrarBotaoContinuar();
     }
 
+// Criação dos cards
     public void cardFloresta() {
         g2.setColor(new Color(5, 20, 5));
         g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());

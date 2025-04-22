@@ -19,9 +19,6 @@ public class Teclado implements KeyListener {
         this.ui = painel.getUi();
     }
 
-    public void keyTyped(KeyEvent e) {
-    }
-
     public void keyPressed(KeyEvent e) {
 
         int code = e.getKeyCode();
@@ -36,7 +33,7 @@ public class Teclado implements KeyListener {
         int telaInicialState = ui.getTelaInicialState();
         int numComando = ui.getNumComando();
 
-        // Tela inicial
+    // Tela inicial
         if (gameState == titleState) {
 
             if (telaInicialState == 0) {
@@ -111,13 +108,13 @@ public class Teclado implements KeyListener {
             }
         }
 
-        // Jogar a atualização dos valores dessas duas variáveis à sua classe natal
+    // Jogar a atualização dos valores dessas duas variáveis à sua classe natal
         ui.setNumComando(numComando);
         ui.setTelaInicialState(telaInicialState);
-        // Atualização gráfica
+    // Atualização gráfica
         painel.repaint();
 
-        // Play state
+    // Play state
         if (gameState == playState) {
             if (subState == 0) {
                 if (code == KeyEvent.VK_W) {
@@ -186,7 +183,8 @@ public class Teclado implements KeyListener {
 
     }
 
-    public void keyReleased(KeyEvent e) {
-
+// Métodos obrigatórios da classe KeyEvent, porém sem uso para este projeto
+    public void keyReleased(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
     }
 }

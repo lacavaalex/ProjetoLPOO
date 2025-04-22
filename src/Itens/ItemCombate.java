@@ -21,6 +21,7 @@ public class ItemCombate extends Item {
         }
     }
 
+// Armas
     public void galhoPontiagudo() {
         if (getNome().equals("Galho pontiagudo")) {
             setDurabilidade(1);
@@ -28,11 +29,7 @@ public class ItemCombate extends Item {
         }
     }
 
-    // Getters e setters
-    public int getPoder() {
-        return poder;
-    }
-    public void setPoder(int poder) {
-        this.poder = poder;
-    }
+// Getters e setters
+    public int getPoder() { return poder; }
+    public void setPoder(int poder) { this.poder = poder; }
 }

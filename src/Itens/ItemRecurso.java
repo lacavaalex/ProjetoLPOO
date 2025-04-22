@@ -11,6 +11,7 @@ public class ItemRecurso extends Item {
 
     }
 
+// Itens
     public void definirMadeira(int quantidade) {
         if (getNome().equals("Madeira")) {
             setDurabilidade(null);

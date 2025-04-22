@@ -26,18 +26,21 @@ public class Botões extends JPanel {
         sair();
         voltarAoInicio();
     }
+
+// Adequação ao painel
     public void configurarComPainel(Painel painel) {
         setBounds(0, 0, painel.getLargura(), painel.getAltura());
     }
 
+// Construção de cada botão
     public void continuar() {
-    // Main.Painel de local do botão continuar
+    // Painel do botão
         painelBotaoContinuar = new JPanel();
         painelBotaoContinuar.setBounds(1020, 600, 200, 50);
         painelBotaoContinuar.setBackground(Color.BLACK);
         painelBotaoContinuar.setLayout(new BorderLayout());
 
-    // Botão continuar
+    // Botão
         botaoContinuar = new JButton("Continuar");
         botaoContinuar.setBackground(Color.BLACK);
         botaoContinuar.setForeground(Color.WHITE);
@@ -45,35 +48,26 @@ public class Botões extends JPanel {
 
     // Atribui a ação do action listener ao botao
         botaoContinuar.addActionListener(fB);
-
         this.add(painelBotaoContinuar);
         painelBotaoContinuar.add(botaoContinuar, BorderLayout.CENTER);
-
         painelBotaoContinuar.setVisible(false);
     }
-
     public void voltar() {
-    // Main.Painel de local do botão voltar
         painelBotaoVoltar = new JPanel();
         painelBotaoVoltar.setBounds(100, 600, 200, 50);
         painelBotaoVoltar.setBackground(Color.BLACK);
         painelBotaoVoltar.setLayout(new BorderLayout());
 
-    // Botão voltar
         botaoVoltar = new JButton("Voltar");
         botaoVoltar.setBackground(Color.BLACK);
         botaoVoltar.setForeground(Color.WHITE);
         botaoVoltar.setFont(pixelsans_15);
 
-   // Atribui a ação do action listener ao botao
         botaoVoltar.addActionListener(fB);
-
         this.add(painelBotaoVoltar);
         painelBotaoVoltar.add(botaoVoltar, BorderLayout.CENTER);
-
         painelBotaoVoltar.setVisible(false);
     }
-
     public void botaoInventario() {
         painelMochila = new JPanel();
         painelMochila.setBounds(painel.getLargura()/2 - 140/2, 600, 140, 50);
@@ -85,15 +79,11 @@ public class Botões extends JPanel {
         botaoMochila.setForeground(Color.WHITE);
         botaoMochila.setFont(pixelsans_15);
 
-    // Atribui a ação do action listener ao botao
         botaoMochila.addActionListener(fB);
-
         this.add(painelMochila);
         painelMochila.add(botaoMochila, BorderLayout.CENTER);
-
         painelMochila.setVisible(false);
     }
-
     public void sair() {
         painelBotaoSair = new JPanel();
         painelBotaoSair.setBounds(100, 600, 150, 50);
@@ -106,33 +96,24 @@ public class Botões extends JPanel {
         botaoSair.setFont(pixelsans_15);
 
         botaoSair.addActionListener(fB);
-
         this.add(painelBotaoSair);
         painelBotaoSair.add(botaoSair, BorderLayout.CENTER);
-
         painelBotaoSair.setVisible(false);
     }
-
-
     public void voltarAoInicio() {
-    // Main.Painel de local do botão
         painelBotaoInicio = new JPanel();
         painelBotaoInicio.setBounds(100, 600, 300, 50);
         painelBotaoInicio.setBackground(Color.BLACK);
         painelBotaoInicio.setLayout(new BorderLayout());
 
-    // Botão
         botaoInicio = new JButton("Voltar ao início");
         botaoInicio.setBackground(Color.BLACK);
         botaoInicio.setForeground(Color.WHITE);
         botaoInicio.setFont(pixelsans_15);
 
-    // Atribui a ação do action listener ao botao
         botaoInicio.addActionListener(fB);
-
         this.add(painelBotaoInicio);
         painelBotaoInicio.add(botaoInicio, BorderLayout.CENTER);
-
         painelBotaoInicio.setVisible(false);
     }
 
@@ -153,6 +134,8 @@ public class Botões extends JPanel {
     public void mostrarBotaoInicio() { painelBotaoInicio.setVisible(true); }
     public void esconderBotaoInicio() { painelBotaoInicio.setVisible(false); }
 
+
+// Getters e setters
     public JButton getBotaoContinuar() { return botaoContinuar; }
     public JButton getBotaoVoltar() { return botaoVoltar; }
     public JButton getBotaoInicio() { return botaoInicio; }

@@ -19,12 +19,14 @@ public class EventoClimatico extends Evento {
         this.botoes = botoes;
     }
 
+    @Override
     public void executar(Graphics2D g2) {
         if (tipo == 1) {
             chuva(g2);
         }
     }
 
+// Descrição dos eventos
     public void chuva(Graphics2D g2) {
         int tileSize = painel.getTileSize();
         int y = tileSize * 3;

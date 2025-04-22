@@ -2,7 +2,6 @@ package UI;
 
 import Controles.*;
 import Entidade.*;
-import Evento.Evento;
 import Main.Painel;
 
 import java.awt.*;
@@ -19,7 +18,6 @@ public class UI {
     Jogador jogador = new Jogador();
     Botões botoes;
     Criatura criatura;
-    Evento evento;
     PlayStateUI playStateUI;
     CardsAmbienteUI cardsAmbienteUI;
 
@@ -39,18 +37,21 @@ public class UI {
         this.painel = painel;
         this.jogador = jogador;
 
-        pixelsans_30 = new Font("Pixel Sans Serif", Font.PLAIN, 30);
-        pixelsans_60B = new Font("Pixel Sans Serif", Font.BOLD, 60);
-
         botoes = new Botões(painel);
         criatura = new Criatura();
 
-        titleBackground = setup("/Imagens/fundo_mao_1");
+    // Atribuição da fonte
+        pixelsans_30 = new Font("Pixel Sans Serif", Font.PLAIN, 30);
+        pixelsans_60B = new Font("Pixel Sans Serif", Font.BOLD, 60);
+
+    // Atribuição de imagens
+        titleBackground = setup("/Imagens/fundo_mao_2");
         chama1 = setup("/Imagens/chama-1");
         chama2 = setup("/Imagens/chama-2");
         chama3 = setup("/Imagens/chama-3");
     }
 
+// Metodo geral de desenho
     public void mostrar(Graphics2D g2) {
         this.g2 = g2;
 
@@ -69,6 +70,7 @@ public class UI {
 
         // Informações do jogador
         if (gameState != titleState && gameState!= openingState && gameState!=florestaCardState) {
+            // A acrescentar
         }
 
         // Title state
@@ -110,7 +112,7 @@ public class UI {
         }
     }
 
-    // Métodos para telas especiais
+// Métodos para telas especiais
     public void mostrarInventario() {
         painel.getInvent().abrir();
         painel.repaint();
@@ -222,6 +224,7 @@ public class UI {
         botoes.mostrarBotaoContinuar();
     }
 
+// Métodos de compactação de código
     public BufferedImage setup(String caminhoImagem) {
         BufferedImage imagem = null;
 
@@ -301,20 +304,13 @@ public class UI {
     }
 
 
-    // Getters e setters
-    public int getTelaInicialState() {
-        return telaInicialState;
-    }
-    public void setTelaInicialState(int telaInicialState) {
-        this.telaInicialState = telaInicialState;
-    }
+// Getters e setters
+    public int getTelaInicialState() { return telaInicialState; }
+    public void setTelaInicialState(int telaInicialState) { this.telaInicialState = telaInicialState; }
+
     public void setPlayStateUI(PlayStateUI playStateUI) { this.playStateUI = playStateUI; }
     public void setCardsAmbienteUI(CardsAmbienteUI cardsAmbienteUI) { this.cardsAmbienteUI = cardsAmbienteUI; }
 
-    public int getNumComando() {
-        return numComando;
-    }
-    public void setNumComando(int numComando) {
-        this.numComando = numComando;
-    }
+    public int getNumComando() { return numComando; }
+    public void setNumComando(int numComando) { this.numComando = numComando; }
 }

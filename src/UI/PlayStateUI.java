@@ -1,15 +1,13 @@
 package UI;
 
 import Evento.*;
-import Itens.ItemCombate;
 import Main.Painel;
 import Entidade.Jogador;
 import java.awt.*;
 
 public class PlayStateUI extends UI {
 
-    ItemCombate item;
-
+// Atributos de gerenciamento de inventário
     private boolean recursosColetados = false;
     private boolean recursosGastos = false;
 
@@ -17,6 +15,7 @@ public class PlayStateUI extends UI {
         super(painel, jogador);
     }
 
+// Casos de substate
     public void playState() {
         int tileSize = painel.getTileSize();
         int larguraTela = painel.getLargura();

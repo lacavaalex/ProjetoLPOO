@@ -1,17 +1,16 @@
 package Ambiente;
 
-import Main.*;
-
 import javax.swing.*;
-import java.awt.*;
 
 public class Ambiente extends JPanel {
 
     private String nome, descricao, dificuldade, recursos, frequenciaEventos, clima;
 
-    public void descreverAmbiente() {
-    }
+// Metodo-base para o polimorfismo da superclasse
+    public void descreverAmbiente() {}
 
+
+// Getters e setters
     public String getNome() {
         return nome;
     }

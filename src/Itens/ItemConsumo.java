@@ -22,6 +22,7 @@ public class ItemConsumo extends Item {
         }
     }
 
+// Itens
     public void definirCantil() {
         if (getNome().equals("Cantil")) {
             setDurabilidade(5);

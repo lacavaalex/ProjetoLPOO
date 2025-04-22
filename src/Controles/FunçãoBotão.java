@@ -15,11 +15,13 @@ public class FunçãoBotão implements ActionListener {
         this.botoes = botoes;
     }
 
+// Ação que cada botão executa
     public void actionPerformed(ActionEvent e) {
 
         int gameState = painel.getGameState();
         Object fonte = e.getSource();
 
+    // CONTINUAR
         if (fonte == botoes.getBotaoContinuar()) {
             if (gameState == painel.getPlayState()) {
                 botoes.mostrarBotaoMochila();
@@ -59,6 +61,7 @@ public class FunçãoBotão implements ActionListener {
         }
 
 
+    // VOLTAR
         else if (fonte == botoes.getBotaoVoltar()) {
             if (painel.getGameState() == painel.getTutorialControles()) {
                 painel.setGameState(painel.getTitleState());
@@ -75,15 +78,17 @@ public class FunçãoBotão implements ActionListener {
             }
         }
 
+    // MOCHILA/INVENTÁRIO
         else if (fonte == botoes.getBotaoMochila()) {
             painel.getUi().mostrarInventario();
             botoes.esconderBotaoMochila();
         }
+    // SAIR
         else if (fonte == botoes.getBotaoSair()) {
             painel.getInvent().fechar();
             botoes.mostrarBotaoMochila();
         }
-
+    // DE VOLTA AO INÍCIO
         else if (fonte == botoes.getBotaoInicio()) { painel.setGameState(painel.getTitleState()); }
 
     }

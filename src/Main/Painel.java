@@ -35,8 +35,8 @@ public class Painel extends JPanel implements Runnable {
     private Inventario invent = new Inventario(this, botoes);
 
     private UI ui = new UI(this, jogador);
-    private PlayStateUI playStateUI;
-    private CardsAmbienteUI cardsAmbienteUI;
+    //private PlayStateUI playStateUI;
+    private CardsEspeciaisUI cardsEspeciaisUI;
 
 
 // Game States
@@ -78,11 +78,13 @@ public class Painel extends JPanel implements Runnable {
         this.add(ambiente);
 
     // Adição das outras UIs
-        playStateUI = new PlayStateUI(this, jogador);
-        ui.setPlayStateUI(playStateUI);
+        //ambiente = new Ambiente();
+        ui.setAmbiente(ambiente);
+        //playStateUI = new PlayStateUI(this, jogador);
+        //ui.setPlayStateUI(playStateUI);
 
-        cardsAmbienteUI = new CardsAmbienteUI(this, jogador);
-        ui.setCardsAmbienteUI(cardsAmbienteUI);
+        cardsEspeciaisUI = new CardsEspeciaisUI(this, jogador);
+        ui.setCardsEspeciaisUI(cardsEspeciaisUI);
 
     }
 
@@ -160,6 +162,34 @@ public class Painel extends JPanel implements Runnable {
     }
 
 
+    public void trocarAmbiente(String qual) {
+
+        switch (qual) {
+            case "floresta":
+                Ambiente floresta = new AmbienteFloresta(this, jogador, ui);
+                floresta.descreverAmbiente();
+                setAmbiente(floresta);
+                ui.setAmbiente(floresta);
+                break;
+
+            case "lago":
+                Ambiente lago = new AmbienteLago(this, jogador, ui);
+                lago.descreverAmbiente();
+                setAmbiente(lago);
+                ui.setAmbiente(lago);
+                break;
+
+            case "montanha":
+                Ambiente montanha = new AmbienteMontanha(this, jogador, ui);
+                montanha.descreverAmbiente();
+                setAmbiente(montanha);
+                ui.setAmbiente(montanha);
+                break;
+
+            default:
+        }
+    }
+
 // Getters e setters
     public int getGameState() {
         return gameState;
@@ -190,32 +220,17 @@ public class Painel extends JPanel implements Runnable {
         // Cards de ambiente
         if (gameState == florestaCardState) {
             botoes.setVisible(true);
-
-            Ambiente floresta = new AmbienteFloresta();
-            floresta.descreverAmbiente();
-
-            setAmbiente(floresta);
-
+            trocarAmbiente("floresta");
             botoes.mostrarBotaoContinuar();
         }
         if (gameState == lagoCardState) {
             botoes.setVisible(true);
-
-            Ambiente lago = new AmbienteLago();
-            lago.descreverAmbiente();
-
-            setAmbiente(lago);
-
+            trocarAmbiente("lago");
             botoes.mostrarBotaoContinuar();
         }
         if (gameState == montanhaCardState) {
             botoes.setVisible(true);
-
-            Ambiente montanha = new AmbienteMontanha();
-            montanha.descreverAmbiente();
-
-            setAmbiente(montanha);
-
+            trocarAmbiente("montanha");
             botoes.mostrarBotaoContinuar();
         }
 

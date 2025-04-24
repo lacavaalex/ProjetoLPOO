@@ -1,9 +1,23 @@
 package Ambiente;
 
+import Entidade.Jogador;
+import Main.Painel;
+import UI.UI;
+
+import java.awt.*;
+
 public class AmbienteMontanha extends Ambiente {
 
-    public AmbienteMontanha() {
+    Painel painel;
+    Jogador jogador;
+    UI ui;
+
+    public AmbienteMontanha(Painel painel, Jogador jogador, UI ui) {
         super();
+        this.painel = painel;
+        this.jogador = jogador;
+        this.ui = ui;
+
         descreverAmbiente();
     }
 
@@ -15,5 +29,39 @@ public class AmbienteMontanha extends Ambiente {
         this.setRecursos("indefinido.");
         this.setFrequenciaEventos("desastres naturais, perigos escondidos.");
         this.setClima("altamente frio, piora com altitude.");
+    }
+
+    @Override
+    public void playState(Graphics2D g2) {
+        int tileSize = painel.getTileSize();
+        int larguraTela = painel.getLargura();
+        int alturaTela = painel.getAltura();
+        //this.numComando = painel.getUi().getNumComando();
+
+        g2.setColor(Color.black);
+        g2.fillRect(0, 0, larguraTela, alturaTela);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
+        g2.setColor(Color.white);
+
+        int subState = painel.getPlaySubState();
+        int y = tileSize;
+
+        switch (subState) {
+
+            case 3131:
+                ui.escreverTexto("O trecho acabou. O único caminho para além daqui...", tileSize * 2);
+                ui.escreverTexto("é para cima. A montanha sussura seu nome...", tileSize * 3);
+                ui.escreverTexto("", tileSize * 4);
+                ui.escreverTexto("Seria fatal escalar o paredão sem equipamentos e preparação.", tileSize * 5);
+                ui.escreverTexto("E ficar congelando aqui não é uma opção.", tileSize * 6);
+                ui.escreverTexto("Isso é um beco sem saída. Melhor retornar.", tileSize * 7);
+                break;
+
+            default:
+                System.out.println("default");
+                System.out.println(painel.getPlaySubState());
+                break;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package UI;
 
+import Ambiente.Ambiente;
 import Controles.*;
 import Entidade.*;
 import Main.Painel;
@@ -18,8 +19,8 @@ public class UI {
     Jogador jogador = new Jogador();
     Botões botoes;
     Criatura criatura;
-    PlayStateUI playStateUI;
-    CardsAmbienteUI cardsAmbienteUI;
+    Ambiente ambiente;
+    CardsEspeciaisUI cardsEspeciaisUI;
 
     Graphics2D g2;
     Font pixelsans_30, pixelsans_60B;
@@ -39,6 +40,7 @@ public class UI {
 
         botoes = new Botões(painel);
         criatura = new Criatura();
+        ambiente = new Ambiente();
 
         // Atribuição da fonte
         try {
@@ -100,8 +102,7 @@ public class UI {
         }
         // Play state
         if (gameState == playState) {
-            playStateUI.g2 = this.g2;
-            playStateUI.playState();
+            ambiente.playState(g2);
         }
         // Game over
         if (gameState == gameOverState) {
@@ -112,16 +113,16 @@ public class UI {
 
         // Cards de ambiente
         if (gameState == florestaCardState) {
-            cardsAmbienteUI.g2 = this.g2;
-            cardsAmbienteUI.cardFloresta();
+            cardsEspeciaisUI.g2 = this.g2;
+            cardsEspeciaisUI.cardFloresta();
         }
         if (gameState == lagoCardState) {
-            cardsAmbienteUI.g2 = this.g2;
-            cardsAmbienteUI.cardLago();
+            cardsEspeciaisUI.g2 = this.g2;
+            cardsEspeciaisUI.cardLago();
         }
         if (gameState == montanhaCardState) {
-            cardsAmbienteUI.g2 = this.g2;
-            cardsAmbienteUI.cardMontanha();
+            cardsEspeciaisUI.g2 = this.g2;
+            cardsEspeciaisUI.cardMontanha();
         }
     }
 
@@ -321,8 +322,8 @@ public class UI {
     public int getTelaInicialState() { return telaInicialState; }
     public void setTelaInicialState(int telaInicialState) { this.telaInicialState = telaInicialState; }
 
-    public void setPlayStateUI(PlayStateUI playStateUI) { this.playStateUI = playStateUI; }
-    public void setCardsAmbienteUI(CardsAmbienteUI cardsAmbienteUI) { this.cardsAmbienteUI = cardsAmbienteUI; }
+    public void setAmbiente(Ambiente ambiente) { this.ambiente = ambiente; }
+    public void setCardsEspeciaisUI(CardsEspeciaisUI cardsEspeciaisUI) { this.cardsEspeciaisUI = cardsEspeciaisUI; }
 
     public int getNumComando() { return numComando; }
     public void setNumComando(int numComando) { this.numComando = numComando; }

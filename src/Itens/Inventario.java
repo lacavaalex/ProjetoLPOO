@@ -75,10 +75,12 @@ public class Inventario {
     }
     public void abrir() {
         fechado = false;
+        painel.setFocusable(false);
         botoes.mostrarBotaoSair();
     }
     public void fechar() {
         fechado = true;
+        painel.setFocusable(true);
         botoes.esconderBotaoSair();
     }
     public boolean isFechado() {

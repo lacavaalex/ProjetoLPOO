@@ -1,16 +1,45 @@
 package Ambiente;
 
+import Main.Painel;
+
 import javax.swing.*;
+import java.awt.*;
 
 public class Ambiente extends JPanel {
 
+    Painel painel;
+    Graphics2D g2;
     private String nome, descricao, dificuldade, recursos, frequenciaEventos, clima;
+
+    // Atributos de gerenciamento de inventário
+    private boolean recursosColetados = false;
+    private boolean recursosGastos = false;
+
+    public Ambiente() {
+    }
 
 // Metodo-base para o polimorfismo da superclasse
     public void descreverAmbiente() {}
 
+// Metodo-base para integrar a UI
+    public void playState(Graphics2D g2) {}
 
 // Getters e setters
+
+
+    public boolean isRecursosColetados() {
+        return recursosColetados;
+    }
+    public void setRecursosColetados(boolean recursosColetados) {
+        this.recursosColetados = recursosColetados;
+    }
+    public boolean isRecursosGastos() {
+        return recursosGastos;
+    }
+    public void setRecursosGastos(boolean recursosGastos) {
+        this.recursosGastos = recursosGastos;
+    }
+
     public String getNome() {
         return nome;
     }

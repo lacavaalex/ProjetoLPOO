@@ -6,9 +6,9 @@ import Main.Painel;
 
 import java.awt.*;
 
-public class CardsAmbienteUI extends UI {
+public class CardsEspeciaisUI extends UI {
 
-    public CardsAmbienteUI(Painel painel, Jogador jogador) {
+    public CardsEspeciaisUI(Painel painel, Jogador jogador) {
         super(painel, jogador);
     }
 

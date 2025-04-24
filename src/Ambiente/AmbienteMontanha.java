@@ -1,5 +1,6 @@
 package Ambiente;
 
+import Controles.Botões;
 import Entidade.Jogador;
 import Main.Painel;
 import UI.UI;
@@ -11,12 +12,14 @@ public class AmbienteMontanha extends Ambiente {
     Painel painel;
     Jogador jogador;
     UI ui;
+    Botões botoes;
 
     public AmbienteMontanha(Painel painel, Jogador jogador, UI ui) {
         super();
         this.painel = painel;
         this.jogador = jogador;
         this.ui = ui;
+        this.botoes = painel.getBotoes();
 
         descreverAmbiente();
     }
@@ -36,7 +39,6 @@ public class AmbienteMontanha extends Ambiente {
         int tileSize = painel.getTileSize();
         int larguraTela = painel.getLargura();
         int alturaTela = painel.getAltura();
-        //this.numComando = painel.getUi().getNumComando();
 
         g2.setColor(Color.black);
         g2.fillRect(0, 0, larguraTela, alturaTela);
@@ -49,7 +51,10 @@ public class AmbienteMontanha extends Ambiente {
 
         switch (subState) {
 
-            case 3131:
+            case 500:
+                botoes.mostrarBotaoVoltar();
+                botoes.esconderBotaoMochila();
+
                 ui.escreverTexto("O trecho acabou. O único caminho para além daqui...", tileSize * 2);
                 ui.escreverTexto("é para cima. A montanha sussura seu nome...", tileSize * 3);
                 ui.escreverTexto("", tileSize * 4);

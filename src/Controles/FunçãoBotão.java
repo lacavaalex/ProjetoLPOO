@@ -16,14 +16,15 @@ public class FunçãoBotão implements ActionListener {
         this.botoes = botoes;
     }
 
-// Ação que cada botão executa
+    // Ação que cada botão executa
     public void actionPerformed(ActionEvent e) {
 
         int gameState = painel.getGameState();
         Object fonte = e.getSource();
 
-    // CONTINUAR
+        // CONTINUAR
         if (fonte == botoes.getBotaoContinuar()) {
+            botoes.esconderBotaoContinuar();
             if (gameState == painel.getPlayState()) {
                 botoes.mostrarBotaoMochila();
                 botoes.esconderBotaoContinuar();
@@ -31,15 +32,22 @@ public class FunçãoBotão implements ActionListener {
                 int subState = painel.getPlaySubState();
 
                 switch (subState) {
-                    case 1: painel.setPlaySubState(10); break;
-                    case 2: painel.setPlaySubState(20); break;
-                    case 3: painel.setPlaySubState(30); break;
-                    case 12: painel.trocarAmbiente("lago"); painel.setGameState(painel.getLagoCardState()); break;
-                    case 102: painel.setGameState(1212); break;
-                    case 31: painel.trocarAmbiente("montanha"); painel.setGameState(painel.getMontanhaCardState()); break;
-                    case 103: painel.setGameState(3131); break;
-                    case 32: painel.setPlaySubState(33); break;
-                    case 34: painel.setGameState(painel.getGameOverState()); break;
+                    // Floresta
+                    case 100: painel.setPlaySubState(101); break;
+                    case 103: painel.trocarAmbiente("lago"); painel.setGameState(painel.getLagoCardState()); break;
+                    case 200: painel.setPlaySubState(201); break;
+                    case 201: painel.setPlaySubState(202); break;
+                    case 300: painel.setPlaySubState(301); break;
+                    case 302: painel.trocarAmbiente("montanha"); painel.setGameState(painel.getMontanhaCardState()); break;
+                    case 303: painel.setPlaySubState(304); break;
+                    case 305: painel.setGameState(painel.getGameOverState()); break;
+
+                    // Lago
+                    case 10002: painel.setGameState(400); break;
+
+                    // Montanha
+                    case 10003: painel.setGameState(500); break;
+
                     default: System.out.println("Caso default"); break;
                 }
             }
@@ -52,46 +60,47 @@ public class FunçãoBotão implements ActionListener {
             }
             else if (gameState == painel.getLagoCardState()) {
                 painel.setGameState(painel.getPlayState());
-                painel.setPlaySubState(1212);
+                painel.setPlaySubState(400);
             }
             else if (gameState == painel.getMontanhaCardState()) {
                 painel.setGameState(painel.getPlayState());
-                painel.setPlaySubState(3131);
+                painel.setPlaySubState(500);
             }
             System.out.println(painel.getPlaySubState());
         }
 
 
-    // VOLTAR
+        // VOLTAR
         else if (fonte == botoes.getBotaoVoltar()) {
+            botoes.esconderBotaoVoltar();
             if (painel.getGameState() == painel.getTutorialControles()) {
                 painel.setGameState(painel.getTitleState());
             } else {
                 botoes.mostrarBotaoMochila();
 
-                if (painel.getPlaySubState() == 1212 || painel.getPlaySubState() == 11) {
+                if (painel.getPlaySubState() == 400 || painel.getPlaySubState() == 102) {
                     painel.trocarAmbiente("floresta");
-                    painel.setPlaySubState(1213);
-                } else if (painel.getPlaySubState() == 3131) {
+                    painel.setPlaySubState(104);
+                } else if (painel.getPlaySubState() == 500) {
                     painel.trocarAmbiente("floresta");
-                    painel.setPlaySubState(32);
-                } else if (painel.getPlaySubState() == 22) {
-                    painel.setPlaySubState(20);
+                    painel.setPlaySubState(303);
+                } else if (painel.getPlaySubState() == 204) {
+                    painel.setPlaySubState(202);
                 }
             }
         }
 
-    // MOCHILA/INVENTÁRIO
+        // MOCHILA/INVENTÁRIO
         else if (fonte == botoes.getBotaoMochila()) {
             painel.getUi().mostrarInventario();
             botoes.esconderBotaoMochila();
         }
-    // SAIR
+        // SAIR
         else if (fonte == botoes.getBotaoSair()) {
             painel.getInvent().fechar();
             botoes.mostrarBotaoMochila();
         }
-    // DE VOLTA AO INÍCIO
+        // DE VOLTA AO INÍCIO
         else if (fonte == botoes.getBotaoInicio()) { painel.setGameState(painel.getTitleState()); }
 
     }

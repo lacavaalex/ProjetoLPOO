@@ -11,10 +11,10 @@ import java.awt.*;
 
 public class Painel extends JPanel implements Runnable {
 
-// Construtor de classes externas
+    // Construtor de classes externas
     Thread gameThread;
 
-// Definição da tela
+    // Definição da tela
     private final int originalTileSize = 16;
     private final int escala = 3;
     private int tileSize = originalTileSize * escala;
@@ -22,10 +22,10 @@ public class Painel extends JPanel implements Runnable {
     private int larguraTela = 1300;
     private int alturaTela = 700;
 
-// Definição de FPS
+    // Definição de FPS
     private final int fps = 60;
 
-// Chamada de classes
+    // Chamada de classes
     private Ambiente ambiente = new Ambiente();
     private Jogador jogador = new Jogador();
 
@@ -39,7 +39,7 @@ public class Painel extends JPanel implements Runnable {
     private CardsEspeciaisUI cardsEspeciaisUI;
 
 
-// Game States
+    // Game States
     private int gameState;
     private final int titleState = 0;
     private final int gameOverState = 1;
@@ -47,16 +47,16 @@ public class Painel extends JPanel implements Runnable {
     private final int playState = 3;
     private int playSubState = 0;
 
-    private final int tutorialControles = 1000;
-    private final int florestaCardState = 1001;
-    private final int lagoCardState = 1002;
-    private final int montanhaCardState = 1003;
+    private final int tutorialControles = 10000;
+    private final int florestaCardState = 10001;
+    private final int lagoCardState = 10002;
+    private final int montanhaCardState = 10003;
 
 
 
     public Painel(){
 
-    // Estabelecimento dos dados da tela
+        // Estabelecimento dos dados da tela
         this.setPreferredSize(new Dimension(larguraTela, alturaTela));
         this.setBackground(Color.black);
         this.setLayout(null);
@@ -66,29 +66,26 @@ public class Painel extends JPanel implements Runnable {
         this.add(botoes);
         botoes.mostrarBotaoContinuar();
 
-    // Buffering mais preciso
+        // Buffering mais preciso
         this.setDoubleBuffered(true);
-    // Faz a classe priorizar o input do teclado mesmo na presença de botões
+        // Faz a classe priorizar o input do teclado mesmo na presença de botões
         this.addKeyListener(teclado);
         this.setFocusable(true);
 
-    // Adição do ambiente
+        // Adição do ambiente
         ambiente.setBounds(0, 0, larguraTela, alturaTela);
         ambiente.setVisible(false);
         this.add(ambiente);
 
-    // Adição das outras UIs
-        //ambiente = new Ambiente();
+        // Adição das outras UIs
         ui.setAmbiente(ambiente);
-        //playStateUI = new PlayStateUI(this, jogador);
-        //ui.setPlayStateUI(playStateUI);
 
         cardsEspeciaisUI = new CardsEspeciaisUI(this, jogador);
         ui.setCardsEspeciaisUI(cardsEspeciaisUI);
 
     }
 
-// Inicialização do jogo e aplicação da Thread
+    // Inicialização do jogo e aplicação da Thread
     public void setupJogo() {
         gameState = titleState;
 
@@ -102,7 +99,7 @@ public class Painel extends JPanel implements Runnable {
         gameThread.start();
     }
 
-// Implementação do game loop
+    // Implementação do game loop
     public void run() {
 
         double intervalo = 1000000000 / fps;
@@ -132,7 +129,7 @@ public class Painel extends JPanel implements Runnable {
         }
     }
 
-// Atualização inicial e contínua
+    // Atualização inicial e contínua
     public void update() {
         if (gameState == titleState) {
             botoes.setVisible(false);
@@ -141,7 +138,7 @@ public class Painel extends JPanel implements Runnable {
         }
     }
 
-// Visualização (paint component)
+    // Visualização (paint component)
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -153,7 +150,7 @@ public class Painel extends JPanel implements Runnable {
             ui.mostrar(g2);
         }
 
-    // Desenha a tela de inventário à frente do resto
+        // Desenha a tela de inventário à frente do resto
         if (!invent.isFechado()) {
             invent.telaDeInventario(g2, ui);
         }
@@ -161,7 +158,7 @@ public class Painel extends JPanel implements Runnable {
         this.requestFocusInWindow();
     }
 
-
+    // Transição de ambientes
     public void trocarAmbiente(String qual) {
 
         switch (qual) {
@@ -190,7 +187,7 @@ public class Painel extends JPanel implements Runnable {
         }
     }
 
-// Getters e setters
+    // Getters e setters
     public int getGameState() {
         return gameState;
     }
@@ -244,26 +241,7 @@ public class Painel extends JPanel implements Runnable {
     public int getPlaySubState() {
         return playSubState;
     }
-    public void setPlaySubState(int novoSubState) {
-        this.playSubState = novoSubState;
-
-        if (novoSubState > 0 && novoSubState < 10 || novoSubState == 12 || novoSubState == 31
-        || novoSubState == 32 || novoSubState == 34) {
-            botoes.esconderBotaoMochila();
-            botoes.mostrarBotaoContinuar();
-        }
-        if (novoSubState == 20) {
-            botoes.esconderBotaoContinuar();
-        }
-
-        if (novoSubState == 11 || novoSubState == 22 || novoSubState == 1212 || novoSubState == 3131) {
-            botoes.esconderBotaoMochila();
-            botoes.mostrarBotaoVoltar();
-        }
-        if (novoSubState == 10 || novoSubState == 20 || novoSubState == 32 || novoSubState == 1213) {
-            botoes.esconderBotaoVoltar();
-        }
-    }
+    public void setPlaySubState(int novoSubState) { this.playSubState = novoSubState; }
 
     public int getPlayState() {
         return playState;
@@ -292,28 +270,15 @@ public class Painel extends JPanel implements Runnable {
         return jogador;
     }
     public Inventario getInvent() { return invent; }
-    public Ambiente getAmbiente() {
-        return ambiente;
-    }
+    public Botões getBotoes() { return botoes; }
+    public Ambiente getAmbiente() { return ambiente; }
     public void setAmbiente(Ambiente ambiente) { this.ambiente = ambiente; }
 
-    public int getFlorestaCardState() {
-        return florestaCardState;
-    }
-    public int getLagoCardState() {
-        return lagoCardState;
-    }
-    public int getMontanhaCardState() {
-        return montanhaCardState;
-    }
+    public int getFlorestaCardState() { return florestaCardState; }
+    public int getLagoCardState() { return lagoCardState; }
+    public int getMontanhaCardState() { return montanhaCardState; }
 
-    public int getTileSize() {
-        return tileSize;
-    }
-    public int getLargura() {
-        return larguraTela;
-    }
-    public int getAltura() {
-        return alturaTela;
-    }
+    public int getTileSize() { return tileSize; }
+    public int getLargura() { return larguraTela; }
+    public int getAltura() { return alturaTela; }
 }

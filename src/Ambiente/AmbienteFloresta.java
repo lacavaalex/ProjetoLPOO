@@ -21,6 +21,7 @@ public class AmbienteFloresta extends Ambiente {
         this.painel = painel;
         this.jogador = jogador;
         this.ui = ui;
+        this.botoes = painel.getBotoes();
         this.criatura = new Criatura();
 
         descreverAmbiente();
@@ -41,7 +42,6 @@ public class AmbienteFloresta extends Ambiente {
         int tileSize = painel.getTileSize();
         int larguraTela = painel.getLargura();
         int alturaTela = painel.getAltura();
-        //this.numComando = painel.getUi().getNumComando();
 
         g2.setColor(Color.black);
         g2.fillRect(0, 0, larguraTela, alturaTela);
@@ -66,14 +66,17 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             // BRANCH DA LUZ
-            case 1:
+            case 100:
+                botoes.esconderBotaoMochila();
+                botoes.mostrarBotaoContinuar();
+
                 ui.escreverTexto("Você deixa a luz te guiar...", y += tileSize);
                 ui.escreverTexto(". . .", y += tileSize);
                 ui.escreverTexto("Encontrou no caminho: 1 pedra.", y += tileSize);
                 painel.getInvent().adicionarItem("Pedra", 1);
                 break;
 
-            case 10:
+            case 101:
                 ui.escreverTexto("Arbustos chacoalham ao seu redor enquanto anda.", y += tileSize);
                 ui.escreverTexto("...", y += tileSize);
                 ui.escreverTexto("Você está perto o suficiente da luz... é uma fogueira", y += tileSize);
@@ -84,14 +87,20 @@ public class AmbienteFloresta extends Ambiente {
                 ui.desenharOpcoes(new String[]{"Pegar água", "Explorar arredores"}, y += tileSize * 2);
                 break;
 
-            case 11:
+            case 102:
+                botoes.esconderBotaoMochila();
+                botoes.mostrarBotaoVoltar();
+
                 painel.getInvent().adicionarItem("Cantil", 1);
                 ui.escreverTexto("Você pega o cantil e toma um gole d'água.", y += tileSize);
                 jogador.setSede(false);
                 ui.escreverTexto("Hidratação no máximo.", y += tileSize);
                 break;
 
-            case 12:
+            case 103:
+                botoes.esconderBotaoMochila();
+                botoes.mostrarBotaoContinuar();
+
                 ui.escreverTexto("Melhor não mexer com o que não é seu.", y += tileSize);
                 ui.escreverTexto("(e, afinal, quem sabe de quem pode ser...)", tileSize * 3);
                 ui.escreverTexto("", tileSize * 4);
@@ -102,14 +111,17 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Apressando o passo, em minutos você chega ao lago.", tileSize * 9);
                 break;
 
-            case 1213:
+            case 104:
                 ui.escreverTexto("Você retorna a atenção à fogueira.", y += tileSize);
 
                 ui.desenharOpcoes(new String[]{"Ir ao lago"}, y += tileSize);
                 break;
 
             // BRANCH DA VÍBORA
-            case 2:
+            case 200:
+                botoes.esconderBotaoMochila();
+                botoes.mostrarBotaoContinuar();
+
                 ui.escreverTexto("Você busca por recursos.", y += tileSize);
                 ui.escreverTexto("Encontrou: 7 madeiras, 2 pedras, 1 galho pontiagudo.", y += tileSize);
 
@@ -121,14 +133,20 @@ public class AmbienteFloresta extends Ambiente {
                 }
                 break;
 
-            case 20:
-                ui.escreverTexto("Aquele chiado... parece estar tão perto...", tileSize * 2);
+            case 201:
+                botoes.mostrarBotaoContinuar();
+                botoes.esconderBotaoMochila();
+
+                ui.escreverTexto("Aquele chiado... parece estar tão perto...", tileSize * 4);
+                break;
+
+            case 202:
                 Evento eventoVibora = new EventoCriatura(painel, ui, jogador, criatura, 1);
                 eventoVibora.executar(g2);
                 // NÃO DEFINI PROBABILIDADE POIS SEMPRE QUERO QUE ESTE EVENTO ACONTECA NESSE CASO
                 break;
 
-            case 21:
+            case 203:
                 g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F));
                 ui.escreverTexto("COMBATE", y += tileSize);
                 g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
@@ -152,7 +170,10 @@ public class AmbienteFloresta extends Ambiente {
 
                 break;
 
-            case 22:
+            case 204:
+                botoes.esconderBotaoMochila();
+                botoes.mostrarBotaoVoltar();
+
                 ui.escreverTexto("Você pensa em fugir, mas se sente meio tonto...", tileSize * 2);
                 ui.escreverTexto("Porcaria, a mordida da víbora o deixou", y += tileSize * 2);
                 g2.setColor(Color.red);
@@ -160,12 +181,13 @@ public class AmbienteFloresta extends Ambiente {
                 g2.setColor(Color.white);
                 ui.escreverTexto("", y += tileSize);
                 ui.escreverTexto("Ela é rápida, e você está abatido(a). É melhor não arriscar.", y += tileSize);
-
-                botoes.mostrarBotaoVoltar();
                 break;
 
             // BRANCH DA MONTANHA
-            case 3:
+            case 300:
+                botoes.esconderBotaoMochila();
+                botoes.mostrarBotaoContinuar();
+
                 ui.escreverTexto("Você se direciona até a montanha", y += tileSize);
                 ui.escreverTexto(". . .", y += tileSize);
                 ui.escreverTexto("Algo não parce certo.", y += tileSize);
@@ -174,7 +196,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto(". . .", y += tileSize);
                 break;
 
-            case 30:
+            case 301:
                 ui.escreverTexto("Atingido o pé da montanha, você enxerga um trecho de subida.", y += tileSize);
                 ui.escreverTexto("O que quer que estava te seguindo aparenta ter parado...", y += tileSize);
                 ui.escreverTexto("Não há nada de destaque neste local, além de uma rocha firme.", y += tileSize);
@@ -185,7 +207,10 @@ public class AmbienteFloresta extends Ambiente {
                 ui.desenharOpcoes(new String[]{"Subir pelo trecho", "Descansar até o amanhecer"}, y += tileSize * 2);
                 break;
 
-            case 31:
+            case 302:
+                botoes.esconderBotaoMochila();
+                botoes.mostrarBotaoContinuar();
+
                 ui.escreverTexto("Você sobe o trecho semi-íngreme.", y += tileSize);
                 ui.escreverTexto("Olhando pra trás, há um olhar a espreita.", y += tileSize);
                 ui.escreverTexto("(Ainda bem que não fiquei).", y += tileSize);
@@ -193,19 +218,25 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Você chega num paredão.", y += tileSize);
                 break;
 
-            case 32:
+            case 303:
+                botoes.esconderBotaoMochila();
+                botoes.mostrarBotaoContinuar();
+
                 ui.escreverTexto("Você se dirige àquela rocha para um abrigo temporário.", y += tileSize);
                 ui.escreverTexto("Vai ter que servir. Você já se afastou demais da clareira.", y += tileSize);
                 ui.escreverTexto("A energia aqui não é ideal, mas não parece ter mais nada à espreita", y += tileSize);
                 ui.escreverTexto("De olhos entreabertos, você deita para descansar...", y += tileSize);
                 break;
 
-            case 33:
+            case 304:
                 // Deixei de lado a questão de probabilidade por enquanto, mas será implementada aqui
                 Evento eventoUrso = new EventoCriatura(painel, ui, jogador, criatura, 2);
                 eventoUrso.executar(g2);
                 break;
-            case 34:
+            case 305:
+                botoes.esconderBotaoMochila();
+                botoes.mostrarBotaoContinuar();
+
                 ui.escreverTexto("Você tenta--", y += tileSize);
                 g2.setColor(Color.red);
                 ui.escreverTexto("O urso irrompe um golpe fatal. -10HP", y += tileSize);

@@ -24,9 +24,8 @@ public class Ambiente extends JPanel {
 // Metodo-base para integrar a UI
     public void playState(Graphics2D g2) {}
 
+
 // Getters e setters
-
-
     public boolean isRecursosColetados() {
         return recursosColetados;
     }

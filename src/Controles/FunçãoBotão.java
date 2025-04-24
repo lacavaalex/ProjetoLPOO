@@ -33,12 +33,12 @@ public class FunçãoBotão implements ActionListener {
                     case 1: painel.setPlaySubState(10); break;
                     case 2: painel.setPlaySubState(20); break;
                     case 3: painel.setPlaySubState(30); break;
-                    case 12: painel.setGameState(102); break;
+                    case 12: painel.setGameState(painel.getLagoCardState()); break;
                     case 102: painel.setGameState(1212); break;
-                    case 31: painel.setGameState(103); break;
+                    case 31: painel.setGameState(painel.getMontanhaCardState()); break;
                     case 103: painel.setGameState(3131); break;
                     case 32: painel.setPlaySubState(33); break;
-                    case 34: painel.setGameState(4); break;
+                    case 34: painel.setGameState(painel.getGameOverState()); break;
                     default: System.out.println("Caso default"); break;
                 }
             }

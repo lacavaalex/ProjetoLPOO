@@ -40,9 +40,22 @@ public class UI {
         botoes = new Botões(painel);
         criatura = new Criatura();
 
-    // Atribuição da fonte
-        pixelsans_30 = new Font("Pixel Sans Serif", Font.PLAIN, 30);
-        pixelsans_60B = new Font("Pixel Sans Serif", Font.BOLD, 60);
+        // Atribuição da fonte
+        try {
+            // Carrega a fonte customizada a partir dos resources
+            Font pixelFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Fonte/PixelSansSerif.ttf"));
+
+            pixelsans_30 = pixelFont.deriveFont(Font.PLAIN, 30f);
+            pixelsans_60B = pixelFont.deriveFont(Font.BOLD, 60f);
+
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(pixelFont);
+
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+            pixelsans_30 = new Font("Pixel Sans Serif", Font.PLAIN, 30);
+            pixelsans_60B = new Font("Pixel Sans Serif", Font.BOLD, 60);
+        }
 
     // Atribuição de imagens
         titleBackground = setup("/Imagens/fundo_mao_2");

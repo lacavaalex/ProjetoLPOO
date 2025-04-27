@@ -3,7 +3,7 @@ package Ambiente;
 import Entidade.*;
 import Controles.*;
 import Main.Painel;
-import UI.UI;
+import UI.*;
 import Evento.*;
 
 import java.awt.*;
@@ -15,6 +15,7 @@ public class AmbienteFloresta extends Ambiente {
     UI ui;
     Botões botoes;
     Criatura criatura;
+    CombateUI combate;
 
     public AmbienteFloresta(Painel painel, Jogador jogador, UI ui) {
         super();
@@ -23,6 +24,7 @@ public class AmbienteFloresta extends Ambiente {
         this.ui = ui;
         this.botoes = painel.getBotoes();
         this.criatura = new Criatura();
+        this.combate = new CombateUI(painel, jogador);
 
         descreverAmbiente();
     }
@@ -129,6 +131,7 @@ public class AmbienteFloresta extends Ambiente {
                     painel.getInvent().adicionarItem("Madeira", 7);
                     painel.getInvent().adicionarItem("Pedra", 2);
                     painel.getInvent().adicionarItem("Galho pontiagudo", 1);
+                    painel.getInvent().adicionarItem("Lasca de pedra", 1);
                     setRecursosColetados(true);
                 }
                 break;
@@ -141,16 +144,13 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 202:
-                Evento eventoVibora = new EventoCriatura(painel, ui, jogador, criatura, 1);
-                eventoVibora.executar(g2);
-                // NÃO DEFINI PROBABILIDADE POIS SEMPRE QUERO QUE ESTE EVENTO ACONTECA NESSE CASO
+                Evento eventoVibora = new EventoCriatura(painel, ui, jogador, criatura);
+                eventoVibora.executar(g2, 1);
+                // Ainda sem definição probabilística
                 break;
 
             case 203:
-                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 25F));
-                ui.escreverTexto("COMBATE", y += tileSize);
-                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
-                ui.escreverTexto("Você a atacou com o GALHO PONTIAGUDO!", y += tileSize);
+                /*ui.escreverTexto("Você a atacou com o GALHO PONTIAGUDO!", y += tileSize);
                 g2.setColor(Color.red);
                 ui.escreverTexto("-1HP", y += tileSize);
                 g2.setColor(Color.red);
@@ -166,7 +166,7 @@ public class AmbienteFloresta extends Ambiente {
                 if (!isRecursosGastos()) {
                     painel.getInvent().removerItem("Galho pontiagudo", 1);
                     setRecursosGastos(true);
-                }
+                }*/
 
                 break;
 
@@ -230,8 +230,8 @@ public class AmbienteFloresta extends Ambiente {
 
             case 304:
                 // Deixei de lado a questão de probabilidade por enquanto, mas será implementada aqui
-                Evento eventoUrso = new EventoCriatura(painel, ui, jogador, criatura, 2);
-                eventoUrso.executar(g2);
+                Evento eventoUrso = new EventoCriatura(painel, ui, jogador, criatura);
+                eventoUrso.executar(g2, 2);
                 break;
             case 305:
                 botoes.esconderBotaoMochila();
@@ -248,7 +248,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;*/
 
             default:
-                System.out.println("default");
+                System.out.println("Floresta default");
                 System.out.println(painel.getPlaySubState());
                 break;
         }

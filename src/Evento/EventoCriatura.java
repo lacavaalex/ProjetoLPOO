@@ -11,16 +11,18 @@ public class EventoCriatura extends Evento {
 
     Criatura criatura;
 
-    private int tipo;
-
-    public EventoCriatura(Painel painel, UI ui, Jogador jogador, Criatura criatura, int tipo) {
+    public EventoCriatura(Painel painel, UI ui, Jogador jogador, Criatura criatura) {
         super(painel, ui, jogador);
-        this.tipo = tipo;
         this.criatura = criatura;
     }
 
     @Override
-    public void executar(Graphics2D g2) {
+    public void executar(Graphics2D g2, int tipo) {
+
+        painel.getEvento().setEventoCriaturaAtivo(true);
+        painel.setGameState(painel.getPlayState());
+        painel.getCombate().iniciarCombate(criatura);
+
         if (tipo == 1) {
             viboraRubroFloresta(g2);
         }
@@ -29,9 +31,8 @@ public class EventoCriatura extends Evento {
         }
     }
 
-// Evento de encontro surpresa com a víbora
+    // Evento de encontro surpresa com a víbora
     public void viboraRubroFloresta(Graphics2D g2) {
-
         int tileSize = painel.getTileSize();
         int y = tileSize * 3;
 
@@ -42,17 +43,13 @@ public class EventoCriatura extends Evento {
         ui.escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
         ui.escreverTexto("", y += tileSize);
         g2.setColor(Color.red);
-        criatura.setViboraRubro();
+        criatura.definirCriatura(1);
         ui.escreverTexto(criatura.getDescricao(), y += tileSize);
         g2.setColor(Color.white);
-        ui.escreverTexto("O que fazer?", y += tileSize);
-
-        opcoesCombate(g2, y);
     }
 
-// Evento de encontro surpresa com o urso
+    // Evento de encontro surpresa com o urso
     public void ursoPai(Graphics2D g2) {
-
         int tileSize = painel.getTileSize();
         int y = tileSize * 3;
 
@@ -63,17 +60,11 @@ public class EventoCriatura extends Evento {
         ui.escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
         ui.escreverTexto("", y += tileSize);
         g2.setColor(Color.red);
-        criatura.setUrsoPai();
+        criatura.definirCriatura(2);
         ui.escreverTexto(criatura.getDescricao(), y += tileSize);
         g2.setColor(Color.white);
-        ui.escreverTexto("O que fazer?", y += tileSize);
-
-        opcoesCombate(g2, y);
-        if (painel.getPlaySubState() == 34) {
-            jogador.setVida(jogador.getVida() - jogador.getVidaMax());
-        }
     }
 
-// Getters e setters
+    // Getters e setters
     public Criatura getCriatura() { return criatura; }
 }

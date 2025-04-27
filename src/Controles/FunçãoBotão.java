@@ -1,6 +1,5 @@
 package Controles;
 
-import Ambiente.Ambiente;
 import Main.*;
 
 import java.awt.event.ActionEvent;
@@ -25,6 +24,13 @@ public class FunçãoBotão implements ActionListener {
         // CONTINUAR
         if (fonte == botoes.getBotaoContinuar()) {
             botoes.esconderBotaoContinuar();
+
+            // FightState
+            if (painel.getEvento().isEventoCriaturaAtivo()) {
+                painel.setFightState(true);
+            }
+
+            // PlayState
             if (gameState == painel.getPlayState()) {
                 botoes.mostrarBotaoMochila();
                 botoes.esconderBotaoContinuar();
@@ -48,10 +54,11 @@ public class FunçãoBotão implements ActionListener {
                     // Montanha
                     case 10003: painel.setGameState(500); break;
 
-                    default: System.out.println("Caso default"); break;
+                    default: System.out.println("Botao default"); break;
                 }
             }
 
+            // Outras telas
             else if (gameState == painel.getOpeningState()) {
                 painel.setGameState(painel.getFlorestaCardState());
             }

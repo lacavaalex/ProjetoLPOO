@@ -3,6 +3,7 @@ package Main;
 import Controles.*;
 import Entidade.*;
 import Ambiente.*;
+import Evento.EventoCriatura;
 import Itens.*;
 import UI.*;
 
@@ -28,6 +29,7 @@ public class Painel extends JPanel implements Runnable {
     // Chamada de classes
     private Ambiente ambiente = new Ambiente();
     private Jogador jogador = new Jogador();
+    private Criatura criatura = new Criatura();
 
     private Teclado teclado = new Teclado(this);
     private Botões botoes = new Botões(this);
@@ -35,9 +37,10 @@ public class Painel extends JPanel implements Runnable {
     private Inventario invent = new Inventario(this, botoes);
 
     private UI ui = new UI(this, jogador);
-    //private PlayStateUI playStateUI;
+    private CombateUI combate = new CombateUI(this, jogador);
     private CardsEspeciaisUI cardsEspeciaisUI;
 
+    private EventoCriatura eventoCriatura = new EventoCriatura(this, ui, jogador, criatura);
 
     // Game States
     private int gameState;
@@ -46,6 +49,7 @@ public class Painel extends JPanel implements Runnable {
     private final int openingState = 2;
     private final int playState = 3;
     private int playSubState = 0;
+    private boolean fightState = false;
 
     private final int tutorialControles = 10000;
     private final int florestaCardState = 10001;
@@ -103,11 +107,8 @@ public class Painel extends JPanel implements Runnable {
     public void run() {
 
         double intervalo = 1000000000 / fps;
-        double delta = 0;
-        long lastTime = System.nanoTime();
-        long currentTime;
-        long timer = 0;
-        int drawCount = 0;
+        double delta = 0; long lastTime = System.nanoTime();
+        long currentTime; long timer = 0; int drawCount = 0;
 
         while(gameThread != null) {
             currentTime = System.nanoTime();
@@ -144,10 +145,15 @@ public class Painel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        if (gameState == titleState || gameState == openingState || gameState == playState ||
+        // Desenha a UI, sobrepõe a tela de combate enquanto ativa
+        if (fightState) {
+            combate.telaCombate(g2, ui);
+        } else {
+            if (gameState == titleState || gameState == openingState || gameState == playState ||
                 gameState == gameOverState || gameState == tutorialControles ||
                 gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
-            ui.mostrar(g2);
+                ui.mostrar(g2);
+            }
         }
 
         // Desenha a tela de inventário à frente do resto
@@ -187,10 +193,11 @@ public class Painel extends JPanel implements Runnable {
         }
     }
 
+
     // Getters e setters
-    public int getGameState() {
-        return gameState;
-    }
+
+    // G/S dos game states principais
+    public int getGameState() { return gameState; }
     public void setGameState(int gameState) {
         this.gameState = gameState;
 
@@ -212,6 +219,9 @@ public class Painel extends JPanel implements Runnable {
         if (gameState == gameOverState) {
             botoes.setVisible(true);
             botoes.mostrarBotaoInicio();
+        }
+        if (fightState) {
+            combate.iniciarCombate(criatura);
         }
 
         // Cards de ambiente
@@ -236,48 +246,48 @@ public class Painel extends JPanel implements Runnable {
             botoes.setVisible(true);
             botoes.mostrarBotaoMochila();
         }
+
+        // Fight state
+        if (getEvento().isEventoCriaturaAtivo()) {
+            botoes.esconderBotaoMochila();
+            botoes.mostrarBotaoContinuar();
+
+            if (fightState) {
+                botoes.esconderBotaoContinuar();
+                botoes.mostrarBotaoMochila();
+            }
+        }
     }
 
-    public int getPlaySubState() {
-        return playSubState;
-    }
+    public int getPlaySubState() { return playSubState; }
     public void setPlaySubState(int novoSubState) { this.playSubState = novoSubState; }
+    public boolean getFightState() { return fightState; }
+    public void setFightState(boolean fightState) { this.fightState = fightState; }
+    public int getPlayState() { return playState; }
+    public void resetPlayState() { setPlaySubState(0); }
 
-    public int getPlayState() {
-        return playState;
-    }
-    public void resetPlayState() {
-        setPlaySubState(0);
-    }
+    // G/S dos game states diversos
+    public int getTitleState() { return titleState; }
+    public int getTutorialControles() { return tutorialControles; }
+    public int getOpeningState() { return openingState; }
+    public int getGameOverState() { return gameOverState; }
 
-    public int getTitleState() {
-        return titleState;
-    }
-    public int getTutorialControles() {
-        return tutorialControles;
-    }
-    public int getOpeningState() {
-        return openingState;
-    }
-    public int getGameOverState() {
-        return gameOverState;
-    }
+    // G/S dos cards de Ambiente
+    public int getFlorestaCardState() { return florestaCardState; }
+    public int getLagoCardState() { return lagoCardState; }
+    public int getMontanhaCardState() { return montanhaCardState; }
 
-    public UI getUi() {
-        return ui;
-    }
-    public Jogador getJogador() {
-        return jogador;
-    }
+    // G/S das classes intermediadas pelo Painel
+    public UI getUi() { return ui; }
+    public CombateUI getCombate() { return combate; }
+    public Jogador getJogador() { return jogador; }
+    public Evento.EventoCriatura getEvento() { return eventoCriatura; }
     public Inventario getInvent() { return invent; }
     public Botões getBotoes() { return botoes; }
     public Ambiente getAmbiente() { return ambiente; }
     public void setAmbiente(Ambiente ambiente) { this.ambiente = ambiente; }
 
-    public int getFlorestaCardState() { return florestaCardState; }
-    public int getLagoCardState() { return lagoCardState; }
-    public int getMontanhaCardState() { return montanhaCardState; }
-
+    // G/S das dimensões da tela
     public int getTileSize() { return tileSize; }
     public int getLargura() { return larguraTela; }
     public int getAltura() { return alturaTela; }

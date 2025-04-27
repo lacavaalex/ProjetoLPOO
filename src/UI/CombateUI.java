@@ -1,0 +1,127 @@
+package UI;
+
+import Entidade.*;
+import Main.Painel;
+import Itens.*;
+
+import java.awt.*;
+
+public class CombateUI extends UI {
+
+    UI ui;
+    ItemCombate item;
+    private Criatura criaturaEmCombate;
+
+    Font pixelsans_30;
+    private boolean turnoJogador = true;
+    private boolean fimDeCombate = false;
+
+    public CombateUI(Painel painel, Jogador jogador) {
+        super(painel, jogador);
+
+        item = new ItemCombate(painel);
+
+        this.pixelsans_30 = painel.getUi().pixelsans_30;
+    }
+
+    // Configurações da tela de combate
+    public void iniciarCombate(Criatura criatura) {
+        this.criaturaEmCombate = criatura;
+        fimDeCombate = false;
+        turnoJogador = true;
+        numComando = 0;
+
+        for (Item itemNoInventario : painel.getInvent().getInvent().values()) {
+            if (itemNoInventario instanceof ItemCombate) {
+                item = (ItemCombate) itemNoInventario;
+                item.setNome(itemNoInventario.getNome());
+                item.definirArma(itemNoInventario.getNome());
+                break;
+            }
+        }
+    }
+
+    // UI da tela
+    public void telaCombate(Graphics2D g2, UI ui) {
+        this.g2 = g2;
+        this.ui = ui;
+
+        int tileSize = painel.getTileSize();
+        int y = tileSize / 2;
+
+        // Titulo
+        g2.setColor(Color.red); g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 25F));
+        escreverTexto("COMBATE", y += tileSize); g2.setColor(Color.white);
+
+        g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));
+
+        // Dentro de combate
+        if (!fimDeCombate) {
+            if (criaturaEmCombate != null) {
+                g2.setColor(Color.red);
+                escreverTexto(criaturaEmCombate.getDescricao(), y += tileSize * 2);
+                g2.setColor(Color.white);
+                escreverTexto("Sua vida: " + jogador.getVida(), y += tileSize);
+            }
+            if (turnoJogador) {
+                escreverTexto("Aja enquanto pode.", y += tileSize * 2);
+                desenharOpcoes(new String[]{"Atacar", "Fugir"}, y += tileSize);
+            } else {
+                escreverTexto("O inimigo ataca!", y += tileSize * 2);
+            }
+        }
+
+        // Fim de combate
+        else {
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
+            escreverTexto("FIM DE COMBATE! Seu oponente foi derrotado!", y += tileSize * 2);
+            g2.setColor(Color.yellow); escreverTexto("DESFECHO", y += tileSize);
+            escreverTexto("- Vida: " + jogador.getVida() + "HP", y += tileSize);
+            escreverTexto("- Consequências: ", y += tileSize);
+            g2.setColor(Color.white); escreverTexto("Pressione ENTER para continuar.", y += tileSize * 2);
+
+            // * ENTER DEVE SETEVENTOATIVO-FALSE. TALVEZ SETGAMESTATE PRO SUBSTATE ANTERIOR, SE NAO FUNCIONAR NO SISTEMATURNO
+        }
+
+    }
+
+    // Sistema de turnos
+    public void sistemaTurno() {
+        if (fimDeCombate) {
+            painel.setGameState(painel.getPlayState());
+        }
+
+        // Turno do jogador
+        if (turnoJogador) {
+            // ATACAR
+            if (numComando == 0) {
+                // Cálculo de vida
+                criaturaEmCombate.setVidaCriatura(criaturaEmCombate.getVidaCriatura() - item.getPoder()); // A IMPLEMENTAR DANO POR ITEM
+
+                // Cálculo de morte ou troca de turno
+                if (criatura.getVidaCriatura() <= 0) {
+                    fimDeCombate = true;
+                } else {
+                    turnoJogador = false;
+                }
+
+            // FUGIR
+            } else if (numComando == 1) {
+                // fuga
+            }
+
+        // Turno do inimigo
+        } else {
+            // Cálculo de vida
+            jogador.setVida(jogador.getVida() - criatura.getAtaqueCriatura());
+
+            // Cálculo de morte ou troca de turno
+            if (jogador.getVida() <= 0) {
+                painel.setGameState(painel.getGameOverState());
+            } else {
+                turnoJogador = true;
+            }
+        }
+        numComando = 0;
+    }
+}

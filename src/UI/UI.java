@@ -143,16 +143,15 @@ public class UI {
             larguraTela = painel.getLargura();
             alturaTela = painel.getAltura();
 
-            // Título
+            // Fundo
             desenharFundoMao();
+            // Título (com sombra)
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 35F));
             int y = tileSize * 5;
             int x = coordenadaXParaTextoCentralizado("O MUNDO FUNESTO");
 
-            //Sombra
             g2.setColor((Color.black));
             g2.drawString("O MUNDO FUNESTO", x + 5, y + 5);
-
             g2.setColor(Color.white);
             escreverTexto("O MUNDO FUNESTO", y);
 
@@ -187,10 +186,11 @@ public class UI {
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));;
         escreverTexto(" ", y += tileSize);
-        escreverTexto("- A tecla [W] sobe a seleção no painel de opções", y += tileSize);
-        escreverTexto("- A tecla [S] desce a seleção no painel de opções.", y += tileSize);
-        escreverTexto("- Pressione [ENTER] no painel para escolher sua opção.", y += tileSize);
-        escreverTexto("- Clique em botões ([CONTINUAR] / [VOLTAR]) com o cursor do mouse.", y += tileSize);
+        escreverTexto("Enquanto estiver no menu de seleção de opção:", y += tileSize);
+        escreverTexto("- Pressione [W] ou [UP] para subir o cursor.", y += tileSize);
+        escreverTexto("- Pressione [S] ou [DOWN] para descer o cursor.", y += tileSize);
+        escreverTexto("- Pressione [ENTER] para escolher sua opção.", y += tileSize);
+        escreverTexto("Para clicar em botões, como [MOCHILA], use o mouse ou touchpad.", y += tileSize);
     }
 
     public void mostrarGameOverScreen() {

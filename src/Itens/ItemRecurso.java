@@ -2,8 +2,8 @@ package Itens;
 
 public class ItemRecurso extends Item {
 
-    public ItemRecurso(String nome, int quantidade, Integer durabilidade) {
-        super(nome, quantidade);
+    public ItemRecurso() {
+        super();
     }
 
     @Override
@@ -11,16 +11,20 @@ public class ItemRecurso extends Item {
 
     }
 
-// Itens
-    public void definirMadeira(int quantidade) {
-        if (getNome().equals("Madeira")) {
-            setDurabilidade(null);
-        }
-    }
+    // Itens
+    public void definirRecurso(String nome) {
+        switch (nome) {
+            case "Madeira":
+                setDurabilidade(null);
+                break;
 
-    public void definirPedra() {
-        if (getNome().equals("Pedra")) {
-            setDurabilidade(null);
+            case "Pedra":
+                setDurabilidade(null);
+                break;
+
+            default:
+                System.out.println("Recurso desconhecido: ");
+                break;
         }
     }
 }

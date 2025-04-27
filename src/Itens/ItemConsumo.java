@@ -4,8 +4,8 @@ public class ItemConsumo extends Item {
 
     Inventario invent;
 
-    public ItemConsumo(String nome, int quantidade, Integer durabilidade) {
-        super(nome, quantidade);
+    public ItemConsumo() {
+        super();
     }
 
     @Override
@@ -22,10 +22,16 @@ public class ItemConsumo extends Item {
         }
     }
 
-// Itens
-    public void definirCantil() {
-        if (getNome().equals("Cantil")) {
-            setDurabilidade(5);
+    // Itens
+    public void definirConsumo(String nome) {
+        switch (nome) {
+            case "Cantil":
+                setDurabilidade(5);
+                break;
+
+            default:
+                System.out.println("Alimento desconhecido: ");
+                break;
         }
     }
 }

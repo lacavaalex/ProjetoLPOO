@@ -12,6 +12,8 @@ public abstract class Evento {
     UI ui;
     Jogador jogador;
 
+    private boolean eventoCriaturaAtivo = false;
+
     public Evento(Painel painel, UI ui, Jogador jogador) {
         this.painel = painel;
         this.ui = ui;
@@ -19,7 +21,7 @@ public abstract class Evento {
     }
 
 // Metodo-base para o polimorfismo da superclasse
-    public abstract void executar(Graphics2D g2);
+    public abstract void executar(Graphics2D g2, int tipo);
 
 // Menu de opcoes no combate
     public void opcoesCombate(Graphics2D g2, int y) {
@@ -29,6 +31,9 @@ public abstract class Evento {
     }
 
 // Getters e setters
+    public boolean isEventoCriaturaAtivo() { return eventoCriaturaAtivo; }
+    public void setEventoCriaturaAtivo(boolean eventoCriaturaAtivo) { this.eventoCriaturaAtivo = eventoCriaturaAtivo; }
+
     public Painel getPainel() { return painel; }
     public UI getUi() { return ui; }
 }

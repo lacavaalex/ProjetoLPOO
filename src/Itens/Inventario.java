@@ -23,10 +23,13 @@ public class Inventario {
     }
 
     public void adicionarItem(String nome, int quantidade) {
-        if (this.invent.containsKey(nome)) {
+        if (acharItem(nome)) {
             invent.get(nome).setQuantidade(quantidade);
         } else {
-            invent.put(nome, new Item(nome, quantidade));
+            Item novoItem = new Item();
+            novoItem.setNome(nome);
+            novoItem.setQuantidade(quantidade);
+            invent.put(nome, novoItem);
         }
     }
 
@@ -38,6 +41,10 @@ public class Inventario {
             invent.remove(nome);
         }
 
+    }
+
+    public boolean acharItem(String nome) {
+        return invent.containsKey(nome);
     }
 
     public void telaDeInventario(Graphics2D g2, UI ui) {

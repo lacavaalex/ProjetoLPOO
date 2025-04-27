@@ -6,9 +6,9 @@ public class Item {
     private int quantidade;
     private Integer durabilidade;
 
-    public Item(String nome, int quantidade) {
-        this.nome = nome;
-        this.quantidade = quantidade;
+    public Item() {
+        nome = getNome();
+        quantidade = getQuantidade();
         durabilidade = getDurabilidade();
     }
 

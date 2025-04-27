@@ -7,7 +7,7 @@ public class Jogador {
     private String nome;
     private String localizacao;
     private int vidaMax = 10;
-    private int vida;
+    private int vida = getVidaMax();
     private boolean sede = false;
     private int fome, energia;
     private boolean sanidade;

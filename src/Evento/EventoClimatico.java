@@ -7,20 +7,17 @@ import UI.UI;
 
 import java.awt.*;
 
-public class EventoClimatico extends Evento {
+public abstract class EventoClimatico extends Evento {
 
     Botões botoes;
 
-    private int tipo;
-
-    public EventoClimatico(Painel painel, UI ui, Jogador jogador, Botões botoes, int tipo) {
+    public EventoClimatico(Painel painel, UI ui, Jogador jogador, Botões botoes) {
         super(painel, ui, jogador);
-        this.tipo = tipo;
         this.botoes = botoes;
     }
 
     @Override
-    public void executar(Graphics2D g2) {
+    public void executar(Graphics2D g2, int tipo) {
         if (tipo == 1) {
             chuva(g2);
         }

@@ -1,7 +1,5 @@
 package Entidade;
 
-import Main.*;
-
 public class Criatura {
 
     private String nome;
@@ -12,18 +10,25 @@ public class Criatura {
 
     }
 
+    public void definirCriatura(int tipo) {
+        switch (tipo) {
+            case 1:
+                setNomeCriatura("Víbora-Rubro");
+                setVidaCriatura(3);
+                setAtaqueCriatura(5);
+                break;
 
-    public void setViboraRubro() {
-        setNomeCriatura("Víbora-Rubro");
-        setVidaCriatura(3);
-        setAtaqueCriatura(5);
-    }
-    public void setUrsoPai() {
-        setNomeCriatura("Urso Pai");
-        setVidaCriatura(100);
-        setAtaqueCriatura(100);
-    }
+            case 2:
+                setNomeCriatura("Urso Pai");
+                setVidaCriatura(100);
+                setAtaqueCriatura(100);
+                break;
 
+            default:
+                System.out.println("Criatura desconhecida: ");
+                break;
+        }
+    }
 
     public String getDescricao() {
         return "" + getNomeCriatura() + ": " + String.valueOf(getVidaCriatura()) + "HP / " + String.valueOf(getAtaqueCriatura()) + "ATK";

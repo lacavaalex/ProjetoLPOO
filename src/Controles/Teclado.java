@@ -33,18 +33,18 @@ public class Teclado implements KeyListener {
         int telaInicialState = ui.getTelaInicialState();
         int numComando = ui.getNumComando();
 
-    // Tela inicial
+        // Tela inicial
         if (gameState == titleState) {
 
             if (telaInicialState == 0) {
 
-                if (code == KeyEvent.VK_W) {
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     numComando--;
                     if (numComando < 0) {
                         numComando = 2;
                     }
                 }
-                if (code == KeyEvent.VK_S) {
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                     numComando++;
                     if (numComando > 2) {
                         numComando = 0;
@@ -67,13 +67,13 @@ public class Teclado implements KeyListener {
 
             } else if (telaInicialState == 1) {
 
-                if (code == KeyEvent.VK_W) {
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     numComando--;
                     if (numComando < 0) {
                         numComando = 4;
                     }
                 }
-                if (code == KeyEvent.VK_S) {
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                     numComando++;
                     if (numComando > 4) {
                         numComando = 0;
@@ -108,22 +108,24 @@ public class Teclado implements KeyListener {
             }
         }
 
-    // Jogar a atualização dos valores dessas duas variáveis à sua classe natal
+        // Jogar a atualização dos valores dessas duas variáveis à sua classe natal
         ui.setNumComando(numComando);
         ui.setTelaInicialState(telaInicialState);
-    // Atualização gráfica
+        // Atualização gráfica
         painel.repaint();
 
-    // Play state
+        // Play state
         if (gameState == playState) {
+
+            // States com 3 opcoes
             if (subState == 0) {
-                if (code == KeyEvent.VK_W) {
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     painel.getUi().numComando--;
                     if (painel.getUi().numComando < 0) {
                         painel.getUi().numComando = 2;
                     }
                 }
-                if (code == KeyEvent.VK_S) {
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                     painel.getUi().numComando++;
                     if (painel.getUi().numComando > 2) {
                         painel.getUi().numComando = 0;
@@ -135,15 +137,17 @@ public class Teclado implements KeyListener {
                     painel.getUi().numComando = 0;
                 }
             }
+
+            // States com 2 opcoes
             if (subState == 101 || subState == 202 || subState == 301
                     || subState == 304) {
-                if (code == KeyEvent.VK_W) {
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     painel.getUi().numComando--;
                     if (painel.getUi().numComando < 0) {
                         painel.getUi().numComando = 1;
                     }
                 }
-                if (code == KeyEvent.VK_S ) {
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                     painel.getUi().numComando++;
                     if (painel.getUi().numComando > 1) {
                         painel.getUi().numComando = 0;
@@ -160,14 +164,16 @@ public class Teclado implements KeyListener {
                     }
                 }
             }
+
+            // States com 1 opcao
             if (subState == 104) {
-                if (code == KeyEvent.VK_W) {
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     painel.getUi().numComando--;
                     if (painel.getUi().numComando < 0) {
                         painel.getUi().numComando = 0;
                     }
                 }
-                if (code == KeyEvent.VK_S) {
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                     painel.getUi().numComando++;
                     if (painel.getUi().numComando > 0) {
                         painel.getUi().numComando = 0;
@@ -179,12 +185,30 @@ public class Teclado implements KeyListener {
                     }
                 }
             }
+
+            // Configuração própria da tela de combate
+            if (painel.getFightState()) {
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                    painel.getCombate().numComando--;
+                    if (painel.getCombate().numComando < 0) {
+                        painel.getCombate().numComando = 1;
+                    }
+                }
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                    painel.getCombate().numComando++;
+                    if (painel.getCombate().numComando > 1) {
+                        painel.getCombate().numComando = 0;
+                    }
+                }
+                if (code == KeyEvent.VK_ENTER) {
+                    painel.getCombate().sistemaTurno();
+                }
+            }
         }
 
     }
 
-// Métodos obrigatórios da classe KeyEvent, porém sem uso para este projeto
+    // Métodos obrigatórios da classe KeyEvent, porém sem uso para este projeto
     public void keyReleased(KeyEvent e) {}
-    public void keyTyped(KeyEvent e) {
-    }
+    public void keyTyped(KeyEvent e) {}
 }

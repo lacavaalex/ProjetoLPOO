@@ -7,8 +7,8 @@ public class ItemCombate extends Item {
     private int poder;
     Painel painel;
 
-    public ItemCombate(String nome, int quantidade, Integer durabilidade, Painel painel) {
-        super(nome, quantidade);
+    public ItemCombate(Painel painel) {
+        super();
         this.painel = painel;
     }
 
@@ -21,15 +21,26 @@ public class ItemCombate extends Item {
         }
     }
 
-// Armas
-    public void galhoPontiagudo() {
-        if (getNome().equals("Galho pontiagudo")) {
-            setDurabilidade(1);
-            setPoder(1);
+    // Armas
+    public void definirArma(String nome) {
+        switch (nome) {
+            case "Galho pontiagudo":
+                setDurabilidade(1);
+                setPoder(1);
+                break;
+
+            case "Lasca de pedra":
+                setDurabilidade(1);
+                setPoder(1);
+                break;
+
+            default:
+                System.out.println("Arma desconhecida: ");
+                break;
         }
     }
 
-// Getters e setters
+    // Getters e setters
     public int getPoder() { return poder; }
     public void setPoder(int poder) { this.poder = poder; }
 }

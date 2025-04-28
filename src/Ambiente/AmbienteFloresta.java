@@ -146,6 +146,17 @@ public class AmbienteFloresta extends Ambiente {
             case 202:
                 Evento eventoVibora = new EventoCriatura(painel, ui, jogador, criatura);
                 eventoVibora.executar(g2, 1);
+
+                g2.setColor(Color.red);
+                ui.escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y += tileSize * 4);
+                g2.setColor(Color.white);
+                ui.escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
+                ui.escreverTexto("", y += tileSize);
+
+                if (!isEncontroSurpresa()) {
+                    jogador.setVida(jogador.getVida() - criatura.getAtaqueCriatura());
+                    setEncontroSurpresa(true);
+                }
                 // Ainda sem definição probabilística
                 break;
 
@@ -232,6 +243,14 @@ public class AmbienteFloresta extends Ambiente {
                 // Deixei de lado a questão de probabilidade por enquanto, mas será implementada aqui
                 Evento eventoUrso = new EventoCriatura(painel, ui, jogador, criatura);
                 eventoUrso.executar(g2, 2);
+
+                g2.setColor(Color.red);
+                ui.escreverTexto("*GROAAAAAR*", y += tileSize * 4);
+                g2.setColor(Color.white);
+                ui.escreverTexto("O RUGIDO ESTREMECE TODA A FLORESTA. VOCÊ PULA EM DESESPERO.", y += tileSize);
+                ui.escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
+                ui.escreverTexto("", y += tileSize);
+
                 break;
             case 305:
                 botoes.esconderBotaoMochila();

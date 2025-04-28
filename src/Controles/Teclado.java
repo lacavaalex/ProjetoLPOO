@@ -117,71 +117,72 @@ public class Teclado implements KeyListener {
         // Play state
         if (gameState == playState) {
 
-            // States com 3 opcoes
-            if (subState == 0) {
-                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                    painel.getUi().numComando--;
-                    if (painel.getUi().numComando < 0) {
-                        painel.getUi().numComando = 2;
+            if (!painel.getFightState()) {
+                // States com 3 opcoes
+                if (subState == 0) {
+                    if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                        painel.getUi().numComando--;
+                        if (painel.getUi().numComando < 0) {
+                            painel.getUi().numComando = 2;
+                        }
                     }
-                }
-                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    painel.getUi().numComando++;
-                    if (painel.getUi().numComando > 2) {
-                        painel.getUi().numComando = 0;
+                    if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                        painel.getUi().numComando++;
+                        if (painel.getUi().numComando > 2) {
+                            painel.getUi().numComando = 0;
+                        }
                     }
-                }
-                if (code == KeyEvent.VK_ENTER) {
-                    int opcao = painel.getUi().numComando;
-                    painel.setPlaySubState((opcao + 1)*100);
-                    painel.getUi().numComando = 0;
-                }
-            }
-
-            // States com 2 opcoes
-            if (subState == 101 || subState == 202 || subState == 301
-                    || subState == 304) {
-                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                    painel.getUi().numComando--;
-                    if (painel.getUi().numComando < 0) {
-                        painel.getUi().numComando = 1;
-                    }
-                }
-                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    painel.getUi().numComando++;
-                    if (painel.getUi().numComando > 1) {
-                        painel.getUi().numComando = 0;
-                    }
-                }
-                if (code == KeyEvent.VK_ENTER) {
-                    if (subState == 304){
-                        painel.setPlaySubState(305);
-                    }
-                    else {
+                    if (code == KeyEvent.VK_ENTER) {
                         int opcao = painel.getUi().numComando;
-                        painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
+                        painel.setPlaySubState((opcao + 1) * 100);
                         painel.getUi().numComando = 0;
                     }
                 }
-            }
 
-            // States com 1 opcao
-            if (subState == 104) {
-                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                    painel.getUi().numComando--;
-                    if (painel.getUi().numComando < 0) {
-                        painel.getUi().numComando = 0;
+                // States com 2 opcoes
+                if (subState == 101 || subState == 202 || subState == 301
+                        || subState == 304) {
+                    if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                        painel.getUi().numComando--;
+                        if (painel.getUi().numComando < 0) {
+                            painel.getUi().numComando = 1;
+                        }
+                    }
+                    if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                        painel.getUi().numComando++;
+                        if (painel.getUi().numComando > 1) {
+                            painel.getUi().numComando = 0;
+                        }
+                    }
+                    if (code == KeyEvent.VK_ENTER) {
+                        if (subState == 304) {
+                            painel.setPlaySubState(305);
+                        } else {
+                            int opcao = painel.getUi().numComando;
+                            painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
+                            painel.getUi().numComando = 0;
+                        }
                     }
                 }
-                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    painel.getUi().numComando++;
-                    if (painel.getUi().numComando > 0) {
-                        painel.getUi().numComando = 0;
+
+                // States com 1 opcao
+                if (subState == 104) {
+                    if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                        painel.getUi().numComando--;
+                        if (painel.getUi().numComando < 0) {
+                            painel.getUi().numComando = 0;
+                        }
                     }
-                }
-                if (code == KeyEvent.VK_ENTER) {
-                    if (numComando == 0) {
-                        painel.setGameState(painel.getLagoCardState());
+                    if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                        painel.getUi().numComando++;
+                        if (painel.getUi().numComando > 0) {
+                            painel.getUi().numComando = 0;
+                        }
+                    }
+                    if (code == KeyEvent.VK_ENTER) {
+                        if (numComando == 0) {
+                            painel.setGameState(painel.getLagoCardState());
+                        }
                     }
                 }
             }

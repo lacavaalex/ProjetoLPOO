@@ -34,14 +34,8 @@ public class EventoCriatura extends Evento {
     // Evento de encontro surpresa com a víbora
     public void viboraRubroFloresta(Graphics2D g2) {
         int tileSize = painel.getTileSize();
-        int y = tileSize * 3;
+        int y = tileSize * 8;
 
-        g2.setColor(Color.red);
-        ui.escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y);
-        jogador.setVida(jogador.getVida() - 1);
-        g2.setColor(Color.white);
-        ui.escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
-        ui.escreverTexto("", y += tileSize);
         g2.setColor(Color.red);
         criatura.definirCriatura(1);
         ui.escreverTexto(criatura.getDescricao(), y += tileSize);
@@ -51,14 +45,8 @@ public class EventoCriatura extends Evento {
     // Evento de encontro surpresa com o urso
     public void ursoPai(Graphics2D g2) {
         int tileSize = painel.getTileSize();
-        int y = tileSize * 3;
+        int y = tileSize * 8;
 
-        g2.setColor(Color.red);
-        ui.escreverTexto("*GROAAAAAR*", y);
-        g2.setColor(Color.white);
-        ui.escreverTexto("O RUGIDO ESTREMECE TODA A FLORESTA. VOCÊ PULA EM DESESPERO.", y += tileSize);
-        ui.escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
-        ui.escreverTexto("", y += tileSize);
         g2.setColor(Color.red);
         criatura.definirCriatura(2);
         ui.escreverTexto(criatura.getDescricao(), y += tileSize);

@@ -3,7 +3,8 @@ package Entidade;
 public class Criatura {
 
     private String nome;
-    private int vida = 0;
+    private int vidaMax;
+    private int vida;
     private int ataque = 0;
 
     public Criatura() {
@@ -14,13 +15,15 @@ public class Criatura {
         switch (tipo) {
             case 1:
                 setNomeCriatura("Víbora-Rubro");
-                setVidaCriatura(3);
-                setAtaqueCriatura(5);
+                setVidaMaxCriatura(3);
+                setVidaCriatura(getVidaMaxCriatura());
+                setAtaqueCriatura(1);
                 break;
 
             case 2:
                 setNomeCriatura("Urso Pai");
-                setVidaCriatura(100);
+                setVidaMaxCriatura(100);
+                setVidaCriatura(getVidaMaxCriatura());
                 setAtaqueCriatura(100);
                 break;
 
@@ -40,6 +43,8 @@ public class Criatura {
         this.nome = nome;
         return nome;
     }
+    public int getVidaMaxCriatura() { return vidaMax; }
+    public void setVidaMaxCriatura(int vidaMax) { this.vidaMax = vidaMax; }
     public int getVidaCriatura() {
         return vida;
     }

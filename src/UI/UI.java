@@ -205,13 +205,11 @@ public class UI {
         g2.setColor(Color.red);
 
         escreverTexto("FIM DE JOGO", y += tileSize);
-        escreverTexto("VOCÊ MORREU", y += tileSize);
+        escreverTexto("VOCÊ MORREU.", y += tileSize);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 10F));;
         g2.setColor(Color.lightGray);
         escreverTexto("Em outra vida, talvez, você soubesse qual o sentido de tudo isso...", y += tileSize);
 
-
-        botoes.mostrarBotaoContinuar();
     }
 
     public void mostrarAbertura() {
@@ -276,30 +274,41 @@ public class UI {
 
         int y = yInicial;
 
-        for (int i = 0; i < opcoes.length; i++) {
-            String texto = opcoes[i];
+        if (opcoes.length == 1) {
+            String texto = opcoes[0];
             int x = coordenadaXParaTextoCentralizado(texto);
-
-            if (numComando == i) {
-                switch (contadorChama) {
-                    case 1:
-                        g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null);
-                        break;
-                    case 2:
-                        g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null);
-                        break;
-                    case 3:
-                        g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null);
-                        break;
-                }
-            }
-            if (numComando == i) {
-                g2.setColor(Color.red);
-            } else {
-                g2.setColor(Color.white);
-            }
+            g2.setColor(Color.white);
             g2.drawString(texto, x, y);
-            y += tileSize;
+
+            switch (contadorChama) {
+                case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
+                case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
+                case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
+            }
+            g2.setColor(Color.red);
+            g2.drawString(texto, x, y);
+        }
+
+        else {
+            for (int i = 0; i < opcoes.length; i++) {
+                String texto = opcoes[i];
+                int x = coordenadaXParaTextoCentralizado(texto);
+
+                if (numComando == i) {
+                    switch (contadorChama) {
+                        case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
+                        case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
+                        case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
+                    }
+                }
+                if (numComando == i) {
+                    g2.setColor(Color.red);
+                } else {
+                    g2.setColor(Color.white);
+                }
+                g2.drawString(texto, x, y);
+                y += tileSize;
+            }
         }
     }
 

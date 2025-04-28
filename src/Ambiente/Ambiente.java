@@ -1,19 +1,16 @@
 package Ambiente;
 
-import Main.Painel;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class Ambiente extends JPanel {
 
-    Painel painel;
-    Graphics2D g2;
     private String nome, descricao, dificuldade, recursos, frequenciaEventos, clima;
 
-    // Atributos de gerenciamento de inventário
+    // Atributos de gerencia de inventário/eventos
     private boolean recursosColetados = false;
     private boolean recursosGastos = false;
+    private boolean encontroSurpresa = false;
 
     public Ambiente() {
     }
@@ -35,9 +32,9 @@ public class Ambiente extends JPanel {
     public boolean isRecursosGastos() {
         return recursosGastos;
     }
-    public void setRecursosGastos(boolean recursosGastos) {
-        this.recursosGastos = recursosGastos;
-    }
+    public void setRecursosGastos(boolean recursosGastos) { this.recursosGastos = recursosGastos; }
+    public boolean isEncontroSurpresa() { return encontroSurpresa; }
+    public void setEncontroSurpresa(boolean encontroSurpresa) { this.encontroSurpresa = encontroSurpresa; }
 
     public String getNome() {
         return nome;

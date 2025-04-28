@@ -145,15 +145,15 @@ public class Painel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // Desenha a UI, sobrepõe a tela de combate enquanto ativa
-        if (fightState) {
-            combate.telaCombate(g2, ui);
-        } else {
+        // Desenha a UI
+        if (!fightState) {
             if (gameState == titleState || gameState == openingState || gameState == playState ||
-                gameState == gameOverState || gameState == tutorialControles ||
-                gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
+                    gameState == gameOverState || gameState == tutorialControles ||
+                    gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
                 ui.mostrar(g2);
             }
+        } else {
+            combate.telaCombate(g2, ui);
         }
 
         // Desenha a tela de inventário à frente do resto
@@ -219,9 +219,6 @@ public class Painel extends JPanel implements Runnable {
         if (gameState == gameOverState) {
             botoes.setVisible(true);
             botoes.mostrarBotaoInicio();
-        }
-        if (fightState) {
-            combate.iniciarCombate(criatura);
         }
 
         // Cards de ambiente

@@ -16,6 +16,8 @@ public class AmbienteFloresta extends Ambiente {
     Botões botoes;
     Criatura criatura;
     CombateUI combate;
+    EventoCriatura eventoVibora;
+    EventoCriatura eventoUrso;
 
     public AmbienteFloresta(Painel painel, Jogador jogador, UI ui) {
         super();
@@ -25,6 +27,8 @@ public class AmbienteFloresta extends Ambiente {
         this.botoes = painel.getBotoes();
         this.criatura = new Criatura();
         this.combate = new CombateUI(painel, jogador);
+        this.eventoVibora = new EventoCriatura(painel, ui, jogador, criatura);
+        this.eventoUrso = new EventoCriatura(painel, ui, jogador, criatura);
 
         descreverAmbiente();
     }
@@ -144,40 +148,22 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 202:
-                Evento eventoVibora = new EventoCriatura(painel, ui, jogador, criatura);
-                eventoVibora.executar(g2, 1);
-
-                g2.setColor(Color.red);
-                ui.escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y += tileSize * 4);
-                g2.setColor(Color.white);
-                ui.escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-
-                if (!isEncontroSurpresa()) {
-                    jogador.setVida(jogador.getVida() - criatura.getAtaqueCriatura());
-                    setEncontroSurpresa(true);
+                if (!isChanceTirada()) {
+                    eventoVibora.chance(g2, 1);
+                    setChanceTirada(true);
                 }
-                // Ainda sem definição probabilística
+
+                if (eventoVibora.getExecutavel() == 1) {
+                    eventoVibora.setSurpresa(true);
+                    eventoVibora.executar(g2, 1);
+                }
+                else if (eventoVibora.getExecutavel() == 0) {
+                    painel.setPlaySubState(203);
+                }
                 break;
 
             case 203:
-                /*ui.escreverTexto("Você a atacou com o GALHO PONTIAGUDO!", y += tileSize);
-                g2.setColor(Color.red);
-                ui.escreverTexto("-1HP", y += tileSize);
-                g2.setColor(Color.red);
-                ui.escreverTexto("Víbora-Rubro: 2HP", y += tileSize);
-                g2.setColor(Color.white);
-                ui.escreverTexto("-Após notar sua investida, ela foge! HA!", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("FIM DE COMBATE.", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("DESFECHO: Você está levemente ENVENENADO.", y += tileSize);
-                ui.escreverTexto("e seu galho se quebrou na batalha.", y += tileSize);
-
-                if (!isRecursosGastos()) {
-                    painel.getInvent().removerItem("Galho pontiagudo", 1);
-                    setRecursosGastos(true);
-                }*/
+                ui.escreverTexto("Bom... aqui parece um belo lugar para descanso", tileSize * 3);
 
                 break;
 
@@ -240,25 +226,22 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 304:
-                // Deixei de lado a questão de probabilidade por enquanto, mas será implementada aqui
-                Evento eventoUrso = new EventoCriatura(painel, ui, jogador, criatura);
-                eventoUrso.executar(g2, 2);
+                if (!isChanceTirada()) {
+                    eventoUrso.chance(g2, 2);
+                    setChanceTirada(true);
+                }
 
-                g2.setColor(Color.red);
-                ui.escreverTexto("*GROAAAAAR*", y += tileSize * 4);
-                g2.setColor(Color.white);
-                ui.escreverTexto("O RUGIDO ESTREMECE TODA A FLORESTA. VOCÊ PULA EM DESESPERO.", y += tileSize);
-                ui.escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-
+                if (eventoUrso.getExecutavel() == 1) {
+                    eventoUrso.setSurpresa(true);
+                    eventoUrso.executar(g2, 2);
+                }
+                else if (eventoUrso.getExecutavel() == 0) {
+                    painel.setPlaySubState(305);
+                }
                 break;
-            case 305:
-                botoes.esconderBotaoMochila();
-                botoes.mostrarBotaoContinuar();
 
-                ui.escreverTexto("Você tenta--", y += tileSize);
-                g2.setColor(Color.red);
-                ui.escreverTexto("O urso irrompe um golpe fatal. -10HP", y += tileSize);
+            case 305:
+                ui.escreverTexto("Você descansa os olhos...", y += tileSize);
                 break;
 
             /*case 999:

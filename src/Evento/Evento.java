@@ -20,17 +20,16 @@ public abstract class Evento {
         this.jogador = jogador;
     }
 
-// Metodo-base para o polimorfismo da superclasse
+    // Metodo-base para o polimorfismo da superclasse
     public abstract void executar(Graphics2D g2, int tipo);
 
-// Menu de opcoes no combate
-    public void opcoesCombate(Graphics2D g2, int y) {
+    //Metodo-base par a probabilidade de evento
+    public abstract void chance(Graphics2D g2, int tipo);
 
-        int tileSize = painel.getTileSize();
-        ui.desenharOpcoes(new String[]{"Atacar", "Fugir"},  y += tileSize * 2);
-    }
+    // Getters e setters
+    public abstract int getExecutavel();
+    public abstract void setSurpresa(boolean surpresa);
 
-// Getters e setters
     public boolean isEventoCriaturaAtivo() { return eventoCriaturaAtivo; }
     public void setEventoCriaturaAtivo(boolean eventoCriaturaAtivo) { this.eventoCriaturaAtivo = eventoCriaturaAtivo; }
 

@@ -10,7 +10,7 @@ public class Ambiente extends JPanel {
     // Atributos de gerencia de inventário/eventos
     private boolean recursosColetados = false;
     private boolean recursosGastos = false;
-    private boolean encontroSurpresa = false;
+    private boolean chanceTirada = false;
 
     public Ambiente() {
     }
@@ -33,8 +33,8 @@ public class Ambiente extends JPanel {
         return recursosGastos;
     }
     public void setRecursosGastos(boolean recursosGastos) { this.recursosGastos = recursosGastos; }
-    public boolean isEncontroSurpresa() { return encontroSurpresa; }
-    public void setEncontroSurpresa(boolean encontroSurpresa) { this.encontroSurpresa = encontroSurpresa; }
+    public boolean isChanceTirada() { return chanceTirada; }
+    public void setChanceTirada(boolean chanceTirada) { this.chanceTirada = chanceTirada; }
 
     public String getNome() {
         return nome;

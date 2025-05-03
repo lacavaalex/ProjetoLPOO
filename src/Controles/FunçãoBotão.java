@@ -73,7 +73,7 @@ public class FunçãoBotão implements ActionListener {
                 painel.setGameState(painel.getPlayState());
                 painel.setPlaySubState(500);
             }
-            System.out.println(painel.getPlaySubState());
+            System.out.println("Substate atual: " + painel.getPlaySubState());
         }
 
 

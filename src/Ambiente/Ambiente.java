@@ -1,9 +1,8 @@
 package Ambiente;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class Ambiente extends JPanel {
+public abstract class Ambiente {
 
     private String nome, descricao, dificuldade, recursos, frequenciaEventos, clima;
 

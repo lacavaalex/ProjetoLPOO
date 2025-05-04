@@ -18,12 +18,9 @@ public class UI {
     private Painel painel;
     private Jogador jogador = new Jogador();
     private Botões botoes;
-    private Criatura criatura;
-    private Ambiente ambiente;
     private AmbienteFloresta floresta;
     private AmbienteLago lago;
     private AmbienteMontanha montanha;
-    //private CardsEspeciaisUI cardsEspeciaisUI;
 
     private Graphics2D g2;
     private Font pixelsans_30, pixelsans_60B;
@@ -42,8 +39,6 @@ public class UI {
         this.jogador = jogador;
 
         botoes = new Botões(painel);
-        criatura = new Criatura();
-        ambiente = new Ambiente();
         floresta = new AmbienteFloresta(painel, jogador, this);
         lago = new AmbienteLago(painel, jogador, this);
         montanha = new AmbienteMontanha(painel, jogador, this);
@@ -72,7 +67,7 @@ public class UI {
         chama3 = setup("/Imagens/chama-3");
     }
 
-// Metodo geral de desenho
+    // Metodo geral de desenho
     public void mostrar(Graphics2D g2) {
         this.g2 = g2;
 
@@ -107,8 +102,8 @@ public class UI {
             mostrarAbertura();
         }
         // Play state
-        if (gameState == playState) {
-            ambiente.playState(g2);
+        if (gameState == playState && painel.getAmbienteAtual() != null) {
+            painel.getAmbienteAtual().playState(g2);
         }
         // Game over
         if (gameState == gameOverState) {
@@ -129,7 +124,7 @@ public class UI {
         }
     }
 
-// Métodos para telas especiais
+    // Métodos para telas especiais
     public void mostrarInventario() {
         painel.getInvent().abrir();
         painel.repaint();
@@ -342,9 +337,6 @@ public class UI {
 
     public int getTelaInicialState() { return telaInicialState; }
     public void setTelaInicialState(int telaInicialState) { this.telaInicialState = telaInicialState; }
-
-    public void setAmbiente(Ambiente ambiente) { this.ambiente = ambiente; }
-    //public void setCardsEspeciaisUI(CardsEspeciaisUI cardsEspeciaisUI) { this.cardsEspeciaisUI = cardsEspeciaisUI; }
 
     public int getNumComando() { return numComando; }
     public void setNumComando(int numComando) { this.numComando = numComando; }

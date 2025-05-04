@@ -27,7 +27,7 @@ public class Painel extends JPanel implements Runnable {
     private final int fps = 60;
 
     // Chamada de classes
-    private Ambiente ambiente = new Ambiente();
+    private Ambiente ambienteAtual;
     private Jogador jogador = new Jogador();
     private Criatura criatura = new Criatura();
 
@@ -38,7 +38,6 @@ public class Painel extends JPanel implements Runnable {
 
     private UI ui = new UI(this, jogador);
     private CombateUI combate = new CombateUI(this, jogador);
-    //private CardsEspeciaisUI cardsEspeciaisUI;
 
     private EventoCriatura eventoCriatura = new EventoCriatura(this, ui, jogador, criatura);
 
@@ -77,16 +76,7 @@ public class Painel extends JPanel implements Runnable {
         this.setFocusable(true);
 
         // Adição do ambiente
-        ambiente.setBounds(0, 0, larguraTela, alturaTela);
-        ambiente.setVisible(false);
-        this.add(ambiente);
-
-        // Adição das outras UIs
-        ui.setAmbiente(ambiente);
-
-        //cardsEspeciaisUI = new CardsEspeciaisUI(this, jogador);
-        //ui.setCardsEspeciaisUI(cardsEspeciaisUI);
-
+        ambienteAtual = new AmbienteFloresta(this, jogador, ui);
     }
 
     // Inicialização do jogo e aplicação da Thread
@@ -165,31 +155,15 @@ public class Painel extends JPanel implements Runnable {
     }
 
     // Transição de ambientes
-    public void trocarAmbiente(String qual) {
-
-        switch (qual) {
+    public void trocarAmbiente(String nome) {
+        switch (nome) {
             case "floresta":
-                Ambiente floresta = new AmbienteFloresta(this, jogador, ui);
-                floresta.descreverAmbiente();
-                setAmbiente(floresta);
-                ui.setAmbiente(floresta);
-                break;
-
+                ambienteAtual = new AmbienteFloresta(this, jogador, ui); break;
             case "lago":
-                Ambiente lago = new AmbienteLago(this, jogador, ui);
-                lago.descreverAmbiente();
-                setAmbiente(lago);
-                ui.setAmbiente(lago);
-                break;
-
+                ambienteAtual = new AmbienteLago(this, jogador, ui); break;
             case "montanha":
-                Ambiente montanha = new AmbienteMontanha(this, jogador, ui);
-                montanha.descreverAmbiente();
-                setAmbiente(montanha);
-                ui.setAmbiente(montanha);
-                break;
-
-            default:
+                ambienteAtual = new AmbienteMontanha(this, jogador, ui); break;
+            default: System.out.println("Ambiente default"); break;
         }
     }
 
@@ -281,8 +255,7 @@ public class Painel extends JPanel implements Runnable {
     public Evento.EventoCriatura getEvento() { return eventoCriatura; }
     public Inventario getInvent() { return invent; }
     public Botões getBotoes() { return botoes; }
-    public Ambiente getAmbiente() { return ambiente; }
-    public void setAmbiente(Ambiente ambiente) { this.ambiente = ambiente; }
+    public Ambiente getAmbienteAtual() { return ambienteAtual; }
 
     // G/S das dimensões da tela
     public int getTileSize() { return tileSize; }

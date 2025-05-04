@@ -10,8 +10,8 @@ import java.util.Random;
 
 public class EventoCriatura extends Evento {
 
-    Criatura criatura;
-    Random rand;
+    private Criatura criatura;
+    private Random rand;
 
     private int probabilidade;
     private int executavel;
@@ -27,26 +27,26 @@ public class EventoCriatura extends Evento {
 
     @Override
     public void executar(Graphics2D g2, int tipo) {
-        int tileSize = painel.getTileSize();
+        int tileSize = getPainel().getTileSize();
         int y = tileSize * 2;
 
         // Execução com probabilidade bem sucedida
         if (executavel == 1) {
-            painel.getEvento().setEventoCriaturaAtivo(true);
-            painel.setGameState(painel.getPlayState());
-            painel.getCombate().iniciarCombate(criatura);
+            getPainel().getEvento().setEventoCriaturaAtivo(true);
+            getPainel().setGameState(getPainel().getPlayState());
+            getPainel().getCombate().iniciarCombate(criatura);
 
             if (tipo == 1) {
                 viboraRubroFloresta(g2);
 
                 if (isSurpresa()) {
                     g2.setColor(Color.red);
-                    ui.escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y += tileSize * 4);
+                    getUi().escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y += tileSize * 4);
                     g2.setColor(Color.white);
-                    ui.escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
+                    getUi().escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
 
                     if (!ataqueSurpresaExecutado) {
-                        jogador.setVida(jogador.getVida() - criatura.getAtaqueCriatura());
+                        getJogador().setVida(getJogador().getVida() - criatura.getAtaqueCriatura());
                         ataqueSurpresaExecutado = true;
                         setSurpresa(false);
                     }
@@ -56,11 +56,11 @@ public class EventoCriatura extends Evento {
                 ursoPai(g2);
 
                 g2.setColor(Color.red);
-                ui.escreverTexto("*GROAAAAAR*", y += tileSize * 4);
+                getUi().escreverTexto("*GROAAAAAR*", y += tileSize * 4);
                 g2.setColor(Color.white);
-                ui.escreverTexto("O RUGIDO ESTREMECE TODA A FLORESTA. VOCÊ PULA EM DESESPERO.", y += tileSize);
-                ui.escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
+                getUi().escreverTexto("O RUGIDO ESTREMECE TODA A FLORESTA. VOCÊ PULA EM DESESPERO.", y += tileSize);
+                getUi().escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
+                getUi().escreverTexto("", y += tileSize);
             }
 
         // Probabilidade mal sucedida
@@ -75,7 +75,7 @@ public class EventoCriatura extends Evento {
         probabilidade = rand.nextInt(100) + 1;
 
         if (tipo == 1) { // Víbora
-            executavel = (probabilidade <= 50) ? 1 : 0;
+            executavel = (probabilidade <= 70) ? 1 : 0;
 
         } else if (tipo == 2) { // Urso Pai
             executavel = (probabilidade <= 50) ? 1 : 0;
@@ -86,23 +86,23 @@ public class EventoCriatura extends Evento {
 
     // Evento de encontro surpresa com a víbora
     public void viboraRubroFloresta(Graphics2D g2) {
-        int tileSize = painel.getTileSize();
+        int tileSize = getPainel().getTileSize();
         int y = tileSize * 8;
 
         g2.setColor(Color.red);
         criatura.definirCriatura(1);
-        ui.escreverTexto(criatura.getDescricao(), y += tileSize);
+        getUi().escreverTexto(criatura.getDescricao(), y += tileSize);
         g2.setColor(Color.white);
     }
 
     // Evento de encontro surpresa com o urso
     public void ursoPai(Graphics2D g2) {
-        int tileSize = painel.getTileSize();
+        int tileSize = getPainel().getTileSize();
         int y = tileSize * 8;
 
         g2.setColor(Color.red);
         criatura.definirCriatura(2);
-        ui.escreverTexto(criatura.getDescricao(), y += tileSize);
+        getUi().escreverTexto(criatura.getDescricao(), y += tileSize);
         g2.setColor(Color.white);
     }
 

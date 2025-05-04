@@ -7,12 +7,12 @@ import java.awt.*;
 
 public class Botões extends JPanel {
 
-    JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio, painelMochila, painelBotaoSair;
-    JButton botaoContinuar, botaoVoltar, botaoInicio, botaoMochila, botaoSair;
-    Font pixelsans_15 = new Font("Pixel Sans Serif", Font.PLAIN, 15);
+    private JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio, painelMochila, painelBotaoSair;
+    private JButton botaoContinuar, botaoVoltar, botaoInicio, botaoMochila, botaoSair;
+    private Font pixelsans_15 = new Font("Pixel Sans Serif", Font.PLAIN, 15);
 
-    Painel painel;
-    FunçãoBotão fB;
+    private Painel painel;
+    private FunçãoBotão fB;
 
     public Botões(Painel painel) {
         this.painel = painel;

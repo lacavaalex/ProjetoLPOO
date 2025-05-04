@@ -1,6 +1,6 @@
 package UI;
 
-import Ambiente.Ambiente;
+import Ambiente.*;
 import Controles.*;
 import Entidade.*;
 import Main.Painel;
@@ -13,17 +13,20 @@ import java.io.IOException;
 
 public class UI {
 
-    BufferedImage titleBackground, chama1, chama2, chama3;
+    private BufferedImage titleBackground, chama1, chama2, chama3;
 
-    Painel painel;
-    Jogador jogador = new Jogador();
-    Botões botoes;
-    Criatura criatura;
-    Ambiente ambiente;
-    CardsEspeciaisUI cardsEspeciaisUI;
+    private Painel painel;
+    private Jogador jogador = new Jogador();
+    private Botões botoes;
+    private Criatura criatura;
+    private Ambiente ambiente;
+    private AmbienteFloresta floresta;
+    private AmbienteLago lago;
+    private AmbienteMontanha montanha;
+    //private CardsEspeciaisUI cardsEspeciaisUI;
 
-    Graphics2D g2;
-    Font pixelsans_30, pixelsans_60B;
+    private Graphics2D g2;
+    private Font pixelsans_30, pixelsans_60B;
 
     private int tileSize;
     private int larguraTela;
@@ -41,6 +44,9 @@ public class UI {
         botoes = new Botões(painel);
         criatura = new Criatura();
         ambiente = new Ambiente();
+        floresta = new AmbienteFloresta(painel, jogador, this);
+        lago = new AmbienteLago(painel, jogador, this);
+        montanha = new AmbienteMontanha(painel, jogador, this);
 
         // Atribuição da fonte
         try {
@@ -113,16 +119,13 @@ public class UI {
 
         // Cards de ambiente
         if (gameState == florestaCardState) {
-            cardsEspeciaisUI.g2 = this.g2;
-            cardsEspeciaisUI.cardFloresta();
+            floresta.construirCard(g2);
         }
         if (gameState == lagoCardState) {
-            cardsEspeciaisUI.g2 = this.g2;
-            cardsEspeciaisUI.cardLago();
+            lago.construirCard(g2);
         }
         if (gameState == montanhaCardState) {
-            cardsEspeciaisUI.g2 = this.g2;
-            cardsEspeciaisUI.cardMontanha();
+            montanha.construirCard(g2);
         }
     }
 
@@ -148,7 +151,7 @@ public class UI {
             // Título (com sombra)
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 35F));
             int y = tileSize * 5;
-            int x = coordenadaXParaTextoCentralizado("O MUNDO FUNESTO");
+            int x = coordenadaXParaTextoCentralizado(g2, "O MUNDO FUNESTO");
 
             g2.setColor((Color.black));
             g2.drawString("O MUNDO FUNESTO", x + 5, y + 5);
@@ -249,19 +252,18 @@ public class UI {
         return imagem;
     }
 
-    public int coordenadaXParaTextoCentralizado(String texto) {
-
+    public int coordenadaXParaTextoCentralizado(Graphics2D g2, String texto) {
+        this.g2 = g2;
         int larguraTela = painel.getLargura();
 
         int comprimento = (int) g2.getFontMetrics().getStringBounds(texto, g2).getWidth();
-        int x = larguraTela / 2 - comprimento / 2;
-        return x;
+        return larguraTela / 2 - comprimento / 2;
 
     }
 
     public String escreverTexto(String texto, int y) {
         tileSize = painel.getTileSize();
-        int x = coordenadaXParaTextoCentralizado(texto);
+        int x = coordenadaXParaTextoCentralizado(g2, texto);
         g2.drawString(texto, x, y);
         return texto;
     }
@@ -276,7 +278,7 @@ public class UI {
 
         if (opcoes.length == 1) {
             String texto = opcoes[0];
-            int x = coordenadaXParaTextoCentralizado(texto);
+            int x = coordenadaXParaTextoCentralizado(g2, texto);
             g2.setColor(Color.white);
             g2.drawString(texto, x, y);
 
@@ -292,7 +294,7 @@ public class UI {
         else {
             for (int i = 0; i < opcoes.length; i++) {
                 String texto = opcoes[i];
-                int x = coordenadaXParaTextoCentralizado(texto);
+                int x = coordenadaXParaTextoCentralizado(g2, texto);
 
                 if (numComando == i) {
                     switch (contadorChama) {
@@ -328,11 +330,21 @@ public class UI {
 
 
 // Getters e setters
+    public Painel getPainel() {
+        return painel;
+    }
+    public Jogador getJogador() {
+        return jogador;
+    }
+    public Font getPixelsans_30() {
+        return pixelsans_30;
+    }
+
     public int getTelaInicialState() { return telaInicialState; }
     public void setTelaInicialState(int telaInicialState) { this.telaInicialState = telaInicialState; }
 
     public void setAmbiente(Ambiente ambiente) { this.ambiente = ambiente; }
-    public void setCardsEspeciaisUI(CardsEspeciaisUI cardsEspeciaisUI) { this.cardsEspeciaisUI = cardsEspeciaisUI; }
+    //public void setCardsEspeciaisUI(CardsEspeciaisUI cardsEspeciaisUI) { this.cardsEspeciaisUI = cardsEspeciaisUI; }
 
     public int getNumComando() { return numComando; }
     public void setNumComando(int numComando) { this.numComando = numComando; }

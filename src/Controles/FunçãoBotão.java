@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 
 public class FunçãoBotão implements ActionListener {
 
-    Painel painel;
-    Botões botoes;
+    private Painel painel;
+    private Botões botoes;
 
     public FunçãoBotão(Painel painel, Botões botoes) {
         this.painel = painel;

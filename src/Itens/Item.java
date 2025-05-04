@@ -12,7 +12,7 @@ public class Item {
         durabilidade = getDurabilidade();
     }
 
-// Metodo-base para o polimorfismo da superclasse
+    // Metodo-base para o polimorfismo da superclasse
     public void usar() {
         if (durabilidade != null && durabilidade > 0) {
             durabilidade--;
@@ -20,7 +20,7 @@ public class Item {
     }
 
 
-// Getters e Setters
+    // Getters e Setters
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
     public int getQuantidade() { return quantidade; }

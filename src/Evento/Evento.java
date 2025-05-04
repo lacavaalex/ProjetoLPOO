@@ -8,9 +8,9 @@ import java.awt.*;
 
 public abstract class Evento {
 
-    Painel painel;
-    UI ui;
-    Jogador jogador;
+    private Painel painel;
+    private UI ui;
+    private Jogador jogador;
 
     private boolean eventoCriaturaAtivo = false;
 
@@ -35,4 +35,5 @@ public abstract class Evento {
 
     public Painel getPainel() { return painel; }
     public UI getUi() { return ui; }
+    public Jogador getJogador() { return jogador; }
 }

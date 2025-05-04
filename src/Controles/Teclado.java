@@ -9,9 +9,9 @@ import java.awt.event.KeyListener;
 
 public class Teclado implements KeyListener {
 
-    Painel painel;
-    Jogador jogador;
-    UI ui;
+    private Painel painel;
+    private Jogador jogador;
+    private UI ui;
 
     public Teclado(Painel painel) {
         this.painel = painel;

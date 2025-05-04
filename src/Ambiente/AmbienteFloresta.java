@@ -10,14 +10,13 @@ import java.awt.*;
 
 public class AmbienteFloresta extends Ambiente {
 
-    Painel painel;
-    Jogador jogador;
-    UI ui;
-    Botões botoes;
-    Criatura criatura;
-    CombateUI combate;
-    EventoCriatura eventoVibora;
-    EventoCriatura eventoUrso;
+    private Painel painel;
+    private Jogador jogador;
+    private UI ui;
+    private Botões botoes;
+    private Criatura criatura;
+    private EventoCriatura eventoVibora;
+    private EventoCriatura eventoUrso;
 
     public AmbienteFloresta(Painel painel, Jogador jogador, UI ui) {
         super();
@@ -26,7 +25,6 @@ public class AmbienteFloresta extends Ambiente {
         this.ui = ui;
         this.botoes = painel.getBotoes();
         this.criatura = new Criatura();
-        this.combate = new CombateUI(painel, jogador);
         this.eventoVibora = new EventoCriatura(painel, ui, jogador, criatura);
         this.eventoUrso = new EventoCriatura(painel, ui, jogador, criatura);
 
@@ -41,6 +39,32 @@ public class AmbienteFloresta extends Ambiente {
         this.setRecursos("frutas, água, madeira, pedras.");
         this.setFrequenciaEventos("muitas criaturas, esconderijos, riscos à saúde.");
         this.setClima("levemente frio.");
+    }
+
+    @Override
+    public void construirCard(Graphics2D g2) {
+
+        int tileSize = painel.getTileSize();
+        int y = tileSize * 3;
+
+        g2.setColor(new Color(5, 20, 5));
+        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+        g2.setColor(Color.white);
+        ui.escreverTexto(getNome(), y += tileSize);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+        y = tileSize * 5;
+
+        ui.escreverTexto(getDescricao(), y += tileSize);
+        ui.escreverTexto(" ", y += tileSize);
+        ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
+        ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
+        ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
+        ui.escreverTexto("Clima: " + getClima(), y += tileSize);
+
+        botoes.mostrarBotaoContinuar();
     }
 
     @Override

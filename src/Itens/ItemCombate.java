@@ -5,7 +5,7 @@ import Main.Painel;
 public class ItemCombate extends Item {
 
     private int poder;
-    Painel painel;
+    private Painel painel;
 
     public ItemCombate(Painel painel) {
         super();

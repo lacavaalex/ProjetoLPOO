@@ -8,11 +8,10 @@ import java.awt.*;
 
 public class CombateUI extends UI {
 
-    UI ui;
-    ItemCombate item;
+    private ItemCombate item;
     private Criatura criaturaEmCombate;
 
-    Font pixelsans_30;
+    private Font pixelsans_30;
     private boolean turnoJogador = true;
     private boolean fimDeCombate = false;
 
@@ -21,7 +20,7 @@ public class CombateUI extends UI {
 
         item = new ItemCombate(painel);
 
-        this.pixelsans_30 = painel.getUi().pixelsans_30;
+        this.pixelsans_30 = painel.getUi().getPixelsans_30();
     }
 
     // Configurações da tela de combate
@@ -31,7 +30,7 @@ public class CombateUI extends UI {
         turnoJogador = true;
         numComando = 0;
 
-        for (Item itemNoInventario : painel.getInvent().getInvent().values()) {
+        for (Item itemNoInventario : getPainel().getInvent().getInvent().values()) {
             if (itemNoInventario instanceof ItemCombate) {
                 item = (ItemCombate) itemNoInventario;
                 item.setNome(itemNoInventario.getNome());
@@ -43,15 +42,13 @@ public class CombateUI extends UI {
 
     // UI da tela
     public void telaCombate(Graphics2D g2, UI ui) {
-        this.g2 = g2;
-        this.ui = ui;
 
-        int tileSize = painel.getTileSize();
+        int tileSize = getPainel().getTileSize();
         int y = tileSize;
 
         // Titulo
         g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 25F));
-        int x = coordenadaXParaTextoCentralizado("COMBATE");
+        int x = coordenadaXParaTextoCentralizado(g2, "COMBATE");
 
         g2.setColor(Color.red);
         g2.drawString("COMBATE", x + 4, y + 4);
@@ -65,14 +62,14 @@ public class CombateUI extends UI {
                 g2.setColor(Color.red);
                 escreverTexto(criaturaEmCombate.getDescricao(), y += tileSize * 3);
                 g2.setColor(Color.white);
-                escreverTexto("Você: " + jogador.getVida() + "HP", y += tileSize * 2);
+                escreverTexto("Você: " + getJogador().getVida() + "HP", y += tileSize * 2);
             }
             g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));
             if (turnoJogador) {
                 escreverTexto("Aja enquanto pode.", y += tileSize * 2);
                 desenharOpcoes(new String[]{"ATACAR", "FUGIR"}, y += tileSize);
             } else {
-                escreverTexto("Você inferiu " + jogador.getAtaqueAtual() + "HP de dano ao oponente.", y += tileSize * 2);
+                escreverTexto("Você inferiu " + getJogador().getAtaqueAtual() + "HP de dano ao oponente.", y += tileSize * 2);
                 escreverTexto("O inimigo ataca!", y += tileSize);
                 escreverTexto("-" + criaturaEmCombate.getAtaqueCriatura() + "HP", y += tileSize);
                 desenharOpcoes(new String[]{"Continuar"}, y += tileSize);
@@ -85,7 +82,7 @@ public class CombateUI extends UI {
             escreverTexto("Seu oponente foi derrotado, FIM DE COMBATE!", y += tileSize * 2);
             g2.setColor(Color.yellow);
             escreverTexto("DESFECHO", y += tileSize * 2);
-            escreverTexto("- Vida: " + jogador.getVida() + "HP", y += tileSize);
+            escreverTexto("- Vida: " + getJogador().getVida() + "HP", y += tileSize);
             escreverTexto("- Consequências: ", y += tileSize);
             g2.setColor(Color.white);
             escreverTexto("Pressione ENTER para continuar.", y += tileSize * 2);
@@ -97,7 +94,7 @@ public class CombateUI extends UI {
     // Sistema de turnos
     public void sistemaTurno() {
         if (fimDeCombate) {
-            painel.setGameState(painel.getPlayState());
+            getPainel().setGameState(getPainel().getPlayState());
             return;
         }
 
@@ -106,7 +103,7 @@ public class CombateUI extends UI {
                 // ATACAR
                 if (numComando == 0) {
                     // Cálculo de vida inimigo
-                    criaturaEmCombate.setVidaCriatura(criaturaEmCombate.getVidaCriatura() - jogador.getAtaqueAtual());//item.getPoder()); // A IMPLEMENTAR DANO POR ITEM
+                    criaturaEmCombate.setVidaCriatura(criaturaEmCombate.getVidaCriatura() - getJogador().getAtaqueAtual());//item.getPoder()); // A IMPLEMENTAR DANO POR ITEM
 
                     // Cálculo de morte do inimigo/troca de turno
                     if (criaturaEmCombate.getVidaCriatura() <= 0) {
@@ -123,14 +120,14 @@ public class CombateUI extends UI {
                 // Turno do inimigo
             } else {
                 // Cálculo de vida jogador
-                jogador.setVida(jogador.getVida() - criaturaEmCombate.getAtaqueCriatura());
+                getJogador().setVida(getJogador().getVida() - criaturaEmCombate.getAtaqueCriatura());
 
                 // Cálculo de morte do jogador/troca de turno
-                if (jogador.getVida() <= 0) {
+                if (getJogador().getVida() <= 0) {
                     fimDeCombate = true;
-                    painel.setFightState(false);
-                    painel.getEvento().setEventoCriaturaAtivo(false);
-                    painel.setGameState(painel.getGameOverState());
+                    getPainel().setFightState(false);
+                    getPainel().getEvento().setEventoCriaturaAtivo(false);
+                    getPainel().setGameState(getPainel().getGameOverState());
                 } else {
                     turnoJogador = true;
                 }

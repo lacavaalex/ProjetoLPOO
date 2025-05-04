@@ -1,8 +1,10 @@
 package Itens;
 
+import Main.Painel;
+
 public class ItemConsumo extends Item {
 
-    Inventario invent;
+    private Painel painel;
 
     public ItemConsumo() {
         super();
@@ -18,7 +20,7 @@ public class ItemConsumo extends Item {
         setDurabilidade(nivel);
 
         if (nivel == 0) {
-            invent.removerItem(getNome(), 1);
+            getPainel().getInvent().removerItem(getNome(), 1);
         }
     }
 
@@ -33,5 +35,9 @@ public class ItemConsumo extends Item {
                 System.out.println("Alimento desconhecido: ");
                 break;
         }
+    }
+
+    public Painel getPainel() {
+        return painel;
     }
 }

@@ -9,10 +9,8 @@ import java.util.HashMap;
 
 public class Inventario {
 
-    Painel painel;
-    UI ui;
-    Botões botoes;
-    Graphics2D g2;
+    private Painel painel;
+    private Botões botoes;
 
     private boolean fechado = true;
     private HashMap<String, Item> invent = new HashMap<>();
@@ -49,9 +47,6 @@ public class Inventario {
 
     public void telaDeInventario(Graphics2D g2, UI ui) {
         if (!fechado) {
-
-            this.g2 = g2;
-            this.ui = ui;
 
             int tileSize = painel.getTileSize();
             int larguraTela = painel.getLargura();

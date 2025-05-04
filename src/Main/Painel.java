@@ -38,7 +38,7 @@ public class Painel extends JPanel implements Runnable {
 
     private UI ui = new UI(this, jogador);
     private CombateUI combate = new CombateUI(this, jogador);
-    private CardsEspeciaisUI cardsEspeciaisUI;
+    //private CardsEspeciaisUI cardsEspeciaisUI;
 
     private EventoCriatura eventoCriatura = new EventoCriatura(this, ui, jogador, criatura);
 
@@ -84,8 +84,8 @@ public class Painel extends JPanel implements Runnable {
         // Adição das outras UIs
         ui.setAmbiente(ambiente);
 
-        cardsEspeciaisUI = new CardsEspeciaisUI(this, jogador);
-        ui.setCardsEspeciaisUI(cardsEspeciaisUI);
+        //cardsEspeciaisUI = new CardsEspeciaisUI(this, jogador);
+        //ui.setCardsEspeciaisUI(cardsEspeciaisUI);
 
     }
 

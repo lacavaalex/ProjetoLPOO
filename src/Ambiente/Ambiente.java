@@ -15,14 +15,17 @@ public class Ambiente extends JPanel {
     public Ambiente() {
     }
 
-// Metodo-base para o polimorfismo da superclasse
+    // Metodo-base para o polimorfismo da superclasse
     public void descreverAmbiente() {}
 
-// Metodo-base para integrar a UI
+    // Metodo=base para construir o card de introdução de ambiente
+    public void construirCard(Graphics2D g2) {}
+
+    // Metodo-base para integrar a UI
     public void playState(Graphics2D g2) {}
 
 
-// Getters e setters
+    // Getters e setters
     public boolean isRecursosColetados() {
         return recursosColetados;
     }
@@ -70,5 +73,3 @@ public class Ambiente extends JPanel {
     }
     public void setClima(String clima) { this.clima = clima; }
 }
-
-

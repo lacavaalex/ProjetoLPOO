@@ -9,10 +9,11 @@ import java.awt.*;
 
 public class AmbienteMontanha extends Ambiente {
 
-    Painel painel;
-    Jogador jogador;
-    UI ui;
-    Botões botoes;
+    private Graphics2D g2;
+    private Painel painel;
+    private Jogador jogador;
+    private UI ui;
+    private Botões botoes;
 
     public AmbienteMontanha(Painel painel, Jogador jogador, UI ui) {
         super();
@@ -32,6 +33,32 @@ public class AmbienteMontanha extends Ambiente {
         this.setRecursos("indefinido.");
         this.setFrequenciaEventos("desastres naturais, perigos escondidos.");
         this.setClima("altamente frio, piora com altitude.");
+    }
+
+    @Override
+    public void construirCard(Graphics2D g2) {
+
+        int tileSize = painel.getTileSize();
+        int y = tileSize * 3;
+
+        g2.setColor(new Color(180, 180, 180));
+        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+        g2.setColor(Color.white);
+        ui.escreverTexto(getNome(), y += tileSize);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+        y = tileSize * 5;
+
+        ui.escreverTexto(getDescricao(), y += tileSize);
+        ui.escreverTexto(" ", y += tileSize);
+        ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
+        ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
+        ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
+        ui.escreverTexto("Clima: " + getClima(), y += tileSize);
+
+        botoes.mostrarBotaoContinuar();
     }
 
     @Override

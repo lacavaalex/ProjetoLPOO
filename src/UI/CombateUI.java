@@ -5,8 +5,11 @@ import Main.Painel;
 import Itens.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class CombateUI extends UI {
+
+    private BufferedImage imagemInimigo;
 
     private ItemCombate item;
     private Criatura criaturaEmCombate;
@@ -57,13 +60,18 @@ public class CombateUI extends UI {
 
         // Dentro de combate
         if (!fimDeCombate) {
+
             if (criaturaEmCombate != null) {
+                imagemInimigo = setup("/Imagens/" + criaturaEmCombate.getNomeImagem());
+                desenharInimigo(g2);
+
                 g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 22F));
                 g2.setColor(Color.red);
                 escreverTexto(criaturaEmCombate.getDescricao(), y += tileSize * 3);
                 g2.setColor(Color.white);
                 escreverTexto("Você: " + getJogador().getVida() + "HP", y += tileSize * 2);
             }
+
             g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));
             if (turnoJogador) {
                 escreverTexto("Aja enquanto pode.", y += tileSize * 2);
@@ -134,4 +142,17 @@ public class CombateUI extends UI {
             }
             numComando = 0;
         }
+
+    // Desenha imagem do inimigo
+    public void desenharInimigo(Graphics2D g2) {
+
+        int tileSize = getPainel().getTileSize();
+
+        g2.drawImage(imagemInimigo,
+                getPainel().getLargura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
+                getPainel().getAltura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
+                tileSize * criaturaEmCombate.getLarguraImagemEscala(),
+                tileSize * criaturaEmCombate.getAlturaImagemEscala(),
+                null);
+    }
 }

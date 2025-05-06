@@ -74,7 +74,7 @@ public class AmbienteMontanha extends Ambiente {
         g2.setColor(Color.white);
 
         int subState = painel.getPlaySubState();
-        int y = tileSize;
+        int y = tileSize + 20;
 
         switch (subState) {
 
@@ -82,12 +82,12 @@ public class AmbienteMontanha extends Ambiente {
                 botoes.mostrarBotaoVoltar();
                 botoes.esconderBotaoMochila();
 
-                ui.escreverTexto("O trecho acabou. O único caminho para além daqui...", tileSize * 2);
-                ui.escreverTexto("é para cima. A montanha sussura seu nome...", tileSize * 3);
-                ui.escreverTexto("", tileSize * 4);
-                ui.escreverTexto("Seria fatal escalar o paredão sem equipamentos e preparação.", tileSize * 5);
-                ui.escreverTexto("E ficar congelando aqui não é uma opção.", tileSize * 6);
-                ui.escreverTexto("Isso é um beco sem saída. Melhor retornar.", tileSize * 7);
+                ui.escreverTexto("O trecho acabou. O único caminho para além daqui...", y);
+                ui.escreverTexto("é para cima. A montanha sussura seu nome...", y += tileSize);
+                ui.escreverTexto("", y += tileSize);
+                ui.escreverTexto("Seria fatal escalar o paredão sem equipamentos e preparação.", y += tileSize);
+                ui.escreverTexto("E ficar congelando aqui não é uma opção.", y += tileSize);
+                ui.escreverTexto("Isso é um beco sem saída. Melhor retornar.", y += tileSize);
                 break;
 
             default:

@@ -74,15 +74,15 @@ public class AmbienteLago extends Ambiente {
         g2.setColor(Color.white);
 
         int subState = painel.getPlaySubState();
-        int y = tileSize;
+        int y = tileSize + 20;
 
         switch (subState) {
             case 400:
                 botoes.mostrarBotaoVoltar();
                 botoes.esconderBotaoMochila();
 
-                ui.escreverTexto("Este é o lago.", tileSize * 2);
-                ui.escreverTexto("Você pode ficar e descansar, ou retornar à fogueira.", tileSize * 3);
+                ui.escreverTexto("Este é o lago.", y);
+                ui.escreverTexto("Você pode ficar e descansar, ou retornar à fogueira.", y += tileSize);
                 break;
             default:
 

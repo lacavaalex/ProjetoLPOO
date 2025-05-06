@@ -20,11 +20,11 @@ public class Botões extends JPanel {
 
         setLayout(null);
         setOpaque(false);
-        continuar();
-        voltar();
-        botaoInventario();
-        sair();
-        voltarAoInicio();
+        estruturaBContinuar();
+        estruturaBVoltar();
+        estruturaBInventario();
+        estruturaBSair();
+        estruturaBInicio();
     }
 
 // Adequação ao painel
@@ -33,7 +33,7 @@ public class Botões extends JPanel {
     }
 
 // Construção de cada botão
-    public void continuar() {
+    public void estruturaBContinuar() {
     // Painel do botão
         painelBotaoContinuar = new JPanel();
         painelBotaoContinuar.setBounds(1020, 600, 200, 50);
@@ -52,7 +52,8 @@ public class Botões extends JPanel {
         painelBotaoContinuar.add(botaoContinuar, BorderLayout.CENTER);
         painelBotaoContinuar.setVisible(false);
     }
-    public void voltar() {
+
+    public void estruturaBVoltar() {
         painelBotaoVoltar = new JPanel();
         painelBotaoVoltar.setBounds(100, 600, 200, 50);
         painelBotaoVoltar.setBackground(Color.BLACK);
@@ -68,7 +69,8 @@ public class Botões extends JPanel {
         painelBotaoVoltar.add(botaoVoltar, BorderLayout.CENTER);
         painelBotaoVoltar.setVisible(false);
     }
-    public void botaoInventario() {
+
+    public void estruturaBInventario() {
         painelMochila = new JPanel();
         painelMochila.setBounds(painel.getLargura()/2 - 140/2, 600, 140, 50);
         painelMochila.setBackground(Color.BLACK);
@@ -84,7 +86,8 @@ public class Botões extends JPanel {
         painelMochila.add(botaoMochila, BorderLayout.CENTER);
         painelMochila.setVisible(false);
     }
-    public void sair() {
+
+    public void estruturaBSair() {
         painelBotaoSair = new JPanel();
         painelBotaoSair.setBounds(100, 600, 150, 50);
         painelBotaoSair.setBackground(Color.BLACK);
@@ -100,7 +103,8 @@ public class Botões extends JPanel {
         painelBotaoSair.add(botaoSair, BorderLayout.CENTER);
         painelBotaoSair.setVisible(false);
     }
-    public void voltarAoInicio() {
+
+    public void estruturaBInicio() {
         painelBotaoInicio = new JPanel();
         painelBotaoInicio.setBounds(100, 600, 300, 50);
         painelBotaoInicio.setBackground(Color.BLACK);

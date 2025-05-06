@@ -44,7 +44,7 @@ public class CombateUI extends UI {
     }
 
     // UI da tela
-    public void telaCombate(Graphics2D g2, UI ui) {
+    public void estruturaTelaCombate(Graphics2D g2, UI ui) {
 
         int tileSize = getPainel().getTileSize();
         int y = tileSize;
@@ -62,7 +62,7 @@ public class CombateUI extends UI {
         if (!fimDeCombate) {
 
             if (criaturaEmCombate != null) {
-                imagemInimigo = setup("/Imagens/" + criaturaEmCombate.getNomeImagem());
+                imagemInimigo = setupImagens("/Imagens/" + criaturaEmCombate.getNomeImagem());
                 desenharInimigo(g2);
 
                 g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 22F));

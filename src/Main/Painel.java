@@ -107,7 +107,7 @@ public class Painel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if(delta >= 1) {
-                update();
+                updateBotoes();
                 repaint();
                 delta--;
                 drawCount++;
@@ -120,8 +120,8 @@ public class Painel extends JPanel implements Runnable {
         }
     }
 
-    // Atualização inicial e contínua
-    public void update() {
+    // Atualização inicial e contínua dos botões
+    public void updateBotoes() {
         if (gameState == titleState) {
             botoes.setVisible(false);
         } else {
@@ -140,15 +140,18 @@ public class Painel extends JPanel implements Runnable {
             if (gameState == titleState || gameState == openingState || gameState == playState ||
                     gameState == gameOverState || gameState == tutorialControles ||
                     gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
-                ui.mostrar(g2);
+                ui.mostrarInterface(g2);
+                if (gameState == playState) {
+                    ui.mostrarInformacoesJogador(g2);
+                }
             }
         } else {
-            combate.telaCombate(g2, ui);
+            combate.estruturaTelaCombate(g2, ui);
         }
 
         // Desenha a tela de inventário à frente do resto
         if (!invent.isFechado()) {
-            invent.telaDeInventario(g2, ui);
+            invent.estruturaTelaDeInventario(g2, ui);
         }
 
         this.requestFocusInWindow();
@@ -165,6 +168,7 @@ public class Painel extends JPanel implements Runnable {
                 ambienteAtual = new AmbienteMontanha(this, jogador, ui); break;
             default: System.out.println("Ambiente default"); break;
         }
+        jogador.setLocalizacao(ambienteAtual.getNome());
     }
 
 

@@ -80,7 +80,7 @@ public class AmbienteFloresta extends Ambiente {
         g2.setColor(Color.white);
 
         int subState = painel.getPlaySubState();
-        int y = tileSize;
+        int y = tileSize + 20;
 
         switch (subState) {
             // PONTO INICIAL

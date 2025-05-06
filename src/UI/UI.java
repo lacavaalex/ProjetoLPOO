@@ -34,6 +34,7 @@ public class UI {
     private int contadorChama = 1;
     private int telaInicialState = 0;
 
+
     public UI(Painel painel, Jogador jogador) {
         this.painel = painel;
         this.jogador = jogador;
@@ -61,14 +62,14 @@ public class UI {
         }
 
     // Atribuição de imagens
-        titleBackground = setup("/Imagens/fundo_mao_2");
-        chama1 = setup("/Imagens/chama-1");
-        chama2 = setup("/Imagens/chama-2");
-        chama3 = setup("/Imagens/chama-3");
+        titleBackground = setupImagens("/Imagens/fundo_mao_2");
+        chama1 = setupImagens("/Imagens/chama-1");
+        chama2 = setupImagens("/Imagens/chama-2");
+        chama3 = setupImagens("/Imagens/chama-3");
     }
 
     // Metodo geral de desenho
-    public void mostrar(Graphics2D g2) {
+    public void mostrarInterface(Graphics2D g2) {
         this.g2 = g2;
 
         g2.setFont(pixelsans_30);
@@ -103,6 +104,7 @@ public class UI {
         }
         // Play state
         if (gameState == playState && painel.getAmbienteAtual() != null) {
+            mostrarInformacoesJogador(g2);
             painel.getAmbienteAtual().playState(g2);
         }
         // Game over
@@ -124,6 +126,115 @@ public class UI {
         }
     }
 
+    public void mostrarInformacoesJogador(Graphics2D g2) {
+        tileSize = painel.getTileSize();
+        int y = tileSize * 2;
+        int x = tileSize + 5;
+
+        String texto = "STATUS";
+        g2.drawString(texto, x, y);
+        String textovida = jogador.getVida() + "HP";
+        g2.drawString(textovida, x, y += tileSize);
+        String textoataque = jogador.getAtaqueAtual() + "atk";
+        g2.drawString(textoataque, x, y += tileSize);
+        String textolocal = jogador.getLocalizacao();
+        if (textolocal != null) {
+            x = coordenadaXParaTextoCentralizado(g2,textolocal);
+            g2.drawString(textolocal, x, tileSize);
+        }
+    }
+
+    // Métodos de compactação de código
+    public BufferedImage setupImagens(String caminhoImagem) {
+        BufferedImage imagem = null;
+
+        try {
+            imagem = ImageIO.read(getClass().getResource(caminhoImagem + ".png"));
+
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
+        return imagem;
+    }
+
+    public int coordenadaXParaTextoCentralizado(Graphics2D g2, String texto) {
+        this.g2 = g2;
+        int larguraTela = painel.getLargura();
+
+        int comprimento = (int) g2.getFontMetrics().getStringBounds(texto, g2).getWidth();
+        return larguraTela / 2 - comprimento / 2;
+
+    }
+
+    public String escreverTexto(String texto, int y) {
+        tileSize = painel.getTileSize();
+        int x = coordenadaXParaTextoCentralizado(g2, texto);
+        g2.drawString(texto, x, y);
+        return texto;
+    }
+
+    public void desenharOpcoes(String[] opcoes, int yInicial) {
+
+        updateFrames();
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+
+        int y = yInicial;
+
+        if (opcoes.length == 1) {
+            String texto = opcoes[0];
+            int x = coordenadaXParaTextoCentralizado(g2, texto);
+            g2.setColor(Color.white);
+            g2.drawString(texto, x, y);
+
+            switch (contadorChama) {
+                case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
+                case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
+                case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
+            }
+            g2.setColor(Color.red);
+            g2.drawString(texto, x, y);
+        }
+
+        else {
+            for (int i = 0; i < opcoes.length; i++) {
+                String texto = opcoes[i];
+                int x = coordenadaXParaTextoCentralizado(g2, texto);
+
+                if (numComando == i) {
+                    switch (contadorChama) {
+                        case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
+                        case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
+                        case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
+                    }
+                }
+                if (numComando == i) {
+                    g2.setColor(Color.red);
+                } else {
+                    g2.setColor(Color.white);
+                }
+                g2.drawString(texto, x, y);
+                y += tileSize;
+            }
+        }
+        g2.setColor(Color.white);
+    }
+
+    public void desenharFundoTelaInicio() {
+        g2.drawImage(titleBackground, 0, 0, larguraTela, alturaTela, null);
+    }
+
+    public void updateFrames() {
+        frame++;
+        if (frame % 20 == 0) { // muda a cada 10 frames
+            contadorChama++;
+            if (contadorChama > 3) {
+                contadorChama = 1;
+            }
+        }
+    }
+
+
     // Métodos para telas especiais
     public void mostrarInventario() {
         painel.getInvent().abrir();
@@ -142,7 +253,7 @@ public class UI {
             alturaTela = painel.getAltura();
 
             // Fundo
-            desenharFundoMao();
+            desenharFundoTelaInicio();
             // Título (com sombra)
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 35F));
             int y = tileSize * 5;
@@ -160,7 +271,7 @@ public class UI {
 
         // Tela inicial 2 (seleção de personagem)
         else if(getTelaInicialState() == 1) {
-            desenharFundoMao();
+            desenharFundoTelaInicio();
             g2.setColor(Color.white);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
@@ -232,95 +343,6 @@ public class UI {
         escreverTexto("Você adentra a FLORESTA MACABRA...", y += tileSize);
 
         botoes.mostrarBotaoContinuar();
-    }
-
-// Métodos de compactação de código
-    public BufferedImage setup(String caminhoImagem) {
-        BufferedImage imagem = null;
-
-        try {
-            imagem = ImageIO.read(getClass().getResource(caminhoImagem + ".png"));
-
-        }catch(IOException e) {
-            e.printStackTrace();
-        }
-        return imagem;
-    }
-
-    public int coordenadaXParaTextoCentralizado(Graphics2D g2, String texto) {
-        this.g2 = g2;
-        int larguraTela = painel.getLargura();
-
-        int comprimento = (int) g2.getFontMetrics().getStringBounds(texto, g2).getWidth();
-        return larguraTela / 2 - comprimento / 2;
-
-    }
-
-    public String escreverTexto(String texto, int y) {
-        tileSize = painel.getTileSize();
-        int x = coordenadaXParaTextoCentralizado(g2, texto);
-        g2.drawString(texto, x, y);
-        return texto;
-    }
-
-    public void desenharOpcoes(String[] opcoes, int yInicial) {
-
-        update();
-
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-
-        int y = yInicial;
-
-        if (opcoes.length == 1) {
-            String texto = opcoes[0];
-            int x = coordenadaXParaTextoCentralizado(g2, texto);
-            g2.setColor(Color.white);
-            g2.drawString(texto, x, y);
-
-            switch (contadorChama) {
-                case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
-                case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
-                case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
-            }
-            g2.setColor(Color.red);
-            g2.drawString(texto, x, y);
-        }
-
-        else {
-            for (int i = 0; i < opcoes.length; i++) {
-                String texto = opcoes[i];
-                int x = coordenadaXParaTextoCentralizado(g2, texto);
-
-                if (numComando == i) {
-                    switch (contadorChama) {
-                        case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
-                        case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
-                        case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
-                    }
-                }
-                if (numComando == i) {
-                    g2.setColor(Color.red);
-                } else {
-                    g2.setColor(Color.white);
-                }
-                g2.drawString(texto, x, y);
-                y += tileSize;
-            }
-        }
-    }
-
-    public void desenharFundoMao() {
-        g2.drawImage(titleBackground, 0, 0, larguraTela, alturaTela, null);
-    }
-
-    public void update() {
-        frame++;
-        if (frame % 20 == 0) { // muda a cada 10 frames
-            contadorChama++;
-            if (contadorChama > 3) {
-                contadorChama = 1;
-            }
-        }
     }
 
 

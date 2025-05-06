@@ -45,7 +45,7 @@ public class Inventario {
         return invent.containsKey(nome);
     }
 
-    public void telaDeInventario(Graphics2D g2, UI ui) {
+    public void estruturaTelaDeInventario(Graphics2D g2, UI ui) {
         if (!fechado) {
 
             int tileSize = painel.getTileSize();

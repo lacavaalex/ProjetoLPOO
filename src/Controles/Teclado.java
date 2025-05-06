@@ -2,7 +2,7 @@ package Controles;
 
 import Entidade.Jogador;
 import Main.Painel;
-import UI.UI;
+import UI.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,11 +10,13 @@ import java.awt.event.KeyListener;
 public class Teclado implements KeyListener {
 
     private Painel painel;
+    private InventarioUI invent;
     private Jogador jogador;
     private UI ui;
 
-    public Teclado(Painel painel) {
+    public Teclado(Painel painel, InventarioUI invent) {
         this.painel = painel;
+        this.invent = invent;
         this.jogador = painel.getJogador();
         this.ui = painel.getUi();
     }
@@ -39,16 +41,10 @@ public class Teclado implements KeyListener {
             if (telaInicialState == 0) {
 
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                    numComando--;
-                    if (numComando < 0) {
-                        numComando = 2;
-                    }
+                    ui.subtrairNumComando(3);
                 }
                 if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    numComando++;
-                    if (numComando > 2) {
-                        numComando = 0;
-                    }
+                    ui.adicionarNumComando(3);
                 }
                 if (code == KeyEvent.VK_ENTER) {
                     // Novo jogo
@@ -68,16 +64,10 @@ public class Teclado implements KeyListener {
             } else if (telaInicialState == 1) {
 
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                    numComando--;
-                    if (numComando < 0) {
-                        numComando = 4;
-                    }
+                    ui.subtrairNumComando(5);
                 }
                 if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    numComando++;
-                    if (numComando > 4) {
-                        numComando = 0;
-                    }
+                    ui.subtrairNumComando(5);
                 }
                 if (code == KeyEvent.VK_ENTER) {
                     if (numComando == 0) {
@@ -108,105 +98,95 @@ public class Teclado implements KeyListener {
             }
         }
 
-        // Jogar a atualização dos valores dessas duas variáveis à sua classe natal
+        // Joga a atualização dos valores dessas duas variáveis à sua classe natal
         ui.setNumComando(numComando);
         ui.setTelaInicialState(telaInicialState);
+
         // Atualização gráfica
         painel.repaint();
 
         // Play state
         if (gameState == playState) {
 
-            if (!painel.getFightState()) {
-                // States com 3 opcoes
-                if (subState == 0) {
-                    if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                        painel.getUi().numComando--;
-                        if (painel.getUi().numComando < 0) {
-                            painel.getUi().numComando = 2;
-                        }
-                    }
-                    if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                        painel.getUi().numComando++;
-                        if (painel.getUi().numComando > 2) {
-                            painel.getUi().numComando = 0;
-                        }
-                    }
-                    if (code == KeyEvent.VK_ENTER) {
-                        int opcao = painel.getUi().numComando;
-                        painel.setPlaySubState((opcao + 1) * 100);
-                        painel.getUi().numComando = 0;
-                    }
-                }
-
-                // States com 2 opcoes
-                if (subState == 101 || subState == 202 || subState == 301
-                        || subState == 304) {
-                    if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                        painel.getUi().numComando--;
-                        if (painel.getUi().numComando < 0) {
-                            painel.getUi().numComando = 1;
-                        }
-                    }
-                    if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                        painel.getUi().numComando++;
-                        if (painel.getUi().numComando > 1) {
-                            painel.getUi().numComando = 0;
-                        }
-                    }
-                    if (code == KeyEvent.VK_ENTER) {
-                        if (subState == 304) {
-                            painel.setPlaySubState(305);
-                        } else {
-                            int opcao = painel.getUi().numComando;
-                            painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
-                            painel.getUi().numComando = 0;
-                        }
-                    }
-                }
-
-                // States com 1 opcao
-                if (subState == 104) {
-                    if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                        painel.getUi().numComando--;
-                        if (painel.getUi().numComando < 0) {
-                            painel.getUi().numComando = 0;
-                        }
-                    }
-                    if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                        painel.getUi().numComando++;
-                        if (painel.getUi().numComando > 0) {
-                            painel.getUi().numComando = 0;
-                        }
-                    }
-                    if (code == KeyEvent.VK_ENTER) {
-                        if (numComando == 0) {
-                            painel.setGameState(painel.getLagoCardState());
-                        }
-                    }
-                }
-            }
-
-            // Configuração própria da tela de combate
-            if (painel.getFightState()) {
+            // Configuração própria da tela de inventário
+            if (!invent.isFechado()) {
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                    painel.getCombate().numComando--;
-                    if (painel.getCombate().numComando < 0) {
-                        painel.getCombate().numComando = 1;
-                    }
+                    invent.subtrairNumComandoInvent();
                 }
                 if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    painel.getCombate().numComando++;
-                    if (painel.getCombate().numComando > 1) {
-                        painel.getCombate().numComando = 0;
-                    }
+                    invent.adicionarNumComandoInvent();
                 }
                 if (code == KeyEvent.VK_ENTER) {
-                    painel.getCombate().sistemaTurno();
+
                 }
             }
-        }
+            else {
+                    if (!painel.getFightState()) {
+                        // States com 3 opcoes
+                        if (subState == 0) {
+                            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                                painel.getUi().subtrairNumComando(3);
+                            }
+                            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                                painel.getUi().adicionarNumComando(3);
+                            }
+                            if (code == KeyEvent.VK_ENTER) {
+                                int opcao = painel.getUi().getNumComando();
+                                painel.setPlaySubState((opcao + 1) * 100);
+                                painel.getUi().setNumComando(0);
+                            }
+                        }
 
+                        // States com 2 opcoes
+                        if (subState == 101 || subState == 202 || subState == 301
+                                || subState == 304) {
+                            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                                painel.getUi().subtrairNumComando(2);
+                            }
+                            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                                painel.getUi().adicionarNumComando(2);
+                            }
+                            if (code == KeyEvent.VK_ENTER) {
+                                if (subState == 304) {
+                                    painel.setPlaySubState(305);
+                                } else {
+                                    int opcao = painel.getUi().getNumComando();
+                                    painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
+                                    painel.getUi().setNumComando(0);
+                                }
+                            }
+                        }
+
+                        // States com 1 opcao
+                        if (subState == 104) {
+                            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                                painel.getUi().subtrairNumComando(1);
+                            }
+                            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                                painel.getUi().adicionarNumComando(1);
+                            }
+                            if (code == KeyEvent.VK_ENTER) {
+                                if (numComando == 0) {
+                                    painel.setGameState(painel.getLagoCardState());
+                                }
+                            }
+                        }
+                    }
+
+                    // Configuração própria da tela de combate
+                    if (painel.getFightState()) {
+                        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                            painel.getCombate().subtrairNumComandoCombate(2);
+                        }
+                        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                            painel.getCombate().adicionarNumComandoCombate(2);
+                        }
+                        if (code == KeyEvent.VK_ENTER) {
+                            painel.getCombate().sistemaTurno();
+                        }
+                    }
+            }
+        }
     }
 
     // Métodos obrigatórios da classe KeyEvent, porém sem uso para este projeto

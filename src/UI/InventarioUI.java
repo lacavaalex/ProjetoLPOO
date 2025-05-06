@@ -1,13 +1,14 @@
-package Itens;
+package UI;
 
+import Entidade.Jogador;
+import Itens.Item;
 import Main.*;
 import Controles.*;
-import UI.UI;
 
 import java.awt.*;
 import java.util.HashMap;
 
-public class Inventario {
+public class InventarioUI extends UI {
 
     private Painel painel;
     private Botões botoes;
@@ -15,7 +16,10 @@ public class Inventario {
     private boolean fechado = true;
     private HashMap<String, Item> invent = new HashMap<>();
 
-    public Inventario(Painel painel, Botões botoes) {
+    private int numComandoInvent;
+
+    public InventarioUI(Painel painel, Jogador jogador, Botões botoes) {
+        super(painel, jogador);
         this.painel = painel;
         this.botoes = botoes;
     }
@@ -57,35 +61,50 @@ public class Inventario {
 
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
             g2.setColor(Color.white);
-            ui.escreverTexto("Inventario", tileSize * 2);
+            ui.escreverTexto("Inventario", tileSize);
 
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));
-            int y = tileSize * 3;
 
             // Lista de itens
+            String[] listaItens = new String[invent.size()];
+            int i = 0;
+
             for (String nome : invent.keySet()) {
                 Item item = invent.get(nome);
-                String linha = nome + " x" + item.getQuantidade();
-                g2.drawString(linha, tileSize, y);
-                y += tileSize;
+                listaItens[i++] = i + "- " + nome + " x" + item.getQuantidade();
             }
+            ui.desenharOpcoes(listaItens, tileSize*2, numComandoInvent);
         }
     }
 
-    public HashMap<String, Item> getInvent() {
-        return invent;
-    }
     public void abrir() {
         fechado = false;
-        painel.setFocusable(false);
         botoes.mostrarBotaoSair();
     }
     public void fechar() {
         fechado = true;
-        painel.setFocusable(true);
         botoes.esconderBotaoSair();
     }
-    public boolean isFechado() {
-        return fechado;
+
+    // Getters e setters
+    public HashMap<String, Item> getInvent() { return invent; }
+    public boolean isFechado() { return fechado; }
+
+
+    // Metodos de comando
+    public void subtrairNumComandoInvent() {
+        numComandoInvent--;
+        if (numComandoInvent < 0) {
+            numComandoInvent = invent.size() - 1;
+            if (invent.isEmpty()) numComandoInvent = 0;
+        }
     }
+
+    public void adicionarNumComandoInvent() {
+        numComandoInvent++;
+        if (numComandoInvent > invent.size() - 1) {
+            numComandoInvent = 0;
+        }
+    }
+    public int getNumComando() { return numComandoInvent; }
 }

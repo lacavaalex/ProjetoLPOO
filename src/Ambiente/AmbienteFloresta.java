@@ -73,6 +73,8 @@ public class AmbienteFloresta extends Ambiente {
         int larguraTela = painel.getLargura();
         int alturaTela = painel.getAltura();
 
+        int numComando = ui.getNumComando();
+
         g2.setColor(Color.black);
         g2.fillRect(0, 0, larguraTela, alturaTela);
 
@@ -92,7 +94,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Um chiado estranho parece se aproximar...", y += tileSize);
                 ui.escreverTexto("O que fazer?", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Seguir luz", "Ficar e coletar recursos", "Ir até montanha"}, y += tileSize * 2);
+                ui.desenharOpcoes(new String[]{"Seguir luz", "Ficar e coletar recursos", "Ir até montanha"}, y += tileSize * 2, numComando);
                 break;
 
             // BRANCH DA LUZ
@@ -114,7 +116,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("O que fazer?", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Pegar água", "Explorar arredores"}, y += tileSize * 2);
+                ui.desenharOpcoes(new String[]{"Pegar água", "Explorar arredores"}, y += tileSize * 2, numComando);
                 break;
 
             case 102:
@@ -144,7 +146,7 @@ public class AmbienteFloresta extends Ambiente {
             case 104:
                 ui.escreverTexto("Você retorna a atenção à fogueira.", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Ir ao lago"}, y += tileSize);
+                ui.desenharOpcoes(new String[]{"Ir ao lago"}, y += tileSize, numComando);
                 break;
 
             // BRANCH DA VÍBORA
@@ -225,7 +227,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("O que fazer?", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Subir pelo trecho", "Descansar até o amanhecer"}, y += tileSize * 2);
+                ui.desenharOpcoes(new String[]{"Subir pelo trecho", "Descansar até o amanhecer"}, y += tileSize * 2, numComando);
                 break;
 
             case 302:

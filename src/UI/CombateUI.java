@@ -18,6 +18,8 @@ public class CombateUI extends UI {
     private boolean turnoJogador = true;
     private boolean fimDeCombate = false;
 
+    private int numComandoCombate;
+
     public CombateUI(Painel painel, Jogador jogador) {
         super(painel, jogador);
 
@@ -31,7 +33,7 @@ public class CombateUI extends UI {
         this.criaturaEmCombate = criatura;
         fimDeCombate = false;
         turnoJogador = true;
-        numComando = 0;
+        numComandoCombate = 0;
 
         for (Item itemNoInventario : getPainel().getInvent().getInvent().values()) {
             if (itemNoInventario instanceof ItemCombate) {
@@ -75,12 +77,12 @@ public class CombateUI extends UI {
             g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));
             if (turnoJogador) {
                 escreverTexto("Aja enquanto pode.", y += tileSize * 2);
-                desenharOpcoes(new String[]{"ATACAR", "FUGIR"}, y += tileSize);
+                desenharOpcoes(new String[]{"ATACAR", "FUGIR"}, y += tileSize, numComandoCombate);
             } else {
                 escreverTexto("Você inferiu " + getJogador().getAtaqueAtual() + "HP de dano ao oponente.", y += tileSize * 2);
                 escreverTexto("O inimigo ataca!", y += tileSize);
                 escreverTexto("-" + criaturaEmCombate.getAtaqueCriatura() + "HP", y += tileSize);
-                desenharOpcoes(new String[]{"Continuar"}, y += tileSize);
+                desenharOpcoes(new String[]{"Continuar"}, y += tileSize, numComandoCombate);
             }
         }
 
@@ -109,7 +111,7 @@ public class CombateUI extends UI {
             // Turno do jogador
             if (turnoJogador) {
                 // ATACAR
-                if (numComando == 0) {
+                if (numComandoCombate == 0) {
                     // Cálculo de vida inimigo
                     criaturaEmCombate.setVidaCriatura(criaturaEmCombate.getVidaCriatura() - getJogador().getAtaqueAtual());//item.getPoder()); // A IMPLEMENTAR DANO POR ITEM
 
@@ -121,7 +123,7 @@ public class CombateUI extends UI {
                     }
 
                     // FUGIR
-                } else if (numComando == 1) {
+                } else if (numComandoCombate == 1) {
                     // fuga
                 }
 
@@ -140,7 +142,7 @@ public class CombateUI extends UI {
                     turnoJogador = true;
                 }
             }
-            numComando = 0;
+        numComandoCombate = 0;
         }
 
     // Desenha imagem do inimigo
@@ -155,4 +157,19 @@ public class CombateUI extends UI {
                 tileSize * criaturaEmCombate.getAlturaImagemEscala(),
                 null);
     }
+
+    // Metodos de comando
+    public void subtrairNumComandoCombate(int numOpcoes) {
+        numComandoCombate--;
+        if (numComandoCombate < 0) {
+            numComandoCombate = numOpcoes - 1;
+        }
+    }
+    public void adicionarNumComandoCombate(int numOpcoes) {
+        numComandoCombate++;
+        if (numComandoCombate > numOpcoes - 1) {
+            numComandoCombate = 0;
+        }
+    }
+    public int getNumComando() { return numComandoCombate; }
 }

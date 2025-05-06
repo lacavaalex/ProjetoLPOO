@@ -29,7 +29,7 @@ public class UI {
     private int larguraTela;
     private int alturaTela;
 
-    public int numComando = 0;
+    private int numComando = 0;
     private int frame = 1;
     private int contadorChama = 1;
     private int telaInicialState = 0;
@@ -85,10 +85,6 @@ public class UI {
         int lagoCardState = painel.getLagoCardState();
         int montanhaCardState = painel.getMontanhaCardState();
 
-        // Informações do jogador
-        if (gameState != titleState && gameState!= openingState && gameState!=florestaCardState) {
-            // A acrescentar
-        }
 
         // Title state
         if (gameState == titleState) {
@@ -173,7 +169,7 @@ public class UI {
         return texto;
     }
 
-    public void desenharOpcoes(String[] opcoes, int yInicial) {
+    public void desenharOpcoes(String[] opcoes, int yInicial, int numComando) {
 
         updateFrames();
 
@@ -265,7 +261,7 @@ public class UI {
             escreverTexto("O MUNDO FUNESTO", y);
 
             //MENU
-            desenharOpcoes(new String[]{"NOVO JOGO", "CONTROLES", "SAIR"}, y += tileSize * 2);
+            desenharOpcoes(new String[]{"NOVO JOGO", "CONTROLES", "SAIR"}, y += tileSize * 2, numComando);
         }
 
 
@@ -278,7 +274,7 @@ public class UI {
             int y;
             escreverTexto("Escolha seu personagem.", y = tileSize*3);
 
-            desenharOpcoes(new String[]{"A GUERREIRA", "O SOBREVIVENTE", "O MÉDICO", "A CAÇADORA", "Voltar ao início"}, y += tileSize * 3);
+            desenharOpcoes(new String[]{"A GUERREIRA", "O SOBREVIVENTE", "O MÉDICO", "A CAÇADORA", "Voltar ao início"}, y += tileSize * 3, numComando);
         }
     }
 
@@ -346,7 +342,8 @@ public class UI {
     }
 
 
-// Getters e setters
+
+    // Getters e setters
     public Painel getPainel() {
         return painel;
     }
@@ -360,6 +357,19 @@ public class UI {
     public int getTelaInicialState() { return telaInicialState; }
     public void setTelaInicialState(int telaInicialState) { this.telaInicialState = telaInicialState; }
 
+    // Metodos de comando
+    public void subtrairNumComando(int numOpcoes) {
+        numComando--;
+        if (numComando < 0) {
+            numComando = numOpcoes - 1;
+        }
+    }
+    public void adicionarNumComando(int numOpcoes) {
+        numComando++;
+        if (numComando > numOpcoes - 1) {
+            numComando = 0;
+        }
+    }
     public int getNumComando() { return numComando; }
     public void setNumComando(int numComando) { this.numComando = numComando; }
 }

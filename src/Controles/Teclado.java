@@ -33,7 +33,7 @@ public class Teclado implements KeyListener {
 
         UI ui = painel.getUi();
         int telaInicialState = ui.getTelaInicialState();
-        int numComando = ui.getNumComando();
+
 
         // Tela inicial
         if (gameState == titleState) {
@@ -48,15 +48,15 @@ public class Teclado implements KeyListener {
                 }
                 if (code == KeyEvent.VK_ENTER) {
                     // Novo jogo
-                    if (numComando == 0) {
+                    if (ui.getNumComando() == 0) {
                         telaInicialState = 1;
                     }
                     // Controles
-                    if (numComando == 1) {
+                    if (ui.getNumComando() == 1) {
                         painel.setGameState(painel.getTutorialControles());
                     }
                     // Sair
-                    if (numComando == 2) {
+                    if (ui.getNumComando() == 2) {
                         System.exit(0);
                     }
                 }
@@ -67,39 +67,42 @@ public class Teclado implements KeyListener {
                     ui.subtrairNumComando(5);
                 }
                 if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    ui.subtrairNumComando(5);
+                    ui.adicionarNumComando(5);
                 }
+
                 if (code == KeyEvent.VK_ENTER) {
-                    if (numComando == 0) {
+                    if (ui.getNumComando() == 0) {
                         painel.getJogador().setNome("Coleen, a guerreira");
                         painel.setGameState(openingState);
                         telaInicialState = 0;
                     }
-                    if (numComando == 1) {
+                    if (ui.getNumComando() == 1) {
                         painel.getJogador().setNome("Ben, o sobrevivente");
                         painel.setGameState(openingState);
                         telaInicialState = 0;
                     }
-                    if (numComando == 2) {
+                    if (ui.getNumComando() == 2) {
                         painel.getJogador().setNome("Dr. Murphy, o médico");
                         painel.setGameState(openingState);
                         telaInicialState = 0;
                     }
-                    if (numComando == 3) {
+                    if (ui.getNumComando() == 3) {
                         painel.getJogador().setNome("Alice, a caçadora");
                         painel.setGameState(openingState);
                         telaInicialState = 0;
                     }
-                    if (numComando == 4) {
+                    if (ui.getNumComando() == 4) {
                         telaInicialState = 0;
-                        numComando = 0;
+                        ui.setNumComando(0);
+                    }
+                    if (painel.getJogador().getNome() != null) {
+                        ui.setNumComando(0);
                     }
                 }
             }
         }
 
         // Joga a atualização dos valores dessas duas variáveis à sua classe natal
-        ui.setNumComando(numComando);
         ui.setTelaInicialState(telaInicialState);
 
         // Atualização gráfica
@@ -117,7 +120,10 @@ public class Teclado implements KeyListener {
                     invent.adicionarNumComandoInvent();
                 }
                 if (code == KeyEvent.VK_ENTER) {
-
+                    invent.selecionouItem();
+                }
+                if (code == KeyEvent.VK_ESCAPE) {
+                    invent.fechar();
                 }
             }
             else {
@@ -166,7 +172,7 @@ public class Teclado implements KeyListener {
                                 painel.getUi().adicionarNumComando(1);
                             }
                             if (code == KeyEvent.VK_ENTER) {
-                                if (numComando == 0) {
+                                if (ui.getNumComando() == 0) {
                                     painel.setGameState(painel.getLagoCardState());
                                 }
                             }

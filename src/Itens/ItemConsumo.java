@@ -4,40 +4,50 @@ import Main.Painel;
 
 public class ItemConsumo extends Item {
 
-    private Painel painel;
+    private int durabilidade;
+    private boolean durabilidadeAtribuida = false;
 
-    public ItemConsumo() {
-        super();
+    public ItemConsumo(Painel painel) {
+        super(painel);
     }
 
     @Override
-    public void usar() {
-        consumir();
+    public void usar(String nome) {
+        System.out.println("ItemConsumo usando: " + nome);
+        consumir(nome);
     }
 
-    public void consumir() {
-        int nivel = getDurabilidade() - 1;
-        setDurabilidade(nivel);
+    public void consumir(String nome) {
+        definirConsumo(nome);
 
-        if (nivel == 0) {
-            getPainel().getInvent().removerItem(getNome(), 1);
+        if (!durabilidadeAtribuida) {
+            durabilidade = getDurabilidadeMax();
+            durabilidadeAtribuida = true;
         }
+
+        if (durabilidade == getDurabilidadeMax()) {
+            durabilidade = (getDurabilidadeMax() - 1);
+        }
+        else if (durabilidade < getDurabilidadeMax()) {
+            durabilidade = durabilidade - 1;
+
+            if (durabilidade == 0) {
+                getPainel().getInvent().removerItem(getNome(), 1);
+            }
+        }
+        System.out.println("Durabilidade " + durabilidade);
     }
 
     // Itens
-    public void definirConsumo(String nome) {
+    public String definirConsumo(String nome) {
         switch (nome) {
             case "Cantil":
-                setDurabilidade(5);
-                break;
+                setDurabilidadeMax(5);
+                return getNome();
 
             default:
-                System.out.println("Alimento desconhecido: ");
-                break;
+                System.out.println("Alimento desconhecido: " + nome);
+                return null;
         }
-    }
-
-    public Painel getPainel() {
-        return painel;
     }
 }

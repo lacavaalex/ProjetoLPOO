@@ -4,6 +4,7 @@ import Controles.*;
 import Entidade.*;
 import Ambiente.*;
 import Evento.EventoCriatura;
+import Itens.Item;
 import UI.*;
 
 import javax.swing.*;
@@ -29,9 +30,10 @@ public class Painel extends JPanel implements Runnable {
     private Ambiente ambienteAtual;
     private Jogador jogador = new Jogador();
     private Criatura criatura = new Criatura();
+    private Item item = new Item(this);
 
     private Botões botoes = new Botões(this);
-    private InventarioUI invent = new InventarioUI(this, jogador, botoes);
+    private InventarioUI invent = new InventarioUI(this, jogador, botoes, item);
     private Teclado teclado = new Teclado(this, invent);
 
     private UI ui = new UI(this, jogador);
@@ -120,7 +122,7 @@ public class Painel extends JPanel implements Runnable {
 
     // Atualização inicial e contínua dos botões
     public void updateBotoes() {
-        if (gameState == titleState) {
+        if (gameState == titleState || !invent.isFechado()) {
             botoes.setVisible(false);
         } else {
             botoes.setVisible(true);
@@ -132,6 +134,8 @@ public class Painel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
+
+        ui.updateFrames();
 
         // Desenha a UI
         if (!fightState) {

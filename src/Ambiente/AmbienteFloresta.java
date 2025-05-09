@@ -105,7 +105,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Você deixa a luz te guiar...", y += tileSize);
                 ui.escreverTexto(". . .", y += tileSize);
                 ui.escreverTexto("Encontrou no caminho: 1 pedra.", y += tileSize);
-                painel.getInvent().adicionarItem("Pedra", 1);
+                painel.getInvent().adicionarItem("Pedra", "recurso", 1);
                 break;
 
             case 101:
@@ -123,7 +123,7 @@ public class AmbienteFloresta extends Ambiente {
                 botoes.esconderBotaoMochila();
                 botoes.mostrarBotaoVoltar();
 
-                painel.getInvent().adicionarItem("Cantil", 1);
+                painel.getInvent().adicionarItem("Cantil", "consumo", 1);
                 ui.escreverTexto("Você pega o cantil e toma um gole d'água.", y += tileSize);
                 jogador.setSede(false);
                 ui.escreverTexto("Hidratação no máximo.", y += tileSize);
@@ -158,10 +158,10 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Encontrou: 7 madeiras, 2 pedras, 1 galho pontiagudo.", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Madeira", 7);
-                    painel.getInvent().adicionarItem("Pedra", 2);
-                    painel.getInvent().adicionarItem("Galho pontiagudo", 1);
-                    painel.getInvent().adicionarItem("Lasca de pedra", 1);
+                    painel.getInvent().adicionarItem("Madeira", "consumo", 7);
+                    painel.getInvent().adicionarItem("Pedra", "consumo", 2);
+                    painel.getInvent().adicionarItem("Galho pontiagudo", "combate", 1);
+                    painel.getInvent().adicionarItem("Lasca de pedra", "combate", 1);
                     setRecursosColetados(true);
                 }
                 break;

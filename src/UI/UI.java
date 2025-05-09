@@ -108,6 +108,7 @@ public class UI {
             mostrarGameOverScreen();
             painel.resetPlayState();
             jogador.resetVida();
+            jogador.setNome(null);
         }
 
         // Cards de ambiente
@@ -170,8 +171,6 @@ public class UI {
     }
 
     public void desenharOpcoes(String[] opcoes, int yInicial, int numComando) {
-
-        updateFrames();
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
@@ -285,7 +284,7 @@ public class UI {
         g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
-        int y = tileSize * 4;
+        int y = tileSize * 3;
         g2.setColor(Color.white);
         escreverTexto("CONTROLES", y);
 
@@ -295,7 +294,8 @@ public class UI {
         escreverTexto("- Pressione [W] ou [UP] para subir o cursor.", y += tileSize);
         escreverTexto("- Pressione [S] ou [DOWN] para descer o cursor.", y += tileSize);
         escreverTexto("- Pressione [ENTER] para escolher sua opção.", y += tileSize);
-        escreverTexto("Para clicar em botões, como [MOCHILA], use o mouse ou touchpad.", y += tileSize);
+        escreverTexto("Pressione [ESC] para sair do inventário.", y += tileSize);
+        escreverTexto("Para clicar em botões, como [VOLTAR], use o mouse ou touchpad.", y += tileSize);
     }
 
     public void mostrarGameOverScreen() {

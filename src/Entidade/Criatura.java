@@ -34,7 +34,7 @@ public class Criatura {
                 setNomeImagem("urso_pai1");
                 setLarguraImagemEscala(8);
                 setAlturaImagemEscala(8);
-                setDistanciaBordaEscala(7);
+                setDistanciaBordaEscala(9);
                 break;
 
             default:

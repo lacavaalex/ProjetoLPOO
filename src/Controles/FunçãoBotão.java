@@ -100,12 +100,6 @@ public class FunçãoBotão implements ActionListener {
         // MOCHILA/INVENTÁRIO
         else if (fonte == botoes.getBotaoMochila()) {
             painel.getUi().mostrarInventario();
-            botoes.esconderBotaoMochila();
-        }
-        // SAIR
-        else if (fonte == botoes.getBotaoSair()) {
-            painel.getInvent().fechar();
-            botoes.mostrarBotaoMochila();
         }
         // DE VOLTA AO INÍCIO
         else if (fonte == botoes.getBotaoInicio()) { painel.setGameState(painel.getTitleState()); }

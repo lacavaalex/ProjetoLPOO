@@ -1,25 +1,31 @@
 package Itens;
 
+import Main.Painel;
+
 public class ItemRecurso extends Item {
 
-    public ItemRecurso() {
-        super();
+    private String nome;
+
+    public ItemRecurso(Painel painel) {
+        super(painel);
     }
 
     @Override
-    public void usar() {
-
+    public void usar(String nome) {
+        // a definir possivel sistema de crafting
+        definirRecurso(nome);
+        getPainel().getInvent().removerItem(getNome(), 1);
     }
 
     // Itens
     public void definirRecurso(String nome) {
         switch (nome) {
             case "Madeira":
-                setDurabilidade(null);
+                setDurabilidadeMax(null);
                 break;
 
             case "Pedra":
-                setDurabilidade(null);
+                setDurabilidadeMax(null);
                 break;
 
             default:

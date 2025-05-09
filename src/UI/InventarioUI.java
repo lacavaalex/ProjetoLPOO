@@ -1,7 +1,7 @@
 package UI;
 
 import Entidade.Jogador;
-import Itens.Item;
+import Itens.*;
 import Main.*;
 import Controles.*;
 
@@ -12,26 +12,56 @@ public class InventarioUI extends UI {
 
     private Painel painel;
     private Botões botoes;
+    private Item item;
+    private ItemConsumo consumo;
+    private ItemRecurso recurso;
+    private ItemCombate combate;
 
     private boolean fechado = true;
     private HashMap<String, Item> invent = new HashMap<>();
+    private String[] listaItens;
 
     private int numComandoInvent;
+    private String itemEscolhido;
 
-    public InventarioUI(Painel painel, Jogador jogador, Botões botoes) {
+    public InventarioUI(Painel painel, Jogador jogador, Botões botoes, Item item) {
         super(painel, jogador);
         this.painel = painel;
         this.botoes = botoes;
+        this.item = item;
+
+        consumo = new ItemConsumo(painel);
+        recurso = new ItemRecurso(painel);
+        combate = new ItemCombate(painel);
     }
 
-    public void adicionarItem(String nome, int quantidade) {
+    public void adicionarItem(String nome, String tipo, int quantidade) {
         if (acharItem(nome)) {
             invent.get(nome).setQuantidade(quantidade);
-        } else {
-            Item novoItem = new Item();
-            novoItem.setNome(nome);
-            novoItem.setQuantidade(quantidade);
-            invent.put(nome, novoItem);
+        }
+        else {
+            Item novoItem = null;
+
+            switch (tipo) {
+                case "consumo":
+                    novoItem = consumo;
+                    break;
+                case "recurso":
+                    novoItem = recurso;
+                    break;
+                case "combate":
+                    novoItem = combate;
+                    break;
+                default:
+                    System.out.println("Tipo de item desconhecido: " + tipo);
+                    break;
+            }
+
+            if (novoItem != null) {
+                novoItem.setNome(nome);
+                novoItem.setQuantidade(quantidade);
+                invent.put(nome, novoItem);
+            }
         }
     }
 
@@ -62,11 +92,14 @@ public class InventarioUI extends UI {
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
             g2.setColor(Color.white);
             ui.escreverTexto("Inventario", tileSize);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12F));
+            String textoEsc = ("Aperte [esc] para sair");
+            g2.drawString(textoEsc, tileSize ,painel.getAltura() - tileSize);
 
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));
 
             // Lista de itens
-            String[] listaItens = new String[invent.size()];
+            listaItens = new String[invent.size()];
             int i = 0;
 
             for (String nome : invent.keySet()) {
@@ -74,16 +107,30 @@ public class InventarioUI extends UI {
                 listaItens[i++] = i + "- " + nome + " x" + item.getQuantidade();
             }
             ui.desenharOpcoes(listaItens, tileSize*2, numComandoInvent);
+
+        }
+    }
+
+    public void selecionouItem() {
+        // Define qual item foi selecionado
+        itemEscolhido = listaItens[numComandoInvent];
+        String nomeReal = itemEscolhido.substring(itemEscolhido.indexOf("-") + 2, itemEscolhido.lastIndexOf(" x"));
+        Item item = invent.get(nomeReal);
+
+        if (item != null) {
+            item.usar(nomeReal);
+        } else {
+            System.out.println("Item " + nomeReal + " não encontrado no inventário.");
         }
     }
 
     public void abrir() {
         fechado = false;
-        botoes.mostrarBotaoSair();
     }
     public void fechar() {
         fechado = true;
-        botoes.esconderBotaoSair();
+        numComandoInvent = 0;
+        botoes.mostrarBotaoMochila();
     }
 
     // Getters e setters

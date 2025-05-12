@@ -190,6 +190,13 @@ public class Teclado implements KeyListener {
                         if (code == KeyEvent.VK_ENTER) {
                             painel.getCombate().sistemaTurno();
                         }
+
+                        if (painel.getCombate().isCombateFinalizado()) {
+                            if (code == KeyEvent.VK_ESCAPE) {
+                                painel.getCombate().finalizarCombate();
+                                painel.setPlaySubState((painel.getPlaySubState() + 1));
+                            }
+                        }
                     }
             }
         }

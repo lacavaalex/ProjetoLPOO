@@ -13,11 +13,11 @@ import java.io.IOException;
 
 public class UI {
 
-    private BufferedImage titleBackground, chama1, chama2, chama3;
+    private BufferedImage fundoTitulo, chama1, chama2, chama3;
 
     private Painel painel;
     private Jogador jogador = new Jogador();
-    private Botões botoes;
+    private Botoes botoes;
     private AmbienteFloresta floresta;
     private AmbienteLago lago;
     private AmbienteMontanha montanha;
@@ -39,7 +39,7 @@ public class UI {
         this.painel = painel;
         this.jogador = jogador;
 
-        botoes = new Botões(painel);
+        botoes = new Botoes(painel);
         floresta = new AmbienteFloresta(painel, jogador, this);
         lago = new AmbienteLago(painel, jogador, this);
         montanha = new AmbienteMontanha(painel, jogador, this);
@@ -62,10 +62,10 @@ public class UI {
         }
 
     // Atribuição de imagens
-        titleBackground = setupImagens("/Imagens/fundo_mao_2");
-        chama1 = setupImagens("/Imagens/chama-1");
-        chama2 = setupImagens("/Imagens/chama-2");
-        chama3 = setupImagens("/Imagens/chama-3");
+        fundoTitulo = setupImagens("fundo_mao_2");
+        chama1 = setupImagens("chama-1");
+        chama2 = setupImagens("chama-2");
+        chama3 = setupImagens("chama-3");
     }
 
     // Metodo geral de desenho
@@ -132,7 +132,7 @@ public class UI {
         g2.drawString(texto, x, y);
         String textovida = jogador.getVida() + "HP";
         g2.drawString(textovida, x, y += tileSize);
-        String textoataque = jogador.getAtaqueAtual() + "atk";
+        String textoataque = jogador.getAtaqueAtual() + " ATK";
         g2.drawString(textoataque, x, y += tileSize);
         String textolocal = jogador.getLocalizacao();
         if (textolocal != null) {
@@ -142,11 +142,11 @@ public class UI {
     }
 
     // Métodos de compactação de código
-    public BufferedImage setupImagens(String caminhoImagem) {
+    public BufferedImage setupImagens(String nomeImagem) {
         BufferedImage imagem = null;
 
         try {
-            imagem = ImageIO.read(getClass().getResource(caminhoImagem + ".png"));
+            imagem = ImageIO.read(getClass().getResource("/Imagens/" + nomeImagem + ".png"));
 
         }catch(IOException e) {
             e.printStackTrace();
@@ -215,8 +215,8 @@ public class UI {
         g2.setColor(Color.white);
     }
 
-    public void desenharFundoTelaInicio() {
-        g2.drawImage(titleBackground, 0, 0, larguraTela, alturaTela, null);
+    public void desenharPlanoDeFundo(BufferedImage imagem) {
+        g2.drawImage(imagem, 0, 0, larguraTela, alturaTela, null);
     }
 
     public void updateFrames() {
@@ -248,7 +248,7 @@ public class UI {
             alturaTela = painel.getAltura();
 
             // Fundo
-            desenharFundoTelaInicio();
+            desenharPlanoDeFundo(fundoTitulo);
             // Título (com sombra)
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 35F));
             int y = tileSize * 5;
@@ -266,7 +266,7 @@ public class UI {
 
         // Tela inicial 2 (seleção de personagem)
         else if(getTelaInicialState() == 1) {
-            desenharFundoTelaInicio();
+            desenharPlanoDeFundo(fundoTitulo);
             g2.setColor(Color.white);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
@@ -372,4 +372,6 @@ public class UI {
     }
     public int getNumComando() { return numComando; }
     public void setNumComando(int numComando) { this.numComando = numComando; }
+
+    public void setGraphics(Graphics2D g2) { this.g2 = g2; }
 }

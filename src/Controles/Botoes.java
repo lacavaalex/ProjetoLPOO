@@ -5,18 +5,18 @@ import Main.*;
 import javax.swing.*;
 import java.awt.*;
 
-public class Botões extends JPanel {
+public class Botoes extends JPanel {
 
     private JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio, painelMochila;
     private JButton botaoContinuar, botaoVoltar, botaoInicio, botaoMochila;
     private Font pixelsans_15 = new Font("Pixel Sans Serif", Font.PLAIN, 15);
 
     private Painel painel;
-    private FunçãoBotão fB;
+    private FuncaoBotao fB;
 
-    public Botões(Painel painel) {
+    public Botoes(Painel painel) {
         this.painel = painel;
-        this.fB = new FunçãoBotão(painel, this);
+        this.fB = new FuncaoBotao(painel, this);
 
         setLayout(null);
         setOpaque(false);

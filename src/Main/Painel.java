@@ -32,12 +32,12 @@ public class Painel extends JPanel implements Runnable {
     private Criatura criatura = new Criatura();
     private Item item = new Item(this);
 
-    private Botões botoes = new Botões(this);
-    private InventarioUI invent = new InventarioUI(this, jogador, botoes, item);
+    private Botoes botoes = new Botoes(this);
+    private InventarioUI invent = new InventarioUI(this, jogador, botoes);
     private Teclado teclado = new Teclado(this, invent);
 
     private UI ui = new UI(this, jogador);
-    private CombateUI combate = new CombateUI(this, jogador);
+    private CombateUI combate = new CombateUI(this, jogador, botoes);
 
     private EventoCriatura eventoCriatura = new EventoCriatura(this, ui, jogador, criatura);
 
@@ -260,7 +260,7 @@ public class Painel extends JPanel implements Runnable {
     public Jogador getJogador() { return jogador; }
     public Evento.EventoCriatura getEvento() { return eventoCriatura; }
     public InventarioUI getInvent() { return invent; }
-    public Botões getBotoes() { return botoes; }
+    public Botoes getBotoes() { return botoes; }
     public Ambiente getAmbienteAtual() { return ambienteAtual; }
 
     // G/S das dimensões da tela

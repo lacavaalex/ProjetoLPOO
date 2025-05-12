@@ -1,6 +1,6 @@
 package Ambiente;
 
-import Controles.Botões;
+import Controles.Botoes;
 import Entidade.Jogador;
 import Main.Painel;
 import UI.UI;
@@ -13,7 +13,7 @@ public class AmbienteMontanha extends Ambiente {
     private Painel painel;
     private Jogador jogador;
     private UI ui;
-    private Botões botoes;
+    private Botoes botoes;
 
     public AmbienteMontanha(Painel painel, Jogador jogador, UI ui) {
         super();

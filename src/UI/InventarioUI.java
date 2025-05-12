@@ -4,18 +4,19 @@ import Entidade.Jogador;
 import Itens.*;
 import Main.*;
 import Controles.*;
-
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class InventarioUI extends UI {
 
     private Painel painel;
-    private Botões botoes;
-    private Item item;
+    private Botoes botoes;
     private ItemConsumo consumo;
     private ItemRecurso recurso;
     private ItemCombate combate;
+
+    private BufferedImage fundoInventario, imagemDaArma;
 
     private boolean fechado = true;
     private HashMap<String, Item> invent = new HashMap<>();
@@ -23,16 +24,18 @@ public class InventarioUI extends UI {
 
     private int numComandoInvent;
     private String itemEscolhido;
+    private String armaAtual;
 
-    public InventarioUI(Painel painel, Jogador jogador, Botões botoes, Item item) {
+    public InventarioUI(Painel painel, Jogador jogador, Botoes botoes) {
         super(painel, jogador);
         this.painel = painel;
         this.botoes = botoes;
-        this.item = item;
 
         consumo = new ItemConsumo(painel);
         recurso = new ItemRecurso(painel);
         combate = new ItemCombate(painel);
+
+        fundoInventario = setupImagens("fundo_inventario");
     }
 
     public void adicionarItem(String nome, String tipo, int quantidade) {
@@ -71,6 +74,7 @@ public class InventarioUI extends UI {
 
         if (total <= 0) {
             invent.remove(nome);
+            numComandoInvent = numComandoInvent - 1;
         }
 
     }
@@ -82,6 +86,9 @@ public class InventarioUI extends UI {
     public void estruturaTelaDeInventario(Graphics2D g2, UI ui) {
         if (!fechado) {
 
+            // Definições gerais (visual, atriutos)
+            ui.setGraphics(g2);
+
             int tileSize = painel.getTileSize();
             int larguraTela = painel.getLargura();
             int alturaTela = painel.getAltura();
@@ -89,14 +96,16 @@ public class InventarioUI extends UI {
             g2.setColor(new Color(0, 0, 0));
             g2.fillRect(0, 0, larguraTela, alturaTela);
 
+            ui.desenharPlanoDeFundo(fundoInventario);
+
+            // Definições de texto
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
             g2.setColor(Color.white);
-            ui.escreverTexto("Inventario", tileSize);
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12F));
-            String textoEsc = ("Aperte [esc] para sair");
-            g2.drawString(textoEsc, tileSize ,painel.getAltura() - tileSize);
+            ui.escreverTexto("Inventário", tileSize);
 
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));
+            String textoEsc = ("Aperte [esc] para sair");
+            g2.drawString(textoEsc, painel.getLargura() - tileSize * 6,painel.getAltura() - tileSize);
 
             // Lista de itens
             listaItens = new String[invent.size()];
@@ -104,17 +113,46 @@ public class InventarioUI extends UI {
 
             for (String nome : invent.keySet()) {
                 Item item = invent.get(nome);
-                listaItens[i++] = i + "- " + nome + " x" + item.getQuantidade();
+                listaItens[i++] = nome + " x" + item.getQuantidade();
             }
             ui.desenharOpcoes(listaItens, tileSize*2, numComandoInvent);
 
+            // Vizualização da arma equipada
+            int x = painel.getLargura() - tileSize * 7;
+            int y = tileSize * 2;
+
+            int xCaixinha = x - 15;
+            int yCaixinha = y - tileSize;
+            int larguraCaixinha = tileSize * 7;
+            int alturaCaixinha = tileSize * 7;
+
+            g2.setColor(Color.white);
+            g2.drawRect(xCaixinha, yCaixinha, larguraCaixinha, alturaCaixinha);
+
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+
+            String textoArma = ("Arma atual: ");
+            g2.drawString(textoArma, x, y);
+
+            armaAtual = painel.getJogador().getArmaAtual();
+            String nomeArma = (armaAtual);
+            g2.drawString(nomeArma, x, y += tileSize);
+
+            if (combate.getNomeImagem() != null) {
+
+                imagemDaArma = setupImagens(combate.getNomeImagem());
+                desenharArma(g2, x + tileSize * 2, y += tileSize);
+
+                String poderArma = ("Dano: " + combate.getPoder());
+                g2.drawString(poderArma, x + tileSize * 2, y + tileSize * 3);
+            }
         }
     }
 
+    // Define qual ítem foi selecionado
     public void selecionouItem() {
-        // Define qual item foi selecionado
         itemEscolhido = listaItens[numComandoInvent];
-        String nomeReal = itemEscolhido.substring(itemEscolhido.indexOf("-") + 2, itemEscolhido.lastIndexOf(" x"));
+        String nomeReal = itemEscolhido.substring(0, itemEscolhido.lastIndexOf(" x"));
         Item item = invent.get(nomeReal);
 
         if (item != null) {
@@ -124,6 +162,13 @@ public class InventarioUI extends UI {
         }
     }
 
+    // Metodo que desenha a arma equipada
+    public void desenharArma(Graphics2D g2, int x, int y) {
+        int tileSize = getPainel().getTileSize();
+        g2.drawImage(imagemDaArma, x, y, tileSize * 2, tileSize * 2, null);
+    }
+
+    // Controle da aparição da tela
     public void abrir() {
         fechado = false;
     }
@@ -135,6 +180,7 @@ public class InventarioUI extends UI {
 
     // Getters e setters
     public HashMap<String, Item> getInvent() { return invent; }
+
     public boolean isFechado() { return fechado; }
 
 

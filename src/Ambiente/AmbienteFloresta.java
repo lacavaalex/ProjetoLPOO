@@ -7,16 +7,19 @@ import UI.*;
 import Evento.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class AmbienteFloresta extends Ambiente {
 
     private Painel painel;
     private Jogador jogador;
     private UI ui;
-    private Botões botoes;
+    private Botoes botoes;
     private Criatura criatura;
     private EventoCriatura eventoVibora;
     private EventoCriatura eventoUrso;
+
+    private BufferedImage fundoFloresta;
 
     public AmbienteFloresta(Painel painel, Jogador jogador, UI ui) {
         super();
@@ -29,6 +32,7 @@ public class AmbienteFloresta extends Ambiente {
         this.eventoUrso = new EventoCriatura(painel, ui, jogador, criatura);
 
         descreverAmbiente();
+        fundoFloresta = ui.setupImagens("floresta_macabra");
     }
 
     @Override
@@ -47,8 +51,10 @@ public class AmbienteFloresta extends Ambiente {
         int tileSize = painel.getTileSize();
         int y = tileSize * 3;
 
-        g2.setColor(new Color(5, 20, 5));
+        g2.setColor(new Color(0, 0, 0));
         g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+
+        ui.desenharPlanoDeFundo(fundoFloresta);
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
         g2.setColor(Color.white);
@@ -75,7 +81,7 @@ public class AmbienteFloresta extends Ambiente {
 
         int numComando = ui.getNumComando();
 
-        g2.setColor(Color.black);
+        g2.setColor(new Color(14, 8, 18));
         g2.fillRect(0, 0, larguraTela, alturaTela);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
@@ -158,8 +164,8 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Encontrou: 7 madeiras, 2 pedras, 1 galho pontiagudo.", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Madeira", "consumo", 7);
-                    painel.getInvent().adicionarItem("Pedra", "consumo", 2);
+                    painel.getInvent().adicionarItem("Madeira", "recurso", 7);
+                    painel.getInvent().adicionarItem("Pedra", "recurso", 2);
                     painel.getInvent().adicionarItem("Galho pontiagudo", "combate", 1);
                     painel.getInvent().adicionarItem("Lasca de pedra", "combate", 1);
                     setRecursosColetados(true);

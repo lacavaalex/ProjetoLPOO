@@ -11,6 +11,7 @@ public class Jogador {
     private boolean sede = false;
     private int fome, energia;
     private boolean sanidade;
+    private String armaAtual = "Nenhuma arma definida.";
     private int ataqueAtual = 1;
 
     public Jogador() {
@@ -18,6 +19,9 @@ public class Jogador {
     }
 
 // Getters e setters
+    public String getArmaAtual() { return armaAtual; }
+    public void setArmaAtual(String armaAtual) { this.armaAtual = armaAtual; }
+
     public int getAtaqueAtual() { return ataqueAtual; }
     public void setAtaqueAtual(int ataqueAtual) { this.ataqueAtual = ataqueAtual; }
 

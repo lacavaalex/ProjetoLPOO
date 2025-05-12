@@ -35,19 +35,18 @@ public class ItemConsumo extends Item {
                 getPainel().getInvent().removerItem(getNome(), 1);
             }
         }
+
         System.out.println("Durabilidade " + durabilidade);
     }
 
     // Itens
-    public String definirConsumo(String nome) {
+    public void definirConsumo(String nome) {
+        setTipo("consumo");
         switch (nome) {
             case "Cantil":
                 setDurabilidadeMax(5);
-                return getNome();
-
             default:
                 System.out.println("Alimento desconhecido: " + nome);
-                return null;
         }
     }
 }

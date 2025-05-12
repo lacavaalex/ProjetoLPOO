@@ -5,12 +5,12 @@ import Main.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FunçãoBotão implements ActionListener {
+public class FuncaoBotao implements ActionListener {
 
     private Painel painel;
-    private Botões botoes;
+    private Botoes botoes;
 
-    public FunçãoBotão(Painel painel, Botões botoes) {
+    public FuncaoBotao(Painel painel, Botoes botoes) {
         this.painel = painel;
         this.botoes = botoes;
     }

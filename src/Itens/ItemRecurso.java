@@ -12,13 +12,14 @@ public class ItemRecurso extends Item {
 
     @Override
     public void usar(String nome) {
-        // a definir possivel sistema de crafting
         definirRecurso(nome);
-        getPainel().getInvent().removerItem(getNome(), 1);
+        System.out.println("Crafting a ser implementado");
+        //getPainel().getInvent().removerItem(getNome(), 1);
     }
 
     // Itens
     public void definirRecurso(String nome) {
+        setTipo("recurso");
         switch (nome) {
             case "Madeira":
                 setDurabilidadeMax(null);

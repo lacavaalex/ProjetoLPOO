@@ -1,6 +1,6 @@
 package Evento;
 
-import Controles.Botões;
+import Controles.Botoes;
 import Entidade.Jogador;
 import Main.Painel;
 import UI.UI;
@@ -9,9 +9,9 @@ import java.awt.*;
 
 public abstract class EventoClimatico extends Evento {
 
-    private Botões botoes;
+    private Botoes botoes;
 
-    public EventoClimatico(Painel painel, UI ui, Jogador jogador, Botões botoes) {
+    public EventoClimatico(Painel painel, UI ui, Jogador jogador, Botoes botoes) {
         super(painel, ui, jogador);
         this.botoes = botoes;
     }

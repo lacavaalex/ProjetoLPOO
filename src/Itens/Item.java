@@ -10,6 +10,7 @@ public class Item {
     private int quantidade;
     private String tipo;
     private Integer durabilidadeMax;
+    private int durabilidade;
 
     public Item(Painel painel) {
         this.painel = painel;
@@ -18,15 +19,11 @@ public class Item {
         quantidade = getQuantidade();
         tipo = getTipo();
         durabilidadeMax = getDurabilidadeMax();
+        durabilidade = getDurabilidade();
     }
 
     // Metodo-base para o polimorfismo da superclasse
-    public void usar(String nome) {
-        //if (durabilidade != null && durabilidade > 0) {
-        //    durabilidade--;
-        //}
-    }
-
+    public void usar(String nome) {}
 
     // Getters e Setters
     public String getNome() { return nome; }
@@ -40,6 +37,8 @@ public class Item {
 
     public Integer getDurabilidadeMax() { return durabilidadeMax; }
     public void setDurabilidadeMax(Integer durabilidadeMax) { this.durabilidadeMax = durabilidadeMax; }
+
+    public int getDurabilidade() { return durabilidade; }
 
     public Painel getPainel() { return painel; }
 }

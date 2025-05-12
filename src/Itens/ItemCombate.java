@@ -1,49 +1,43 @@
 package Itens;
 
 import Main.Painel;
+import Entidade.Jogador;
 
 public class ItemCombate extends Item {
 
+    private Jogador jogador;
+
     private int poder;
+    private String nomeImagem;
     private int durabilidade;
     private boolean durabilidadeAtribuida = false;
 
     public ItemCombate(Painel painel) {
         super(painel);
+        this.jogador = painel.getJogador();
     }
 
     @Override
     public void usar(String nome) {
         definirArma(nome);
-
-        if (!durabilidadeAtribuida) {
-            durabilidade = getDurabilidadeMax();
-            durabilidadeAtribuida = true;
-        }
-
-        if (durabilidade == getDurabilidadeMax()) {
-            durabilidade = (getDurabilidadeMax() - 1);
-        } else if (durabilidade < getDurabilidadeMax()) {
-            durabilidade = durabilidade - 1;
-
-            if (durabilidade == 0) {
-                getPainel().getInvent().removerItem(getNome(), 1);
-            }
-        }
-        System.out.println("Durabilidade " + durabilidade);
+        jogador.setArmaAtual(nome);
+        jogador.setAtaqueAtual(getPoder());
     }
 
     // Armas
     public void definirArma(String nome) {
+        setTipo("combate");
         switch (nome) {
             case "Galho pontiagudo":
                 setDurabilidadeMax(1);
-                setPoder(1);
+                setPoder(2);
+                setNomeImagem("galho_pontiagudo");
                 break;
 
             case "Lasca de pedra":
                 setDurabilidadeMax(3);
                 setPoder(1);
+                setNomeImagem(null);
                 break;
 
             default:
@@ -55,4 +49,7 @@ public class ItemCombate extends Item {
     // Getters e setters
     public int getPoder() { return poder; }
     public void setPoder(int poder) { this.poder = poder; }
+
+    public String getNomeImagem() { return nomeImagem; }
+    public void setNomeImagem(String nomeImagem) { this.nomeImagem = nomeImagem; }
 }

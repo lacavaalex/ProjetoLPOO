@@ -72,11 +72,12 @@ public class CombateUI extends UI {
                 imagemInimigo = setupImagens(criaturaEmCombate.getNomeImagem());
                 desenharInimigo(g2);
 
-                g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 22F));
+                g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 20F));
                 g2.setColor(Color.red);
                 escreverTexto(criaturaEmCombate.getDescricao(), y += tileSize * 3);
                 g2.setColor(Color.white);
-                escreverTexto("Você: " + getJogador().getVida() + "HP", y += tileSize * 2);
+                escreverTexto("Sua vida: " + getJogador().getVida() + "HP", y += tileSize * 2);
+                escreverTexto("Seu ataque: " + getJogador().getAtaqueAtual() + "ATK", y += tileSize);
             }
 
             g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));

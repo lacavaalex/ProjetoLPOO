@@ -16,20 +16,25 @@ public class AmbienteFloresta extends Ambiente {
     private UI ui;
     private Botoes botoes;
     private Criatura criatura;
+
     private EventoCriatura eventoVibora;
     private EventoCriatura eventoUrso;
+    private EventoClimatico eventoChuva;
 
     private BufferedImage fundoFloresta;
 
     public AmbienteFloresta(Painel painel, Jogador jogador, UI ui) {
-        super();
+        super(painel);
         this.painel = painel;
         this.jogador = jogador;
         this.ui = ui;
         this.botoes = painel.getBotoes();
         this.criatura = new Criatura();
+
         this.eventoVibora = new EventoCriatura(painel, ui, jogador, criatura);
         this.eventoUrso = new EventoCriatura(painel, ui, jogador, criatura);
+
+        this.eventoChuva = new EventoClimatico(painel, ui, jogador);
 
         descreverAmbiente();
         fundoFloresta = ui.setupImagens("floresta_macabra");
@@ -112,6 +117,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto(". . .", y += tileSize);
                 ui.escreverTexto("Encontrou no caminho: 1 pedra.", y += tileSize);
                 painel.getInvent().adicionarItem("Pedra", "recurso", 1);
+                definirOcorrenciaDeEventoClimatico(g2, eventoChuva, 1);
                 break;
 
             case 101:
@@ -180,21 +186,11 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 202:
-                if (!isChanceTirada()) {
-                    eventoVibora.chance(g2, 1);
-                    setChanceTirada(true);
-                }
-
-                if (eventoVibora.getExecutavel() == 1) {
-                    eventoVibora.setSurpresa(true);
-                    eventoVibora.executar(g2, 1);
-                }
-                else if (eventoVibora.getExecutavel() == 0) {
-                    painel.setPlaySubState(203);
-                }
+                definirOcorrenciaDeEventoCriatura(g2, eventoVibora, 1, 203);
                 break;
 
             case 203:
+                definirOcorrenciaDeEventoCriatura(g2, eventoVibora, 1, 203);
                 ui.escreverTexto("Bom... aqui parece um belo lugar para descanso", tileSize * 3);
 
                 break;
@@ -258,18 +254,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 304:
-                if (!isChanceTirada()) {
-                    eventoUrso.chance(g2, 2);
-                    setChanceTirada(true);
-                }
-
-                if (eventoUrso.getExecutavel() == 1) {
-                    eventoUrso.setSurpresa(true);
-                    eventoUrso.executar(g2, 2);
-                }
-                else if (eventoUrso.getExecutavel() == 0) {
-                    painel.setPlaySubState(305);
-                }
+                definirOcorrenciaDeEventoCriatura(g2, eventoUrso, 2, 305);
                 break;
 
             case 305:
@@ -285,6 +270,31 @@ public class AmbienteFloresta extends Ambiente {
                 System.out.println("Floresta default");
                 System.out.println(painel.getPlaySubState());
                 break;
+        }
+    }
+
+    public void definirOcorrenciaDeEventoCriatura (Graphics2D g2, EventoCriatura nomeEventoCriatura, int tipo, int subStatePosteriorAoEvento) {
+        if (!isChanceTirada()) {
+            nomeEventoCriatura.chance(g2, tipo);
+            setChanceTirada(true);
+        }
+
+        if (nomeEventoCriatura.getExecutavel() == 1) {
+            nomeEventoCriatura.setSurpresa(true);
+            nomeEventoCriatura.executar(g2, tipo);
+        }
+        else if (nomeEventoCriatura.getExecutavel() == 0) {
+            painel.setPlaySubState(subStatePosteriorAoEvento);
+        }
+    }
+
+    public void definirOcorrenciaDeEventoClimatico(Graphics2D g2, EventoClimatico nomeEventoClimatico, int tipo) {
+        if (!isChanceTirada()) {
+            nomeEventoClimatico.chance(g2, tipo);
+            setChanceTirada(true);
+        }
+        if (nomeEventoClimatico.getExecutavel() == 1) {
+            nomeEventoClimatico.executar(g2, tipo);
         }
     }
 }

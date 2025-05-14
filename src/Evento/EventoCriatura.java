@@ -116,4 +116,7 @@ public class EventoCriatura extends Evento {
     public boolean isSurpresa() { return encontroSurpresa; }
 
     public int getProbabilidade() { return probabilidade; }
+
+    @Override
+    public void removerMensagemVisivel() {}
 }

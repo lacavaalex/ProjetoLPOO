@@ -1,9 +1,12 @@
 package Ambiente;
 
+import Main.Painel;
+
 import java.awt.*;
 
 public abstract class Ambiente {
 
+    private Painel painel;
     private String nome, descricao, dificuldade, recursos, frequenciaEventos, clima;
 
     // Atributos de gerencia de inventário/eventos
@@ -11,7 +14,8 @@ public abstract class Ambiente {
     private boolean recursosGastos = false;
     private boolean chanceTirada = false;
 
-    public Ambiente() {
+    public Ambiente(Painel painel) {
+        this.painel = painel;
     }
 
     // Metodo-base para o polimorfismo da superclasse
@@ -35,8 +39,14 @@ public abstract class Ambiente {
         return recursosGastos;
     }
     public void setRecursosGastos(boolean recursosGastos) { this.recursosGastos = recursosGastos; }
+
     public boolean isChanceTirada() { return chanceTirada; }
     public void setChanceTirada(boolean chanceTirada) { this.chanceTirada = chanceTirada; }
+    public void resetChance() {
+        if (!painel.getEvento().isEventoCriaturaAtivo()) {
+            setChanceTirada(false);
+        }
+    }
 
     public String getNome() {
         return nome;

@@ -13,6 +13,7 @@ public abstract class Evento {
     private Jogador jogador;
 
     private boolean eventoCriaturaAtivo = false;
+    private boolean eventoClimaticoAtivo = false;
 
     public Evento(Painel painel, UI ui, Jogador jogador) {
         this.painel = painel;
@@ -26,12 +27,17 @@ public abstract class Evento {
     //Metodo-base par a probabilidade de evento
     public abstract void chance(Graphics2D g2, int tipo);
 
+    public abstract void removerMensagemVisivel();
+
     // Getters e setters
     public abstract int getExecutavel();
     public abstract void setSurpresa(boolean surpresa);
 
     public boolean isEventoCriaturaAtivo() { return eventoCriaturaAtivo; }
     public void setEventoCriaturaAtivo(boolean eventoCriaturaAtivo) { this.eventoCriaturaAtivo = eventoCriaturaAtivo; }
+
+    public boolean isEventoClimaticoAtivo() { return eventoClimaticoAtivo; }
+    public void setEventoClimaticoAtivo(boolean eventoClimaticoAtivo) { this.eventoClimaticoAtivo = eventoClimaticoAtivo; }
 
     public Painel getPainel() { return painel; }
     public UI getUi() { return ui; }

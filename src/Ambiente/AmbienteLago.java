@@ -16,7 +16,7 @@ public class AmbienteLago extends Ambiente {
     private Botoes botoes;
 
     public AmbienteLago(Painel painel, Jogador jogador, UI ui) {
-        super();
+        super(painel);
         this.painel = painel;
         this.jogador = jogador;
         this.ui = ui;

@@ -234,6 +234,11 @@ public class Painel extends JPanel implements Runnable {
                 botoes.mostrarBotaoMochila();
             }
         }
+
+        // Mensagem do evento climatico
+        if (getEvento().isEventoClimaticoAtivo()) {
+            botoes.esconderBotaoMochila();
+        }
     }
 
     public int getPlaySubState() { return playSubState; }

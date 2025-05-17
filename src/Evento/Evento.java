@@ -27,11 +27,8 @@ public abstract class Evento {
     //Metodo-base par a probabilidade de evento
     public abstract void chance(Graphics2D g2, int tipo);
 
-    public abstract void removerMensagemVisivel();
-
     // Getters e setters
     public abstract int getExecutavel();
-    public abstract void setSurpresa(boolean surpresa);
 
     public boolean isEventoCriaturaAtivo() { return eventoCriaturaAtivo; }
     public void setEventoCriaturaAtivo(boolean eventoCriaturaAtivo) { this.eventoCriaturaAtivo = eventoCriaturaAtivo; }

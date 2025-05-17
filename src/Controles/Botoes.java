@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class Botoes extends JPanel {
 
-    private JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio, painelMochila;
-    private JButton botaoContinuar, botaoVoltar, botaoInicio, botaoMochila;
+    private JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio, painelMochila, painelBotaoClima;
+    private JButton botaoContinuar, botaoVoltar, botaoInicio, botaoMochila, botaoClima;
     private Font pixelsans_15 = new Font("Pixel Sans Serif", Font.PLAIN, 15);
 
     private Painel painel;
@@ -23,6 +23,7 @@ public class Botoes extends JPanel {
         estruturaBContinuar();
         estruturaBVoltar();
         estruturaBInventario();
+        estruturaBClima();
         estruturaBInicio();
     }
 
@@ -31,79 +32,84 @@ public class Botoes extends JPanel {
         setBounds(0, 0, painel.getLargura(), painel.getAltura());
     }
 
-    // Construção de cada botão
+    // Definicoes genericas do painel por trás do potao
+    public void definicoesPainelBotao (JPanel painelBotao) {
+        painelBotao.setBackground(Color.BLACK);
+        painelBotao.setLayout(new BorderLayout());
+    }
 
-    public void estruturaBContinuar() {
-        // Painel do botão
-        painelBotaoContinuar = new JPanel();
-        painelBotaoContinuar.setBounds(1020, 600, 200, 50);
-        painelBotaoContinuar.setBackground(Color.BLACK);
-        painelBotaoContinuar.setLayout(new BorderLayout());
-
-         // Botão
-        botaoContinuar = new JButton("Continuar");
-        botaoContinuar.setBackground(Color.BLACK);
-        botaoContinuar.setForeground(Color.WHITE);
-        botaoContinuar.setFont(pixelsans_15);
+    // Definiçoes genericas do botao
+    public void definicoesBotao(JButton botao) {
+        botao.setBackground(Color.BLACK);
+        botao.setForeground(Color.WHITE);
+        botao.setFont(pixelsans_15);
 
         // Atribui a ação do action listener ao botao
-        botaoContinuar.addActionListener(fB);
-        this.add(painelBotaoContinuar);
-        painelBotaoContinuar.add(botaoContinuar, BorderLayout.CENTER);
-        painelBotaoContinuar.setVisible(false);
+        botao.addActionListener(fB);
+    }
+
+    // Definições genericas de integração painelBotao + botao
+    public void definicoesIntegracaoDeBotao(JPanel painelBotao, JButton botao) {
+        this.add(painelBotao);
+        painelBotao.add(botao, BorderLayout.CENTER);
+        painelBotao.setVisible(false);
+    }
+
+    // Construção de cada botão
+    public void estruturaBContinuar() {
+        painelBotaoContinuar = new JPanel();
+        painelBotaoContinuar.setBounds(1020, 600, 200, 50);
+        definicoesPainelBotao(painelBotaoContinuar);
+
+        botaoContinuar = new JButton("Continuar");
+        definicoesBotao(botaoContinuar);
+
+        definicoesIntegracaoDeBotao(painelBotaoContinuar, botaoContinuar);
     }
 
     public void estruturaBVoltar() {
         painelBotaoVoltar = new JPanel();
         painelBotaoVoltar.setBounds(100, 600, 200, 50);
-        painelBotaoVoltar.setBackground(Color.BLACK);
-        painelBotaoVoltar.setLayout(new BorderLayout());
+        definicoesPainelBotao(painelBotaoVoltar);
 
         botaoVoltar = new JButton("Voltar");
-        botaoVoltar.setBackground(Color.BLACK);
-        botaoVoltar.setForeground(Color.WHITE);
-        botaoVoltar.setFont(pixelsans_15);
+        definicoesBotao(botaoVoltar);
 
-        botaoVoltar.addActionListener(fB);
-        this.add(painelBotaoVoltar);
-        painelBotaoVoltar.add(botaoVoltar, BorderLayout.CENTER);
-        painelBotaoVoltar.setVisible(false);
+        definicoesIntegracaoDeBotao(painelBotaoVoltar, botaoVoltar);
     }
 
     public void estruturaBInventario() {
         painelMochila = new JPanel();
         painelMochila.setBounds(painel.getLargura()/2 - 140/2, 600, 140, 50);
-        painelMochila.setBackground(Color.BLACK);
-        painelMochila.setLayout(new BorderLayout());
+        definicoesPainelBotao(painelMochila);
 
         botaoMochila = new JButton("Mochila");
-        botaoMochila.setBackground(Color.BLACK);
-        botaoMochila.setForeground(Color.WHITE);
-        botaoMochila.setFont(pixelsans_15);
+        definicoesBotao(botaoMochila);
 
-        botaoMochila.addActionListener(fB);
-        this.add(painelMochila);
-        painelMochila.add(botaoMochila, BorderLayout.CENTER);
-        painelMochila.setVisible(false);
+        definicoesIntegracaoDeBotao(painelMochila, botaoMochila);
+    }
+
+    public void estruturaBClima() {
+        painelBotaoClima = new JPanel();
+        painelBotaoClima.setBounds(painel.getLargura() - painel.getLargura()/8, painel.getAltura()/12, 130, 50);
+        definicoesPainelBotao(painelBotaoClima);
+
+        botaoClima = new JButton("Clima");
+        definicoesBotao(botaoClima);
+
+        definicoesIntegracaoDeBotao(painelBotaoClima, botaoClima);
     }
 
     public void estruturaBInicio() {
         painelBotaoInicio = new JPanel();
         painelBotaoInicio.setBounds(100, 600, 300, 50);
-        painelBotaoInicio.setBackground(Color.BLACK);
-        painelBotaoInicio.setLayout(new BorderLayout());
+        definicoesPainelBotao(painelBotaoInicio);
 
         botaoInicio = new JButton("Voltar ao início");
-        botaoInicio.setBackground(Color.BLACK);
-        botaoInicio.setForeground(Color.WHITE);
-        botaoInicio.setFont(pixelsans_15);
+        definicoesBotao(botaoInicio);
 
-        botaoInicio.addActionListener(fB);
-        this.add(painelBotaoInicio);
-        painelBotaoInicio.add(botaoInicio, BorderLayout.CENTER);
-        painelBotaoInicio.setVisible(false);
+        definicoesIntegracaoDeBotao(painelBotaoInicio, botaoInicio);
     }
-
 
     // Visibilidade/uso dos botões
     public void mostrarBotaoContinuar() { painelBotaoContinuar.setVisible(true); }
@@ -115,6 +121,9 @@ public class Botoes extends JPanel {
     public void mostrarBotaoMochila() { painelMochila.setVisible(true); }
     public void esconderBotaoMochila() { painelMochila.setVisible(false); }
 
+    public void mostrarBotaoClima() { painelBotaoClima.setVisible(true); }
+    public void esconderBotaoClima() { painelBotaoClima.setVisible(false); }
+
     public void mostrarBotaoInicio() { painelBotaoInicio.setVisible(true); }
     public void esconderBotaoInicio() { painelBotaoInicio.setVisible(false); }
 
@@ -124,5 +133,6 @@ public class Botoes extends JPanel {
     public JButton getBotaoVoltar() { return botaoVoltar; }
     public JButton getBotaoInicio() { return botaoInicio; }
     public JButton getBotaoMochila() { return botaoMochila; }
+    public JButton getBotaoClima() { return botaoClima; }
 
 }

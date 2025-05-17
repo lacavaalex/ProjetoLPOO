@@ -32,7 +32,7 @@ public class AmbienteMontanha extends Ambiente {
         this.setDificuldade("perigosas.");
         this.setRecursos("indefinido.");
         this.setFrequenciaEventos("desastres naturais, perigos escondidos.");
-        this.setClima("altamente frio, piora com altitude.");
+        this.setClimaAmbiente("altamente frio, piora com altitude.");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class AmbienteMontanha extends Ambiente {
         ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
         ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
         ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
-        ui.escreverTexto("Clima: " + getClima(), y += tileSize);
+        ui.escreverTexto("Clima: " + getClimaAmbiente(), y += tileSize);
 
         botoes.mostrarBotaoContinuar();
     }

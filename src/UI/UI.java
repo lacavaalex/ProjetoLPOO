@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class UI {
 
-    private BufferedImage fundoTitulo, chama1, chama2, chama3;
+    private BufferedImage fundoTitulo, chama1, chama2, chama3, imagemClima;
 
     private Painel painel;
     private Jogador jogador = new Jogador();
@@ -100,7 +100,7 @@ public class UI {
         }
         // Play state
         if (gameState == playState && painel.getAmbienteAtual() != null) {
-            mostrarInformacoesJogador(g2);
+            mostrarStatusEAmbiente(g2);
             painel.getAmbienteAtual().playState(g2);
         }
         // Game over
@@ -123,32 +123,47 @@ public class UI {
         }
     }
 
-    public void mostrarInformacoesJogador(Graphics2D g2) {
+    public void mostrarStatusEAmbiente(Graphics2D g2) {
         tileSize = painel.getTileSize();
         int y = tileSize * 2;
         int x = tileSize + 5;
 
-        String texto = "STATUS";
-        g2.drawString(texto, x, y);
-        String textovida = jogador.getVida() + "HP";
-        g2.drawString(textovida, x, y += tileSize);
-        String textoataque = jogador.getAtaqueAtual() + " ATK";
-        g2.drawString(textoataque, x, y += tileSize);
+        // Visualizar tatus do jogador
+        String status = "STATUS"; g2.drawString(status, x, y);
+        String textovida = jogador.getVida() + "HP"; g2.drawString(textovida, x, y += tileSize);
+        String textoataque = jogador.getAtaqueAtual() + " ATK"; g2.drawString(textoataque, x, y += tileSize);
+
+        // Visualizar local e clima atuais
         String textolocal = jogador.getLocalizacao();
         if (textolocal != null) {
             x = coordenadaXParaTextoCentralizado(g2,textolocal);
             g2.drawString(textolocal, x, tileSize);
         }
+
+        String nomeImagem;
+        switch (painel.getEventoClimatico().getClima()) {
+            case "chuva":
+                nomeImagem = "clima_chuva";
+                break;
+            default:
+                nomeImagem = "clima_ameno";
+                break;
+        }
+
+        imagemClima = setupImagens(nomeImagem);
+        g2.drawImage(imagemClima,painel.getLargura() - painel.getLargura()/8, painel.getAltura()/6, 130, 50, null);
     }
 
     // Métodos de compactação de código
     public BufferedImage setupImagens(String nomeImagem) {
         BufferedImage imagem = null;
-
         try {
             imagem = ImageIO.read(getClass().getResource("/Imagens/" + nomeImagem + ".png"));
-
-        }catch(IOException e) {
+            if (imagem == null) {
+                System.out.println("Imagem não carregada: " + nomeImagem);
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar imagem: " + nomeImagem);
             e.printStackTrace();
         }
         return imagem;
@@ -233,6 +248,11 @@ public class UI {
     // Métodos para telas especiais
     public void mostrarInventario() {
         painel.getInvent().abrir();
+        painel.repaint();
+    }
+
+    public void mostrarClima() {
+        painel.getClima().verSituacaoClimatica();
         painel.repaint();
     }
 

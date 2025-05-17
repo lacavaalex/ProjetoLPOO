@@ -32,7 +32,7 @@ public class EventoCriatura extends Evento {
 
         // Execução com probabilidade bem sucedida
         if (executavel == 1) {
-            getPainel().getEvento().setEventoCriaturaAtivo(true);
+            getPainel().getEventoCriatura().setEventoCriaturaAtivo(true);
             getPainel().setGameState(getPainel().getPlayState());
             getPainel().getCombate().iniciarCombate(criatura);
 
@@ -111,12 +111,8 @@ public class EventoCriatura extends Evento {
     @Override
     public int getExecutavel() { return executavel; }
 
-    @Override
     public void setSurpresa(boolean encontroSurpresa) { this.encontroSurpresa = encontroSurpresa; }
     public boolean isSurpresa() { return encontroSurpresa; }
 
     public int getProbabilidade() { return probabilidade; }
-
-    @Override
-    public void removerMensagemVisivel() {}
 }

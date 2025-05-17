@@ -126,14 +126,15 @@ public class Teclado implements KeyListener {
                     invent.fechar();
                 }
             }
-            else {
-                // Tela de mensagem de evento climático
-                if (painel.getEvento().isEventoClimaticoAtivo()) {
-                    if (code == KeyEvent.VK_ENTER) {
-                        painel.getEvento().removerMensagemVisivel();
-                    }
-                }
 
+            // Configuração da tela de situação climática
+            else if (painel.getClima().isAnalisandoClima()) {
+                if (code == KeyEvent.VK_ESCAPE) {
+                    painel.getClima().sair();
+                }
+            }
+
+            else {
                 if (!painel.getFightState()) {
                     // States com 3 opcoes
                     if (subState == 0) {

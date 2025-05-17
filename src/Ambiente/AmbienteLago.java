@@ -32,7 +32,7 @@ public class AmbienteLago extends Ambiente {
         this.setDificuldade("tranquilas.");
         this.setRecursos("água.");
         this.setFrequenciaEventos("quieto, um certo ar de misticismo.");
-        this.setClima("levemente frio");
+        this.setClimaAmbiente("levemente frio");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class AmbienteLago extends Ambiente {
         ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
         ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
         ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
-        ui.escreverTexto("Clima: " + getClima(), y += tileSize);
+        ui.escreverTexto("Clima: " + getClimaAmbiente(), y += tileSize);
 
         botoes.mostrarBotaoContinuar();
     }

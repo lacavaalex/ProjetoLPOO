@@ -3,8 +3,8 @@ package Main;
 import Controles.*;
 import Entidade.*;
 import Ambiente.*;
+import Evento.EventoClimatico;
 import Evento.EventoCriatura;
-import Itens.Item;
 import UI.*;
 
 import javax.swing.*;
@@ -30,16 +30,18 @@ public class Painel extends JPanel implements Runnable {
     private Ambiente ambienteAtual;
     private Jogador jogador = new Jogador();
     private Criatura criatura = new Criatura();
-    private Item item = new Item(this);
 
     private Botoes botoes = new Botoes(this);
-    private InventarioUI invent = new InventarioUI(this, jogador, botoes);
-    private Teclado teclado = new Teclado(this, invent);
-
     private UI ui = new UI(this, jogador);
     private CombateUI combate = new CombateUI(this, jogador, botoes);
 
     private EventoCriatura eventoCriatura = new EventoCriatura(this, ui, jogador, criatura);
+    private EventoClimatico eventoClimatico = new EventoClimatico(this, ui, jogador);
+
+    private InventarioUI invent = new InventarioUI(this, jogador, botoes);
+    private ClimaUI clima = new ClimaUI(this, jogador, botoes, eventoClimatico);
+
+    private Teclado teclado = new Teclado(this, invent);
 
     // Game States
     private int gameState;
@@ -67,7 +69,6 @@ public class Painel extends JPanel implements Runnable {
         botoes.configurarComPainel(this);
         botoes.setVisible(true);
         this.add(botoes);
-        botoes.mostrarBotaoContinuar();
 
         // Buffering mais preciso
         this.setDoubleBuffered(true);
@@ -122,7 +123,7 @@ public class Painel extends JPanel implements Runnable {
 
     // Atualização inicial e contínua dos botões
     public void updateBotoes() {
-        if (gameState == titleState || !invent.isFechado()) {
+        if (gameState == titleState || !invent.isFechado() || clima.isAnalisandoClima() ) {
             botoes.setVisible(false);
         } else {
             botoes.setVisible(true);
@@ -144,11 +145,16 @@ public class Painel extends JPanel implements Runnable {
                     gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
                 ui.mostrarInterface(g2);
                 if (gameState == playState) {
-                    ui.mostrarInformacoesJogador(g2);
+                    ui.mostrarStatusEAmbiente(g2);
                 }
             }
         } else {
             combate.estruturaTelaCombate(g2, ui);
+        }
+
+        // Mostra a situacao climatica
+        if (clima.isAnalisandoClima()) {
+            clima.estruturaTelaDeClima(g2, ui);
         }
 
         // Desenha a tela de inventário à frente do resto
@@ -183,6 +189,7 @@ public class Painel extends JPanel implements Runnable {
 
         botoes.setVisible(false);
         botoes.esconderBotaoInicio();
+        botoes.estruturaBClima();
         botoes.esconderBotaoMochila();
         botoes.esconderBotaoVoltar();
         botoes.esconderBotaoContinuar();
@@ -222,22 +229,20 @@ public class Painel extends JPanel implements Runnable {
         if (gameState == playState) {
             botoes.setVisible(true);
             botoes.mostrarBotaoMochila();
+            botoes.mostrarBotaoClima();
         }
 
         // Fight state
-        if (getEvento().isEventoCriaturaAtivo()) {
+        if (getEventoCriatura().isEventoCriaturaAtivo()) {
             botoes.esconderBotaoMochila();
+            botoes.esconderBotaoClima();
             botoes.mostrarBotaoContinuar();
 
             if (fightState) {
                 botoes.esconderBotaoContinuar();
                 botoes.mostrarBotaoMochila();
+                botoes.mostrarBotaoClima();
             }
-        }
-
-        // Mensagem do evento climatico
-        if (getEvento().isEventoClimaticoAtivo()) {
-            botoes.esconderBotaoMochila();
         }
     }
 
@@ -263,8 +268,10 @@ public class Painel extends JPanel implements Runnable {
     public UI getUi() { return ui; }
     public CombateUI getCombate() { return combate; }
     public Jogador getJogador() { return jogador; }
-    public Evento.EventoCriatura getEvento() { return eventoCriatura; }
+    public Evento.EventoCriatura getEventoCriatura() { return eventoCriatura; }
+    public Evento.EventoClimatico getEventoClimatico() { return eventoClimatico; }
     public InventarioUI getInvent() { return invent; }
+    public ClimaUI getClima() { return clima; }
     public Botoes getBotoes() { return botoes; }
     public Ambiente getAmbienteAtual() { return ambienteAtual; }
 

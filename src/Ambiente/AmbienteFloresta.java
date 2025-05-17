@@ -34,7 +34,7 @@ public class AmbienteFloresta extends Ambiente {
         this.eventoVibora = new EventoCriatura(painel, ui, jogador, criatura);
         this.eventoUrso = new EventoCriatura(painel, ui, jogador, criatura);
 
-        this.eventoChuva = new EventoClimatico(painel, ui, jogador);
+        this.eventoChuva = painel.getEventoClimatico();
 
         descreverAmbiente();
         fundoFloresta = ui.setupImagens("floresta_macabra");
@@ -47,7 +47,7 @@ public class AmbienteFloresta extends Ambiente {
         this.setDificuldade("medianas.");
         this.setRecursos("frutas, água, madeira, pedras.");
         this.setFrequenciaEventos("muitas criaturas, esconderijos, riscos à saúde.");
-        this.setClima("levemente frio.");
+        this.setClimaAmbiente("levemente frio.");
     }
 
     @Override
@@ -73,7 +73,7 @@ public class AmbienteFloresta extends Ambiente {
         ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
         ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
         ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
-        ui.escreverTexto("Clima: " + getClima(), y += tileSize);
+        ui.escreverTexto("Clima: " + getClimaAmbiente(), y += tileSize);
 
         botoes.mostrarBotaoContinuar();
     }

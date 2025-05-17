@@ -148,7 +148,7 @@ public class CombateUI extends UI {
     // Finaliza o combate e reseta os atributos
     public void finalizarCombate() {
         getPainel().setFightState(false);
-        getPainel().getEvento().setEventoCriaturaAtivo(false);
+        getPainel().getEventoCriatura().setEventoCriaturaAtivo(false);
         botoes.mostrarBotaoMochila();
     }
 

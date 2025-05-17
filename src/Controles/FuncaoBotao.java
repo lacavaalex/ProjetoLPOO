@@ -26,7 +26,7 @@ public class FuncaoBotao implements ActionListener {
             botoes.esconderBotaoContinuar();
 
             // FightState
-            if (painel.getEvento().isEventoCriaturaAtivo()) {
+            if (painel.getEventoCriatura().isEventoCriaturaAtivo()) {
                 painel.setFightState(true);
             }
 
@@ -101,6 +101,12 @@ public class FuncaoBotao implements ActionListener {
         else if (fonte == botoes.getBotaoMochila()) {
             painel.getUi().mostrarInventario();
         }
+
+        // CLIMA
+        else if (fonte == botoes.getBotaoClima()) {
+            painel.getUi().mostrarClima();
+        }
+
         // DE VOLTA AO INÍCIO
         else if (fonte == botoes.getBotaoInicio()) { painel.setGameState(painel.getTitleState()); }
 

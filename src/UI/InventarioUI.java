@@ -35,7 +35,7 @@ public class InventarioUI extends UI {
         recurso = new ItemRecurso(painel);
         combate = new ItemCombate(painel);
 
-        fundoInventario = setupImagens("fundo_inventario");
+        fundoInventario = setupImagens("fundo_inventario", "background");
     }
 
     public void adicionarItem(String nome, String tipo, int quantidade) {
@@ -140,7 +140,7 @@ public class InventarioUI extends UI {
 
             if (combate.getNomeImagem() != null) {
 
-                imagemDaArma = setupImagens(combate.getNomeImagem());
+                imagemDaArma = setupImagens(combate.getNomeImagem(), "arma");
                 desenharArma(g2, x + tileSize * 2, y += tileSize);
 
                 String poderArma = ("Dano: " + combate.getPoder());

@@ -13,10 +13,12 @@ public class EventoCriatura extends Evento {
     private Criatura criatura;
     private Random rand;
 
-    private int probabilidade;
+    private double probabilidade;
     private int executavel;
     private boolean encontroSurpresa;
     private boolean ataqueSurpresaExecutado = false;
+
+    private int contadorDeEncontros = 0;
 
     public EventoCriatura(Painel painel, UI ui, Jogador jogador, Criatura criatura) {
         super(painel, ui, jogador);
@@ -32,6 +34,7 @@ public class EventoCriatura extends Evento {
 
         // Execução com probabilidade bem sucedida
         if (executavel == 1) {
+
             getPainel().getEventoCriatura().setEventoCriaturaAtivo(true);
             getPainel().setGameState(getPainel().getPlayState());
             getPainel().getCombate().iniciarCombate(criatura);
@@ -72,7 +75,10 @@ public class EventoCriatura extends Evento {
     @Override
     public void chance(Graphics2D g2, int tipo) {
 
-        probabilidade = rand.nextInt(100) + 1;
+        probabilidade = (rand.nextInt(100) + 1);
+        if (getPainel().getEventoClimatico().getClima().equals("chuva")) {
+            probabilidade = probabilidade * 0.85;
+        }
 
         if (tipo == 1) { // Víbora
             executavel = (probabilidade <= 70) ? 1 : 0;
@@ -106,13 +112,17 @@ public class EventoCriatura extends Evento {
         g2.setColor(Color.white);
     }
 
+    public void incrementarContador() { contadorDeEncontros++; }
+    public void resetContador() { contadorDeEncontros = 0; }
 
     // Getters e setters
     @Override
     public int getExecutavel() { return executavel; }
 
-    public void setSurpresa(boolean encontroSurpresa) { this.encontroSurpresa = encontroSurpresa; }
-    public boolean isSurpresa() { return encontroSurpresa; }
+    public int getContadorDeEncontros() { return contadorDeEncontros; }
 
-    public int getProbabilidade() { return probabilidade; }
+    public boolean isSurpresa() { return encontroSurpresa; }
+    public void setSurpresa(boolean encontroSurpresa) { this.encontroSurpresa = encontroSurpresa; }
+
+    public double getProbabilidade() { return probabilidade; }
 }

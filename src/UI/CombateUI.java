@@ -2,6 +2,7 @@ package UI;
 
 import Controles.Botoes;
 import Entidade.*;
+import Evento.EventoCriatura;
 import Main.Painel;
 import Itens.*;
 
@@ -15,6 +16,7 @@ public class CombateUI extends UI {
     private ItemCombate item;
     private Criatura criaturaEmCombate;
     private Botoes botoes;
+    private EventoCriatura eventoCriatura;
 
     private Font pixelsans_30;
     private boolean turnoJogador = true;
@@ -22,9 +24,10 @@ public class CombateUI extends UI {
 
     private int numComandoCombate;
 
-    public CombateUI(Painel painel, Jogador jogador, Botoes botoes) {
+    public CombateUI(Painel painel, Jogador jogador, Botoes botoes, EventoCriatura eventoCriatura) {
         super(painel, jogador);
         this.botoes = botoes;
+        this.eventoCriatura = eventoCriatura;
 
         item = new ItemCombate(painel);
 
@@ -69,7 +72,7 @@ public class CombateUI extends UI {
         if (!fimDeCombate) {
 
             if (criaturaEmCombate != null) {
-                imagemInimigo = setupImagens(criaturaEmCombate.getNomeImagem());
+                imagemInimigo = setupImagens(criaturaEmCombate.getNomeImagem(), "criatura");
                 desenharInimigo(g2);
 
                 g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 20F));
@@ -95,6 +98,7 @@ public class CombateUI extends UI {
         // Fim de combate
         else {
             botoes.esconderBotaoMochila();
+            botoes.esconderBotaoClima();
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
             escreverTexto("Seu oponente foi derrotado, FIM DE COMBATE!", y += tileSize * 2);
             g2.setColor(Color.yellow);
@@ -148,8 +152,12 @@ public class CombateUI extends UI {
     // Finaliza o combate e reseta os atributos
     public void finalizarCombate() {
         getPainel().setFightState(false);
-        getPainel().getEventoCriatura().setEventoCriaturaAtivo(false);
+        eventoCriatura.setEventoCriaturaAtivo(false);
+        getPainel().getAmbienteAtual().setChanceTirada(false);
+        eventoCriatura.incrementarContador();
+
         botoes.mostrarBotaoMochila();
+        botoes.mostrarBotaoClima();
     }
 
     // Desenha imagem do inimigo

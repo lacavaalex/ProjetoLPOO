@@ -62,10 +62,10 @@ public class UI {
         }
 
     // Atribuição de imagens
-        fundoTitulo = setupImagens("fundo_mao_2");
-        chama1 = setupImagens("chama-1");
-        chama2 = setupImagens("chama-2");
-        chama3 = setupImagens("chama-3");
+        fundoTitulo = setupImagens("fundo_mao", "background");
+        chama1 = setupImagens("chama-1", "animacao");
+        chama2 = setupImagens("chama-2", "animacao");
+        chama3 = setupImagens("chama-3", "animacao");
     }
 
     // Metodo geral de desenho
@@ -106,9 +106,7 @@ public class UI {
         // Game over
         if (gameState == gameOverState) {
             mostrarGameOverScreen();
-            painel.resetPlayState();
-            jogador.resetVida();
-            jogador.setNome(null);
+            painel.resetAposGameOver();
         }
 
         // Cards de ambiente
@@ -150,15 +148,15 @@ public class UI {
                 break;
         }
 
-        imagemClima = setupImagens(nomeImagem);
+        imagemClima = setupImagens(nomeImagem, "clima");
         g2.drawImage(imagemClima,painel.getLargura() - painel.getLargura()/8, painel.getAltura()/6, 130, 50, null);
     }
 
     // Métodos de compactação de código
-    public BufferedImage setupImagens(String nomeImagem) {
+    public BufferedImage setupImagens(String nomeImagem, String tipo) {
         BufferedImage imagem = null;
         try {
-            imagem = ImageIO.read(getClass().getResource("/Imagens/" + nomeImagem + ".png"));
+            imagem = ImageIO.read(getClass().getResource("/Imagens_" + tipo +"/" + nomeImagem + ".png"));
             if (imagem == null) {
                 System.out.println("Imagem não carregada: " + nomeImagem);
             }
@@ -169,20 +167,8 @@ public class UI {
         return imagem;
     }
 
-    public int coordenadaXParaTextoCentralizado(Graphics2D g2, String texto) {
-        this.g2 = g2;
-        int larguraTela = painel.getLargura();
-
-        int comprimento = (int) g2.getFontMetrics().getStringBounds(texto, g2).getWidth();
-        return larguraTela / 2 - comprimento / 2;
-
-    }
-
-    public String escreverTexto(String texto, int y) {
-        tileSize = painel.getTileSize();
-        int x = coordenadaXParaTextoCentralizado(g2, texto);
-        g2.drawString(texto, x, y);
-        return texto;
+    public void desenharPlanoDeFundo(BufferedImage imagem) {
+        g2.drawImage(imagem, 0, 0, larguraTela, alturaTela, null);
     }
 
     public void desenharOpcoes(String[] opcoes, int yInicial, int numComando) {
@@ -230,8 +216,20 @@ public class UI {
         g2.setColor(Color.white);
     }
 
-    public void desenharPlanoDeFundo(BufferedImage imagem) {
-        g2.drawImage(imagem, 0, 0, larguraTela, alturaTela, null);
+    public int coordenadaXParaTextoCentralizado(Graphics2D g2, String texto) {
+        this.g2 = g2;
+        int larguraTela = painel.getLargura();
+
+        int comprimento = (int) g2.getFontMetrics().getStringBounds(texto, g2).getWidth();
+        return larguraTela / 2 - comprimento / 2;
+
+    }
+
+    public String escreverTexto(String texto, int y) {
+        tileSize = painel.getTileSize();
+        int x = coordenadaXParaTextoCentralizado(g2, texto);
+        g2.drawString(texto, x, y);
+        return texto;
     }
 
     public void updateFrames() {

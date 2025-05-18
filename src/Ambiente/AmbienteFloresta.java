@@ -37,7 +37,7 @@ public class AmbienteFloresta extends Ambiente {
         this.eventoChuva = painel.getEventoClimatico();
 
         descreverAmbiente();
-        fundoFloresta = ui.setupImagens("floresta_macabra");
+        fundoFloresta = ui.setupImagens("floresta_macabra", "background");
     }
 
     @Override
@@ -260,11 +260,6 @@ public class AmbienteFloresta extends Ambiente {
             case 305:
                 ui.escreverTexto("Você descansa os olhos...", y += tileSize);
                 break;
-
-            /*case 999:
-                Evento eventoChuva = new EventoClimatico(painel, this, jogador, botoes, 1);
-                eventoChuva.executar(g2);
-                break;*/
 
             default:
                 System.out.println("Floresta default");

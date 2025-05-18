@@ -33,11 +33,11 @@ public class Painel extends JPanel implements Runnable {
 
     private Botoes botoes = new Botoes(this);
     private UI ui = new UI(this, jogador);
-    private CombateUI combate = new CombateUI(this, jogador, botoes);
 
     private EventoCriatura eventoCriatura = new EventoCriatura(this, ui, jogador, criatura);
     private EventoClimatico eventoClimatico = new EventoClimatico(this, ui, jogador);
 
+    private CombateUI combate = new CombateUI(this, jogador, botoes, eventoCriatura);
     private InventarioUI invent = new InventarioUI(this, jogador, botoes);
     private ClimaUI clima = new ClimaUI(this, jogador, botoes, eventoClimatico);
 
@@ -121,12 +121,25 @@ public class Painel extends JPanel implements Runnable {
         }
     }
 
-    // Atualização inicial e contínua dos botões
+    // Atualizacoes contínuas de mecanicas do jogo
     public void updateBotoes() {
         if (gameState == titleState || !invent.isFechado() || clima.isAnalisandoClima() ) {
             botoes.setVisible(false);
         } else {
             botoes.setVisible(true);
+        }
+    }
+
+    public void updateClima() {
+        String climaAtual = eventoClimatico.getClima();
+
+        switch(climaAtual) {
+            case "chuva":
+                if (eventoCriatura.getContadorDeEncontros() >= 5) {
+                    eventoClimatico.finalizarEventoClimatico();
+                }
+                break;
+            default: break;
         }
     }
 
@@ -137,6 +150,7 @@ public class Painel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         ui.updateFrames();
+        updateClima();
 
         // Desenha a UI
         if (!fightState) {
@@ -179,6 +193,14 @@ public class Painel extends JPanel implements Runnable {
         jogador.setLocalizacao(ambienteAtual.getNome());
     }
 
+    // Definicoes de game over
+    public void resetAposGameOver() {
+        resetPlayState();
+        jogador.resetVida();
+        jogador.setNome(null);
+        getEventoCriatura().resetContador();
+    }
+
 
     // Getters e setters
 
@@ -189,7 +211,7 @@ public class Painel extends JPanel implements Runnable {
 
         botoes.setVisible(false);
         botoes.esconderBotaoInicio();
-        botoes.estruturaBClima();
+        botoes.esconderBotaoClima();
         botoes.esconderBotaoMochila();
         botoes.esconderBotaoVoltar();
         botoes.esconderBotaoContinuar();
@@ -235,13 +257,12 @@ public class Painel extends JPanel implements Runnable {
         // Fight state
         if (getEventoCriatura().isEventoCriaturaAtivo()) {
             botoes.esconderBotaoMochila();
-            botoes.esconderBotaoClima();
+            botoes.mostrarBotaoClima();
             botoes.mostrarBotaoContinuar();
 
             if (fightState) {
                 botoes.esconderBotaoContinuar();
                 botoes.mostrarBotaoMochila();
-                botoes.mostrarBotaoClima();
             }
         }
     }

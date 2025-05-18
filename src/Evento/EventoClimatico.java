@@ -41,12 +41,18 @@ public class EventoClimatico extends Evento {
         probabilidade = rand.nextInt(100) + 1;
 
         if (tipo == 1) { // Chuva
-            executavel = (probabilidade <= 100) ? 1 : 0;
+            executavel = (probabilidade <= 30) ? 1 : 0;
         }
 
         System.out.println("PROBABILIDADE: " + getProbabilidade());
     }
 
+    public void finalizarEventoClimatico() {
+        setEventoClimaticoAtivo(false);
+        setClima("ameno");
+    }
+
+    // Getters e setters
     @Override
     public int getExecutavel() { return executavel; }
 

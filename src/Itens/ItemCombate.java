@@ -35,8 +35,7 @@ public class ItemCombate extends Item {
                 break;
 
             default:
-                System.out.println("Arma desconhecida: ");
-                break;
+                throw new IllegalArgumentException("Arma desconhecida: " + nome);
         }
     }
 

@@ -62,8 +62,7 @@ public class ClimaUI extends UI {
                     ui.escreverTexto("Sem sinais de mudanças, por agora...", y += tileSize);
                     break;
                 default:
-                    System.out.println("Caso default: clima indefinido.");
-                    break;
+                    throw new IllegalArgumentException("Clima desconhecido: " + clima);
             }
 
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));

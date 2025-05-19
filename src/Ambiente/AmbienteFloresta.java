@@ -23,6 +23,8 @@ public class AmbienteFloresta extends Ambiente {
 
     private BufferedImage fundoFloresta;
 
+    private boolean fogoAceso;
+
     private final int vibora = 1001;
     private final int urso = 1002;
 
@@ -136,7 +138,6 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 101:
-                setRecursosColetados(false);
                 ui.escreverTexto("Arbustos chacoalham ao seu redor enquanto anda.", y);
                 ui.escreverTexto("...", y += tileSize);
                 ui.escreverTexto("Você está perto o suficiente da luz... é uma fogueira", y += tileSize);
@@ -176,7 +177,6 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 104:
-                setRecursosColetados(false);
                 ui.escreverTexto("Você retorna a atenção à fogueira.", y);
 
                 ui.desenharOpcoes(new String[]{"Ir ao lago"}, y += tileSize, numComando);
@@ -199,7 +199,6 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 201:
-                setRecursosColetados(false);
                 botoes.mostrarBotaoContinuar();
                 botoes.esconderBotaoMochila();
 
@@ -230,12 +229,34 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 205:
+                botoes.mostrarBotaoContinuar();
+
                 ui.escreverTexto("Você usa as madeiras que encontrou para montar uma fogueira.", y);
                 if (!isRecursosGastos()) {
                     painel.getInvent().removerItem("Madeira", 2);
                     setRecursosGastos(true);
                 }
+                ui.escreverTexto("Agora, hora de tentar fazer fogo.", y += tileSize);
+                ui.escreverTexto("Você tenta gerar fricção com um graveto", y += tileSize);
+                ui.escreverTexto("...", y += tileSize);
+
                 break;
+
+            case 208:
+                if (!isChanceTirada()) {
+                    int probabilidade = painel.definirUmaProbabilidade();
+                    fogoAceso = probabilidade <= 50;
+                    setChanceTirada(true);
+                }
+
+                if (fogoAceso) {
+                    ui.escreverTexto("Nossa, deu certo! Agora, você tem uma fonte de calor!", y += tileSize * 2);
+                } else {
+                    ui.escreverTexto("Isso está demorando...", y += tileSize * 2);
+                }
+
+                break;
+
 
 
 
@@ -302,9 +323,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             default:
-                System.out.println("Floresta default");
-                System.out.println(painel.getPlaySubState());
-                break;
+                throw new IllegalArgumentException("Substate desconhecido: " + subState);
         }
     }
 

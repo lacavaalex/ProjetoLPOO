@@ -50,8 +50,7 @@ public class InventarioUI extends UI {
                     novoItem = new ItemCombate(painel);
                     break;
                 default:
-                    System.out.println("Tipo de item desconhecido: " + tipo);
-                    break;
+                    throw new IllegalArgumentException("Tipo de item desconhecido: " + tipo);
             }
 
             if (novoItem != null) {

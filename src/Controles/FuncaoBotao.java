@@ -39,11 +39,10 @@ public class FuncaoBotao implements ActionListener {
 
                 switch (subState) {
                     // FLORESTA
-                    // Específicos
-                    case 100: painel.setPlaySubState(101); break;
+                    case 205: painel.setPlaySubState(208); break;
+
+                    // Cards
                     case 103: painel.trocarAmbiente("lago"); painel.setGameState(painel.getLagoCardState()); break;
-                    case 200: painel.setPlaySubState(201); break;
-                    case 300: painel.setPlaySubState(301); break;
                     case 302: painel.trocarAmbiente("montanha"); painel.setGameState(painel.getMontanhaCardState()); break;
 
                     // Eventos de criatura
@@ -56,7 +55,7 @@ public class FuncaoBotao implements ActionListener {
                     // MONTANHA
                     case 99993: painel.setGameState(500); break;
 
-                    default: System.out.println("Botao default"); break;
+                    default: painel.setPlaySubState(painel.getPlaySubState() + 1); break;
                 }
             }
 

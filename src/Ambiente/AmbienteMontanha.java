@@ -74,7 +74,7 @@ public class AmbienteMontanha extends Ambiente {
         g2.setColor(Color.white);
 
         int subState = painel.getPlaySubState();
-        int y = tileSize + 20;
+        int y = tileSize * 2;
 
         switch (subState) {
 
@@ -91,9 +91,7 @@ public class AmbienteMontanha extends Ambiente {
                 break;
 
             default:
-                System.out.println("default");
-                System.out.println(painel.getPlaySubState());
-                break;
+                throw new IllegalArgumentException("Substate desconhecido: " + subState);
         }
     }
 }

@@ -74,7 +74,7 @@ public class AmbienteLago extends Ambiente {
         g2.setColor(Color.white);
 
         int subState = painel.getPlaySubState();
-        int y = tileSize + 20;
+        int y = tileSize * 2;
 
         switch (subState) {
             case 400:
@@ -85,10 +85,7 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Você pode ficar e descansar, ou retornar à fogueira.", y += tileSize);
                 break;
             default:
-
-                System.out.println("default");
-                System.out.println(painel.getPlaySubState());
-                break;
+                throw new IllegalArgumentException("Substate desconhecido: " + subState);
         }
     }
 }

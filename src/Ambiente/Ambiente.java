@@ -3,6 +3,8 @@ package Ambiente;
 import Main.Painel;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Ambiente {
 
@@ -14,6 +16,10 @@ public abstract class Ambiente {
     private boolean recursosGastos = false;
     private boolean chanceTirada = false;
     private int subStateParaRetornar;
+
+    // Criacao de um set que conta os substates visitados
+    private int substateAtual;
+    private Set<Integer> substatesVisitados = new HashSet<>();
 
     public Ambiente(Painel painel) {
         this.painel = painel;
@@ -38,6 +44,25 @@ public abstract class Ambiente {
         }
     }
 
+    // Metodos do set
+    public void setSubstate(int novoSubState) {
+        this.substateAtual = novoSubState;
+        substatesVisitados.add(novoSubState);
+
+        recursosColetados = false;
+        recursosGastos = false;
+        chanceTirada = false;
+    }
+
+    public int getSubstate() { return substateAtual; }
+
+    public int getSubstatesVisitados() { return substatesVisitados.size(); }
+
+    public void resetarSubstatesVisitados() { substatesVisitados.clear(); }
+
+    public boolean checarSeSubstateFoiVisitado(int num) { return substatesVisitados.contains(num); }
+
+
     // Getters e setters
     public boolean isRecursosColetados() { return recursosColetados; }
     public void setRecursosColetados(boolean recursosColetados) { this.recursosColetados = recursosColetados; }
@@ -49,7 +74,6 @@ public abstract class Ambiente {
     public void setChanceTirada(boolean chanceTirada) { this.chanceTirada = chanceTirada; }
 
     public int getSubStateParaRetornar() { return subStateParaRetornar; }
-    public void setSubStateParaRetornar(int subStateParaRetornar) { this.subStateParaRetornar = subStateParaRetornar; }
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }

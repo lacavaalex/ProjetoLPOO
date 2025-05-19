@@ -6,12 +6,10 @@ import Main.Painel;
 import UI.UI;
 
 import java.awt.*;
-import java.util.Random;
 
 public class EventoCriatura extends Evento {
 
     private Criatura criatura;
-    private Random rand;
 
     private double probabilidade;
     private int executavel;
@@ -23,8 +21,6 @@ public class EventoCriatura extends Evento {
     public EventoCriatura(Painel painel, UI ui, Jogador jogador, Criatura criatura) {
         super(painel, ui, jogador);
         this.criatura = criatura;
-
-        rand = new Random();
     }
 
     @Override
@@ -75,7 +71,7 @@ public class EventoCriatura extends Evento {
     @Override
     public void chance(Graphics2D g2, int tipo) {
 
-        probabilidade = (rand.nextInt(100) + 1);
+        probabilidade = getPainel().definirUmaProbabilidade();
         if (getPainel().getEventoClimatico().getClima().equals("chuva")) {
             probabilidade = probabilidade * 0.85;
         }

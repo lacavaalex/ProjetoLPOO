@@ -45,8 +45,9 @@ public class ItemConsumo extends Item {
         switch (nome) {
             case "Cantil":
                 setDurabilidadeMax(5);
+                break;
             default:
-                System.out.println("Alimento desconhecido: " + nome);
+                throw new IllegalArgumentException("Alimento desconhecido: " + nome);
         }
     }
 }

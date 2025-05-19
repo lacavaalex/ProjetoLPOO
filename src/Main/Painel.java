@@ -9,11 +9,15 @@ import UI.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class Painel extends JPanel implements Runnable {
 
     // Construtor de classes externas
     Thread gameThread;
+    private Random rand;
 
     // Definição da tela
     private final int originalTileSize = 16;
@@ -57,6 +61,7 @@ public class Painel extends JPanel implements Runnable {
     private final int lagoCardState = 99992;
     private final int montanhaCardState = 99993;
 
+    private Map<String, Ambiente> ambientes = new HashMap<>();
 
 
     public Painel(){
@@ -78,6 +83,8 @@ public class Painel extends JPanel implements Runnable {
 
         // Adição do ambiente
         ambienteAtual = new AmbienteFloresta(this, jogador, ui);
+
+        rand = new Random();
     }
 
     // Inicialização do jogo e aplicação da Thread
@@ -183,15 +190,18 @@ public class Painel extends JPanel implements Runnable {
 
     // Transição de ambientes
     public void trocarAmbiente(String nome) {
-        switch (nome) {
-            case "floresta":
-                ambienteAtual = new AmbienteFloresta(this, jogador, ui); break;
-            case "lago":
-                ambienteAtual = new AmbienteLago(this, jogador, ui); break;
-            case "montanha":
-                ambienteAtual = new AmbienteMontanha(this, jogador, ui); break;
-            default: System.out.println("Ambiente default"); break;
+        if (!ambientes.containsKey(nome)) {
+
+             Ambiente novoAmbiente = switch (nome) {
+                case "floresta" -> new AmbienteFloresta(this, jogador, ui);
+                case "lago" -> new AmbienteLago(this, jogador, ui);
+                case "montanha" -> new AmbienteMontanha(this, jogador, ui);
+                default -> throw new IllegalArgumentException("Ambiente desconhecido: " + nome);
+            };
+
+            ambientes.put(nome, novoAmbiente);
         }
+        ambienteAtual = ambientes.get(nome);
         jogador.setLocalizacao(ambienteAtual.getNome());
     }
 
@@ -201,6 +211,12 @@ public class Painel extends JPanel implements Runnable {
         jogador.resetVida();
         jogador.setNome(null);
         getEventoCriatura().resetContador();
+        getAmbienteAtual().resetarSubstatesVisitados();
+    }
+
+    // Gerador de número aleatório entre 1 e 100 (para probabilidades)
+    public int definirUmaProbabilidade() {
+        return (rand.nextInt(100) + 1);
     }
 
 
@@ -269,8 +285,15 @@ public class Painel extends JPanel implements Runnable {
         }
     }
 
-    public int getPlaySubState() { return playSubState; }
-    public void setPlaySubState(int novoSubState) { this.playSubState = novoSubState; }
+    public int getPlaySubState() {
+        return (ambienteAtual != null ? ambienteAtual.getSubstate() : -1);
+    }
+    public void setPlaySubState(int novoSubState) {
+        if (ambienteAtual != null) {
+            ambienteAtual.setSubstate(novoSubState);
+        }
+    }
+
     public boolean getFightState() { return fightState; }
     public void setFightState(boolean fightState) { this.fightState = fightState; }
     public int getPlayState() { return playState; }

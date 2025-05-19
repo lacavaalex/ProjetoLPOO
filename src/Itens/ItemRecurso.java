@@ -30,8 +30,7 @@ public class ItemRecurso extends Item {
                 break;
 
             default:
-                System.out.println("Recurso desconhecido: ");
-                break;
+                throw new IllegalArgumentException("Recurso desconhecido: " + nome);
         }
     }
 }

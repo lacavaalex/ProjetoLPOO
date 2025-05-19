@@ -38,8 +38,7 @@ public class Criatura {
                 break;
 
             default:
-                System.out.println("Criatura desconhecida: ");
-                break;
+                throw new IllegalArgumentException("Criatura desconhecida: " + tipo);
         }
     }
 

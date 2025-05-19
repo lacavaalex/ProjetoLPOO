@@ -52,10 +52,10 @@ public class Painel extends JPanel implements Runnable {
     private int playSubState = 0;
     private boolean fightState = false;
 
-    private final int tutorialControles = 10000;
-    private final int florestaCardState = 10001;
-    private final int lagoCardState = 10002;
-    private final int montanhaCardState = 10003;
+    private final int tutorialControles = 9999;
+    private final int florestaCardState = 99991;
+    private final int lagoCardState = 99992;
+    private final int montanhaCardState = 99993;
 
 
 
@@ -149,8 +149,10 @@ public class Painel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
+        // Metodos que devem ser atualizados continuamente
         ui.updateFrames();
         updateClima();
+        getAmbienteAtual().definirSubStateParaRetornar();
 
         // Desenha a UI
         if (!fightState) {

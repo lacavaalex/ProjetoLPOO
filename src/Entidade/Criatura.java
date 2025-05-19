@@ -19,7 +19,7 @@ public class Criatura {
                 setVidaCriatura(getVidaMaxCriatura());
                 setAtaqueCriatura(1);
 
-                setNomeImagem("vibora_rubro1");
+                setNomeImagem("vibora_rubro");
                 setLarguraImagemEscala(4);
                 setAlturaImagemEscala(4);
                 setDistanciaBordaEscala(6);
@@ -31,7 +31,7 @@ public class Criatura {
                 setVidaCriatura(getVidaMaxCriatura());
                 setAtaqueCriatura(100);
 
-                setNomeImagem("urso_pai1");
+                setNomeImagem("urso_pai");
                 setLarguraImagemEscala(8);
                 setAlturaImagemEscala(8);
                 setDistanciaBordaEscala(9);

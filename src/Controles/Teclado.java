@@ -71,29 +71,31 @@ public class Teclado implements KeyListener {
                 }
 
                 if (code == KeyEvent.VK_ENTER) {
-                    if (ui.getNumComando() == 0) {
-                        painel.getJogador().setNome("Coleen, a guerreira");
-                        painel.setGameState(openingState);
-                        telaInicialState = 0;
-                    }
-                    if (ui.getNumComando() == 1) {
-                        painel.getJogador().setNome("Ben, o sobrevivente");
-                        painel.setGameState(openingState);
-                        telaInicialState = 0;
-                    }
-                    if (ui.getNumComando() == 2) {
-                        painel.getJogador().setNome("Dr. Murphy, o médico");
-                        painel.setGameState(openingState);
-                        telaInicialState = 0;
-                    }
-                    if (ui.getNumComando() == 3) {
-                        painel.getJogador().setNome("Alice, a caçadora");
-                        painel.setGameState(openingState);
-                        telaInicialState = 0;
-                    }
-                    if (ui.getNumComando() == 4) {
-                        telaInicialState = 0;
-                        ui.setNumComando(0);
+                    switch (ui.getNumComando()) {
+                        case 0:
+                            painel.getJogador().setNome("Coleen, a guerreira");
+                            painel.setGameState(openingState);
+                            telaInicialState = 0;
+                            break;
+                        case 1:
+                            painel.getJogador().setNome("Ben, o sobrevivente");
+                            painel.setGameState(openingState);
+                            telaInicialState = 0;
+                            break;
+                        case 2:
+                            painel.getJogador().setNome("Dr. Murphy, o médico");
+                            painel.setGameState(openingState);
+                            telaInicialState = 0;
+                            break;
+                        case 3:
+                            painel.getJogador().setNome("Alice, a caçadora");
+                            painel.setGameState(openingState);
+                            telaInicialState = 0;
+                            break;
+                        case 4:
+                            telaInicialState = 0;
+                            ui.setNumComando(0);
+                            break;
                     }
                     if (painel.getJogador().getNome() != null) {
                         ui.setNumComando(0);
@@ -137,23 +139,30 @@ public class Teclado implements KeyListener {
             else {
                 if (!painel.getFightState()) {
                     // States com 3 opcoes
-                    if (subState == 0) {
+                    if (subState == 0 || subState == 202) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(3);
                         }
                         if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                             painel.getUi().adicionarNumComando(3);
                         }
-                        if (code == KeyEvent.VK_ENTER) {
-                            int opcao = painel.getUi().getNumComando();
-                            painel.setPlaySubState((opcao + 1) * 100);
-                            painel.getUi().setNumComando(0);
+                        if (subState == 0) {
+                            if (code == KeyEvent.VK_ENTER) {
+                                int opcao = painel.getUi().getNumComando();
+                                painel.setPlaySubState((opcao + 1) * 100);
+                                painel.getUi().setNumComando(0);
+                            }
+                        } else {
+                            if (code == KeyEvent.VK_ENTER) {
+                                int opcao = painel.getUi().getNumComando();
+                                painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
+                                painel.getUi().setNumComando(0);
+                            }
                         }
                     }
 
                     // States com 2 opcoes
-                    if (subState == 101 || subState == 202 || subState == 301
-                            || subState == 304) {
+                    if (subState == 101 || subState == 301 || subState == 304) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(2);
                         }
@@ -202,7 +211,7 @@ public class Teclado implements KeyListener {
                     if (painel.getCombate().isCombateFinalizado()) {
                         if (code == KeyEvent.VK_ESCAPE) {
                             painel.getCombate().finalizarCombate();
-                            painel.setPlaySubState((painel.getPlaySubState() + 1));
+                            painel.setPlaySubState((painel.getAmbienteAtual().definirSubStateParaRetornar()));
                         }
                     }
                 }

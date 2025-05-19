@@ -40,15 +40,6 @@ public class CombateUI extends UI {
         fimDeCombate = false;
         turnoJogador = true;
         numComandoCombate = 0;
-
-        for (Item itemNoInventario : getPainel().getInvent().getInvent().values()) {
-            if (itemNoInventario instanceof ItemCombate) {
-                item = (ItemCombate) itemNoInventario;
-                item.setNome(itemNoInventario.getNome());
-                item.definirArma(itemNoInventario.getNome());
-                break;
-            }
-        }
     }
 
     // UI da tela

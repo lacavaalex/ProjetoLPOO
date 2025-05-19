@@ -34,12 +34,6 @@ public class ItemCombate extends Item {
                 setNomeImagem("galho_pontiagudo");
                 break;
 
-            case "Lasca de pedra":
-                setDurabilidadeMax(3);
-                setPoder(1);
-                setNomeImagem(null);
-                break;
-
             default:
                 System.out.println("Arma desconhecida: ");
                 break;

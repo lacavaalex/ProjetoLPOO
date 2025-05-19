@@ -12,9 +12,6 @@ public class InventarioUI extends UI {
 
     private Painel painel;
     private Botoes botoes;
-    private ItemConsumo consumo;
-    private ItemRecurso recurso;
-    private ItemCombate combate;
 
     private BufferedImage fundoInventario, imagemDaArma;
 
@@ -31,29 +28,26 @@ public class InventarioUI extends UI {
         this.painel = painel;
         this.botoes = botoes;
 
-        consumo = new ItemConsumo(painel);
-        recurso = new ItemRecurso(painel);
-        combate = new ItemCombate(painel);
-
         fundoInventario = setupImagens("fundo_inventario", "background");
     }
 
     public void adicionarItem(String nome, String tipo, int quantidade) {
         if (acharItem(nome)) {
-            invent.get(nome).setQuantidade(quantidade);
+            Item itemExistente = invent.get(nome);
+            itemExistente.setQuantidade(itemExistente.getQuantidade() + quantidade);
         }
         else {
             Item novoItem = null;
 
             switch (tipo) {
                 case "consumo":
-                    novoItem = consumo;
+                    novoItem = new ItemConsumo(painel);
                     break;
                 case "recurso":
-                    novoItem = recurso;
+                    novoItem = new ItemRecurso(painel);
                     break;
                 case "combate":
-                    novoItem = combate;
+                    novoItem = new ItemCombate(painel);
                     break;
                 default:
                     System.out.println("Tipo de item desconhecido: " + tipo);
@@ -65,19 +59,27 @@ public class InventarioUI extends UI {
                 novoItem.setQuantidade(quantidade);
                 invent.put(nome, novoItem);
             }
+            System.out.println("Quantidade " + nome + " é " + novoItem.getQuantidade());
         }
     }
 
     public void removerItem(String nome, int quantidadeParaRemover) {
-        int total = invent.get(nome).getQuantidade() - quantidadeParaRemover;
-        invent.get(nome).setQuantidade(total);
+        try {
+            Item item = invent.get(nome);
+            int novaQuantidade = item.getQuantidade() - quantidadeParaRemover;
 
-        if (total <= 0) {
-            invent.remove(nome);
-            numComandoInvent = numComandoInvent - 1;
+            if (novaQuantidade > 0) {
+                item.setQuantidade(novaQuantidade);
+            } else {
+                invent.remove(nome);
+                numComandoInvent = Math.max(0, numComandoInvent - 1);
+            }
+        } catch (NullPointerException e) {
+            System.out.println("Erro: o item '" + nome + "' não foi encontrado no inventário.");
         }
 
     }
+
 
     public boolean acharItem(String nome) {
         return invent.containsKey(nome);
@@ -138,13 +140,17 @@ public class InventarioUI extends UI {
             String nomeArma = (armaAtual);
             g2.drawString(nomeArma, x, y += tileSize);
 
-            if (combate.getNomeImagem() != null) {
+            Item equipado = invent.get(armaAtual);
 
-                imagemDaArma = setupImagens(combate.getNomeImagem(), "arma");
-                desenharArma(g2, x + tileSize * 2, y += tileSize);
+            if (equipado instanceof ItemCombate arma) {
 
-                String poderArma = ("Dano: " + combate.getPoder());
-                g2.drawString(poderArma, x + tileSize * 2, y + tileSize * 3);
+                if (arma.getNomeImagem() != null) {
+                    imagemDaArma = setupImagens(arma.getNomeImagem(), "arma");
+                    desenharArma(g2, x + tileSize * 2, y += tileSize);
+
+                    String poderArma = ("Dano: " + arma.getPoder());
+                    g2.drawString(poderArma, x + tileSize * 2, y + tileSize * 3);
+                }
             }
         }
     }

@@ -13,20 +13,30 @@ public abstract class Ambiente {
     private boolean recursosColetados = false;
     private boolean recursosGastos = false;
     private boolean chanceTirada = false;
+    private int subStateParaRetornar;
 
     public Ambiente(Painel painel) {
         this.painel = painel;
     }
 
     // Metodo-base para o polimorfismo da superclasse
-    public void descreverAmbiente() {}
+    public abstract void descreverAmbiente();
 
     // Metodo=base para construir o card de introdução de ambiente
-    public void construirCard(Graphics2D g2) {}
+    public abstract void construirCard(Graphics2D g2);
 
     // Metodo-base para integrar a UI
-    public void playState(Graphics2D g2) {}
+    public abstract void playState(Graphics2D g2);
 
+    // Metodo que define o substate após um evento de criatura
+    public int definirSubStateParaRetornar() {
+        if (painel.getPlaySubState() < 1000) {
+            subStateParaRetornar = (painel.getPlaySubState() + 1);
+            return subStateParaRetornar;
+        } else {
+            return subStateParaRetornar;
+        }
+    }
 
     // Getters e setters
     public boolean isRecursosColetados() { return recursosColetados; }
@@ -37,6 +47,9 @@ public abstract class Ambiente {
 
     public boolean isChanceTirada() { return chanceTirada; }
     public void setChanceTirada(boolean chanceTirada) { this.chanceTirada = chanceTirada; }
+
+    public int getSubStateParaRetornar() { return subStateParaRetornar; }
+    public void setSubStateParaRetornar(int subStateParaRetornar) { this.subStateParaRetornar = subStateParaRetornar; }
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }

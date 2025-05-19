@@ -38,21 +38,23 @@ public class FuncaoBotao implements ActionListener {
                 int subState = painel.getPlaySubState();
 
                 switch (subState) {
-                    // Floresta
+                    // FLORESTA
+                    // Específicos
                     case 100: painel.setPlaySubState(101); break;
                     case 103: painel.trocarAmbiente("lago"); painel.setGameState(painel.getLagoCardState()); break;
                     case 200: painel.setPlaySubState(201); break;
-                    case 201: painel.setPlaySubState(202); break;
                     case 300: painel.setPlaySubState(301); break;
                     case 302: painel.trocarAmbiente("montanha"); painel.setGameState(painel.getMontanhaCardState()); break;
-                    case 303: painel.setPlaySubState(304); break;
-                    case 305: painel.setGameState(painel.getGameOverState()); break;
 
-                    // Lago
-                    case 10002: painel.setGameState(400); break;
+                    // Eventos de criatura
+                    case 201: painel.setPlaySubState(1001); break;
+                    case 303: painel.setPlaySubState(1002); break;
 
-                    // Montanha
-                    case 10003: painel.setGameState(500); break;
+                    // LAGO
+                    case 99992: painel.setGameState(400); break;
+
+                    // MONTANHA
+                    case 99993: painel.setGameState(500); break;
 
                     default: System.out.println("Botao default"); break;
                 }
@@ -91,8 +93,6 @@ public class FuncaoBotao implements ActionListener {
                 } else if (painel.getPlaySubState() == 500) {
                     painel.trocarAmbiente("floresta");
                     painel.setPlaySubState(303);
-                } else if (painel.getPlaySubState() == 204) {
-                    painel.setPlaySubState(202);
                 }
             }
         }

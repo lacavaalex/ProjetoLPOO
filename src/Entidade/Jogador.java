@@ -10,7 +10,7 @@ public class Jogador {
 
     private boolean sede = false;
     private int fomeMax = 10;
-    private int fome = 0;
+    private int fome = 10;
     private int energia;
     private boolean sanidade;
 

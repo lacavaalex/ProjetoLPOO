@@ -14,6 +14,8 @@ import java.io.IOException;
 public class UI {
 
     private BufferedImage fundoTitulo, chama1, chama2, chama3, imagemClima;
+    private BufferedImage fome_cheia, fome_decente, fome_mediana, fome_perigosa, fome_zerada;
+    private BufferedImage sede_false, sede_mid, sede_true;
 
     private Painel painel;
     private Jogador jogador = new Jogador();
@@ -124,15 +126,19 @@ public class UI {
     public void mostrarStatusEAmbiente(Graphics2D g2) {
         tileSize = painel.getTileSize();
         int y = tileSize * 2;
-        int x = tileSize + 5;
+        int x = tileSize + 10;
 
         // Visualizar tatus do jogador
         String statusTxt = "STATUS"; g2.drawString(statusTxt, x, y);
-        String vidaTxt = jogador.getVida() + "HP"; g2.drawString(vidaTxt, x, y += tileSize);
-        String atkTxt = jogador.getAtaqueAtual() + " ATK"; g2.drawString(atkTxt, x, y += tileSize);
-        String fomeTxt = "Fome: " + jogador.getFome(); g2.drawString(fomeTxt, x, y += tileSize);
-        String sedeTxt = jogador.EstaComSede() ? "DESIDRATADO" : "Hidratado";
-        g2.drawString(sedeTxt, x, y += tileSize);
+
+        g2.setColor(Color.white);
+
+        g2.drawRect(x - 7, y += tileSize/2, tileSize * 3 - 4, tileSize*2/3);
+        String vidaTxt = jogador.getVida() + "HP"; g2.drawString(vidaTxt, x, y += tileSize/2);
+        g2.drawRect(x - 7, y += tileSize/2, tileSize * 3 - 4, tileSize*2/3);
+        String atkTxt = jogador.getAtaqueAtual() + " ATK"; g2.drawString(atkTxt, x, y += tileSize/2);
+
+        desenharStatus(x, y += tileSize/2);
 
         // Visualizar local e clima atuais
         String textolocal = jogador.getLocalizacao();
@@ -217,6 +223,49 @@ public class UI {
             }
         }
         g2.setColor(Color.white);
+    }
+
+    public void desenharStatus(int x, int y) {
+        BufferedImage fome = null;
+        BufferedImage sede = null;
+
+        // Fome
+        if (jogador.getFome() <= jogador.getFomeMax()) {
+            fome = fome_cheia = setupImagens("fome_cheia", "status");
+
+            if (jogador.getFome() <= jogador.getFomeMax() * 9 / 10) {
+                fome = fome_decente = setupImagens("fome_decente", "status");
+
+                if (jogador.getFome() <= jogador.getFomeMax() * 6 / 10) {
+                    fome = fome_mediana = setupImagens("fome_mediana", "status");
+
+                    if (jogador.getFome() <= jogador.getFomeMax() * 3 / 10) {
+                        fome = fome_perigosa = setupImagens("fome_perigosa", "status");
+
+                        if (jogador.getFome() <= jogador.getFomeMax() / 10) {
+                            fome = fome_zerada = setupImagens("fome_zerada", "status");
+                        }
+                    }
+                }
+            }
+        }
+
+        g2.drawRect(x - tileSize/8, y - tileSize/8, tileSize + tileSize/4, tileSize + tileSize/4);
+        g2.drawImage(fome, x, y, tileSize, tileSize, null);
+
+        // Sede
+        if (!jogador.EstaComSede()) {
+            sede = sede_false = setupImagens("sede_false", "status");
+        } else if (!jogador.EstaComSede() &&
+                (jogador.getFome() < jogador.getFomeMax() * 3 / 4) && (jogador.getFome() > jogador.getFomeMax() / 4)) {
+            sede = sede_mid = setupImagens("sede_mid", "status");
+        } else if (jogador.EstaComSede()) {
+            sede = sede_true = setupImagens("sede_true", "status");
+        }
+
+        g2.drawRect(x + tileSize*3/2, y - tileSize/8, tileSize + tileSize/4, tileSize + tileSize/4);
+        g2.drawImage(sede, x + tileSize*3/2 + 8, y, tileSize, tileSize, null);
+
     }
 
     public int coordenadaXParaTextoCentralizado(Graphics2D g2, String texto) {

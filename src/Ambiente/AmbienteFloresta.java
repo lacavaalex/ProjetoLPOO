@@ -141,11 +141,11 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Arbustos chacoalham ao seu redor enquanto anda.", y);
                 ui.escreverTexto("...", y += tileSize);
                 ui.escreverTexto("Você está perto o suficiente da luz... é uma fogueira", y += tileSize);
-                ui.escreverTexto("Nínguem a vista, mas há um cantil com água...", y += tileSize);
+                ui.escreverTexto("Nínguem a vista, mas há um cantil com água e um pouco de carne...", y += tileSize);
                 ui.escreverTexto("O que fazer?", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Pegar água", "Explorar arredores"}, y += tileSize * 2, numComando);
+                ui.desenharOpcoes(new String[]{"Pegar água e alimento", "Explorar arredores"}, y += tileSize * 2, numComando);
                 break;
 
             case 102:
@@ -154,12 +154,11 @@ public class AmbienteFloresta extends Ambiente {
 
                 if (!isRecursosColetados()) {
                 painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                painel.getInvent().adicionarItem("Carne", "consumo", 2);
                     setRecursosColetados(true);
                 }
 
-                ui.escreverTexto("Você pega o cantil e toma um gole d'água.", y);
-                jogador.setSede(false);
-                ui.escreverTexto("Hidratação no máximo.", y += tileSize);
+                ui.escreverTexto("Você pega o cantil e a carne.", y);
                 break;
 
             case 103:
@@ -239,7 +238,6 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Agora, hora de tentar fazer fogo.", y += tileSize);
                 ui.escreverTexto("Você tenta gerar fricção com um graveto", y += tileSize);
                 ui.escreverTexto("...", y += tileSize);
-
                 break;
 
             case 208:
@@ -254,11 +252,7 @@ public class AmbienteFloresta extends Ambiente {
                 } else {
                     ui.escreverTexto("Isso está demorando...", y += tileSize * 2);
                 }
-
                 break;
-
-
-
 
             case 999:
                 botoes.esconderBotaoMochila();

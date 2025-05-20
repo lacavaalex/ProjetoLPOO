@@ -36,7 +36,7 @@ public class EventoClimatico extends Evento {
         probabilidade = painel.definirUmaProbabilidade();
 
         if (tipo == 1) { // Chuva
-            executavel = (probabilidade <= 100) ? 1 : 0;
+            executavel = (probabilidade <= 30) ? 1 : 0;
         }
 
         System.out.println("PROBABILIDADE: " + getProbabilidade());

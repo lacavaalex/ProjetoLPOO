@@ -127,9 +127,12 @@ public class UI {
         int x = tileSize + 5;
 
         // Visualizar tatus do jogador
-        String status = "STATUS"; g2.drawString(status, x, y);
-        String textovida = jogador.getVida() + "HP"; g2.drawString(textovida, x, y += tileSize);
-        String textoataque = jogador.getAtaqueAtual() + " ATK"; g2.drawString(textoataque, x, y += tileSize);
+        String statusTxt = "STATUS"; g2.drawString(statusTxt, x, y);
+        String vidaTxt = jogador.getVida() + "HP"; g2.drawString(vidaTxt, x, y += tileSize);
+        String atkTxt = jogador.getAtaqueAtual() + " ATK"; g2.drawString(atkTxt, x, y += tileSize);
+        String fomeTxt = "Fome: " + jogador.getFome(); g2.drawString(fomeTxt, x, y += tileSize);
+        String sedeTxt = jogador.EstaComSede() ? "DESIDRATADO" : "Hidratado";
+        g2.drawString(sedeTxt, x, y += tileSize);
 
         // Visualizar local e clima atuais
         String textolocal = jogador.getLocalizacao();

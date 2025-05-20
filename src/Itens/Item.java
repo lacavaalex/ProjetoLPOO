@@ -39,6 +39,7 @@ public class Item {
     public void setDurabilidadeMax(Integer durabilidadeMax) { this.durabilidadeMax = durabilidadeMax; }
 
     public int getDurabilidade() { return durabilidade; }
+    public void setDurabilidade(int durabilidade) { this.durabilidade = durabilidade; }
 
     public Painel getPainel() { return painel; }
 }

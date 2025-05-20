@@ -16,7 +16,7 @@ import java.util.Random;
 public class Painel extends JPanel implements Runnable {
 
     // Construtor de classes externas
-    Thread gameThread;
+    private Thread gameThread;
     private Random rand;
 
     // Definição da tela
@@ -208,8 +208,12 @@ public class Painel extends JPanel implements Runnable {
     // Definicoes de game over
     public void resetAposGameOver() {
         resetPlayState();
+
         jogador.resetVida();
+        jogador.resetFome();
+        jogador.setSede(false);
         jogador.setNome(null);
+
         getEventoCriatura().resetContador();
         getAmbienteAtual().resetarSubstatesVisitados();
     }

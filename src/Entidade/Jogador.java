@@ -1,16 +1,19 @@
 package Entidade;
 
-import Itens.Item;
-
 public class Jogador {
 
     private String nome;
     private String localizacao;
+
     private int vidaMax = 10;
     private int vida = getVidaMax();
+
     private boolean sede = false;
-    private int fome, energia;
+    private int fomeMax = 10;
+    private int fome = 0;
+    private int energia;
     private boolean sanidade;
+
     private String armaAtual = "Nenhuma arma definida.";
     private int ataqueAtual = 1;
 
@@ -38,9 +41,15 @@ public class Jogador {
     public void setVida(int vida) { this.vida = vida; }
     public void resetVida() { setVida(vidaMax); }
     public int getVidaMax() { return vidaMax; }
-    public void setVidaMax() { this.vidaMax = vidaMax; }
+    public void setVidaMax(int vidaMax) { this.vidaMax = vidaMax; }
 
-    public boolean getSede() { return sede; }
+    public int getFome() { return fome; }
+    public void setFome(int fome) { this.fome = fome; }
+    public void resetFome() { setFome(fomeMax); }
+    public int getFomeMax() { return fomeMax; }
+    public void setFomeMax(int fomeMax) { this.fomeMax = fomeMax; }
+
+    public boolean EstaComSede() { return sede; }
     public void setSede(boolean sede) { this.sede = sede; }
 }
 

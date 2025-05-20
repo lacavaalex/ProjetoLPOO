@@ -160,6 +160,7 @@ public class Painel extends JPanel implements Runnable {
         ui.updateFrames();
         updateClima();
         getAmbienteAtual().definirSubStateParaRetornar();
+        ambienteAtual.contagemSubStates(4);
 
         // Desenha a UI
         if (!fightState) {
@@ -192,7 +193,7 @@ public class Painel extends JPanel implements Runnable {
     public void trocarAmbiente(String nome) {
         if (!ambientes.containsKey(nome)) {
 
-             Ambiente novoAmbiente = switch (nome) {
+            Ambiente novoAmbiente = switch (nome) {
                 case "floresta" -> new AmbienteFloresta(this, jogador, ui);
                 case "lago" -> new AmbienteLago(this, jogador, ui);
                 case "montanha" -> new AmbienteMontanha(this, jogador, ui);
@@ -215,7 +216,7 @@ public class Painel extends JPanel implements Runnable {
         jogador.setNome(null);
 
         getEventoCriatura().resetContador();
-        getAmbienteAtual().resetarSubstatesVisitados();
+        getAmbienteAtual().resetarSubStatesVisitadosTotal();
     }
 
     // Gerador de número aleatório entre 1 e 100 (para probabilidades)
@@ -290,7 +291,7 @@ public class Painel extends JPanel implements Runnable {
     }
 
     public int getPlaySubState() {
-        return (ambienteAtual != null ? ambienteAtual.getSubstate() : -1);
+        return (ambienteAtual != null ? ambienteAtual.getSubState() : -1);
     }
     public void setPlaySubState(int novoSubState) {
         if (ambienteAtual != null) {

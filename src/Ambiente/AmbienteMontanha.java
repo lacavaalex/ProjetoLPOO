@@ -16,7 +16,7 @@ public class AmbienteMontanha extends Ambiente {
     private Botoes botoes;
 
     public AmbienteMontanha(Painel painel, Jogador jogador, UI ui) {
-        super(painel);
+        super(painel, jogador);
         this.painel = painel;
         this.jogador = jogador;
         this.ui = ui;

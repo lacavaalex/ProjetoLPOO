@@ -1,5 +1,6 @@
 package Ambiente;
 
+import Entidade.Jogador;
 import Main.Painel;
 
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.util.Set;
 public abstract class Ambiente {
 
     private Painel painel;
+    private Jogador jogador;
     private String nome, descricao, dificuldade, recursos, frequenciaEventos, climaAmbiente;
 
     // Atributos de gerencia de inventário/eventos
@@ -18,11 +20,13 @@ public abstract class Ambiente {
     private int subStateParaRetornar;
 
     // Criacao de um set que conta os substates visitados
-    private int substateAtual;
-    private Set<Integer> substatesVisitados = new HashSet<>();
+    private int subStateAtual;
+    private Set<Integer> subStatesVisitadosTotal = new HashSet<>();
+    private Set<Integer> subStatesVisitadosTemporario = new HashSet<>();
 
-    public Ambiente(Painel painel) {
+    public Ambiente(Painel painel, Jogador jogador) {
         this.painel = painel;
+        this.jogador = jogador;
     }
 
     // Metodo-base para o polimorfismo da superclasse
@@ -46,21 +50,32 @@ public abstract class Ambiente {
 
     // Metodos do set
     public void setSubstate(int novoSubState) {
-        this.substateAtual = novoSubState;
-        substatesVisitados.add(novoSubState);
+        this.subStateAtual = novoSubState;
+        subStatesVisitadosTotal.add(novoSubState);
+        subStatesVisitadosTemporario.add(novoSubState);
 
         recursosColetados = false;
         recursosGastos = false;
         chanceTirada = false;
     }
 
-    public int getSubstate() { return substateAtual; }
+    public int getSubState() { return subStateAtual; }
 
-    public int getSubstatesVisitados() { return substatesVisitados.size(); }
+    public void contagemSubStates(int numLimite) {
+        if (numLimite == getSubStatesVisitadosTemporario()) {
+            jogador.setFome(jogador.getFome() - 1);
+            resetarSubStatesVisitadosTemporario();
+        }
+        System.out.println("Temporario " + getSubStatesVisitadosTemporario());
+    }
 
-    public void resetarSubstatesVisitados() { substatesVisitados.clear(); }
+    public int getSubStatesVisitadosTotal() { return subStatesVisitadosTotal.size(); }
+    public int getSubStatesVisitadosTemporario() { return subStatesVisitadosTemporario.size(); }
 
-    public boolean checarSeSubstateFoiVisitado(int num) { return substatesVisitados.contains(num); }
+    public void resetarSubStatesVisitadosTotal() { subStatesVisitadosTotal.clear(); }
+    public void resetarSubStatesVisitadosTemporario() { subStatesVisitadosTemporario.clear(); }
+
+    public boolean checarSeSubStateFoiVisitado(int num) { return subStatesVisitadosTotal.contains(num); }
 
 
     // Getters e setters

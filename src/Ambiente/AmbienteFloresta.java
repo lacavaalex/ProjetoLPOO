@@ -29,7 +29,7 @@ public class AmbienteFloresta extends Ambiente {
     private final int urso = 1002;
 
     public AmbienteFloresta(Painel painel, Jogador jogador, UI ui) {
-        super(painel);
+        super(painel, jogador);
         this.painel = painel;
         this.jogador = jogador;
         this.ui = ui;

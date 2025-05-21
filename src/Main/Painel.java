@@ -95,11 +95,26 @@ public class Painel extends JPanel implements Runnable {
         this.setLayout(null);
         botoes.setBounds(0, 0, larguraTela, alturaTela);
         this.add(botoes);
+
+        this.requestFocusInWindow();
     }
 
     public void iniciarGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
+    }
+
+    // Atualização contínua
+    public void update() {
+        ui.updateFrames();
+
+        updateClima();
+
+        getAmbienteAtual().definirSubStateParaRetornar();
+
+        jogador.atualizarCondicaoJogador(contadorDeSubState);
+
+        updateBotoes();
     }
 
     // Implementação do game loop
@@ -116,7 +131,7 @@ public class Painel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if(delta >= 1) {
-                updateBotoes();
+                update();
                 repaint();
                 delta--;
                 drawCount++;
@@ -157,15 +172,6 @@ public class Painel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // Metodos que devem ser atualizados continuamente
-        ui.updateFrames();
-
-        updateClima();
-
-        getAmbienteAtual().definirSubStateParaRetornar();
-
-        jogador.atualizarCondicaoJogador(contadorDeSubState);
-
         // Desenha a UI
         if (!fightState) {
             if (gameState == titleState || gameState == openingState || gameState == playState ||
@@ -189,8 +195,6 @@ public class Painel extends JPanel implements Runnable {
         if (!invent.isFechado()) {
             invent.estruturaTelaDeInventario(g2, ui);
         }
-
-        this.requestFocusInWindow();
     }
 
     // Transição de ambientes

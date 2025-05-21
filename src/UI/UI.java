@@ -124,11 +124,14 @@ public class UI {
     public void mostrarStatusEAmbiente(Graphics2D g2) {
         tileSize = painel.getTileSize();
         int y = tileSize * 2;
-        int x = tileSize + 10;
+        int x = tileSize * 2/3;
 
         // Visualizar tatus do jogador
         String statusTxt = "STATUS"; g2.drawString(statusTxt, x, y);
 
+        desenharStatus(x, y += tileSize/2);
+
+        y = tileSize * 4;
         g2.setColor(Color.white);
 
         g2.drawRect(x - 7, y += tileSize/2, tileSize * 3 - 4, tileSize*2/3);
@@ -136,7 +139,7 @@ public class UI {
         g2.drawRect(x - 7, y += tileSize/2, tileSize * 3 - 4, tileSize*2/3);
         String atkTxt = jogador.getAtaqueAtual() + " ATK"; g2.drawString(atkTxt, x, y += tileSize/2);
 
-        desenharStatus(x, y += tileSize/2);
+
 
         // Visualizar local e clima atuais
         String textolocal = jogador.getLocalizacao();
@@ -249,9 +252,6 @@ public class UI {
             }
         }
 
-        g2.drawRect(x - tileSize/8, y - tileSize/8, tileSize + tileSize/4, tileSize + tileSize/4);
-        g2.drawImage(fome, x, y, tileSize, tileSize, null);
-
         // Sede
         String nivelSede = jogador.getNivelSede();
 
@@ -263,9 +263,6 @@ public class UI {
             sede = setupImagens("sede_true", "status");
         }
 
-        g2.drawRect(x + tileSize*3/2, y - tileSize/8, tileSize + tileSize/4, tileSize + tileSize/4);
-        g2.drawImage(sede, x + tileSize*3/2 + 8, y, tileSize, tileSize, null);
-
         // Energia
         if (jogador.getEnergia() >= jogador.getEnergiaMax()*3/4) {
             energia = setupImagens("energia_cheia", "status");
@@ -275,8 +272,23 @@ public class UI {
             energia = setupImagens("energia_vazia", "status");
         }
 
-        g2.drawRect(x + tileSize*3, y - tileSize/8, tileSize + tileSize/4, tileSize + tileSize/4);
-        g2.drawImage(energia, x + tileSize*3 + 8, y, tileSize, tileSize, null);
+        // Desenho das imagens
+        int borda = tileSize/8;
+        int espacamento = 8;
+        int rectLargura = tileSize + 2 * borda;
+
+        g2.drawRect(x, y, rectLargura, rectLargura);
+        g2.drawImage(fome, x + borda, y + borda, tileSize, tileSize, null);
+
+        int x2 = x + rectLargura + espacamento;
+
+        g2.drawRect(x2, y, rectLargura, rectLargura);
+        g2.drawImage(sede, x2 + borda, y + borda, tileSize, tileSize, null);
+
+        int x3 = x2 + rectLargura + espacamento;
+
+        g2.drawRect(x3, y, rectLargura, rectLargura);
+        g2.drawImage(energia, x3 + borda, y + borda, tileSize, tileSize, null);
 
     }
 

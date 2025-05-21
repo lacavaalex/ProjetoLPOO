@@ -22,7 +22,6 @@ public abstract class Ambiente {
     // Criacao de um set que conta os substates visitados
     private int subStateAtual;
     private Set<Integer> subStatesVisitadosTotal = new HashSet<>();
-    private Set<Integer> subStatesVisitadosTemporario = new HashSet<>();
 
     public Ambiente(Painel painel, Jogador jogador) {
         this.painel = painel;
@@ -48,32 +47,28 @@ public abstract class Ambiente {
         }
     }
 
-    // Metodos do set
+    // Metodos do Set
+    public int getSubState() { return subStateAtual; }
+
     public void setSubstate(int novoSubState) {
         this.subStateAtual = novoSubState;
         subStatesVisitadosTotal.add(novoSubState);
-        subStatesVisitadosTemporario.add(novoSubState);
+        painel.getSubStatesVisitadosTemporario().add(novoSubState);
 
         recursosColetados = false;
         recursosGastos = false;
         chanceTirada = false;
-    }
 
-    public int getSubState() { return subStateAtual; }
-
-    public void contagemSubStates(int numLimite) {
-        if (numLimite == getSubStatesVisitadosTemporario()) {
-            jogador.setFome(jogador.getFome() - 1);
-            resetarSubStatesVisitadosTemporario();
+        if (jogador.getFome() >= jogador.getFomeMax()*3/4) {
+            if (jogador.getEnergia() < jogador.getEnergiaMax()) {
+                jogador.setEnergia(jogador.getEnergia() + 1);
+            }
         }
-        System.out.println("Temporario " + getSubStatesVisitadosTemporario());
     }
 
     public int getSubStatesVisitadosTotal() { return subStatesVisitadosTotal.size(); }
-    public int getSubStatesVisitadosTemporario() { return subStatesVisitadosTemporario.size(); }
 
     public void resetarSubStatesVisitadosTotal() { subStatesVisitadosTotal.clear(); }
-    public void resetarSubStatesVisitadosTemporario() { subStatesVisitadosTemporario.clear(); }
 
     public boolean checarSeSubStateFoiVisitado(int num) { return subStatesVisitadosTotal.contains(num); }
 

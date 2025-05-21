@@ -143,9 +143,11 @@ public class CombateUI extends UI {
     // Finaliza o combate e reseta os atributos
     public void finalizarCombate() {
         getPainel().setFightState(false);
+
         eventoCriatura.setEventoCriaturaAtivo(false);
-        getPainel().getAmbienteAtual().setChanceTirada(false);
         eventoCriatura.incrementarContador();
+
+        getJogador().setEnergia(getJogador().getEnergia() - 1);
 
         botoes.mostrarBotaoMochila();
         botoes.mostrarBotaoClima();

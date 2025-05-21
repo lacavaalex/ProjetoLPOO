@@ -14,11 +14,9 @@ import java.io.IOException;
 public class UI {
 
     private BufferedImage fundoTitulo, chama1, chama2, chama3, imagemClima;
-    private BufferedImage fome_cheia, fome_decente, fome_mediana, fome_perigosa, fome_zerada;
-    private BufferedImage sede_false, sede_mid, sede_true;
 
     private Painel painel;
-    private Jogador jogador = new Jogador();
+    private Jogador jogador;
     private Botoes botoes;
     private AmbienteFloresta floresta;
     private AmbienteLago lago;
@@ -228,22 +226,23 @@ public class UI {
     public void desenharStatus(int x, int y) {
         BufferedImage fome = null;
         BufferedImage sede = null;
+        BufferedImage energia = null;
 
         // Fome
         if (jogador.getFome() <= jogador.getFomeMax()) {
-            fome = fome_cheia = setupImagens("fome_cheia", "status");
+            fome = setupImagens("fome_cheia", "status");
 
             if (jogador.getFome() <= jogador.getFomeMax() * 9 / 10) {
-                fome = fome_decente = setupImagens("fome_decente", "status");
+                fome = setupImagens("fome_decente", "status");
 
                 if (jogador.getFome() <= jogador.getFomeMax() * 6 / 10) {
-                    fome = fome_mediana = setupImagens("fome_mediana", "status");
+                    fome = setupImagens("fome_mediana", "status");
 
                     if (jogador.getFome() <= jogador.getFomeMax() * 3 / 10) {
-                        fome = fome_perigosa = setupImagens("fome_perigosa", "status");
+                        fome = setupImagens("fome_perigosa", "status");
 
                         if (jogador.getFome() <= jogador.getFomeMax() / 10) {
-                            fome = fome_zerada = setupImagens("fome_zerada", "status");
+                            fome = setupImagens("fome_zerada", "status");
                         }
                     }
                 }
@@ -254,17 +253,30 @@ public class UI {
         g2.drawImage(fome, x, y, tileSize, tileSize, null);
 
         // Sede
-        if (!jogador.EstaComSede()) {
-            sede = sede_false = setupImagens("sede_false", "status");
-        } else if (!jogador.EstaComSede() &&
-                (jogador.getFome() < jogador.getFomeMax() * 3 / 4) && (jogador.getFome() > jogador.getFomeMax() / 4)) {
-            sede = sede_mid = setupImagens("sede_mid", "status");
-        } else if (jogador.EstaComSede()) {
-            sede = sede_true = setupImagens("sede_true", "status");
+        String nivelSede = jogador.getNivelSede();
+
+        if (nivelSede.equals("alto")) {
+            sede = setupImagens("sede_false", "status");
+        } else if (nivelSede.equals("media")) {
+            sede = setupImagens("sede_mid", "status");
+        } else if (nivelSede.equals("baixa")) {
+            sede = setupImagens("sede_true", "status");
         }
 
         g2.drawRect(x + tileSize*3/2, y - tileSize/8, tileSize + tileSize/4, tileSize + tileSize/4);
         g2.drawImage(sede, x + tileSize*3/2 + 8, y, tileSize, tileSize, null);
+
+        // Energia
+        if (jogador.getEnergia() >= jogador.getEnergiaMax()*3/4) {
+            energia = setupImagens("energia_cheia", "status");
+        } else if (jogador.getEnergia() > 0 && jogador.getEnergia() < jogador.getEnergiaMax()*3/4) {
+            energia = setupImagens("energia_metade", "status");
+        } else if (jogador.getEnergia() == 0) {
+            energia = setupImagens("energia_vazia", "status");
+        }
+
+        g2.drawRect(x + tileSize*3, y - tileSize/8, tileSize + tileSize/4, tileSize + tileSize/4);
+        g2.drawImage(energia, x + tileSize*3 + 8, y, tileSize, tileSize, null);
 
     }
 

@@ -9,9 +9,7 @@ import UI.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class Painel extends JPanel implements Runnable {
 
@@ -32,7 +30,7 @@ public class Painel extends JPanel implements Runnable {
 
     // Chamada de classes
     private Ambiente ambienteAtual;
-    private Jogador jogador = new Jogador();
+    private Jogador jogador = new Jogador(this);
     private Criatura criatura = new Criatura();
 
     private Botoes botoes = new Botoes(this);
@@ -62,6 +60,9 @@ public class Painel extends JPanel implements Runnable {
     private final int montanhaCardState = 99993;
 
     private Map<String, Ambiente> ambientes = new HashMap<>();
+    private Set<Integer> subStatesVisitadosTemporario = new HashSet<>();
+
+    private final int contadorDeSubState = 5;
 
 
     public Painel(){
@@ -158,9 +159,12 @@ public class Painel extends JPanel implements Runnable {
 
         // Metodos que devem ser atualizados continuamente
         ui.updateFrames();
+
         updateClima();
+
         getAmbienteAtual().definirSubStateParaRetornar();
-        ambienteAtual.contagemSubStates(4);
+
+        jogador.atualizarCondicaoJogador(contadorDeSubState);
 
         // Desenha a UI
         if (!fightState) {
@@ -212,6 +216,7 @@ public class Painel extends JPanel implements Runnable {
 
         jogador.resetVida();
         jogador.resetFome();
+        jogador.resetEnergia();
         jogador.setSede(false);
         jogador.setNome(null);
 
@@ -226,6 +231,12 @@ public class Painel extends JPanel implements Runnable {
 
 
     // Getters e setters
+    public int getQuantidadeSubStatesVisitadosTemporario() { return subStatesVisitadosTemporario.size(); }
+
+    public Set<Integer> getSubStatesVisitadosTemporario() { return subStatesVisitadosTemporario; }
+
+    public void resetarSubStatesVisitadosTemporario() { subStatesVisitadosTemporario.clear(); }
+
 
     // G/S dos game states principais
     public int getGameState() { return gameState; }

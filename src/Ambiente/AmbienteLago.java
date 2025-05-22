@@ -81,8 +81,8 @@ public class AmbienteLago extends Ambiente {
                 botoes.mostrarBotaoVoltar();
                 botoes.esconderBotaoMochila();
 
-                ui.escreverTexto("Este é o lago.", y);
-                ui.escreverTexto("Você pode ficar e descansar, ou retornar à fogueira.", y += tileSize);
+                ui.escreverTexto("Este lago parece bom para descanso.", y);
+                ui.escreverTexto("Você pode montar acampamento aqui, ou retornar à floresta.", y += tileSize);
                 break;
             default:
                 throw new IllegalArgumentException("Substate desconhecido: " + subState);

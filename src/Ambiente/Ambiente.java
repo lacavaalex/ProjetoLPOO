@@ -1,5 +1,6 @@
 package Ambiente;
 
+import Controles.Botoes;
 import Entidade.Jogador;
 import Main.Painel;
 
@@ -11,21 +12,28 @@ public abstract class Ambiente {
 
     private Painel painel;
     private Jogador jogador;
+    private Botoes botoes;
     private String nome, descricao, dificuldade, recursos, frequenciaEventos, climaAmbiente;
 
     // Atributos de gerencia de inventário/eventos
     private boolean recursosColetados = false;
     private boolean recursosGastos = false;
     private boolean chanceTirada = false;
+
     private int subStateParaRetornar;
+    private boolean baseFontedeAlimento = false;
+    private boolean baseFogoAceso;
+    private int baseFortificacao = 0;
 
     // Criacao de um set que conta os substates visitados
     private int subStateAtual;
+    private int subStateAnterior = -1;
     private Set<Integer> subStatesVisitadosTotal = new HashSet<>();
 
     public Ambiente(Painel painel, Jogador jogador) {
         this.painel = painel;
         this.jogador = jogador;
+        this.botoes = painel.getBotoes();
     }
 
     // Metodo-base para o polimorfismo da superclasse
@@ -38,22 +46,31 @@ public abstract class Ambiente {
     public abstract void playState(Graphics2D g2);
 
     // Metodo que define o substate após um evento de criatura
-    public int definirSubStateParaRetornar() {
-        if (painel.getPlaySubState() < 1000) {
-            subStateParaRetornar = (painel.getPlaySubState() + 1);
-            return subStateParaRetornar;
-        } else {
-            return subStateParaRetornar;
+    public void definirSubStateParaRetornar() {
+        if (painel.getPlaySubState() < 1000 && painel.getPlaySubState() != 1) {
+            setSubStateParaRetornar(painel.getPlaySubState() + 1);
+        }
+    }
+
+    public void voltarStateAnterior() {
+        if (getSubStateAnterior() != -1) {
+            painel.setPlaySubState(getSubStateAnterior());
+            subStateAnterior = -1;
         }
     }
 
     // Metodos do Set
     public int getSubState() { return subStateAtual; }
 
-    public void setSubstate(int novoSubState) {
+    public void setSubState(int novoSubState) {
+        if (novoSubState == 1 && painel.getPlaySubState() != 1) {
+            subStateAnterior = painel.getPlaySubState();
+        }
+
         this.subStateAtual = novoSubState;
-        subStatesVisitadosTotal.add(novoSubState);
+
         painel.getSubStatesVisitadosTemporario().add(novoSubState);
+        subStatesVisitadosTotal.add(novoSubState);
 
         recursosColetados = false;
         recursosGastos = false;
@@ -72,6 +89,18 @@ public abstract class Ambiente {
 
     public boolean checarSeSubStateFoiVisitado(int num) { return subStatesVisitadosTotal.contains(num); }
 
+    public void definirTelaDeTransicao(String voltarOuContinuar) {
+        switch (voltarOuContinuar) {
+            case "continuar":
+                botoes.mostrarBotaoContinuar();
+                break;
+            case "voltar":
+                botoes.mostrarBotaoVoltar();
+                break;
+        }
+        botoes.esconderBotaoMochila();
+        botoes.esconderBotaoBase();
+    }
 
     // Getters e setters
     public boolean isRecursosColetados() { return recursosColetados; }
@@ -83,7 +112,18 @@ public abstract class Ambiente {
     public boolean isChanceTirada() { return chanceTirada; }
     public void setChanceTirada(boolean chanceTirada) { this.chanceTirada = chanceTirada; }
 
+    public int getSubStateAnterior() { return subStateAnterior; }
     public int getSubStateParaRetornar() { return subStateParaRetornar; }
+    public void setSubStateParaRetornar(int subStateParaRetornar) { this.subStateParaRetornar = subStateParaRetornar; }
+
+    public boolean isBaseFonteDeAlimento() { return baseFontedeAlimento; }
+    public void setBaseFonteDeAlimento(boolean baseFonteDeAlimento) { this.baseFontedeAlimento = baseFonteDeAlimento; }
+
+    public boolean isBaseFogoAceso() { return baseFogoAceso; }
+    public void setBaseFogoAceso(boolean baseFogoAceso) { this.baseFogoAceso = baseFogoAceso; }
+
+    public int getBaseFortificacao() { return baseFortificacao; }
+    public void setBaseFortificacao(int baseFortificacao) { this.baseFortificacao = baseFortificacao; }
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }

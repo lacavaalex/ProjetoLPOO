@@ -13,10 +13,6 @@ import java.util.*;
 
 public class Painel extends JPanel implements Runnable {
 
-    // Construtor de classes externas
-    private Thread gameThread;
-    private Random rand;
-
     // Definição da tela
     private final int originalTileSize = 16;
     private final int escala = 3;
@@ -25,10 +21,11 @@ public class Painel extends JPanel implements Runnable {
     private int larguraTela = 1300;
     private int alturaTela = 700;
 
-    // Definição de FPS
-    private final int fps = 60;
+    // Construtor de classes externas
+    private Thread gameThread;
+    private Random rand;
 
-    // Chamada de classes
+    // Construtor de classes internas
     private Ambiente ambienteAtual;
     private Jogador jogador = new Jogador(this);
     private Criatura criatura = new Criatura();
@@ -45,13 +42,15 @@ public class Painel extends JPanel implements Runnable {
 
     private Teclado teclado = new Teclado(this, invent);
 
+    // Definição de FPS
+    private final int fps = 60;
+
     // Game States
     private int gameState;
     private final int titleState = 0;
     private final int gameOverState = 1;
     private final int openingState = 2;
     private final int playState = 3;
-    private int playSubState = 0;
     private boolean fightState = false;
 
     private final int tutorialControles = 9999;
@@ -59,6 +58,7 @@ public class Painel extends JPanel implements Runnable {
     private final int lagoCardState = 99992;
     private final int montanhaCardState = 99993;
 
+    // Atributos do sistema de substates
     private Map<String, Ambiente> ambientes = new HashMap<>();
     private Set<Integer> subStatesVisitadosTemporario = new HashSet<>();
 
@@ -253,6 +253,7 @@ public class Painel extends JPanel implements Runnable {
         botoes.esconderBotaoMochila();
         botoes.esconderBotaoVoltar();
         botoes.esconderBotaoContinuar();
+        botoes.esconderBotaoBase();
 
         // Não-play states
         if (gameState == openingState) {
@@ -290,17 +291,21 @@ public class Painel extends JPanel implements Runnable {
             botoes.setVisible(true);
             botoes.mostrarBotaoMochila();
             botoes.mostrarBotaoClima();
+            if (getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
+                botoes.mostrarBotaoBase();
+            }
         }
 
         // Fight state
         if (getEventoCriatura().isEventoCriaturaAtivo()) {
+            botoes.esconderBotaoBase();
             botoes.esconderBotaoMochila();
             botoes.mostrarBotaoClima();
             botoes.mostrarBotaoContinuar();
 
             if (fightState) {
+                botoes.esconderBotaoMochila();
                 botoes.esconderBotaoContinuar();
-                botoes.mostrarBotaoMochila();
             }
         }
     }
@@ -310,8 +315,9 @@ public class Painel extends JPanel implements Runnable {
     }
     public void setPlaySubState(int novoSubState) {
         if (ambienteAtual != null) {
-            ambienteAtual.setSubstate(novoSubState);
+            ambienteAtual.setSubState(novoSubState);
         }
+        System.out.println("Substate atual: " + getPlaySubState());
     }
 
     public boolean getFightState() { return fightState; }

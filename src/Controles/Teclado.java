@@ -162,7 +162,7 @@ public class Teclado implements KeyListener {
                     }
 
                     // States com 2 opcoes
-                    if (subState == 101 || subState == 301 || subState == 304) {
+                    if (subState == 1 || subState == 101 || subState == 211|| subState == 301) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(2);
                         }
@@ -170,10 +170,33 @@ public class Teclado implements KeyListener {
                             painel.getUi().adicionarNumComando(2);
                         }
                         if (code == KeyEvent.VK_ENTER) {
-                            if (subState == 304) {
-                                painel.setPlaySubState(305);
-                            } else {
-                                int opcao = painel.getUi().getNumComando();
+                            int opcao = painel.getUi().getNumComando();
+
+                            // State da Base/Acampamento
+                            if (subState == 1) {
+                                if (opcao == 0) {
+                                    jogador.setEnergia(jogador.getEnergiaMax());
+                                }
+                                else if (opcao == 1) {
+                                    if (painel.getAmbienteAtual().getSubStateParaRetornar() == 211) {
+                                        painel.setPlaySubState(painel.getAmbienteAtual().getSubStateParaRetornar());
+                                    }
+                                    else {
+                                        painel.getAmbienteAtual().voltarStateAnterior();
+                                    }
+                                    painel.getBotoes().mostrarBotaoBase();
+                                }
+                            }
+
+                            else if (subState == 211) {
+                                if (opcao == 0) {
+                                    painel.setPlaySubState(203);
+                                }
+                                else if (opcao == 1) {
+                                    painel.setPlaySubState(204);
+                                }
+                            }
+                            else {
                                 painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
                                 painel.getUi().setNumComando(0);
                             }
@@ -199,19 +222,28 @@ public class Teclado implements KeyListener {
                 // Configuração própria da tela de combate
                 if (painel.getFightState()) {
                     if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                        painel.getCombate().subtrairNumComandoCombate(2);
+                        painel.getCombate().subtrairNumComandoCombate(3);
                     }
                     if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                        painel.getCombate().adicionarNumComandoCombate(2);
+                        painel.getCombate().adicionarNumComandoCombate(3);
                     }
                     if (code == KeyEvent.VK_ENTER) {
-                        painel.getCombate().sistemaTurno();
+                        int opcao = painel.getCombate().getNumComando();
+                        if (opcao == 0) {
+                            painel.getCombate().sistemaTurno();
+                        }
+                        else if (opcao == 1) {
+
+                        }
+                        else if (opcao == 2) {
+                            painel.getUi().mostrarInventario();
+                        }
                     }
 
                     if (painel.getCombate().isCombateFinalizado()) {
                         if (code == KeyEvent.VK_ESCAPE) {
                             painel.getCombate().finalizarCombate();
-                            painel.setPlaySubState((painel.getAmbienteAtual().definirSubStateParaRetornar()));
+                            painel.setPlaySubState(painel.getAmbienteAtual().getSubStateParaRetornar());
                         }
                     }
                 }

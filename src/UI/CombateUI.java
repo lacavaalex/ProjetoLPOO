@@ -13,6 +13,7 @@ public class CombateUI extends UI {
 
     private BufferedImage imagemInimigo;
 
+    private Painel painel;
     private ItemCombate item;
     private Criatura criaturaEmCombate;
     private Botoes botoes;
@@ -26,6 +27,7 @@ public class CombateUI extends UI {
 
     public CombateUI(Painel painel, Jogador jogador, Botoes botoes, EventoCriatura eventoCriatura) {
         super(painel, jogador);
+        this.painel = painel;
         this.botoes = botoes;
         this.eventoCriatura = eventoCriatura;
 
@@ -47,7 +49,7 @@ public class CombateUI extends UI {
 
         updateFrames();
 
-        int tileSize = getPainel().getTileSize();
+        int tileSize = painel.getTileSize();
         int y = tileSize;
 
         // Titulo
@@ -77,7 +79,7 @@ public class CombateUI extends UI {
             g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));
             if (turnoJogador) {
                 escreverTexto("Aja enquanto pode.", y += tileSize * 2);
-                desenharOpcoes(new String[]{"ATACAR", "FUGIR"}, y += tileSize, numComandoCombate);
+                desenharOpcoes(new String[]{"ATACAR", "FUGIR", "MOCHILA"}, y += tileSize, numComandoCombate);
             } else {
                 escreverTexto("Você inferiu " + getJogador().getAtaqueAtual() + "HP de dano ao oponente.", y += tileSize * 2);
                 escreverTexto("O inimigo ataca!", y += tileSize);
@@ -132,7 +134,7 @@ public class CombateUI extends UI {
             if (getJogador().getVida() <= 0) {
                 fimDeCombate = true;
                 finalizarCombate();
-                getPainel().setGameState(getPainel().getGameOverState());
+                painel.setGameState(painel.getGameOverState());
             } else {
                 turnoJogador = true;
             }
@@ -142,7 +144,7 @@ public class CombateUI extends UI {
 
     // Finaliza o combate e reseta os atributos
     public void finalizarCombate() {
-        getPainel().setFightState(false);
+        painel.setFightState(false);
 
         eventoCriatura.setEventoCriaturaAtivo(false);
         eventoCriatura.incrementarContador();
@@ -151,16 +153,19 @@ public class CombateUI extends UI {
 
         botoes.mostrarBotaoMochila();
         botoes.mostrarBotaoClima();
+        if (painel.getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
+            botoes.mostrarBotaoBase();
+        }
     }
 
     // Desenha imagem do inimigo
     public void desenharInimigo(Graphics2D g2) {
 
-        int tileSize = getPainel().getTileSize();
+        int tileSize = painel.getTileSize();
 
         g2.drawImage(imagemInimigo,
-                getPainel().getLargura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
-                getPainel().getAltura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
+                painel.getLargura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
+                painel.getAltura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
                 tileSize * criaturaEmCombate.getLarguraImagemEscala(),
                 tileSize * criaturaEmCombate.getAlturaImagemEscala(),
                 null);

@@ -254,7 +254,9 @@ public class InventarioUI extends UI {
     public void fechar() {
         fechado = true;
         numComandoInvent = 0;
-        botoes.mostrarBotaoMochila();
+        if (!painel.getFightState()) {
+            botoes.mostrarBotaoMochila();
+        }
     }
 
     // Metodos de comando

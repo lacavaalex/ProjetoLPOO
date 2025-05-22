@@ -7,8 +7,11 @@ import java.awt.*;
 
 public class Botoes extends JPanel {
 
-    private JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio, painelMochila, painelBotaoClima;
-    private JButton botaoContinuar, botaoVoltar, botaoInicio, botaoMochila, botaoClima;
+    private JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio;
+    private JPanel painelBotaoMochila, painelBotaoBase, painelBotaoClima;
+    private JButton botaoContinuar, botaoVoltar, botaoInicio;
+    private JButton botaoMochila, botaoBase, botaoClima;
+
     private Font pixelsans_15 = new Font("Pixel Sans Serif", Font.PLAIN, 15);
 
     private Painel painel;
@@ -23,6 +26,7 @@ public class Botoes extends JPanel {
         estruturaBContinuar();
         estruturaBVoltar();
         estruturaBInventario();
+        estruturaBBase();
         estruturaBClima();
         estruturaBInicio();
     }
@@ -79,19 +83,31 @@ public class Botoes extends JPanel {
     }
 
     public void estruturaBInventario() {
-        painelMochila = new JPanel();
-        painelMochila.setBounds(painel.getLargura()/2 - 140/2, 600, 140, 50);
-        definicoesPainelBotao(painelMochila);
+        painelBotaoMochila = new JPanel();
+        int largura = 220;
+        painelBotaoMochila.setBounds(painel.getLargura()/2 - largura - 10, 600, largura, 50);
+        definicoesPainelBotao(painelBotaoMochila);
 
-        botaoMochila = new JButton("Mochila");
+        botaoMochila = new JButton("Abrir mochila");
         definicoesBotao(botaoMochila);
 
-        definicoesIntegracaoDeBotao(painelMochila, botaoMochila);
+        definicoesIntegracaoDeBotao(painelBotaoMochila, botaoMochila);
+    }
+
+    public void estruturaBBase() {
+        painelBotaoBase = new JPanel();
+        painelBotaoBase.setBounds(painel.getLargura()/2 + 10, 600, 220, 50);
+        definicoesPainelBotao(painelBotaoBase);
+
+        botaoBase = new JButton("Voltar à base");
+        definicoesBotao(botaoBase);
+
+        definicoesIntegracaoDeBotao(painelBotaoBase, botaoBase);
     }
 
     public void estruturaBClima() {
         painelBotaoClima = new JPanel();
-        painelBotaoClima.setBounds(painel.getLargura() - painel.getLargura()/8, painel.getAltura()/12, 130, 50);
+        painelBotaoClima.setBounds(painel.getLargura() - painel.getLargura()/8, painel.getTileSize(), 130, 50);
         definicoesPainelBotao(painelBotaoClima);
 
         botaoClima = new JButton("Clima");
@@ -118,8 +134,11 @@ public class Botoes extends JPanel {
     public void mostrarBotaoVoltar() { painelBotaoVoltar.setVisible(true); }
     public void esconderBotaoVoltar() { painelBotaoVoltar.setVisible(false); }
 
-    public void mostrarBotaoMochila() { painelMochila.setVisible(true); }
-    public void esconderBotaoMochila() { painelMochila.setVisible(false); }
+    public void mostrarBotaoMochila() { painelBotaoMochila.setVisible(true); }
+    public void esconderBotaoMochila() { painelBotaoMochila.setVisible(false); }
+
+    public void mostrarBotaoBase() { painelBotaoBase.setVisible(true); }
+    public void esconderBotaoBase() { painelBotaoBase.setVisible(false); }
 
     public void mostrarBotaoClima() { painelBotaoClima.setVisible(true); }
     public void esconderBotaoClima() { painelBotaoClima.setVisible(false); }
@@ -133,6 +152,7 @@ public class Botoes extends JPanel {
     public JButton getBotaoVoltar() { return botaoVoltar; }
     public JButton getBotaoInicio() { return botaoInicio; }
     public JButton getBotaoMochila() { return botaoMochila; }
+    public JButton getBotaoBase() { return botaoBase; }
     public JButton getBotaoClima() { return botaoClima; }
 
 }

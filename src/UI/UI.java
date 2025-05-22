@@ -123,7 +123,7 @@ public class UI {
 
     public void mostrarStatusEAmbiente(Graphics2D g2) {
         tileSize = painel.getTileSize();
-        int y = tileSize * 2;
+        int y = tileSize;
         int x = tileSize * 2/3;
 
         // Visualizar tatus do jogador
@@ -139,13 +139,12 @@ public class UI {
         g2.drawRect(x - 7, y += tileSize/2, tileSize * 3 - 4, tileSize*2/3);
         String atkTxt = jogador.getAtaqueAtual() + " ATK"; g2.drawString(atkTxt, x, y += tileSize/2);
 
-
-
         // Visualizar local e clima atuais
-        String textolocal = jogador.getLocalizacao();
-        if (textolocal != null) {
-            x = coordenadaXParaTextoCentralizado(g2,textolocal);
-            g2.drawString(textolocal, x, tileSize);
+        String textoLocal = painel.getPlaySubState() != 1 ? jogador.getLocalizacao() : "ACAMPAMENTO";
+
+        if (textoLocal != null) {
+            x = coordenadaXParaTextoCentralizado(g2, textoLocal);
+            g2.drawString(textoLocal, x, tileSize);
         }
 
         String nomeImagem;
@@ -388,8 +387,9 @@ public class UI {
         escreverTexto("- Pressione [W] ou [UP] para subir o cursor.", y += tileSize);
         escreverTexto("- Pressione [S] ou [DOWN] para descer o cursor.", y += tileSize);
         escreverTexto("- Pressione [ENTER] para escolher sua opção.", y += tileSize);
-        escreverTexto("Pressione [ESC] para sair do inventário.", y += tileSize);
-        escreverTexto("Para clicar em botões, como [VOLTAR], use o mouse ou touchpad.", y += tileSize);
+        escreverTexto("Pressione [ESC] para sair de certas telas.", y += tileSize);
+        escreverTexto("Para clicar em botões (como [VOLTAR]), use o mouse ou touchpad.", y += tileSize);
+        escreverTexto("No inventário, aperte [ENTER] para selecionar armas ou alimento.", y += tileSize);
     }
 
     public void mostrarGameOverScreen() {

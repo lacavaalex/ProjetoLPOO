@@ -8,9 +8,9 @@ import java.awt.*;
 public class Botoes extends JPanel {
 
     private JPanel painelBotaoContinuar, painelBotaoVoltar, painelBotaoInicio;
-    private JPanel painelBotaoMochila, painelBotaoBase, painelBotaoClima;
+    private JPanel painelBotaoMochila, painelBotaoBase, painelBotaoCardAmbiente, painelBotaoClima;
     private JButton botaoContinuar, botaoVoltar, botaoInicio;
-    private JButton botaoMochila, botaoBase, botaoClima;
+    private JButton botaoMochila, botaoBase, botaoCardAmbiente, botaoClima;
 
     private Font pixelsans_15 = new Font("Pixel Sans Serif", Font.PLAIN, 15);
 
@@ -27,6 +27,7 @@ public class Botoes extends JPanel {
         estruturaBVoltar();
         estruturaBInventario();
         estruturaBBase();
+        estruturaBCardAmbiente();
         estruturaBClima();
         estruturaBInicio();
     }
@@ -116,6 +117,17 @@ public class Botoes extends JPanel {
         definicoesIntegracaoDeBotao(painelBotaoClima, botaoClima);
     }
 
+    public void estruturaBCardAmbiente() {
+        painelBotaoCardAmbiente = new JPanel();
+        painelBotaoCardAmbiente.setBounds(painel.getLargura() - painel.getLargura()/8, painel.getTileSize() * 4, 130, 50);
+        definicoesPainelBotao(painelBotaoCardAmbiente);
+
+        botaoCardAmbiente = new JButton("Local");
+        definicoesBotao(botaoCardAmbiente);
+
+        definicoesIntegracaoDeBotao(painelBotaoCardAmbiente, botaoCardAmbiente);
+    }
+
     public void estruturaBInicio() {
         painelBotaoInicio = new JPanel();
         painelBotaoInicio.setBounds(100, 600, 300, 50);
@@ -140,6 +152,9 @@ public class Botoes extends JPanel {
     public void mostrarBotaoBase() { painelBotaoBase.setVisible(true); }
     public void esconderBotaoBase() { painelBotaoBase.setVisible(false); }
 
+    public void mostrarBotaoCardAmbiente() { painelBotaoCardAmbiente.setVisible(true); }
+    public void esconderBotaoCardAmbiente() { painelBotaoCardAmbiente.setVisible(false); }
+
     public void mostrarBotaoClima() { painelBotaoClima.setVisible(true); }
     public void esconderBotaoClima() { painelBotaoClima.setVisible(false); }
 
@@ -153,6 +168,7 @@ public class Botoes extends JPanel {
     public JButton getBotaoInicio() { return botaoInicio; }
     public JButton getBotaoMochila() { return botaoMochila; }
     public JButton getBotaoBase() { return botaoBase; }
+    public JButton getBotaoCardAmbiente() { return botaoCardAmbiente; }
     public JButton getBotaoClima() { return botaoClima; }
 
 }

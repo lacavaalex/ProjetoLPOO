@@ -54,9 +54,6 @@ public class Painel extends JPanel implements Runnable {
     private boolean fightState = false;
 
     private final int tutorialControles = 9999;
-    private final int florestaCardState = 99991;
-    private final int lagoCardState = 99992;
-    private final int montanhaCardState = 99993;
 
     // Atributos do sistema de substates
     private Map<String, Ambiente> ambientes = new HashMap<>();
@@ -146,7 +143,8 @@ public class Painel extends JPanel implements Runnable {
 
     // Atualizacoes contínuas de mecanicas do jogo
     public void updateBotoes() {
-        if (gameState == titleState || !invent.isFechado() || clima.isAnalisandoClima() ) {
+        if (gameState == titleState || !invent.isFechado()
+                || clima.isAnalisandoClima() || ambienteAtual.isCardVisivel()) {
             botoes.setVisible(false);
         } else {
             botoes.setVisible(true);
@@ -175,8 +173,7 @@ public class Painel extends JPanel implements Runnable {
         // Desenha a UI
         if (!fightState) {
             if (gameState == titleState || gameState == openingState || gameState == playState ||
-                    gameState == gameOverState || gameState == tutorialControles ||
-                    gameState == florestaCardState || gameState == lagoCardState || gameState == montanhaCardState) {
+                    gameState == gameOverState || gameState == tutorialControles) {
                 ui.mostrarInterface(g2);
                 if (gameState == playState) {
                     ui.mostrarStatusEAmbiente(g2);
@@ -191,6 +188,11 @@ public class Painel extends JPanel implements Runnable {
             clima.estruturaTelaDeClima(g2, ui);
         }
 
+        // Mostra o car do ambiente atual
+        if (ambienteAtual.isCardVisivel()) {
+            ambienteAtual.construirCard(g2);
+        }
+
         // Desenha a tela de inventário à frente do resto
         if (!invent.isFechado()) {
             invent.estruturaTelaDeInventario(g2, ui);
@@ -198,7 +200,7 @@ public class Painel extends JPanel implements Runnable {
     }
 
     // Transição de ambientes
-    public void trocarAmbiente(String nome) {
+    public void trocarAmbiente(String nome, int subStateNoNovoAmbiente) {
         if (!ambientes.containsKey(nome)) {
 
             Ambiente novoAmbiente = switch (nome) {
@@ -210,8 +212,14 @@ public class Painel extends JPanel implements Runnable {
 
             ambientes.put(nome, novoAmbiente);
         }
+        ui.setNumComando(0);
         ambienteAtual = ambientes.get(nome);
         jogador.setLocalizacao(ambienteAtual.getNome());
+
+        if (!getAmbienteAtual().checarSeSubStateFoiVisitado(subStateNoNovoAmbiente)) {
+            ambienteAtual.verCard();
+        }
+        setPlaySubState(subStateNoNovoAmbiente);
     }
 
     // Definicoes de game over
@@ -250,6 +258,7 @@ public class Painel extends JPanel implements Runnable {
         botoes.setVisible(false);
         botoes.esconderBotaoInicio();
         botoes.esconderBotaoClima();
+        botoes.esconderBotaoCardAmbiente();
         botoes.esconderBotaoMochila();
         botoes.esconderBotaoVoltar();
         botoes.esconderBotaoContinuar();
@@ -269,28 +278,12 @@ public class Painel extends JPanel implements Runnable {
             botoes.mostrarBotaoInicio();
         }
 
-        // Cards de ambiente
-        if (gameState == florestaCardState) {
-            botoes.setVisible(true);
-            trocarAmbiente("floresta");
-            botoes.mostrarBotaoContinuar();
-        }
-        if (gameState == lagoCardState) {
-            botoes.setVisible(true);
-            trocarAmbiente("lago");
-            botoes.mostrarBotaoContinuar();
-        }
-        if (gameState == montanhaCardState) {
-            botoes.setVisible(true);
-            trocarAmbiente("montanha");
-            botoes.mostrarBotaoContinuar();
-        }
-
         // Play state
         if (gameState == playState) {
             botoes.setVisible(true);
             botoes.mostrarBotaoMochila();
             botoes.mostrarBotaoClima();
+            botoes.mostrarBotaoCardAmbiente();
             if (getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
                 botoes.mostrarBotaoBase();
             }
@@ -300,10 +293,12 @@ public class Painel extends JPanel implements Runnable {
         if (getEventoCriatura().isEventoCriaturaAtivo()) {
             botoes.esconderBotaoBase();
             botoes.esconderBotaoMochila();
+            botoes.esconderBotaoCardAmbiente();
             botoes.mostrarBotaoClima();
             botoes.mostrarBotaoContinuar();
 
             if (fightState) {
+                botoes.esconderBotaoCardAmbiente();
                 botoes.esconderBotaoMochila();
                 botoes.esconderBotaoContinuar();
             }
@@ -318,6 +313,7 @@ public class Painel extends JPanel implements Runnable {
             ambienteAtual.setSubState(novoSubState);
         }
         System.out.println("Substate atual: " + getPlaySubState());
+        System.out.println("Substate para retornar: " + getAmbienteAtual().getSubStateParaRetornar());
     }
 
     public boolean getFightState() { return fightState; }
@@ -330,11 +326,6 @@ public class Painel extends JPanel implements Runnable {
     public int getTutorialControles() { return tutorialControles; }
     public int getOpeningState() { return openingState; }
     public int getGameOverState() { return gameOverState; }
-
-    // G/S dos cards de Ambiente
-    public int getFlorestaCardState() { return florestaCardState; }
-    public int getLagoCardState() { return lagoCardState; }
-    public int getMontanhaCardState() { return montanhaCardState; }
 
     // G/S das classes intermediadas pelo Painel
     public UI getUi() { return ui; }

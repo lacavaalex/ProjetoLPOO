@@ -81,9 +81,6 @@ public class UI {
         int openingState = painel.getOpeningState();
         int playState = painel.getPlayState();
         int gameOverState = painel.getGameOverState();
-        int florestaCardState = painel.getFlorestaCardState();
-        int lagoCardState = painel.getLagoCardState();
-        int montanhaCardState = painel.getMontanhaCardState();
 
 
         // Title state
@@ -108,17 +105,6 @@ public class UI {
             mostrarGameOverScreen();
             painel.resetAposGameOver();
         }
-
-        // Cards de ambiente
-        if (gameState == florestaCardState) {
-            floresta.construirCard(g2);
-        }
-        if (gameState == lagoCardState) {
-            lago.construirCard(g2);
-        }
-        if (gameState == montanhaCardState) {
-            montanha.construirCard(g2);
-        }
     }
 
     public void mostrarStatusEAmbiente(Graphics2D g2) {
@@ -131,19 +117,27 @@ public class UI {
 
         desenharStatus(x, y += tileSize/2);
 
-        y = tileSize * 4;
+        y = tileSize * 5/2;
         g2.setColor(Color.white);
 
-        g2.drawRect(x - 7, y += tileSize/2, tileSize * 3 - 4, tileSize*2/3);
-        String vidaTxt = jogador.getVida() + "HP"; g2.drawString(vidaTxt, x, y += tileSize/2);
-        g2.drawRect(x - 7, y += tileSize/2, tileSize * 3 - 4, tileSize*2/3);
-        String atkTxt = jogador.getAtaqueAtual() + " ATK"; g2.drawString(atkTxt, x, y += tileSize/2);
+        // Vida e ataque
+        String vidaTxt = jogador.getVida() + "HP";
+        String atkTxt = jogador.getAtaqueAtual() + " ATK";
+
+        int xCentralHP = coordenadaXParaTextoCentralizado(g2, tileSize * 4,vidaTxt);
+        int xCentralATK = coordenadaXParaTextoCentralizado(g2, tileSize * 4, atkTxt);
+
+        g2.drawRect(x, y += tileSize/2, tileSize * 4, tileSize*2/3);
+        g2.drawString(vidaTxt, xCentralHP, y += tileSize/2);
+
+        g2.drawRect(x, y += tileSize/2, tileSize * 4, tileSize*2/3);
+        g2.drawString(atkTxt, xCentralATK, y += tileSize/2);
 
         // Visualizar local e clima atuais
         String textoLocal = painel.getPlaySubState() != 1 ? jogador.getLocalizacao() : "ACAMPAMENTO";
 
         if (textoLocal != null) {
-            x = coordenadaXParaTextoCentralizado(g2, textoLocal);
+            x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(),textoLocal);
             g2.drawString(textoLocal, x, tileSize);
         }
 
@@ -188,7 +182,7 @@ public class UI {
 
         if (opcoes.length == 1) {
             String texto = opcoes[0];
-            int x = coordenadaXParaTextoCentralizado(g2, texto);
+            int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), texto);
             g2.setColor(Color.white);
             g2.drawString(texto, x, y);
 
@@ -204,7 +198,7 @@ public class UI {
         else {
             for (int i = 0; i < opcoes.length; i++) {
                 String texto = opcoes[i];
-                int x = coordenadaXParaTextoCentralizado(g2, texto);
+                int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), texto);
 
                 if (numComando == i) {
                     switch (contadorChama) {
@@ -291,18 +285,17 @@ public class UI {
 
     }
 
-    public int coordenadaXParaTextoCentralizado(Graphics2D g2, String texto) {
+    public int coordenadaXParaTextoCentralizado(Graphics2D g2, int largura, String texto) {
         this.g2 = g2;
-        int larguraTela = painel.getLargura();
 
         int comprimento = (int) g2.getFontMetrics().getStringBounds(texto, g2).getWidth();
-        return larguraTela / 2 - comprimento / 2;
+        return largura / 2 - comprimento / 2;
 
     }
 
     public String escreverTexto(String texto, int y) {
         tileSize = painel.getTileSize();
-        int x = coordenadaXParaTextoCentralizado(g2, texto);
+        int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), texto);
         g2.drawString(texto, x, y);
         return texto;
     }
@@ -319,8 +312,36 @@ public class UI {
 
 
     // Métodos para telas especiais
+    public void mostrarAcampamento() {
+
+        tileSize = painel.getTileSize();
+        int y = tileSize * 3;
+
+        escreverTexto("Você está em sua base.", y += tileSize);
+
+        g2.setColor(Color.yellow);
+        boolean fonteAlimento = painel.getAmbienteAtual().isBaseFonteDeAlimento();
+        String plantio = fonteAlimento ? "sementes plantadas." : "não há fonte de alimento.";
+        escreverTexto("Fonte de alimento: " + plantio, y += tileSize);
+
+        boolean fogoAceso = painel.getAmbienteAtual().isBaseFogoAceso();
+        String fogo = fogoAceso ? "aceso e forte." : "não há fogueira acesa na base.";
+        escreverTexto("Fogo: " + fogo, y += tileSize);
+
+        int fortificacao = painel.getAmbienteAtual().getBaseFortificacao();
+        escreverTexto("Fortificação: " + fortificacao + " / 10", y += tileSize);
+
+        g2.setColor(Color.white);
+        desenharOpcoes(new String[]{"Descansar", "Continuar a aventura"}, y += tileSize * 2, numComando);
+    }
+
     public void mostrarInventario() {
         painel.getInvent().abrir();
+        painel.repaint();
+    }
+
+    public void mostrarCardAmbiente() {
+        painel.getAmbienteAtual().verCard();
         painel.repaint();
     }
 
@@ -345,7 +366,7 @@ public class UI {
             // Título (com sombra)
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 35F));
             int y = tileSize * 5;
-            int x = coordenadaXParaTextoCentralizado(g2, "O MUNDO FUNESTO");
+            int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), "O MUNDO FUNESTO");
 
             g2.setColor((Color.black));
             g2.drawString("O MUNDO FUNESTO", x + 5, y + 5);

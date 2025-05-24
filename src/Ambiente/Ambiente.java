@@ -2,6 +2,8 @@ package Ambiente;
 
 import Controles.Botoes;
 import Entidade.Jogador;
+import Evento.EventoClimatico;
+import Evento.EventoCriatura;
 import Main.Painel;
 
 import java.awt.*;
@@ -13,7 +15,9 @@ public abstract class Ambiente {
     private Painel painel;
     private Jogador jogador;
     private Botoes botoes;
+
     private String nome, descricao, dificuldade, recursos, frequenciaEventos, climaAmbiente;
+    private boolean cardVisivel;
 
     // Atributos de gerencia de inventário/eventos
     private boolean recursosColetados = false;
@@ -36,6 +40,14 @@ public abstract class Ambiente {
         this.botoes = painel.getBotoes();
     }
 
+    public void verCard() {
+        cardVisivel = true;
+    }
+    public void sair() {
+        cardVisivel = false;
+        botoes.mostrarBotaoCardAmbiente();
+    }
+
     // Metodo-base para o polimorfismo da superclasse
     public abstract void descreverAmbiente();
 
@@ -45,14 +57,41 @@ public abstract class Ambiente {
     // Metodo-base para integrar a UI
     public abstract void playState(Graphics2D g2);
 
+    // Metodos de definicao de evento
+    public void definirOcorrenciaDeEventoCriatura (Graphics2D g2, EventoCriatura nomeEventoCriatura, int tipo) {
+        if (!isChanceTirada()) {
+            nomeEventoCriatura.chance(g2, tipo);
+            setChanceTirada(true);
+        }
+
+        if (nomeEventoCriatura.getExecutavel() == 1) {
+            nomeEventoCriatura.setSurpresa(true);
+            nomeEventoCriatura.executar(g2, tipo);
+        }
+
+        else if (nomeEventoCriatura.getExecutavel() == 0) {
+            painel.setPlaySubState(getSubStateParaRetornar());
+        }
+    }
+
+    public void definirOcorrenciaDeEventoClimatico(Graphics2D g2, EventoClimatico nomeEventoClimatico, int tipo) {
+        if (!isChanceTirada()) {
+            nomeEventoClimatico.chance(g2, tipo);
+            setChanceTirada(true);
+        }
+        if (nomeEventoClimatico.getExecutavel() == 1) {
+            nomeEventoClimatico.executar(g2, tipo);
+        }
+    }
+
     // Metodo que define o substate após um evento de criatura
-    public void definirSubStateParaRetornar() {
+    public void definirSubStateParaRetornar () {
         if (painel.getPlaySubState() < 1000 && painel.getPlaySubState() != 1) {
             setSubStateParaRetornar(painel.getPlaySubState() + 1);
         }
     }
 
-    public void voltarStateAnterior() {
+    public void voltarStateAnterior () {
         if (getSubStateAnterior() != -1) {
             painel.setPlaySubState(getSubStateAnterior());
             subStateAnterior = -1;
@@ -60,9 +99,9 @@ public abstract class Ambiente {
     }
 
     // Metodos do Set
-    public int getSubState() { return subStateAtual; }
+    public int getSubState () { return subStateAtual; }
 
-    public void setSubState(int novoSubState) {
+    public void setSubState ( int novoSubState){
         if (novoSubState == 1 && painel.getPlaySubState() != 1) {
             subStateAnterior = painel.getPlaySubState();
         }
@@ -76,12 +115,13 @@ public abstract class Ambiente {
         recursosGastos = false;
         chanceTirada = false;
 
-        if (jogador.getFome() >= jogador.getFomeMax()*3/4) {
+        if (jogador.getFome() >= jogador.getFomeMax() * 3 / 4) {
             if (jogador.getEnergia() < jogador.getEnergiaMax()) {
                 jogador.setEnergia(jogador.getEnergia() + 1);
             }
         }
     }
+
 
     public int getSubStatesVisitadosTotal() { return subStatesVisitadosTotal.size(); }
 
@@ -103,6 +143,8 @@ public abstract class Ambiente {
     }
 
     // Getters e setters
+    public boolean isCardVisivel() { return cardVisivel; }
+
     public boolean isRecursosColetados() { return recursosColetados; }
     public void setRecursosColetados(boolean recursosColetados) { this.recursosColetados = recursosColetados; }
 

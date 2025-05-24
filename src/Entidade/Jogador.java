@@ -35,7 +35,15 @@ public class Jogador {
         if (numLimite == painel.getQuantidadeSubStatesVisitadosTemporario()) {
             atualizarFome();
             atualizarSede();
+            atualizarVida();
             painel.resetarSubStatesVisitadosTemporario();
+        }
+    }
+
+    public void atualizarVida() {
+        if (getEnergia() > getEnergiaMax()/2 && !EstaComSede()
+        && getFome() > getFomeMax()/2) {
+            setVida(getVida() + 1);
         }
     }
 

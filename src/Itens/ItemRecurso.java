@@ -22,15 +22,17 @@ public class ItemRecurso extends Item {
         setTipo("recurso");
         switch (nome) {
             case "Madeira":
-                setDurabilidadeMax(null);
                 break;
 
             case "Pedra":
-                setDurabilidadeMax(null);
+                break;
+
+            case "Punhado de sementes":
                 break;
 
             default:
                 throw new IllegalArgumentException("Recurso desconhecido: " + nome);
         }
+        setDurabilidadeMax(null);
     }
 }

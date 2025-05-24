@@ -21,7 +21,7 @@ public class AmbienteFloresta extends Ambiente {
     private EventoCriatura eventoUrso;
     private EventoClimatico eventoChuva;
 
-    private BufferedImage fundoFloresta;
+    private BufferedImage fundoFloresta, fundoFloresta2;
 
     private final int vibora = 1001;
     private final int urso = 1002;
@@ -41,6 +41,7 @@ public class AmbienteFloresta extends Ambiente {
 
         descreverAmbiente();
         fundoFloresta = ui.setupImagens("floresta_macabra", "background");
+        fundoFloresta2 = ui.setupImagens("floresta_macabra-2", "background");
     }
 
     @Override
@@ -55,30 +56,34 @@ public class AmbienteFloresta extends Ambiente {
 
     @Override
     public void construirCard(Graphics2D g2) {
+        if (isCardVisivel()) {
 
-        int tileSize = painel.getTileSize();
-        int y = tileSize * 3;
+            int tileSize = painel.getTileSize();
+            int y = tileSize * 3;
 
-        g2.setColor(new Color(0, 0, 0));
-        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+            g2.setColor(new Color(0, 0, 0));
+            g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
 
-        ui.desenharPlanoDeFundo(fundoFloresta);
+            ui.desenharPlanoDeFundo(fundoFloresta);
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
-        g2.setColor(Color.white);
-        ui.escreverTexto(getNome(), y += tileSize);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+            g2.setColor(Color.white);
+            ui.escreverTexto(getNome(), y += tileSize);
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-        y = tileSize * 5;
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+            y = tileSize * 5;
 
-        ui.escreverTexto(getDescricao(), y += tileSize);
-        ui.escreverTexto(" ", y += tileSize);
-        ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
-        ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
-        ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
-        ui.escreverTexto("Clima: " + getClimaAmbiente(), y += tileSize);
+            ui.escreverTexto(getDescricao(), y += tileSize);
+            ui.escreverTexto(" ", y += tileSize);
+            ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
+            ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
+            ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
+            ui.escreverTexto("Clima: " + getClimaAmbiente(), y += tileSize);
 
-        botoes.mostrarBotaoContinuar();
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));
+            String textoEsc = ("Aperte [esc] para sair");
+            g2.drawString(textoEsc, painel.getLargura() - tileSize * 6,painel.getAltura() - tileSize);
+        }
     }
 
     @Override
@@ -89,8 +94,8 @@ public class AmbienteFloresta extends Ambiente {
 
         int numComando = ui.getNumComando();
 
-        g2.setColor(new Color(14, 8, 18));
         g2.fillRect(0, 0, larguraTela, alturaTela);
+        ui.desenharPlanoDeFundo(fundoFloresta2);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
         g2.setColor(Color.white);
@@ -101,10 +106,10 @@ public class AmbienteFloresta extends Ambiente {
         switch (subState) {
             // STATES DE EVENTO
             case vibora:
-                definirOcorrenciaDeEventoCriatura(g2, eventoVibora, 1);
+                definirOcorrenciaDeEventoCriatura(g2, eventoVibora, 11);
                 break;
             case urso:
-                definirOcorrenciaDeEventoCriatura(g2, eventoUrso, 2);
+                definirOcorrenciaDeEventoCriatura(g2, eventoUrso, 12);
                 break;
 
             // PONTO INICIAL
@@ -122,18 +127,7 @@ public class AmbienteFloresta extends Ambiente {
             // ACAMPAMENTO/BASE
             case 1:
                 botoes.esconderBotaoBase();
-                ui.escreverTexto("Você está em sua base.", y += tileSize);
-
-                g2.setColor(Color.pink);
-                ui.escreverTexto("Fonte de alimento: " + isBaseFonteDeAlimento(), y += tileSize);
-
-                String fogo = isBaseFogoAceso() ? "aceso e forte." : "não há fogueira acesa na base.";
-                ui.escreverTexto("Fogo: " + fogo, y += tileSize);
-
-                ui.escreverTexto("Fortificação: " + getBaseFortificacao() + " / 10", y += tileSize);
-
-                g2.setColor(Color.white);
-                ui.desenharOpcoes(new String[]{"Descansar", "Continuar a aventura"}, y += tileSize * 2, numComando);
+                ui.mostrarAcampamento();
                 break;
 
             // BRANCH DA LUZ
@@ -154,7 +148,7 @@ public class AmbienteFloresta extends Ambiente {
             case 101:
                 ui.escreverTexto("Arbustos chacoalham ao seu redor enquanto anda.", y);
                 ui.escreverTexto("...", y += tileSize);
-                ui.escreverTexto("Você está perto o suficiente da luz... é uma fogueira", y += tileSize);
+                ui.escreverTexto("Você está perto o suficiente da luz... é uma fogueira.", y += tileSize);
                 ui.escreverTexto("Nínguem a vista, mas há um cantil com água e um pouco de carne...", y += tileSize);
                 ui.escreverTexto("O que fazer?", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
@@ -189,6 +183,7 @@ public class AmbienteFloresta extends Ambiente {
 
             case 104:
                 ui.escreverTexto("Você retorna a atenção à fogueira.", y);
+                ui.escreverTexto("O fogo parece estar muito mais fraco desde que você chegou...", y +=tileSize);
 
                 ui.desenharOpcoes(new String[]{"Ir ao lago"}, y += tileSize, numComando);
                 break;
@@ -340,31 +335,6 @@ public class AmbienteFloresta extends Ambiente {
 
             default:
                 throw new IllegalArgumentException("Substate desconhecido: " + subState);
-        }
-    }
-
-    public void definirOcorrenciaDeEventoCriatura (Graphics2D g2, EventoCriatura nomeEventoCriatura, int tipo) {
-        if (!isChanceTirada()) {
-            nomeEventoCriatura.chance(g2, tipo);
-            setChanceTirada(true);
-        }
-
-        if (nomeEventoCriatura.getExecutavel() == 1) {
-            nomeEventoCriatura.setSurpresa(true);
-            nomeEventoCriatura.executar(g2, tipo);
-        }
-        else if (nomeEventoCriatura.getExecutavel() == 0) {
-            painel.setPlaySubState(getSubStateParaRetornar());
-        }
-    }
-
-    public void definirOcorrenciaDeEventoClimatico(Graphics2D g2, EventoClimatico nomeEventoClimatico, int tipo) {
-        if (!isChanceTirada()) {
-            nomeEventoClimatico.chance(g2, tipo);
-            setChanceTirada(true);
-        }
-        if (nomeEventoClimatico.getExecutavel() == 1) {
-            nomeEventoClimatico.executar(g2, tipo);
         }
     }
 }

@@ -37,28 +37,32 @@ public class AmbienteMontanha extends Ambiente {
 
     @Override
     public void construirCard(Graphics2D g2) {
+        if (isCardVisivel()) {
 
-        int tileSize = painel.getTileSize();
-        int y = tileSize * 3;
+            int tileSize = painel.getTileSize();
+            int y = tileSize * 3;
 
-        g2.setColor(new Color(180, 180, 180));
-        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+            g2.setColor(new Color(180, 180, 180));
+            g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
-        g2.setColor(Color.white);
-        ui.escreverTexto(getNome(), y += tileSize);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+            g2.setColor(Color.white);
+            ui.escreverTexto(getNome(), y += tileSize);
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-        y = tileSize * 5;
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+            y = tileSize * 5;
 
-        ui.escreverTexto(getDescricao(), y += tileSize);
-        ui.escreverTexto(" ", y += tileSize);
-        ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
-        ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
-        ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
-        ui.escreverTexto("Clima: " + getClimaAmbiente(), y += tileSize);
+            ui.escreverTexto(getDescricao(), y += tileSize);
+            ui.escreverTexto(" ", y += tileSize);
+            ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
+            ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
+            ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
+            ui.escreverTexto("Clima: " + getClimaAmbiente(), y += tileSize);
 
-        botoes.mostrarBotaoContinuar();
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));
+            String textoEsc = ("Aperte [esc] para sair");
+            g2.drawString(textoEsc, painel.getLargura() - tileSize * 6,painel.getAltura() - tileSize);
+        }
     }
 
     @Override
@@ -77,6 +81,11 @@ public class AmbienteMontanha extends Ambiente {
         int y = tileSize * 2;
 
         switch (subState) {
+
+            case 1:
+                botoes.esconderBotaoBase();
+                ui.mostrarAcampamento();
+                break;
 
             case 500:
                 botoes.mostrarBotaoVoltar();

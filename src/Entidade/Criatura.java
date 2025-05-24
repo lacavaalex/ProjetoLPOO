@@ -13,7 +13,7 @@ public class Criatura {
 
     public void definirCriatura(int tipo) {
         switch (tipo) {
-            case 1:
+            case 11:
                 setNomeCriatura("Víbora-Rubro");
                 setVidaMaxCriatura(3);
                 setVidaCriatura(getVidaMaxCriatura());
@@ -22,10 +22,10 @@ public class Criatura {
                 setNomeImagem("vibora_rubro");
                 setLarguraImagemEscala(4);
                 setAlturaImagemEscala(4);
-                setDistanciaBordaEscala(6);
+                setDistanciaBordaEscala(7);
                 break;
 
-            case 2:
+            case 12:
                 setNomeCriatura("Urso Pai");
                 setVidaMaxCriatura(100);
                 setVidaCriatura(getVidaMaxCriatura());
@@ -35,6 +35,18 @@ public class Criatura {
                 setLarguraImagemEscala(8);
                 setAlturaImagemEscala(8);
                 setDistanciaBordaEscala(9);
+                break;
+
+            case 21:
+                setNomeCriatura("Crustáceo Tríclope");
+                setVidaMaxCriatura(5);
+                setVidaCriatura(getVidaMaxCriatura());
+                setAtaqueCriatura(2);
+
+                setNomeImagem("crustaceo_triclope");
+                setLarguraImagemEscala(4);
+                setAlturaImagemEscala(4);
+                setDistanciaBordaEscala(7);
                 break;
 
             default:

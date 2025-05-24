@@ -54,7 +54,7 @@ public class CombateUI extends UI {
 
         // Titulo
         g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 25F));
-        int x = coordenadaXParaTextoCentralizado(g2, "COMBATE");
+        int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(),"COMBATE");
 
         g2.setColor(Color.red);
         g2.drawString("COMBATE", x + 4, y + 4);
@@ -153,6 +153,7 @@ public class CombateUI extends UI {
 
         botoes.mostrarBotaoMochila();
         botoes.mostrarBotaoClima();
+        botoes.mostrarBotaoCardAmbiente();
         if (painel.getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
             botoes.mostrarBotaoBase();
         }

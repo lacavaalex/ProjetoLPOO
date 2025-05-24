@@ -33,12 +33,10 @@ public class FuncaoBotao implements ActionListener {
             } else {
                 botoes.mostrarBotaoMochila();
 
-                if (painel.getPlaySubState() == 400 || painel.getPlaySubState() == 102) {
-                    painel.trocarAmbiente("floresta");
+                if (painel.getPlaySubState() == 102) {
                     painel.setPlaySubState(104);
                 } else if (painel.getPlaySubState() == 500) {
-                    painel.trocarAmbiente("floresta");
-                    painel.setPlaySubState(303);
+                    painel.trocarAmbiente("floresta", 500);
                 }
             }
         }
@@ -51,6 +49,11 @@ public class FuncaoBotao implements ActionListener {
         // VOLTAR À BASE
         else if (fonte == botoes.getBotaoBase()) {
             painel.setPlaySubState(1);
+        }
+
+        // CARD DE AMBIENTE
+        else if (fonte == botoes.getBotaoCardAmbiente()) {
+            painel.getUi().mostrarCardAmbiente();
         }
 
         // CLIMA
@@ -86,6 +89,25 @@ public class FuncaoBotao implements ActionListener {
             int subState = painel.getPlaySubState();
 
             switch (subState) {
+                // GERAR CARDS
+                case 103:
+                    painel.trocarAmbiente("lago", 400);
+                    break;
+                case 302:
+                    painel.trocarAmbiente("montanha", 500);
+                    break;
+
+                // EVENTOS DE CRIATURA
+                case 201:
+                    painel.setPlaySubState(1001);
+                    break;
+                case 303:
+                    painel.setPlaySubState(1002);
+                    break;
+                case 404:
+                    painel.setPlaySubState(2001);
+                    break;
+
                 // FLORESTA
                 case 205:
                     painel.setPlaySubState(208);
@@ -100,34 +122,15 @@ public class FuncaoBotao implements ActionListener {
                     }
                     break;
 
-                // Cards
-                case 103:
-                    painel.trocarAmbiente("lago");
-                    painel.setGameState(painel.getLagoCardState());
-                    break;
-                case 302:
-                    painel.trocarAmbiente("montanha");
-                    painel.setGameState(painel.getMontanhaCardState());
-                    break;
-
-                // Eventos de criatura
-                case 201:
-                    painel.setPlaySubState(1001);
-                    break;
-                case 303:
-                    painel.setPlaySubState(1002);
-                    break;
 
                 // LAGO
-                case 99992:
-                    painel.setGameState(400);
+                case 401:
+                    painel.getAmbienteAtual().setBaseFonteDeAlimento(true);
+                    painel.getAmbienteAtual().setSubStateParaRetornar(403);
+                    painel.setPlaySubState(1);
                     break;
 
                 // MONTANHA
-                case 99993:
-                    painel.setGameState(500);
-                    break;
-
                 default:
                     if (painel.getPlaySubState() < 1000) {
                         painel.setPlaySubState(painel.getPlaySubState() + 1);
@@ -140,15 +143,8 @@ public class FuncaoBotao implements ActionListener {
 
         // Outras telas
         else if (gameState == painel.getOpeningState()) {
-            painel.setGameState(painel.getFlorestaCardState());
-        } else if (gameState == painel.getFlorestaCardState()) {
+            painel.trocarAmbiente("floresta", 0);
             painel.setGameState(painel.getPlayState());
-        } else if (gameState == painel.getLagoCardState()) {
-            painel.setGameState(painel.getPlayState());
-            painel.setPlaySubState(400);
-        } else if (gameState == painel.getMontanhaCardState()) {
-            painel.setGameState(painel.getPlayState());
-            painel.setPlaySubState(500);
         }
     }
 }

@@ -129,17 +129,22 @@ public class Teclado implements KeyListener {
                 }
             }
 
-            // Configuração da tela de situação climática
+            // Configuração das telas de situação climática e card de ambiente
             else if (painel.getClima().isAnalisandoClima()) {
                 if (code == KeyEvent.VK_ESCAPE) {
                     painel.getClima().sair();
+                }
+            }
+            else if (painel.getAmbienteAtual().isCardVisivel()) {
+                if (code == KeyEvent.VK_ESCAPE) {
+                    painel.getAmbienteAtual().sair();
                 }
             }
 
             else {
                 if (!painel.getFightState()) {
                     // States com 3 opcoes
-                    if (subState == 0 || subState == 202) {
+                    if (subState == 0 || subState == 202 || subState == 403) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(3);
                         }
@@ -162,7 +167,8 @@ public class Teclado implements KeyListener {
                     }
 
                     // States com 2 opcoes
-                    if (subState == 1 || subState == 101 || subState == 211|| subState == 301) {
+                    if (subState == 1 || subState == 101 || subState == 211|| subState == 301 ||
+                    subState == 400) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(2);
                         }
@@ -178,7 +184,9 @@ public class Teclado implements KeyListener {
                                     jogador.setEnergia(jogador.getEnergiaMax());
                                 }
                                 else if (opcao == 1) {
-                                    if (painel.getAmbienteAtual().getSubStateParaRetornar() == 211) {
+                                    painel.getUi().setNumComando(0);
+                                    int stateRetornar = painel.getAmbienteAtual().getSubStateParaRetornar();
+                                    if (stateRetornar == 211 || stateRetornar == 403 ) {
                                         painel.setPlaySubState(painel.getAmbienteAtual().getSubStateParaRetornar());
                                     }
                                     else {
@@ -188,14 +196,25 @@ public class Teclado implements KeyListener {
                                 }
                             }
 
-                            else if (subState == 211) {
-                                if (opcao == 0) {
-                                    painel.setPlaySubState(203);
-                                }
+                            else if (subState == 101) {
+                                if (opcao == 0) { painel.setPlaySubState(102); }
                                 else if (opcao == 1) {
-                                    painel.setPlaySubState(204);
+                                    painel.trocarAmbiente("lago", 400);
                                 }
                             }
+
+                            else if (subState == 211) {
+                                if (opcao == 0) { painel.setPlaySubState(203); }
+                                else if (opcao == 1) { painel.setPlaySubState(204); }
+                            }
+
+                            else if (subState == 400) {
+                                if (opcao == 0) { painel.setPlaySubState(401); }
+                                else if (opcao == 1) {
+                                    painel.trocarAmbiente("floresta", 104);
+                                }
+                            }
+
                             else {
                                 painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
                                 painel.getUi().setNumComando(0);
@@ -213,7 +232,7 @@ public class Teclado implements KeyListener {
                         }
                         if (code == KeyEvent.VK_ENTER) {
                             if (ui.getNumComando() == 0) {
-                                painel.setGameState(painel.getLagoCardState());
+                                painel.trocarAmbiente("lago", 400);
                             }
                         }
                     }

@@ -18,6 +18,7 @@ public class EventoCriatura extends Evento {
 
     private int contadorDeEncontros = 0;
 
+
     public EventoCriatura(Painel painel, UI ui, Jogador jogador, Criatura criatura) {
         super(painel, ui, jogador);
         this.criatura = criatura;
@@ -35,7 +36,7 @@ public class EventoCriatura extends Evento {
             getPainel().setGameState(getPainel().getPlayState());
             getPainel().getCombate().iniciarCombate(criatura);
 
-            if (tipo == 1) {
+            if (tipo == 11) {
                 viboraRubroFloresta(g2);
 
                 if (isSurpresa()) {
@@ -51,7 +52,7 @@ public class EventoCriatura extends Evento {
                     }
                 }
 
-            } else if (tipo == 2) {
+            } else if (tipo == 12) {
                 ursoPai(g2);
 
                 g2.setColor(Color.red);
@@ -59,7 +60,14 @@ public class EventoCriatura extends Evento {
                 g2.setColor(Color.white);
                 getUi().escreverTexto("O RUGIDO ESTREMECE TODA A FLORESTA. VOCÊ PULA EM DESESPERO.", y += tileSize);
                 getUi().escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
-                getUi().escreverTexto("", y += tileSize);
+            }
+
+            else if (tipo == 21) {
+                crustaceoTriclope(g2);
+
+                g2.setColor(Color.white);
+                getUi().escreverTexto("Espere, há algo vindo, o que é... nossa!", y += tileSize * 4);
+                getUi().escreverTexto("Parece um caranguejo com... três olhos!?", y += tileSize);
             }
 
         // Probabilidade mal sucedida
@@ -76,37 +84,52 @@ public class EventoCriatura extends Evento {
             probabilidade = probabilidade * 0.85;
         }
 
-        if (tipo == 1) { // Víbora
+        if (tipo == 11) { // Víbora
             executavel = (probabilidade <= 70) ? 1 : 0;
 
-        } else if (tipo == 2) { // Urso Pai
+        } else if (tipo == 12) { // Urso Pai
             executavel = (probabilidade <= 50) ? 1 : 0;
+        }
+        else if (tipo == 21) { // Crustaceo Triclope
+            executavel = (probabilidade <= 100) ? 1 : 0;
         }
 
         System.out.println("PROBABILIDADE: " + getProbabilidade());
     }
 
-    // Evento de encontro surpresa com a víbora
+
+    // Cards de mensagem de encontro
     public void viboraRubroFloresta(Graphics2D g2) {
         int tileSize = getPainel().getTileSize();
         int y = tileSize * 8;
 
         g2.setColor(Color.red);
-        criatura.definirCriatura(1);
+        criatura.definirCriatura(11);
         getUi().escreverTexto(criatura.getDescricao(), y += tileSize);
         g2.setColor(Color.white);
     }
 
-    // Evento de encontro surpresa com o urso
+
     public void ursoPai(Graphics2D g2) {
         int tileSize = getPainel().getTileSize();
         int y = tileSize * 8;
 
         g2.setColor(Color.red);
-        criatura.definirCriatura(2);
+        criatura.definirCriatura(12);
         getUi().escreverTexto(criatura.getDescricao(), y += tileSize);
         g2.setColor(Color.white);
     }
+
+    public void crustaceoTriclope(Graphics2D g2) {
+        int tileSize = getPainel().getTileSize();
+        int y = tileSize * 8;
+
+        g2.setColor(Color.red);
+        criatura.definirCriatura(21);
+        getUi().escreverTexto(criatura.getDescricao(), y += tileSize);
+        g2.setColor(Color.white);
+    }
+
 
     public void incrementarContador() { contadorDeEncontros++; }
     public void resetContador() { contadorDeEncontros = 0; }

@@ -38,7 +38,7 @@ public class Teclado implements KeyListener {
         // Tela inicial
         if (gameState == titleState) {
 
-            if (telaInicialState == 0) {
+            if (telaInicialState == 1) {
 
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     ui.subtrairNumComando(3);
@@ -49,7 +49,7 @@ public class Teclado implements KeyListener {
                 if (code == KeyEvent.VK_ENTER) {
                     // Novo jogo
                     if (ui.getNumComando() == 0) {
-                        telaInicialState = 1;
+                        telaInicialState = 2;
                     }
                     // Controles
                     if (ui.getNumComando() == 1) {
@@ -61,7 +61,7 @@ public class Teclado implements KeyListener {
                     }
                 }
 
-            } else if (telaInicialState == 1) {
+            } else if (telaInicialState == 2) {
 
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     ui.subtrairNumComando(5);
@@ -167,8 +167,8 @@ public class Teclado implements KeyListener {
                     }
 
                     // States com 2 opcoes
-                    if (subState == 1 || subState == 101 || subState == 211|| subState == 301 ||
-                    subState == 400) {
+                    if (subState == 1 || subState == 101 || subState == 211||
+                            subState == 301 || subState == 400) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(2);
                         }
@@ -193,13 +193,6 @@ public class Teclado implements KeyListener {
                                         painel.getAmbienteAtual().voltarStateAnterior();
                                     }
                                     painel.getBotoes().mostrarBotaoBase();
-                                }
-                            }
-
-                            else if (subState == 101) {
-                                if (opcao == 0) { painel.setPlaySubState(102); }
-                                else if (opcao == 1) {
-                                    painel.trocarAmbiente("lago", 400);
                                 }
                             }
 

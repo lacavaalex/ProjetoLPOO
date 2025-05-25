@@ -103,6 +103,19 @@ public class CombateUI extends UI {
         }
     }
 
+    // Desenha imagem do inimigo
+    public void desenharInimigo(Graphics2D g2) {
+
+        int tileSize = painel.getTileSize();
+
+        g2.drawImage(imagemInimigo,
+                painel.getLargura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
+                painel.getAltura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
+                tileSize * criaturaEmCombate.getLarguraImagemEscala(),
+                tileSize * criaturaEmCombate.getAlturaImagemEscala(),
+                null);
+    }
+
     // Sistema de turnos
     public void sistemaTurno() {
 
@@ -157,19 +170,6 @@ public class CombateUI extends UI {
         if (painel.getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
             botoes.mostrarBotaoBase();
         }
-    }
-
-    // Desenha imagem do inimigo
-    public void desenharInimigo(Graphics2D g2) {
-
-        int tileSize = painel.getTileSize();
-
-        g2.drawImage(imagemInimigo,
-                painel.getLargura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
-                painel.getAltura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
-                tileSize * criaturaEmCombate.getLarguraImagemEscala(),
-                tileSize * criaturaEmCombate.getAlturaImagemEscala(),
-                null);
     }
 
     // Metodos de comando

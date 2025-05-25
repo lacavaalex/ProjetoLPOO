@@ -27,16 +27,31 @@ public class FuncaoBotao implements ActionListener {
 
         // VOLTAR
         else if (fonte == botoes.getBotaoVoltar()) {
+
             botoes.esconderBotaoVoltar();
+
             if (painel.getGameState() == painel.getTutorialControles()) {
                 painel.setGameState(painel.getTitleState());
+
             } else {
                 botoes.mostrarBotaoMochila();
 
-                if (painel.getPlaySubState() == 102) {
-                    painel.setPlaySubState(104);
-                } else if (painel.getPlaySubState() == 500) {
-                    painel.trocarAmbiente("floresta", 500);
+                int subState = painel.getPlaySubState();
+
+                switch (subState) {
+                    case 102:
+                        painel.setPlaySubState(104);
+                        break;
+
+                    case 406:
+                    case 410:
+                        painel.setPlaySubState(2001);
+                        painel.getAmbienteAtual().setSubStateParaRetornar(411);
+                        break;
+
+                    case 500:
+                        painel.trocarAmbiente("floresta", 303);
+                        break;
                 }
             }
         }
@@ -125,9 +140,11 @@ public class FuncaoBotao implements ActionListener {
 
                 // LAGO
                 case 401:
-                    painel.getAmbienteAtual().setBaseFonteDeAlimento(true);
                     painel.getAmbienteAtual().setSubStateParaRetornar(403);
                     painel.setPlaySubState(1);
+                    break;
+                case 405:
+                    painel.setPlaySubState(408);
                     break;
 
                 // MONTANHA

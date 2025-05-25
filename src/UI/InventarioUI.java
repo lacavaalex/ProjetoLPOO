@@ -132,6 +132,7 @@ public class InventarioUI extends UI {
 
             estruturaArmaEquipada(g2);
             estruturaAlimentoSelecionado(g2);
+            estruturaRecursoSelecionado(g2);
         }
     }
 
@@ -163,7 +164,29 @@ public class InventarioUI extends UI {
 
         Item equipado = invent.get(armaAtual);
 
+        if (listaItens.length > 0) {
+
+            String nomeSelecionado = listaItens[numComandoInvent].split(" x")[0];
+            Item itemSelecionado = invent.get(nomeSelecionado);
+
+            if (itemSelecionado instanceof ItemCombate) {
+
+                int x2 = painel.getLargura() - tileSize * 7;
+                int y2 = tileSize * 17 / 2;
+
+                g2.setColor(Color.red);
+                g2.drawString(itemSelecionado.getNome(), x2, y2);
+
+                g2.setColor(Color.white);
+                g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12F));
+
+                g2.drawString("Equipar? (Aperte [ENTER])", x2, y2 += tileSize / 2);
+            }
+
+        }
+
         if (equipado instanceof ItemCombate arma) {
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
             if (arma.getNomeImagem() != null) {
                 imagemDaArma = setupImagens(arma.getNomeImagem(), "arma");
@@ -174,7 +197,7 @@ public class InventarioUI extends UI {
             }
         }
     }
-    
+
     public void estruturaAlimentoSelecionado(Graphics2D g2) {
 
         // Definições visuais
@@ -194,9 +217,9 @@ public class InventarioUI extends UI {
         if (listaItens.length > 0) {
 
             String nomeSelecionado = listaItens[numComandoInvent].split(" x")[0];
-            Item alimentoSelecionado = invent.get(nomeSelecionado);
+            Item itemSelecionado = invent.get(nomeSelecionado);
 
-            if (alimentoSelecionado instanceof ItemConsumo alimento) {
+            if (itemSelecionado instanceof ItemConsumo alimento) {
 
                 g2.setColor(Color.yellow);
                 String textoAlimento = ("Alimento selecionado: ");
@@ -206,7 +229,7 @@ public class InventarioUI extends UI {
                 String nomeAlimento = alimento.getNome();
                 alimento.definirConsumo(nomeAlimento);
 
-                int quantidade = alimentoSelecionado.getQuantidade();
+                int quantidade = itemSelecionado.getQuantidade();
                 int durabilidade = alimento.getDurabilidade();
                 int duraMax = alimento.getDurabilidadeMax();
                 int sustancia = alimento.getSustancia();
@@ -237,6 +260,46 @@ public class InventarioUI extends UI {
 
 
                 g2.drawString("Consumir? (Aperte [ENTER])", x, y += tileSize/2);
+            }
+        }
+    }
+
+    public void estruturaRecursoSelecionado(Graphics2D g2) {
+        int tileSize = painel.getTileSize();
+        int x = painel.getLargura() - tileSize * 7;
+        int y = tileSize * 17 / 2;
+
+        if (listaItens.length > 0) {
+
+            String nomeSelecionado = listaItens[numComandoInvent].split(" x")[0];
+            Item itemSelecionado = invent.get(nomeSelecionado);
+
+            if (itemSelecionado instanceof ItemRecurso recurso) {
+
+                g2.setColor(Color.yellow);
+                String textoRecurso = ("Recurso selecionado: ");
+                g2.drawString(textoRecurso, x, y);
+                g2.setColor(Color.white);
+
+                String nomeRecurso = recurso.getNome();
+                recurso.definirRecurso(nomeRecurso);
+
+                g2.setColor(Color.red);
+                g2.drawString(nomeRecurso, x, y += tileSize);
+
+                g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12F));
+
+                g2.setColor(Color.yellow);
+                String utilidade = "Utilidades: ";
+                g2.drawString(utilidade, x, y += tileSize);
+
+                g2.setColor(Color.white);
+                String opcoesCrafting = recurso.getOpcaoCrafting();
+                g2.drawString(opcoesCrafting, x, y += tileSize / 2);
+
+                if (!recurso.getOpcaoCrafting().equals("...")) {
+                    g2.drawString("Construir? (Aperte [ENTER])", x, y += tileSize / 2);
+                }
             }
         }
     }

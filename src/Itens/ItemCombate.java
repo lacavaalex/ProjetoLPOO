@@ -9,8 +9,6 @@ public class ItemCombate extends Item {
 
     private int poder;
     private String nomeImagem;
-    private int durabilidade;
-    private boolean durabilidadeAtribuida = false;
 
     public ItemCombate(Painel painel) {
         super(painel);
@@ -29,9 +27,18 @@ public class ItemCombate extends Item {
         setTipo("combate");
         switch (nome) {
             case "Galho pontiagudo":
-                setDurabilidadeMax(1);
                 setPoder(2);
                 setNomeImagem("galho_pontiagudo");
+                break;
+
+            case "Estilingue":
+                setPoder(3);
+                setNomeImagem("estilingue");
+                break;
+
+            case "Vara de pesca":
+                setPoder(1);
+                setNomeImagem("vara_de_pesca");
                 break;
 
             default:

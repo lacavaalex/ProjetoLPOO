@@ -1,6 +1,5 @@
 package UI;
 
-import Ambiente.*;
 import Controles.*;
 import Entidade.*;
 import Main.Painel;
@@ -18,9 +17,6 @@ public class UI {
     private Painel painel;
     private Jogador jogador;
     private Botoes botoes;
-    private AmbienteFloresta floresta;
-    private AmbienteLago lago;
-    private AmbienteMontanha montanha;
 
     private Graphics2D g2;
     private Font pixelsans_30, pixelsans_60B;
@@ -34,15 +30,20 @@ public class UI {
     private int contadorChama = 1;
     private int telaInicialState = 0;
 
+    private String recadoAutor;
+    private int indiceChar = 0;
+    private int frameCounterRecado = 0;
+    private int framesPorLetra = 10;
+    private float alphaFade = 0f;
+    private boolean transicaoIniciada = false;
+    private boolean transicaoFinalizada = false;
+
 
     public UI(Painel painel, Jogador jogador) {
         this.painel = painel;
         this.jogador = jogador;
 
         botoes = new Botoes(painel);
-        floresta = new AmbienteFloresta(painel, jogador, this);
-        lago = new AmbienteLago(painel, jogador, this);
-        montanha = new AmbienteMontanha(painel, jogador, this);
 
         // Atribuição da fonte
         try {
@@ -82,10 +83,13 @@ public class UI {
         int playState = painel.getPlayState();
         int gameOverState = painel.getGameOverState();
 
-
         // Title state
         if (gameState == titleState) {
-            mostrarTelaInicial();
+            if (!transicaoFinalizada) {
+                mostrarTextoDoAutor(g2);
+            } else {
+                mostrarTelaInicial();
+            }
         }
         // Tela de controles
         if (gameState == tutorialControles) {
@@ -97,7 +101,7 @@ public class UI {
         }
         // Play state
         if (gameState == playState && painel.getAmbienteAtual() != null) {
-            mostrarStatusEAmbiente(g2);
+            mostrarStatus(g2);
             painel.getAmbienteAtual().playState(g2);
         }
         // Game over
@@ -107,7 +111,7 @@ public class UI {
         }
     }
 
-    public void mostrarStatusEAmbiente(Graphics2D g2) {
+    public void mostrarStatus(Graphics2D g2) {
         tileSize = painel.getTileSize();
         int y = tileSize;
         int x = tileSize * 2/3;
@@ -133,8 +137,8 @@ public class UI {
         g2.drawRect(x, y += tileSize/2, tileSize * 4, tileSize*2/3);
         g2.drawString(atkTxt, xCentralATK, y += tileSize/2);
 
-        // Visualizar local e clima atuais
-        String textoLocal = painel.getPlaySubState() != 1 ? jogador.getLocalizacao() : "ACAMPAMENTO";
+        // Visualizar local e clima
+        String textoLocal = painel.getPlaySubState() != 1 ? null : "ACAMPAMENTO";
 
         if (textoLocal != null) {
             x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(),textoLocal);
@@ -302,16 +306,56 @@ public class UI {
 
     public void updateFrames() {
         frame++;
-        if (frame % 20 == 0) { // muda a cada 10 frames
+        if (frame % 20 == 0) {
             contadorChama++;
             if (contadorChama > 3) {
                 contadorChama = 1;
+            }
+        }
+        if (this.recadoAutor != null) {
+            frameCounterRecado++;
+            if (frameCounterRecado >= framesPorLetra && indiceChar < recadoAutor.length()) {
+                indiceChar++;
+                frameCounterRecado = 0;
+            }
+            if (transicaoIniciada && alphaFade < 1.0f) {
+                alphaFade += 0.005f;
+                if (alphaFade >= 1.0f) {
+                    transicaoFinalizada = true;
+                    painel.setGameState(painel.getTitleState());
+                }
             }
         }
     }
 
 
     // Métodos para telas especiais
+    public void mostrarTextoDoAutor(Graphics2D g2) {
+
+        g2.setColor(Color.black);
+        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+        recadoAutor = "Um projeto de Alex Lacava";
+
+        int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), recadoAutor);
+
+        String textoVisivel = recadoAutor.substring(0, Math.min(indiceChar, recadoAutor.length()));
+        g2.drawString(textoVisivel, x, painel.getAltura()/2);
+
+        if (indiceChar >= recadoAutor.length() && !transicaoIniciada) {
+            transicaoIniciada = true;
+        }
+
+        if (transicaoIniciada) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaFade));
+            g2.setColor(Color.black);
+            g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        }
+    }
+
     public void mostrarAcampamento() {
 
         tileSize = painel.getTileSize();
@@ -329,7 +373,7 @@ public class UI {
         escreverTexto("Fogo: " + fogo, y += tileSize);
 
         int fortificacao = painel.getAmbienteAtual().getBaseFortificacao();
-        escreverTexto("Fortificação: " + fortificacao + " / 10", y += tileSize);
+        escreverTexto("Fortificação: " + fortificacao + " / 20", y += tileSize);
 
         g2.setColor(Color.white);
         desenharOpcoes(new String[]{"Descansar", "Continuar a aventura"}, y += tileSize * 2, numComando);
@@ -354,8 +398,15 @@ public class UI {
 
         botoes.esconderBotaoContinuar();
 
-        // Tela inicial 1 (entrada)
+        // Tela inicial 1 (autor)
         if (getTelaInicialState() == 0) {
+            if (transicaoFinalizada) {
+                setTelaInicialState(1);
+            }
+        }
+
+        // Tela inicial 2 (entrada)
+        if (getTelaInicialState() == 1) {
 
             tileSize = painel.getTileSize();
             larguraTela = painel.getLargura();
@@ -378,8 +429,8 @@ public class UI {
         }
 
 
-        // Tela inicial 2 (seleção de personagem)
-        else if(getTelaInicialState() == 1) {
+        // Tela inicial 3 (seleção de personagem)
+        else if(getTelaInicialState() == 2) {
             desenharPlanoDeFundo(fundoTitulo);
             g2.setColor(Color.white);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));

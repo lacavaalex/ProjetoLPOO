@@ -176,7 +176,7 @@ public class Painel extends JPanel implements Runnable {
                     gameState == gameOverState || gameState == tutorialControles) {
                 ui.mostrarInterface(g2);
                 if (gameState == playState) {
-                    ui.mostrarStatusEAmbiente(g2);
+                    ui.mostrarStatus(g2);
                 }
             }
         } else {

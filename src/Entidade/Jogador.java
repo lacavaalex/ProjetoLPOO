@@ -41,8 +41,11 @@ public class Jogador {
     }
 
     public void atualizarVida() {
-        if (getEnergia() > getEnergiaMax()/2 && !EstaComSede()
-        && getFome() > getFomeMax()/2) {
+        if (getEnergia() > getEnergiaMax()/2
+                && !EstaComSede()
+                && getFome() > getFomeMax()/2
+                && getVida() < getVidaMax()
+        ) {
             setVida(getVida() + 1);
         }
     }

@@ -8,6 +8,7 @@ import Main.Painel;
 import UI.UI;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class AmbienteLago extends Ambiente {
 
@@ -19,6 +20,8 @@ public class AmbienteLago extends Ambiente {
     private Criatura criatura;
 
     private EventoCriatura eventoTriclope;
+
+    private BufferedImage placaFrente, placaVerso;
 
     private final int caranguejo = 2001;
 
@@ -33,6 +36,8 @@ public class AmbienteLago extends Ambiente {
         this.eventoTriclope = new EventoCriatura(painel, ui, jogador, criatura);
 
         descreverAmbiente();
+        placaFrente = ui.setupImagens("placa_lago_frente", "analises");
+        placaVerso = ui.setupImagens("placa_lago_verso", "analises");
     }
 
     @Override
@@ -129,7 +134,7 @@ public class AmbienteLago extends Ambiente {
             case 403:
                 ui.escreverTexto("O que fazer agora?", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Checar o lago", "Observar ecossistema", "Buscar recursos"}, y += tileSize, numComando);
+                ui.desenharOpcoes(new String[]{"Checar o lago de perto", "Analisar terras do mangue", "Buscar recursos"}, y += tileSize * 2, numComando);
                 break;
 
             case 404:
@@ -138,17 +143,71 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 405:
+                definirTelaDeTransicao("continuar");
                 ui.escreverTexto("Parece que há uma população de crustáceos aqui.", y += tileSize);
                 ui.escreverTexto("A maioria não parece realmente hostil, já outros...", y += tileSize);
-                ui.escreverTexto("Há uma placa próxima à margem do lago.", y += tileSize);
+                ui.escreverTexto("Há uma placa meio apagada próxima à margem do lago.", y += tileSize);
+                ui.escreverTexto("", y += tileSize);
+                ui.escreverTexto("Ilegível, mas há algum tipo de gravura...", y += tileSize);
                 break;
 
             case 406:
-                ui.escreverTexto("Você busca por recursos.", y += tileSize);
+                definirTelaDeTransicao("voltar");
+                ui.escreverTexto("Você busca por recursos.", y);
+
+                if (!isChanceTirada()) {
+                    int probabilidade = painel.definirUmaProbabilidade();
+                    boolean recursoEncontrado = probabilidade <= 70;
+                    if (recursoEncontrado) {
+                        if (!isRecursosColetados()) {
+                            painel.getInvent().adicionarItem("Pedra", "recurso", 2);
+                            painel.getInvent().adicionarItem("Galho pontiagudo", "combate", 1);
+                            if (probabilidade <= 40) {
+                                painel.getInvent().adicionarItem("Corda", "recurso", 1);
+                            }
+                            setRecursosColetados(true);
+                        }
+                    }
+                    setChanceTirada(true);
+                }
+                break;
+
+            case 408:
+                definirTelaDeTransicao("continuar");
+
+                desenharPlaca(g2, placaFrente);
+                ui.escreverTexto("Estranho. Talvez haja mais no verso.", painel.getAltura() - tileSize);
+                break;
+
+            case 409:
+                definirTelaDeTransicao("continuar");
+
+                desenharPlaca(g2, placaVerso);
+                ui.escreverTexto("...", painel.getAltura() - tileSize);
+                break;
+
+            case 410:
+                definirTelaDeTransicao("voltar");
+                ui.escreverTexto("Esse lago esconde algo...", y);
+                ui.escreverTexto("É vital medir os próximos passos.", y += tileSize);
+                break;
+
+            case 411:
+                ui.escreverTexto("O que fazer?", y);
+
+                ui.desenharOpcoes(new String[]{"Inspecionar o lago", "Buscar recursos"}, y += tileSize * 2, numComando);
                 break;
 
             default:
                 throw new IllegalArgumentException("Substate desconhecido: " + subState);
         }
+    }
+
+    public void desenharPlaca (Graphics2D g2, BufferedImage imagem) {
+       int tileSize = painel.getTileSize();
+       int escala = tileSize * 12;
+       int x = painel.getLargura()/2 - escala/2;
+
+       g2.drawImage(imagem, x, tileSize/2, escala, escala, null);
     }
 }

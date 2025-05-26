@@ -41,6 +41,21 @@ public class ItemCombate extends Item {
                 setNomeImagem("vara_de_pesca");
                 break;
 
+            case "Faca":
+                setPoder(3);
+                setNomeImagem("faca");
+                break;
+
+            case "Lança":
+                setPoder(6);
+                setNomeImagem("lança");
+                break;
+
+            case "Tridente":
+                setPoder(10);
+                setNomeImagem("tridente");
+                break;
+
             default:
                 throw new IllegalArgumentException("Arma desconhecida: " + nome);
         }

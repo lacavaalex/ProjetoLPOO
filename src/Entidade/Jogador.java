@@ -19,6 +19,7 @@ public class Jogador {
     private int fome = 10;
     private int energiaMax = 10;
     private int energia = getEnergiaMax();
+    private boolean envenenado;
     private boolean sanidade;
 
     private String armaAtual = "Nenhuma arma definida.";
@@ -33,6 +34,7 @@ public class Jogador {
         atualizarEnergia();
         atualizarAtaqueAtual();
         if (numLimite == painel.getQuantidadeSubStatesVisitadosTemporario()) {
+            if (estaEnvenenado()) { setEnergia(getEnergia() - 2); }
             atualizarFome();
             atualizarSede();
             atualizarVida();
@@ -42,7 +44,7 @@ public class Jogador {
 
     public void atualizarVida() {
         if (getEnergia() > getEnergiaMax()/2
-                && !EstaComSede()
+                && !estaComSede()
                 && getFome() > getFomeMax()/2
                 && getVida() < getVidaMax()
         ) {
@@ -51,15 +53,18 @@ public class Jogador {
     }
 
     public void atualizarFome() {
-        if (!EstaComSede()) {
+        if (!estaComSede()) {
             setFome(getFome() - 1);
         } else {
             setFome(getFome() - 2);
         }
+        if (getFome() <= 0) {
+            setFome(0);
+        }
     }
 
     public void atualizarSede() {
-        if (!EstaComSede()) {
+        if (!estaComSede()) {
             switch (contadorDaSede) {
                 case 0, 1, 2:
                     nivelSede = "alto";
@@ -81,21 +86,16 @@ public class Jogador {
     }
 
     public void atualizarEnergia() {
-        if (EstaComSede() || getFome() == 0 ) {
+        if (estaComSede() || getFome() == 0) {
             setEnergia(0);
-        }
-        else {
-            if (getFome() == getFomeMax()) {
-                setEnergia(getEnergiaMax());
-            }
-            else if (getFome() > getFomeMax()  * 3 / 4) {
-                if (getEnergia() < getEnergiaMax()) {
-                    setEnergia(getEnergia() + 1);
-                }
-            }
-            else if (getFome() <= getFomeMax() / 4) {
+        } else {
+            if (getFome() <= getFomeMax() / 4) {
                 setEnergia(getEnergia() - 2);
             }
+        }
+
+        if (getEnergia() <= 0) {
+            setEnergia(0);
         }
     }
 
@@ -141,9 +141,12 @@ public class Jogador {
     public int getEnergiaMax() { return energiaMax; }
     public void setEnergiaMax(int energiaMax) { this.energiaMax = energiaMax; }
 
+    public boolean estaEnvenenado() { return envenenado; }
+    public void setEnvenenado(boolean envenenado) { this.envenenado = envenenado; }
+
     public String getNivelSede() { return nivelSede; }
 
-    public boolean EstaComSede() { return sede; }
+    public boolean estaComSede() { return sede; }
     public void setSede(boolean sede) {
         this.sede = sede;
         if (!sede) {

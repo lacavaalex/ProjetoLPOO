@@ -144,7 +144,9 @@ public class AmbienteLago extends Ambiente {
 
             case 405:
                 definirTelaDeTransicao("continuar");
-                ui.escreverTexto("Parece que há uma população de crustáceos aqui.", y += tileSize);
+                ui.escreverTexto("Há uma população de crustáceos bizarros aqui.", y += tileSize);
+                ui.escreverTexto("Eles marcham ao redor do lago quase que com coordenação,", y += tileSize);
+                ui.escreverTexto("até parece que o fazem com algum propósito.", y += tileSize);
                 ui.escreverTexto("A maioria não parece realmente hostil, já outros...", y += tileSize);
                 ui.escreverTexto("Há uma placa meio apagada próxima à margem do lago.", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
@@ -156,20 +158,50 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Você busca por recursos.", y);
 
                 if (!isChanceTirada()) {
+
                     int probabilidade = painel.definirUmaProbabilidade();
-                    boolean recursoEncontrado = probabilidade <= 70;
+                    boolean recursoEncontrado = probabilidade <= 80;
+
                     if (recursoEncontrado) {
                         if (!isRecursosColetados()) {
-                            painel.getInvent().adicionarItem("Pedra", "recurso", 2);
                             painel.getInvent().adicionarItem("Galho pontiagudo", "combate", 1);
-                            if (probabilidade <= 40) {
-                                painel.getInvent().adicionarItem("Corda", "recurso", 1);
+
+                            if (painel.getInvent().getInvent().size() < 6 && !painel.getInvent().acharItem("Corda")) {
+
+                                if (probabilidade <= 65) {
+                                    painel.getInvent().adicionarItem("Pedra", "recurso", 2);
+                                    if (probabilidade <= 45) {
+                                        painel.getInvent().adicionarItem("Madeira", "recurso", 1);
+
+                                        if (probabilidade <= 40) {
+                                            if (!painel.getInvent().acharItem("Corda")) {
+                                                painel.getInvent().adicionarItem("Corda", "recurso", 1);
+                                            }
+
+                                            if (probabilidade <= 25) {
+                                                painel.getInvent().adicionarItem("Fruta", "consumo", 2);
+
+                                                if (probabilidade <= 15) {
+                                                    painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
+
+                                                    if (probabilidade <= 10) {
+                                                        painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             setRecursosColetados(true);
                         }
                     }
                     setChanceTirada(true);
                 }
+
+                ui.escreverTexto("...", y += tileSize);
+                ui.escreverTexto("Parece que você já pegou tudo de útil por aqui.", y += tileSize);
+                ui.escreverTexto("Há bons recursos em sua mochila.", y += tileSize);
                 break;
 
             case 408:
@@ -196,6 +228,81 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("O que fazer?", y);
 
                 ui.desenharOpcoes(new String[]{"Inspecionar o lago", "Buscar recursos"}, y += tileSize * 2, numComando);
+                break;
+
+            case 412:
+                definirTelaDeTransicao("continuar");
+                ui.escreverTexto("Esses bichos parecem não gostar da sua presença.", y);
+                ui.escreverTexto("Enfim, há terra firme e sem muita atividade em uma margem próxima", y += tileSize);
+                break;
+
+            case 413:
+                botoes.esconderBotaoBase();
+                ui.escreverTexto("Será que há algo produtivo para se fazer aqui?", y);
+
+                if (painel.getInvent().acharItem("Vara de pesca")) {
+                    ui.desenharOpcoes(new String[] {"Observar brilho estranho", "Sair da margem", "Pescar"}, y += tileSize * 2, numComando);
+                } else {
+                    ui.desenharOpcoes(new String[] {"Observar brilho estranho", "Sair da margem", "Chutar um crustáceo no lago"}, y += tileSize * 2, numComando);
+                }
+                break;
+
+            case 414:
+                botoes.esconderBotaoBase();
+                definirTelaDeTransicao("voltar");
+
+                ui.escreverTexto("Uma luz está visível, ainda que trêmula, bem no fundo do lago", y);
+                ui.escreverTexto("Curioso. Fora dela, o fundo é um breu por completo.", y += tileSize);
+                ui.escreverTexto("E absolutamente sem movimentação na água.", y += tileSize);
+                ui.escreverTexto("Louco como algo tão calmo pode ser tão... desconfortável.", y += tileSize);
+                ui.escreverTexto("(Ao encarar demais, você sente um calafrio subindo pela espinha", y += tileSize);
+                break;
+
+            case 415:
+                definirTelaDeTransicao("voltar");
+
+                ui.escreverTexto("Você chuta um dos bichos no lago", y);
+                ui.escreverTexto("...", y += tileSize);
+                ui.escreverTexto("É difícil enxergar a utilidade disso.", y += tileSize);
+
+                if (!isChanceTirada()) {
+                    int probabilidade = painel.definirUmaProbabilidade();
+                    boolean recursoEncontrado = probabilidade <= 1;
+
+                    if (recursoEncontrado) {
+                        if (!isRecursosColetados()) {
+                            painel.getInvent().adicionarItem("Faca", "combate", 1);
+                            setRecursosColetados(true);
+                        }
+                    }
+                    setChanceTirada(true);
+                }
+
+                if (painel.getInvent().acharItem("Faca")) {
+                    ui.escreverTexto("Espere, ele deixou cair alguma coisa?...", y += tileSize);
+                }
+                break;
+
+            case 416:
+                botoes.esconderBotaoBase();
+                g2.setColor(new Color (0, 70, 100));
+                ui.escreverTexto("PESCANDO", y);
+                g2.setColor(Color.white);
+                ui.escreverTexto("Você encaixa pequenas iscas na vara.", y += tileSize);
+
+                ui.desenharOpcoes(new String[] {"Esperar", "Chacoalhar vara", "Sair"}, y += tileSize * 2, numComando);
+                break;
+
+            case 417:
+
+                break;
+
+            case 418:
+
+                break;
+
+            case 419:
+
                 break;
 
             default:

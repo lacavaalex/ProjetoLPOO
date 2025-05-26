@@ -33,8 +33,10 @@ public class InventarioUI extends UI {
 
     public void adicionarItem(String nome, String tipo, int quantidade) {
         if (acharItem(nome)) {
-            Item itemExistente = invent.get(nome);
-            itemExistente.setQuantidade(itemExistente.getQuantidade() + quantidade);
+            if (!tipo.equals("combate") || nome.equals("Galho pontiagudo")) {
+                Item itemExistente = invent.get(nome);
+                itemExistente.setQuantidade(itemExistente.getQuantidade() + quantidade);
+            }
         }
         else {
             Item novoItem;
@@ -81,6 +83,8 @@ public class InventarioUI extends UI {
     public boolean acharItem(String nome) {
         return invent.containsKey(nome);
     }
+
+    public void esvazearInventario() { invent.clear(); }
 
     // Define qual ítem foi selecionado
     public void selecionouItem() {
@@ -251,7 +255,7 @@ public class InventarioUI extends UI {
                         nivelAtual = "Seu nível de fome: " + getJogador().getFome() + "/" + getJogador().getFomeMax();
                         break;
                     case "sede":
-                        String hidratacao = getJogador().EstaComSede() ? "DESIDRATADO" : "Hidratado";
+                        String hidratacao = getJogador().estaComSede() ? "DESIDRATADO" : "Hidratado";
                         nivelAtual = "Sua sede: " + hidratacao;
                         break;
                     default: nivelAtual = null; break;

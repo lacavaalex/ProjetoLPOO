@@ -185,7 +185,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Você retorna a atenção à fogueira.", y);
                 ui.escreverTexto("O fogo parece estar muito mais fraco desde que você chegou...", y +=tileSize);
 
-                ui.desenharOpcoes(new String[]{"Ir ao lago"}, y += tileSize, numComando);
+                ui.desenharOpcoes(new String[]{"Explorar arredores"}, y += tileSize, numComando);
                 break;
 
             // BRANCH DA VÍBORA

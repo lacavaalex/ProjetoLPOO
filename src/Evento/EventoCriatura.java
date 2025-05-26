@@ -47,6 +47,7 @@ public class EventoCriatura extends Evento {
 
                     if (!ataqueSurpresaExecutado) {
                         getJogador().setVida(getJogador().getVida() - criatura.getAtaqueCriatura());
+                        getJogador().setEnvenenado(true);
                         ataqueSurpresaExecutado = true;
                         setSurpresa(false);
                     }
@@ -91,7 +92,7 @@ public class EventoCriatura extends Evento {
             executavel = (probabilidade <= 50) ? 1 : 0;
         }
         else if (tipo == 21) { // Crustaceo Triclope
-            executavel = (probabilidade <= 100) ? 1 : 0;
+            executavel = (probabilidade <= 40) ? 1 : 0;
         }
 
         System.out.println("PROBABILIDADE: " + getProbabilidade());

@@ -12,14 +12,16 @@ import java.io.IOException;
 
 public class UI {
 
-    private BufferedImage fundoTitulo, chama1, chama2, chama3, imagemClima;
+    private BufferedImage fundoTitulo;
+    private BufferedImage chama1, chama2, chama3;
+    private BufferedImage imagemClima;
 
     private Painel painel;
     private Jogador jogador;
     private Botoes botoes;
 
     private Graphics2D g2;
-    private Font pixelsans_30, pixelsans_60B;
+    private Font pixelsans_30;
 
     private int tileSize;
     private int larguraTela;
@@ -51,7 +53,6 @@ public class UI {
             Font pixelFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Fonte/PixelSansSerif.ttf"));
 
             pixelsans_30 = pixelFont.deriveFont(Font.PLAIN, 30f);
-            pixelsans_60B = pixelFont.deriveFont(Font.BOLD, 60f);
 
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(pixelFont);
@@ -59,7 +60,6 @@ public class UI {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             pixelsans_30 = new Font("Pixel Sans Serif", Font.PLAIN, 30);
-            pixelsans_60B = new Font("Pixel Sans Serif", Font.BOLD, 60);
         }
 
     // Atribuição de imagens
@@ -137,6 +137,14 @@ public class UI {
         g2.drawRect(x, y += tileSize/2, tileSize * 4, tileSize*2/3);
         g2.drawString(atkTxt, xCentralATK, y += tileSize/2);
 
+        if (jogador.estaEnvenenado()) {
+            g2.setColor(Color.black);
+            g2.drawString("[ ENVENENADO ]", x + 3, y + 3 + tileSize);
+            g2.setColor(Color.MAGENTA);
+            g2.drawString("[ ENVENENADO ]", x, y += tileSize);
+        }
+        g2.setColor(Color.white);
+
         // Visualizar local e clima
         String textoLocal = painel.getPlaySubState() != 1 ? null : "ACAMPAMENTO";
 
@@ -145,15 +153,13 @@ public class UI {
             g2.drawString(textoLocal, x, tileSize);
         }
 
-        String nomeImagem;
-        switch (painel.getEventoClimatico().getClima()) {
-            case "chuva":
-                nomeImagem = "clima_chuva";
-                break;
-            default:
-                nomeImagem = "clima_ameno";
-                break;
-        }
+        String nomeImagem = switch (painel.getEventoClimatico().getClima()) {
+            case "chuva" -> "clima_chuva";
+            case "tempestade" -> "clima_tempestade";
+            case "tornado" -> "clima_tornado";
+            case "nevasca" -> "clima_nevasca";
+            default -> "clima_ameno";
+        };
 
         imagemClima = setupImagens(nomeImagem, "clima");
         g2.drawImage(imagemClima,painel.getLargura() - painel.getLargura()/8, painel.getAltura()/6, 130, 50, null);
@@ -321,6 +327,7 @@ public class UI {
             if (transicaoIniciada && alphaFade < 1.0f) {
                 alphaFade += 0.005f;
                 if (alphaFade >= 1.0f) {
+                    alphaFade = 1.0f;
                     transicaoFinalizada = true;
                     painel.setGameState(painel.getTitleState());
                 }
@@ -337,7 +344,7 @@ public class UI {
 
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-        recadoAutor = "Um projeto de Alex Lacava";
+        recadoAutor = "Um projeto por Alex Lacava";
 
         int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), recadoAutor);
 

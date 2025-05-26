@@ -25,6 +25,10 @@ public class CombateUI extends UI {
 
     private int numComandoCombate;
 
+    private float alphaFade = 0f;
+    private boolean transicaoIniciada = false;
+    private boolean transicaoFinalizada = false;
+
     public CombateUI(Painel painel, Jogador jogador, Botoes botoes, EventoCriatura eventoCriatura) {
         super(painel, jogador);
         this.painel = painel;
@@ -50,31 +54,27 @@ public class CombateUI extends UI {
         updateFrames();
 
         int tileSize = painel.getTileSize();
-        int y = tileSize;
+        int y = tileSize * 2;
 
         // Titulo
-        g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 25F));
-        int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(),"COMBATE");
+        desenharTitulo(g2);
 
-        g2.setColor(Color.red);
-        g2.drawString("COMBATE", x + 4, y + 4);
         g2.setColor(Color.white);
-        g2.drawString("COMBATE", x, y);
+        if (criaturaEmCombate != null) {
+            imagemInimigo = setupImagens(criaturaEmCombate.getNomeImagem(), "criatura");
+            desenharInimigo(g2);
+        }
+
 
         // Dentro de combate
         if (!fimDeCombate) {
 
-            if (criaturaEmCombate != null) {
-                imagemInimigo = setupImagens(criaturaEmCombate.getNomeImagem(), "criatura");
-                desenharInimigo(g2);
-
-                g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 20F));
-                g2.setColor(Color.red);
-                escreverTexto(criaturaEmCombate.getDescricao(), y += tileSize * 3);
-                g2.setColor(Color.white);
-                escreverTexto("Sua vida: " + getJogador().getVida() + "HP", y += tileSize * 2);
-                escreverTexto("Seu ataque: " + getJogador().getAtaqueAtual() + "ATK", y += tileSize);
-            }
+            g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 20F));
+            g2.setColor(Color.red);
+            escreverTexto(criaturaEmCombate.getDescricao(), y += tileSize * 3);
+            g2.setColor(Color.white);
+            escreverTexto("Sua vida: " + getJogador().getVida() + "HP", y += tileSize * 2);
+            escreverTexto("Seu ataque: " + getJogador().getAtaqueAtual() + "ATK", y += tileSize);
 
             g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));
             if (turnoJogador) {
@@ -90,17 +90,42 @@ public class CombateUI extends UI {
 
         // Fim de combate
         else {
-            botoes.esconderBotaoMochila();
-            botoes.esconderBotaoClima();
-            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
-            escreverTexto("Seu oponente foi derrotado, FIM DE COMBATE!", y += tileSize * 2);
-            g2.setColor(Color.yellow);
-            escreverTexto("DESFECHO", y += tileSize * 2);
-            escreverTexto("- Vida: " + getJogador().getVida() + "HP", y += tileSize);
-            escreverTexto("- Consequências: ", y += tileSize);
-            g2.setColor(Color.white);
-            escreverTexto("Pressione [esc] para continuar.", y += tileSize * 2);
+            inimigoSeEsvaindo(g2);
+
+            if (transicaoFinalizada) {
+                botoes.esconderBotaoMochila();
+                botoes.esconderBotaoClima();
+                g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
+                escreverTexto("Seu oponente foi derrotado, FIM DE COMBATE!", y += tileSize * 2);
+                g2.setColor(Color.yellow);
+                escreverTexto("DESFECHO", y += tileSize * 2);
+                escreverTexto("- Vida: " + getJogador().getVida() + "HP", y += tileSize);
+                g2.setColor(Color.white);
+                escreverTexto("Pressione [esc] para continuar.", y += tileSize * 2);
+            }
         }
+    }
+
+    public void desenharTitulo(Graphics2D g2) {
+        g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 25F));
+        String combate = "COMBATE";
+        int y = painel.getTileSize() * 2;
+        int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(),"COMBATE");
+
+        g2.setColor(new Color(200,150,0));
+        g2.drawString(combate, x + 5, y + 5);
+
+        g2.setColor(new Color(50,0,0));
+        g2.drawString(combate, x + 4, y + 4);
+
+        g2.setColor(new Color(75,0,0));
+        g2.drawString(combate, x + 3, y + 3);
+
+        g2.setColor(new Color(100, 0, 0));
+        g2.drawString(combate, x + 2, y + 2);
+
+        g2.setColor(new Color(150, 0, 0));
+        g2.drawString(combate, x, y);
     }
 
     // Desenha imagem do inimigo
@@ -108,12 +133,42 @@ public class CombateUI extends UI {
 
         int tileSize = painel.getTileSize();
 
-        g2.drawImage(imagemInimigo,
-                painel.getLargura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
-                painel.getAltura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
-                tileSize * criaturaEmCombate.getLarguraImagemEscala(),
-                tileSize * criaturaEmCombate.getAlturaImagemEscala(),
-                null);
+        Composite composite = g2.getComposite();
+
+        if (transicaoIniciada) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f - alphaFade));
+            g2.drawImage(imagemInimigo,
+                    painel.getLargura()/2 - (criaturaEmCombate.getLarguraImagemEscala() * tileSize)/2,
+                    painel.getAltura()/2 - criaturaEmCombate.getAlturaImagemEscala(),
+                    tileSize * criaturaEmCombate.getLarguraImagemEscala(),
+                    tileSize * criaturaEmCombate.getAlturaImagemEscala(),
+                    null);
+        } else {
+            g2.drawImage(imagemInimigo,
+                    painel.getLargura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
+                    painel.getAltura() - tileSize * criaturaEmCombate.getDistanciaBordaEscala(),
+                    tileSize * criaturaEmCombate.getLarguraImagemEscala(),
+                    tileSize * criaturaEmCombate.getAlturaImagemEscala(),
+                    null);
+        }
+
+        g2.setComposite(composite);
+    }
+
+    public void inimigoSeEsvaindo(Graphics2D g2) {
+        if (transicaoIniciada && alphaFade < 1.0f) {
+            alphaFade += 0.008f;
+            if (alphaFade >= 1.0f) {
+                alphaFade = 1.0f;
+                transicaoFinalizada = true;
+            }
+        }
+    }
+
+    public void resetAtributosTransicao() {
+        alphaFade = 0f;
+        transicaoIniciada = false;
+        transicaoFinalizada = false;
     }
 
     // Sistema de turnos
@@ -129,6 +184,7 @@ public class CombateUI extends UI {
                 // Cálculo de morte do inimigo/troca de turno
                 if (criaturaEmCombate.getVidaCriatura() <= 0) {
                     fimDeCombate = true;
+                    transicaoIniciada = true;
                 } else {
                     turnoJogador = false;
                 }
@@ -164,8 +220,11 @@ public class CombateUI extends UI {
 
         getJogador().setEnergia(getJogador().getEnergia() - 1);
 
+        resetAtributosTransicao();
+
         botoes.mostrarBotaoMochila();
         botoes.mostrarBotaoClima();
+
         botoes.mostrarBotaoCardAmbiente();
         if (painel.getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
             botoes.mostrarBotaoBase();

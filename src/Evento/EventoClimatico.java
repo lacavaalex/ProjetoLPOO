@@ -27,6 +27,15 @@ public class EventoClimatico extends Evento {
             if (tipo == 1) {
                 setClima("chuva");
             }
+            else if (tipo == 2) {
+                setClima("tempestade");
+            }
+            else if (tipo == 3) {
+                setClima("tornado");
+            }
+            else if (tipo == 4) {
+                setClima("nevasca");
+            }
         }
     }
 
@@ -37,6 +46,9 @@ public class EventoClimatico extends Evento {
 
         if (tipo == 1) { // Chuva
             executavel = (probabilidade <= 30) ? 1 : 0;
+        }
+        else if (tipo == 4) { // Nevasca
+            executavel = 1;
         }
 
         System.out.println("PROBABILIDADE: " + getProbabilidade());

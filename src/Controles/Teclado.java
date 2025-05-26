@@ -144,31 +144,46 @@ public class Teclado implements KeyListener {
             else {
                 if (!painel.getFightState()) {
                     // States com 3 opcoes
-                    if (subState == 0 || subState == 202 || subState == 403) {
+                    if (subState == 0 || subState == 202 || subState == 403 || subState == 413 || subState == 415) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(3);
                         }
                         if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                             painel.getUi().adicionarNumComando(3);
                         }
-                        if (subState == 0) {
-                            if (code == KeyEvent.VK_ENTER) {
-                                int opcao = painel.getUi().getNumComando();
+
+                        if (code == KeyEvent.VK_ENTER) {
+                            int opcao = painel.getUi().getNumComando();
+
+                            if (subState == 0) {
                                 painel.setPlaySubState((opcao + 1) * 100);
                                 painel.getUi().setNumComando(0);
                             }
-                        } else {
-                            if (code == KeyEvent.VK_ENTER) {
-                                int opcao = painel.getUi().getNumComando();
+
+                            else if (subState == 413) {
+                                if (opcao == 0) { painel.setPlaySubState(414); }
+                                else if (opcao == 1) { painel.setPlaySubState(411); }
+                                else if (opcao == 2) {
+                                    if (painel.getInvent().acharItem("Vara de pesca")) {
+                                        painel.setPlaySubState(416);
+                                    }
+                                    else {
+                                        painel.setPlaySubState(415);
+                                    }
+                                }
+                            }
+
+                            else {
                                 painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
                                 painel.getUi().setNumComando(0);
                             }
                         }
                     }
 
+
                     // States com 2 opcoes
                     if (subState == 1 || subState == 101 || subState == 211||
-                            subState == 301 || subState == 400) {
+                            subState == 301 || subState == 400 || subState == 411) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(2);
                         }
@@ -181,7 +196,9 @@ public class Teclado implements KeyListener {
                             // State da Base/Acampamento
                             if (subState == 1) {
                                 if (opcao == 0) {
-                                    jogador.setEnergia(jogador.getEnergiaMax());
+                                    if (jogador.getEnergia() <= jogador.getEnergiaMax()/2) {
+                                        jogador.setEnergia(jogador.getEnergiaMax());
+                                    }
                                 }
                                 else if (opcao == 1) {
                                     painel.getUi().setNumComando(0);
@@ -206,6 +223,11 @@ public class Teclado implements KeyListener {
                                 else if (opcao == 1) {
                                     painel.trocarAmbiente("floresta", 104);
                                 }
+                            }
+
+                            else if (subState == 411) {
+                                if (opcao == 0) { painel.setPlaySubState(2001); }
+                                else if (opcao == 1) { painel.setPlaySubState(406);}
                             }
 
                             else {

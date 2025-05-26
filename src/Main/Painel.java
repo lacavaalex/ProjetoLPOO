@@ -154,11 +154,14 @@ public class Painel extends JPanel implements Runnable {
     public void updateClima() {
         String climaAtual = eventoClimatico.getClima();
 
-        switch(climaAtual) {
+        switch (climaAtual) {
             case "chuva":
-                if (eventoCriatura.getContadorDeEncontros() >= 5) {
+                if (eventoCriatura.getContadorDeEncontros() >= 6) {
                     eventoClimatico.finalizarEventoClimatico();
                 }
+                break;
+
+            case "tempestade" :
                 break;
             default: break;
         }
@@ -225,6 +228,8 @@ public class Painel extends JPanel implements Runnable {
     // Definicoes de game over
     public void resetAposGameOver() {
         resetPlayState();
+
+        invent.esvazearInventario();
 
         jogador.resetVida();
         jogador.resetFome();
@@ -294,12 +299,12 @@ public class Painel extends JPanel implements Runnable {
             botoes.esconderBotaoBase();
             botoes.esconderBotaoMochila();
             botoes.esconderBotaoCardAmbiente();
-            botoes.mostrarBotaoClima();
             botoes.mostrarBotaoContinuar();
 
             if (fightState) {
                 botoes.esconderBotaoCardAmbiente();
                 botoes.esconderBotaoMochila();
+                botoes.esconderBotaoClima();
                 botoes.esconderBotaoContinuar();
             }
         }
@@ -314,6 +319,7 @@ public class Painel extends JPanel implements Runnable {
         }
         System.out.println("Substate atual: " + getPlaySubState());
         System.out.println("Substate para retornar: " + getAmbienteAtual().getSubStateParaRetornar());
+        System.out.println("Fome: " + jogador.getFome() + " / Sede: " + jogador.estaComSede() + " / Energia: " + jogador.getEnergia());
     }
 
     public boolean getFightState() { return fightState; }

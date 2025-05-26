@@ -2,6 +2,7 @@ package Ambiente;
 
 import Controles.Botoes;
 import Entidade.Jogador;
+import Evento.EventoClimatico;
 import Main.Painel;
 import UI.UI;
 
@@ -15,6 +16,8 @@ public class AmbienteMontanha extends Ambiente {
     private UI ui;
     private Botoes botoes;
 
+    private EventoClimatico eventoNevasca;
+
     public AmbienteMontanha(Painel painel, Jogador jogador, UI ui) {
         super(painel, jogador);
         this.painel = painel;
@@ -23,6 +26,7 @@ public class AmbienteMontanha extends Ambiente {
         this.botoes = painel.getBotoes();
 
         descreverAmbiente();
+        eventoNevasca = new EventoClimatico(painel, ui, jogador);
     }
 
     @Override
@@ -79,6 +83,10 @@ public class AmbienteMontanha extends Ambiente {
 
         int subState = painel.getPlaySubState();
         int y = tileSize * 2;
+
+        if (subState != 500) {
+            definirOcorrenciaDeEventoClimatico(g2, eventoNevasca, 4);
+        }
 
         switch (subState) {
 

@@ -39,7 +39,7 @@ public class Criatura {
 
             case 21:
                 setNomeCriatura("Crustáceo Tríclope");
-                setVidaMaxCriatura(5);
+                setVidaMaxCriatura(3);
                 setVidaCriatura(getVidaMaxCriatura());
                 setAtaqueCriatura(2);
 

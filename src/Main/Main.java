@@ -1,6 +1,7 @@
 package Main;
 
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 
 public class Main {
 
@@ -16,6 +17,10 @@ public class Main {
   //Integração das funcionalidades do painel na janela
   Painel painel = new Painel();
   janela.add(painel);
+
+  // Ícone da janela
+  BufferedImage icon = painel.getUi().setupImagens("game_icon", "icones");
+  janela.setIconImage(icon);
 
   // Tamanho e localização da janela na tela (central)
   janela.pack();

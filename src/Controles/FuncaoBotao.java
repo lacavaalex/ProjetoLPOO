@@ -49,8 +49,16 @@ public class FuncaoBotao implements ActionListener {
                         painel.getAmbienteAtual().setSubStateParaRetornar(411);
                         break;
 
+                    case 415:
+                        painel.setPlaySubState(413);
+                        break;
+
                     case 500:
                         painel.trocarAmbiente("floresta", 303);
+                        break;
+
+                    default:
+                        painel.setPlaySubState(painel.getPlaySubState() - 1);
                         break;
                 }
             }

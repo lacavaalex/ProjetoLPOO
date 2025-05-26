@@ -20,10 +20,19 @@ public class AmbienteLago extends Ambiente {
     private Criatura criatura;
 
     private EventoCriatura eventoTriclope;
+    private EventoCriatura eventoCrustoso;
 
-    private BufferedImage placaFrente, placaVerso;
+    private BufferedImage placaFrente, placaVerso, crustoso;
 
     private final int caranguejo = 2001;
+    private final int boss = 2002;
+
+    // Atributos da pescaria
+    private int contadorEspera = 0;
+    private int contadorMovimento = 0;
+    private int contadorTimer = 0;
+    private final int tempoDeEsperaEmFPS = 600;
+    private boolean aguardando = true;
 
     public AmbienteLago(Painel painel, Jogador jogador, UI ui) {
         super(painel, jogador);
@@ -34,10 +43,12 @@ public class AmbienteLago extends Ambiente {
         this.criatura = new Criatura();
 
         this.eventoTriclope = new EventoCriatura(painel, ui, jogador, criatura);
+        this.eventoCrustoso = new EventoCriatura(painel, ui, jogador, criatura);
 
         descreverAmbiente();
         placaFrente = ui.setupImagens("placa_lago_frente", "analises");
         placaVerso = ui.setupImagens("placa_lago_verso", "analises");
+        crustoso = ui.setupImagens("crustoso_cruel", "criatura");
     }
 
     @Override
@@ -98,9 +109,11 @@ public class AmbienteLago extends Ambiente {
         int y = tileSize * 2;
 
         switch (subState) {
-
             case caranguejo:
                 definirOcorrenciaDeEventoCriatura(g2, eventoTriclope, 21);
+                break;
+            case boss:
+                definirOcorrenciaDeEventoCriatura(g2, eventoCrustoso, 22);
                 break;
 
             case 1:
@@ -117,7 +130,7 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 401:
-                definirTelaDeTransicao("continuar");
+                definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("O lago é extenso, cobrindo quase todo o horizonte.", y);
                 ui.escreverTexto("Não parece haver muitas criaturas por aqui.", y += tileSize);
@@ -132,18 +145,19 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 403:
+                botoes.mostrarBotaoBase();
                 ui.escreverTexto("O que fazer agora?", y += tileSize);
 
                 ui.desenharOpcoes(new String[]{"Checar o lago de perto", "Analisar terras do mangue", "Buscar recursos"}, y += tileSize * 2, numComando);
                 break;
 
             case 404:
-                definirTelaDeTransicao("continuar");
+                definirTelaDeBotao("continuar");
                 ui.escreverTexto("Você se aproxima do lago...", y += tileSize);
                 break;
 
             case 405:
-                definirTelaDeTransicao("continuar");
+                definirTelaDeBotao("continuar");
                 ui.escreverTexto("Há uma população de crustáceos bizarros aqui.", y += tileSize);
                 ui.escreverTexto("Eles marcham ao redor do lago quase que com coordenação,", y += tileSize);
                 ui.escreverTexto("até parece que o fazem com algum propósito.", y += tileSize);
@@ -154,7 +168,7 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 406:
-                definirTelaDeTransicao("voltar");
+                definirTelaDeBotao("voltar");
                 ui.escreverTexto("Você busca por recursos.", y);
 
                 if (!isChanceTirada()) {
@@ -168,29 +182,26 @@ public class AmbienteLago extends Ambiente {
 
                             if (painel.getInvent().getInvent().size() < 6 && !painel.getInvent().acharItem("Corda")) {
 
-                                if (probabilidade <= 65) {
+                                if (probabilidade <= 65 && probabilidade >= 15) {
                                     painel.getInvent().adicionarItem("Pedra", "recurso", 2);
                                     if (probabilidade <= 45) {
                                         painel.getInvent().adicionarItem("Madeira", "recurso", 1);
-
-                                        if (probabilidade <= 40) {
-                                            if (!painel.getInvent().acharItem("Corda")) {
-                                                painel.getInvent().adicionarItem("Corda", "recurso", 1);
-                                            }
-
                                             if (probabilidade <= 25) {
                                                 painel.getInvent().adicionarItem("Fruta", "consumo", 2);
 
-                                                if (probabilidade <= 15) {
-                                                    painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
-
-                                                    if (probabilidade <= 10) {
-                                                        painel.getInvent().adicionarItem("Cantil", "consumo", 1);
-                                                    }
-                                                }
                                             }
                                         }
                                     }
+                                if (probabilidade <= 40) {
+                                    if (!painel.getInvent().acharItem("Corda")) {
+                                        painel.getInvent().adicionarItem("Corda", "recurso", 1);
+                                    }
+                                }
+                                if (probabilidade <= 15) {
+                                    painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
+                                }
+                                if (probabilidade <= 10) {
+                                    painel.getInvent().adicionarItem("Cantil", "consumo", 1);
                                 }
                             }
                             setRecursosColetados(true);
@@ -205,39 +216,44 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 408:
-                definirTelaDeTransicao("continuar");
+                definirTelaDeBotao("continuar");
 
-                desenharPlaca(g2, placaFrente);
+                desenharImagemLago(g2, placaFrente);
                 ui.escreverTexto("Estranho. Talvez haja mais no verso.", painel.getAltura() - tileSize);
                 break;
 
             case 409:
-                definirTelaDeTransicao("continuar");
+                definirTelaDeBotao("continuar");
 
-                desenharPlaca(g2, placaVerso);
+                desenharImagemLago(g2, placaVerso);
                 ui.escreverTexto("...", painel.getAltura() - tileSize);
                 break;
 
             case 410:
-                definirTelaDeTransicao("voltar");
+                definirTelaDeBotao("voltar");
                 ui.escreverTexto("Esse lago esconde algo...", y);
                 ui.escreverTexto("É vital medir os próximos passos.", y += tileSize);
                 break;
 
             case 411:
+                botoes.mostrarBotaoBase();
                 ui.escreverTexto("O que fazer?", y);
 
                 ui.desenharOpcoes(new String[]{"Inspecionar o lago", "Buscar recursos"}, y += tileSize * 2, numComando);
                 break;
 
             case 412:
-                definirTelaDeTransicao("continuar");
+                definirTelaDeBotao("continuar");
                 ui.escreverTexto("Esses bichos parecem não gostar da sua presença.", y);
                 ui.escreverTexto("Enfim, há terra firme e sem muita atividade em uma margem próxima", y += tileSize);
                 break;
 
             case 413:
                 botoes.esconderBotaoBase();
+
+                setContadorEspera(0);
+                setContadorMovimento(0);
+
                 ui.escreverTexto("Será que há algo produtivo para se fazer aqui?", y);
 
                 if (painel.getInvent().acharItem("Vara de pesca")) {
@@ -249,17 +265,17 @@ public class AmbienteLago extends Ambiente {
 
             case 414:
                 botoes.esconderBotaoBase();
-                definirTelaDeTransicao("voltar");
+                definirTelaDeBotao("voltar");
 
                 ui.escreverTexto("Uma luz está visível, ainda que trêmula, bem no fundo do lago", y);
                 ui.escreverTexto("Curioso. Fora dela, o fundo é um breu por completo.", y += tileSize);
                 ui.escreverTexto("E absolutamente sem movimentação na água.", y += tileSize);
                 ui.escreverTexto("Louco como algo tão calmo pode ser tão... desconfortável.", y += tileSize);
-                ui.escreverTexto("(Ao encarar demais, você sente um calafrio subindo pela espinha", y += tileSize);
+                ui.escreverTexto("(Ao encarar demais, você sente um calafrio subir sua espinha).", y += tileSize);
                 break;
 
             case 415:
-                definirTelaDeTransicao("voltar");
+                definirTelaDeBotao("voltar");
 
                 ui.escreverTexto("Você chuta um dos bichos no lago", y);
                 ui.escreverTexto("...", y += tileSize);
@@ -285,24 +301,161 @@ public class AmbienteLago extends Ambiente {
 
             case 416:
                 botoes.esconderBotaoBase();
+
+                iniciarEspera();
                 g2.setColor(new Color (0, 70, 100));
                 ui.escreverTexto("PESCANDO", y);
                 g2.setColor(Color.white);
                 ui.escreverTexto("Você encaixa pequenas iscas na vara.", y += tileSize);
 
                 ui.desenharOpcoes(new String[] {"Esperar", "Chacoalhar vara", "Sair"}, y += tileSize * 2, numComando);
+
                 break;
 
             case 417:
+                definirTelaDeBotao("voltar");
+
+                if (aguardando) {
+                    g2.setColor(Color.red);
+                    ui.escreverTexto("Não há pressa... Aguarde...", y += tileSize * 2);
+                    g2.setColor(Color.white);
+
+                    contadorTimer++;
+                    if (contadorTimer >= tempoDeEsperaEmFPS) {
+                        aguardando = false;
+
+                        if (!isChanceTirada()) {
+                            int probabilidade = painel.definirUmaProbabilidade();
+                            boolean pescouPeixe = probabilidade <= 40;
+                            boolean pescouItem = probabilidade >= 96;
+
+                            if (contadorEspera == 6 && contadorEspera > contadorMovimento) {
+                                if (probabilidade >= 50) {
+                                    if (!isRecursosColetados()) {
+                                        painel.getInvent().adicionarItem("Tridente", "combate", 1);
+                                        setRecursosColetados(true);
+                                    }
+                                } else {
+                                    if (!isRecursosColetados()) {
+                                        painel.getInvent().adicionarItem("Cimitarra", "combate", 1);
+                                        setRecursosColetados(true);
+                                    }
+                                }
+                            }
+
+                            if (pescouPeixe) {
+                                if (!isRecursosColetados()) {
+                                    painel.getInvent().adicionarItem("Peixe", "consumo", 1);
+                                    setRecursosColetados(true);
+                                }
+                            } else if (pescouItem) {
+                                if (!isRecursosColetados()) {
+                                    if (!painel.getInvent().acharItem("Lâmina metálica")) {
+                                        painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
+                                    }
+                                    setRecursosColetados(true);
+                                }
+                            }
+
+                            contadorEspera++;
+                            setChanceTirada(true);
+                        }
+                    }
+                } else {
+                    ui.escreverTexto("Confira se pegou algo.", y += tileSize * 2);
+                }
 
                 break;
 
             case 418:
+                definirTelaDeBotao("voltar");
 
+                if (aguardando) {
+                    g2.setColor(Color.red);
+                    ui.escreverTexto("Vamos ver se há sinal de vida nesse lago... Aguarde...", y += tileSize * 2);
+                    g2.setColor(Color.white);
+
+                    contadorTimer++;
+                    if (contadorTimer >= tempoDeEsperaEmFPS/2) {
+                        aguardando = false;
+
+                        if (!isChanceTirada()) {
+                            int probabilidade = painel.definirUmaProbabilidade();
+                            boolean pescouPeixe = probabilidade <= 30;
+
+                            if (painel.getInvent().acharItem("Pedra")) {//(contadorMovimento == 4 && contadorMovimento > contadorEspera) {
+                                if (probabilidade >= 85) {
+                                    if (!isRecursosColetados()) {
+                                        painel.getInvent().adicionarItem("Tridente", "combate", 1);
+                                        setRecursosColetados(true);
+                                    }
+                                } else {
+                                    if (!isRecursosColetados()) {
+                                        painel.getInvent().adicionarItem("Cimitarra", "combate", 1);
+                                        setRecursosColetados(true);
+                                    }
+                                }
+                            }
+
+                            if (pescouPeixe) {
+                                if (!isRecursosColetados()) {
+                                    painel.getInvent().adicionarItem("Peixe", "consumo", 1);
+                                    setRecursosColetados(true);
+                                }
+                            }
+
+                            contadorMovimento++;
+                            setChanceTirada(true);
+                        }
+                    }
+                } else {
+                    ui.escreverTexto("Confira se pegou algo.", y += tileSize * 2);
+                }
                 break;
 
             case 419:
+                botoes.esconderBotaoMochila();
 
+                if (aguardando) {
+                    ui.escreverTexto("Ainda sem sinal de sol...", y);
+                    ui.escreverTexto("Sem sinal de um caminho para fora desse lugar...", y += tileSize);
+                    ui.escreverTexto("Sem um pingo de sentido sobre como veio parar aqui....", y += tileSize);
+                    ui.escreverTexto("''O que fiz para merecer parar neste inferno?''", y += tileSize);
+                    ui.escreverTexto("", y += tileSize);
+                    ui.escreverTexto("Por ora, o que lhe resta é esta pescaria...", y += tileSize);
+                    g2.setColor(Color.red);
+                    ui.escreverTexto("Aguarde...", y += tileSize);
+                    g2.setColor(Color.white);
+
+                    contadorTimer++;
+                    if (contadorTimer >= tempoDeEsperaEmFPS) {
+                        aguardando = false;
+                    }
+                } else {
+                    Composite composite = g2.getComposite();
+                    if (!isTransicaoFinalizada()) {
+                        transicaoDeTelaBoss(g2);
+
+                        ui.escreverTexto("Você sente que fisgou algo. Algo grande.", painel.getAltura() / 2 - tileSize);
+                        ui.escreverTexto("...", painel.getAltura() / 2 - tileSize * 2);
+                        ui.escreverTexto(jogador.getNome() + ", solte essa vara de pesca...", painel.getAltura() / 2);
+
+                        ui.desenharOpcoes(new String[]{"Soltar vara"}, painel.getAltura() / 2 + tileSize * 2, numComando);
+                    }
+                    g2.setComposite(composite);
+
+                }
+                if (isTransicaoFinalizada()) {
+                    painel.setPlaySubState(420);
+                }
+
+                break;
+
+            case 420:
+                resetAtributosTransicao();
+                definirTelaDeBotao("continuar");
+                desenharImagemLago(g2, crustoso);
+                ui.escreverTexto("Uma fera incrustada emerge do lago.", painel.getAltura() - tileSize);
                 break;
 
             default:
@@ -310,11 +463,23 @@ public class AmbienteLago extends Ambiente {
         }
     }
 
-    public void desenharPlaca (Graphics2D g2, BufferedImage imagem) {
+
+    public void desenharImagemLago (Graphics2D g2, BufferedImage imagem) {
        int tileSize = painel.getTileSize();
        int escala = tileSize * 12;
        int x = painel.getLargura()/2 - escala/2;
 
        g2.drawImage(imagem, x, tileSize/2, escala, escala, null);
     }
+
+    public void iniciarEspera() {
+        contadorTimer = 0;
+        aguardando = true;
+    }
+
+    public int getContadorEspera() { return contadorEspera; }
+    public void setContadorEspera(int contadorEspera) { this.contadorEspera = contadorEspera; }
+
+    public int getContadorMovimento() { return contadorMovimento; }
+    public void setContadorMovimento(int contadorMovimento) { this.contadorMovimento = contadorMovimento; }
 }

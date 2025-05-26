@@ -8,6 +8,7 @@ public class Criatura {
     private int vidaMax;
     private int vida;
     private int ataque = 0;
+    private boolean boss;
 
     public Criatura() {}
 
@@ -23,6 +24,8 @@ public class Criatura {
                 setLarguraImagemEscala(4);
                 setAlturaImagemEscala(4);
                 setDistanciaBordaEscala(7);
+
+                setBoss(false);
                 break;
 
             case 12:
@@ -35,6 +38,8 @@ public class Criatura {
                 setLarguraImagemEscala(8);
                 setAlturaImagemEscala(8);
                 setDistanciaBordaEscala(9);
+
+                setBoss(true);
                 break;
 
             case 21:
@@ -47,6 +52,23 @@ public class Criatura {
                 setLarguraImagemEscala(4);
                 setAlturaImagemEscala(4);
                 setDistanciaBordaEscala(7);
+
+                setBoss(false);
+                break;
+
+
+            case 22:
+                setNomeCriatura("O Crustoso Cruel");
+                setVidaMaxCriatura(50);
+                setVidaCriatura(getVidaMaxCriatura());
+                setAtaqueCriatura(10);
+
+                setNomeImagem("crustoso_cruel");
+                setLarguraImagemEscala(12);
+                setAlturaImagemEscala(12);
+                setDistanciaBordaEscala(14);
+
+                setBoss(true);
                 break;
 
             default:
@@ -91,4 +113,7 @@ public class Criatura {
     public void setAtaqueCriatura(int ataque) {
         this.ataque = ataque;
     }
+
+    public boolean isBoss() { return boss; }
+    public void setBoss(boolean boss) { this.boss = boss; }
 }

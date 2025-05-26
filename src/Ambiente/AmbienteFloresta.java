@@ -132,7 +132,7 @@ public class AmbienteFloresta extends Ambiente {
 
             // BRANCH DA LUZ
             case 100:
-                definirTelaDeTransicao("continuar");
+                definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você deixa a luz te guiar...", y);
                 ui.escreverTexto(". . .", y += tileSize);
@@ -157,7 +157,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 102:
-                definirTelaDeTransicao("voltar");
+                definirTelaDeBotao("voltar");
 
                 if (!isRecursosColetados()) {
                 painel.getInvent().adicionarItem("Cantil", "consumo", 1);
@@ -169,7 +169,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 103:
-               definirTelaDeTransicao("continuar");
+               definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Melhor não mexer com o que não é seu.", y);
                 ui.escreverTexto("(e, afinal, quem sabe de quem pode ser...)", y += tileSize);
@@ -190,7 +190,7 @@ public class AmbienteFloresta extends Ambiente {
 
             // BRANCH DA VÍBORA
             case 200:
-                definirTelaDeTransicao("continuar");
+                definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você busca por recursos.", y);
                 ui.escreverTexto("Encontrou: 7 madeiras, 2 pedras, 1 galho pontiagudo.", y += tileSize);
@@ -204,7 +204,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 201:
-                definirTelaDeTransicao("continuar");
+                definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Aquele chiado... parece estar tão perto...", y);
                 break;
@@ -276,7 +276,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 999:
-               definirTelaDeTransicao("continuar");
+               definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você pensa em fugir, mas se sente meio tonto...", y);
                 ui.escreverTexto("Porcaria, a mordida da víbora o deixou", y += tileSize);
@@ -289,7 +289,7 @@ public class AmbienteFloresta extends Ambiente {
 
             // BRANCH DA MONTANHA
             case 300:
-               definirTelaDeTransicao("continuar");
+               definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você se direciona até a montanha", y);
                 ui.escreverTexto(". . .", y += tileSize);
@@ -311,7 +311,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 302:
-               definirTelaDeTransicao("continuar");
+               definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você sobe o trecho semi-íngreme.", y);
                 ui.escreverTexto("Olhando pra trás, há um olhar a espreita.", y += tileSize);
@@ -321,7 +321,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 303:
-                definirTelaDeTransicao("continuar");
+                definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você se dirige àquela rocha para um abrigo temporário.", y);
                 ui.escreverTexto("Vai ter que servir. Você já se afastou demais da clareira.", y += tileSize);

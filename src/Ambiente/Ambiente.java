@@ -34,6 +34,11 @@ public abstract class Ambiente {
     private int subStateAnterior = -1;
     private Set<Integer> subStatesVisitadosTotal = new HashSet<>();
 
+    // Atributos de transicao
+    private float alphaFade = 0f;
+    private boolean transicaoIniciada = false;
+    private boolean transicaoFinalizada = false;
+
     public Ambiente(Painel painel, Jogador jogador) {
         this.painel = painel;
         this.jogador = jogador;
@@ -84,6 +89,23 @@ public abstract class Ambiente {
         }
     }
 
+    public void transicaoDeTelaBoss (Graphics2D g2) {
+        if (transicaoIniciada && alphaFade < 1.0f) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f - alphaFade));
+            alphaFade += 0.01f;
+            if (alphaFade >= 1.0f) {
+                alphaFade = 1.0f;
+                transicaoFinalizada = true;
+            }
+        }
+    }
+
+    public void resetAtributosTransicao() {
+        alphaFade = 0f;
+        transicaoIniciada = false;
+        transicaoFinalizada = false;
+    }
+
     // Metodo que define o substate após um evento de criatura
     public void definirSubStateParaRetornar () {
         if (painel.getPlaySubState() < 1000 && painel.getPlaySubState() != 1) {
@@ -115,13 +137,7 @@ public abstract class Ambiente {
         recursosGastos = false;
         chanceTirada = false;
 
-        if (jogador.getFome() >= jogador.getFomeMax() * 3 / 4) {
-            if (jogador.getEnergia() < jogador.getEnergiaMax()) {
-                jogador.setEnergia(jogador.getEnergia() + 1);
-            }
-        }
     }
-
 
     public int getSubStatesVisitadosTotal() { return subStatesVisitadosTotal.size(); }
 
@@ -129,7 +145,7 @@ public abstract class Ambiente {
 
     public boolean checarSeSubStateFoiVisitado(int num) { return subStatesVisitadosTotal.contains(num); }
 
-    public void definirTelaDeTransicao(String voltarOuContinuar) {
+    public void definirTelaDeBotao(String voltarOuContinuar) {
         switch (voltarOuContinuar) {
             case "continuar":
                 botoes.mostrarBotaoContinuar();
@@ -184,4 +200,10 @@ public abstract class Ambiente {
 
     public String getClimaAmbiente() { return climaAmbiente; }
     public void setClimaAmbiente(String climaAmbiente) { this.climaAmbiente = climaAmbiente; }
+
+    public boolean isTransicaoIniciada() { return transicaoIniciada; }
+    public void setTransicaoIniciada(boolean transicaoIniciada) { this.transicaoIniciada = transicaoIniciada; }
+
+    public boolean isTransicaoFinalizada() { return transicaoFinalizada; }
+    public void setTransicaoFinalizada (boolean transicaoFinalizada) { this.transicaoFinalizada = transicaoFinalizada; }
 }

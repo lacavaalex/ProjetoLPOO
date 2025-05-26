@@ -13,7 +13,7 @@ import java.io.IOException;
 public class UI {
 
     private BufferedImage fundoTitulo;
-    private BufferedImage chama1, chama2, chama3;
+    private BufferedImage chama1, chama2, chama3, azul1, azul2, azul3;
     private BufferedImage imagemClima;
 
     private Painel painel;
@@ -32,6 +32,7 @@ public class UI {
     private int contadorChama = 1;
     private int telaInicialState = 0;
 
+    // Atributos do efeito de transição
     private String recadoAutor;
     private int indiceChar = 0;
     private int frameCounterRecado = 0;
@@ -67,6 +68,9 @@ public class UI {
         chama1 = setupImagens("chama-1", "animacao");
         chama2 = setupImagens("chama-2", "animacao");
         chama3 = setupImagens("chama-3", "animacao");
+        azul1 = setupImagens("chama_azul-1", "animacao");
+        azul2 = setupImagens("chama_azul-2", "animacao");
+        azul3 = setupImagens("chama_azul-3", "animacao");
     }
 
     // Metodo geral de desenho
@@ -165,177 +169,6 @@ public class UI {
         g2.drawImage(imagemClima,painel.getLargura() - painel.getLargura()/8, painel.getAltura()/6, 130, 50, null);
     }
 
-    // Métodos de compactação de código
-    public BufferedImage setupImagens(String nomeImagem, String tipo) {
-        BufferedImage imagem = null;
-        try {
-            imagem = ImageIO.read(getClass().getResource("/Imagens_" + tipo +"/" + nomeImagem + ".png"));
-            if (imagem == null) {
-                System.out.println("Imagem não carregada: " + nomeImagem);
-            }
-        } catch (IOException e) {
-            System.out.println("Erro ao carregar imagem: " + nomeImagem);
-            e.printStackTrace();
-        }
-        return imagem;
-    }
-
-    public void desenharPlanoDeFundo(BufferedImage imagem) {
-        g2.drawImage(imagem, 0, 0, larguraTela, alturaTela, null);
-    }
-
-    public void desenharOpcoes(String[] opcoes, int yInicial, int numComando) {
-
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-
-        int y = yInicial;
-
-        if (opcoes.length == 1) {
-            String texto = opcoes[0];
-            int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), texto);
-            g2.setColor(Color.white);
-            g2.drawString(texto, x, y);
-
-            switch (contadorChama) {
-                case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
-                case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
-                case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
-            }
-            g2.setColor(Color.red);
-            g2.drawString(texto, x, y);
-        }
-
-        else {
-            for (int i = 0; i < opcoes.length; i++) {
-                String texto = opcoes[i];
-                int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), texto);
-
-                if (numComando == i) {
-                    switch (contadorChama) {
-                        case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
-                        case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
-                        case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
-                    }
-                }
-                if (numComando == i) {
-                    g2.setColor(Color.red);
-                } else {
-                    g2.setColor(Color.white);
-                }
-                g2.drawString(texto, x, y);
-                y += tileSize;
-            }
-        }
-        g2.setColor(Color.white);
-    }
-
-    public void desenharStatus(int x, int y) {
-        BufferedImage fome = null;
-        BufferedImage sede = null;
-        BufferedImage energia = null;
-
-        // Fome
-        if (jogador.getFome() <= jogador.getFomeMax()) {
-            fome = setupImagens("fome_cheia", "status");
-
-            if (jogador.getFome() <= jogador.getFomeMax() * 9 / 10) {
-                fome = setupImagens("fome_decente", "status");
-
-                if (jogador.getFome() <= jogador.getFomeMax() * 6 / 10) {
-                    fome = setupImagens("fome_mediana", "status");
-
-                    if (jogador.getFome() <= jogador.getFomeMax() * 3 / 10) {
-                        fome = setupImagens("fome_perigosa", "status");
-
-                        if (jogador.getFome() <= jogador.getFomeMax() / 10) {
-                            fome = setupImagens("fome_zerada", "status");
-                        }
-                    }
-                }
-            }
-        }
-
-        // Sede
-        String nivelSede = jogador.getNivelSede();
-
-        if (nivelSede.equals("alto")) {
-            sede = setupImagens("sede_false", "status");
-        } else if (nivelSede.equals("media")) {
-            sede = setupImagens("sede_mid", "status");
-        } else if (nivelSede.equals("baixa")) {
-            sede = setupImagens("sede_true", "status");
-        }
-
-        // Energia
-        if (jogador.getEnergia() >= jogador.getEnergiaMax()*3/4) {
-            energia = setupImagens("energia_cheia", "status");
-        } else if (jogador.getEnergia() > 0 && jogador.getEnergia() < jogador.getEnergiaMax()*3/4) {
-            energia = setupImagens("energia_metade", "status");
-        } else if (jogador.getEnergia() == 0) {
-            energia = setupImagens("energia_vazia", "status");
-        }
-
-        // Desenho das imagens
-        int borda = tileSize/8;
-        int espacamento = 8;
-        int rectLargura = tileSize + 2 * borda;
-
-        g2.drawRect(x, y, rectLargura, rectLargura);
-        g2.drawImage(fome, x + borda, y + borda, tileSize, tileSize, null);
-
-        int x2 = x + rectLargura + espacamento;
-
-        g2.drawRect(x2, y, rectLargura, rectLargura);
-        g2.drawImage(sede, x2 + borda, y + borda, tileSize, tileSize, null);
-
-        int x3 = x2 + rectLargura + espacamento;
-
-        g2.drawRect(x3, y, rectLargura, rectLargura);
-        g2.drawImage(energia, x3 + borda, y + borda, tileSize, tileSize, null);
-
-    }
-
-    public int coordenadaXParaTextoCentralizado(Graphics2D g2, int largura, String texto) {
-        this.g2 = g2;
-
-        int comprimento = (int) g2.getFontMetrics().getStringBounds(texto, g2).getWidth();
-        return largura / 2 - comprimento / 2;
-
-    }
-
-    public String escreverTexto(String texto, int y) {
-        tileSize = painel.getTileSize();
-        int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), texto);
-        g2.drawString(texto, x, y);
-        return texto;
-    }
-
-    public void updateFrames() {
-        frame++;
-        if (frame % 20 == 0) {
-            contadorChama++;
-            if (contadorChama > 3) {
-                contadorChama = 1;
-            }
-        }
-        if (this.recadoAutor != null) {
-            frameCounterRecado++;
-            if (frameCounterRecado >= framesPorLetra && indiceChar < recadoAutor.length()) {
-                indiceChar++;
-                frameCounterRecado = 0;
-            }
-            if (transicaoIniciada && alphaFade < 1.0f) {
-                alphaFade += 0.005f;
-                if (alphaFade >= 1.0f) {
-                    alphaFade = 1.0f;
-                    transicaoFinalizada = true;
-                    painel.setGameState(painel.getTitleState());
-                }
-            }
-        }
-    }
-
-
     // Métodos para telas especiais
     public void mostrarTextoDoAutor(Graphics2D g2) {
 
@@ -422,17 +255,17 @@ public class UI {
             // Fundo
             desenharPlanoDeFundo(fundoTitulo);
             // Título (com sombra)
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 35F));
-            int y = tileSize * 5;
-            int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), "O MUNDO FUNESTO");
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
+            int y = tileSize * 2;
+            int x = tileSize * 2;
 
             g2.setColor((Color.black));
             g2.drawString("O MUNDO FUNESTO", x + 5, y + 5);
             g2.setColor(Color.white);
-            escreverTexto("O MUNDO FUNESTO", y);
+            g2.drawString("O MUNDO FUNESTO", x, y);
 
             //MENU
-            desenharOpcoes(new String[]{"NOVO JOGO", "CONTROLES", "SAIR"}, y += tileSize * 2, numComando);
+            desenharOpcoes(new String[]{"NOVO JOGO", "CONTROLES", "ENCERRAR"}, y += tileSize * 5/2, numComando);
         }
 
 
@@ -514,21 +347,198 @@ public class UI {
         botoes.mostrarBotaoContinuar();
     }
 
+    // Métodos de compactação de código
+    public BufferedImage setupImagens(String nomeImagem, String tipo) {
+        BufferedImage imagem = null;
+        try {
+            imagem = ImageIO.read(getClass().getResource("/Imagens_" + tipo +"/" + nomeImagem + ".png"));
+            if (imagem == null) {
+                System.out.println("Imagem não carregada: " + nomeImagem);
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar imagem: " + nomeImagem);
+            e.printStackTrace();
+        }
+        return imagem;
+    }
+
+    public void desenharOpcoes(String[] opcoes, int yInicial, int numComando) {
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+
+        int y = yInicial;
+
+        if (opcoes.length == 1) {
+            String texto = opcoes[0];
+            int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), texto);
+
+            g2.setColor(Color.white);
+            g2.drawString(texto, x, y);
+
+            switch (contadorChama) {
+                case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
+                case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
+                case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
+            }
+            g2.setColor(Color.red);
+            g2.drawString(texto, x, y);
+        }
+
+        else {
+            for (int i = 0; i < opcoes.length; i++) {
+                String texto = opcoes[i];
+
+                int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), texto);
+                if (painel.getGameState() == painel.getTitleState() && opcoes.length == 3) {
+                    x = y + tileSize;
+                }
 
 
-    // Getters e setters
-    public Painel getPainel() {
-        return painel;
-    }
-    public Jogador getJogador() {
-        return jogador;
-    }
-    public Font getPixelsans_30() {
-        return pixelsans_30;
+                if (numComando == i) {
+                    if (painel.getCombate().getCriaturaEmCombate() != null
+                            && painel.getCombate().getCriaturaEmCombate().isBoss()) {
+
+                        switch (contadorChama) {
+                            case 1: g2.drawImage(azul1, x - 65, y - 30, tileSize, tileSize, null); break;
+                            case 2: g2.drawImage(azul2, x - 65, y - 30, tileSize, tileSize, null); break;
+                            case 3: g2.drawImage(azul3, x - 65, y - 30, tileSize, tileSize, null); break;
+                        }
+                    }
+                    else {
+                        switch (contadorChama) {
+                            case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
+                            case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
+                            case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
+                        }
+                    }
+                }
+
+                if (numComando == i) {
+                    if (painel.getCombate().getCriaturaEmCombate() != null
+                            && painel.getCombate().getCriaturaEmCombate().isBoss()) {
+                        g2.setColor(Color.blue);
+                    }
+                    else { g2.setColor(Color.red); }
+                }
+                else { g2.setColor(Color.white); }
+
+                g2.drawString(texto, x, y);
+                y += tileSize;
+            }
+        }
+        g2.setColor(Color.white);
     }
 
-    public int getTelaInicialState() { return telaInicialState; }
-    public void setTelaInicialState(int telaInicialState) { this.telaInicialState = telaInicialState; }
+
+    public int coordenadaXParaTextoCentralizado(Graphics2D g2, int largura, String texto) {
+        this.g2 = g2;
+
+        int comprimento = (int) g2.getFontMetrics().getStringBounds(texto, g2).getWidth();
+        return largura / 2 - comprimento / 2;
+
+    }
+
+    public String escreverTexto(String texto, int y) {
+        tileSize = painel.getTileSize();
+        int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), texto);
+        g2.drawString(texto, x, y);
+        return texto;
+    }
+
+    public void desenharPlanoDeFundo(BufferedImage imagem) {
+        g2.drawImage(imagem, 0, 0, larguraTela, alturaTela, null);
+    }
+
+    public void desenharStatus(int x, int y) {
+        BufferedImage fome = null;
+        BufferedImage sede = null;
+        BufferedImage energia = null;
+
+        // Fome
+        if (jogador.getFome() <= jogador.getFomeMax()) {
+            fome = setupImagens("fome_cheia", "status");
+
+            if (jogador.getFome() <= jogador.getFomeMax() * 9 / 10) {
+                fome = setupImagens("fome_decente", "status");
+
+                if (jogador.getFome() <= jogador.getFomeMax() * 6 / 10) {
+                    fome = setupImagens("fome_mediana", "status");
+
+                    if (jogador.getFome() <= jogador.getFomeMax() * 3 / 10) {
+                        fome = setupImagens("fome_perigosa", "status");
+
+                        if (jogador.getFome() <= jogador.getFomeMax() / 10) {
+                            fome = setupImagens("fome_zerada", "status");
+                        }
+                    }
+                }
+            }
+        }
+
+        // Sede
+        String nivelSede = jogador.getNivelSede();
+
+        if (nivelSede.equals("alto")) {
+            sede = setupImagens("sede_false", "status");
+        } else if (nivelSede.equals("media")) {
+            sede = setupImagens("sede_mid", "status");
+        } else if (nivelSede.equals("baixa")) {
+            sede = setupImagens("sede_true", "status");
+        }
+
+        // Energia
+        if (jogador.getEnergia() >= jogador.getEnergiaMax()*3/4) {
+            energia = setupImagens("energia_cheia", "status");
+        } else if (jogador.getEnergia() > 0 && jogador.getEnergia() < jogador.getEnergiaMax()*3/4) {
+            energia = setupImagens("energia_metade", "status");
+        } else if (jogador.getEnergia() == 0) {
+            energia = setupImagens("energia_vazia", "status");
+        }
+
+        // Desenho das imagens
+        int borda = tileSize/8;
+        int espacamento = 8;
+        int rectLargura = tileSize + 2 * borda;
+
+        g2.drawRect(x, y, rectLargura, rectLargura);
+        g2.drawImage(fome, x + borda, y + borda, tileSize, tileSize, null);
+
+        int x2 = x + rectLargura + espacamento;
+
+        g2.drawRect(x2, y, rectLargura, rectLargura);
+        g2.drawImage(sede, x2 + borda, y + borda, tileSize, tileSize, null);
+
+        int x3 = x2 + rectLargura + espacamento;
+
+        g2.drawRect(x3, y, rectLargura, rectLargura);
+        g2.drawImage(energia, x3 + borda, y + borda, tileSize, tileSize, null);
+
+    }
+
+    public void updateFrames() {
+        frame++;
+        if (frame % 20 == 0) {
+            contadorChama++;
+            if (contadorChama > 3) {
+                contadorChama = 1;
+            }
+        }
+        if (this.recadoAutor != null) {
+            frameCounterRecado++;
+            if (frameCounterRecado >= framesPorLetra && indiceChar < recadoAutor.length()) {
+                indiceChar++;
+                frameCounterRecado = 0;
+            }
+            if (transicaoIniciada && alphaFade < 1.0f) {
+                alphaFade += 0.005f;
+                if (alphaFade >= 1.0f) {
+                    alphaFade = 1.0f;
+                    transicaoFinalizada = true;
+                    painel.setGameState(painel.getTitleState());
+                }
+            }
+        }
+    }
 
     // Metodos de comando
     public void subtrairNumComando(int numOpcoes) {
@@ -545,6 +555,13 @@ public class UI {
     }
     public int getNumComando() { return numComando; }
     public void setNumComando(int numComando) { this.numComando = numComando; }
+
+    // Getters e setters
+    public Jogador getJogador() { return jogador; }
+    public Font getPixelsans_30() { return pixelsans_30; }
+
+    public int getTelaInicialState() { return telaInicialState; }
+    public void setTelaInicialState(int telaInicialState) { this.telaInicialState = telaInicialState; }
 
     public void setGraphics(Graphics2D g2) { this.g2 = g2; }
 }

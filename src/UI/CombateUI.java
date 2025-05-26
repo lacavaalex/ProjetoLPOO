@@ -53,6 +53,9 @@ public class CombateUI extends UI {
 
         updateFrames();
 
+        botoes.esconderBotaoContinuar();
+        botoes.esconderBotaoClima();
+
         int tileSize = painel.getTileSize();
         int y = tileSize * 2;
 
@@ -244,7 +247,11 @@ public class CombateUI extends UI {
             numComandoCombate = 0;
         }
     }
+
+    // Getters e setters
     public int getNumComando() { return numComandoCombate; }
 
     public boolean isCombateFinalizado() { return fimDeCombate; }
+
+    public Criatura getCriaturaEmCombate() { return criaturaEmCombate; }
 }

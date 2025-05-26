@@ -44,6 +44,9 @@ public class FuncaoBotao implements ActionListener {
                         break;
 
                     case 406:
+                        painel.setPlaySubState(2001);
+                        painel.getAmbienteAtual().setSubStateParaRetornar(403);
+                        break;
                     case 410:
                         painel.setPlaySubState(2001);
                         painel.getAmbienteAtual().setSubStateParaRetornar(411);
@@ -51,6 +54,11 @@ public class FuncaoBotao implements ActionListener {
 
                     case 415:
                         painel.setPlaySubState(413);
+                        break;
+
+                    case 417:
+                    case 418:
+                        painel.setPlaySubState(416);
                         break;
 
                     case 500:
@@ -98,6 +106,7 @@ public class FuncaoBotao implements ActionListener {
 
         // FightState
         if (painel.getEventoCriatura().isEventoCriaturaAtivo()) {
+            botoes.esconderBotaoContinuar();
             painel.setFightState(true);
         }
 
@@ -129,6 +138,9 @@ public class FuncaoBotao implements ActionListener {
                     break;
                 case 404:
                     painel.setPlaySubState(2001);
+                    break;
+                case 420:
+                    painel.setPlaySubState(2002);
                     break;
 
                 // FLORESTA

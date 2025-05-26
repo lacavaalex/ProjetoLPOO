@@ -53,7 +53,9 @@ public class EventoCriatura extends Evento {
                     }
                 }
 
-            } else if (tipo == 12) {
+            }
+
+            else if (tipo == 12) {
                 ursoPai(g2);
 
                 g2.setColor(Color.red);
@@ -69,6 +71,12 @@ public class EventoCriatura extends Evento {
                 g2.setColor(Color.white);
                 getUi().escreverTexto("Espere, há algo vindo, o que é... nossa!", y += tileSize * 4);
                 getUi().escreverTexto("Parece um caranguejo com... três olhos!?", y += tileSize);
+            }
+
+            else if (tipo == 22) {
+                crustosoCruel();
+                getPainel().getBotoes().esconderBotaoClima();
+                getPainel().setFightState(true);
             }
 
         // Probabilidade mal sucedida
@@ -93,6 +101,9 @@ public class EventoCriatura extends Evento {
         }
         else if (tipo == 21) { // Crustaceo Triclope
             executavel = (probabilidade <= 40) ? 1 : 0;
+        }
+        else if (tipo == 22) { // Crustoso Cruel
+            executavel = 1;
         }
 
         System.out.println("PROBABILIDADE: " + getProbabilidade());
@@ -129,6 +140,10 @@ public class EventoCriatura extends Evento {
         criatura.definirCriatura(21);
         getUi().escreverTexto(criatura.getDescricao(), y += tileSize);
         g2.setColor(Color.white);
+    }
+
+    public void crustosoCruel() {
+        criatura.definirCriatura(22);
     }
 
 

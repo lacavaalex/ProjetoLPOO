@@ -310,7 +310,7 @@ public class InventarioUI extends UI {
 
     // Metodo que desenha a arma equipada
     public void desenharArma(Graphics2D g2, int x, int y) {
-        int tileSize = getPainel().getTileSize();
+        int tileSize = painel.getTileSize();
         g2.drawImage(imagemDaArma, x, y, tileSize * 2, tileSize * 2, null);
     }
 

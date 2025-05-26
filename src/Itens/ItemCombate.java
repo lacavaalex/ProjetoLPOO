@@ -48,7 +48,17 @@ public class ItemCombate extends Item {
 
             case "Lança":
                 setPoder(6);
-                setNomeImagem("lança");
+                setNomeImagem("lanca");
+                break;
+
+            case "Foice":
+                setPoder(8);
+                setNomeImagem("foice");
+                break;
+
+            case "Cimitarra":
+                setPoder(8);
+                setNomeImagem("cimitarra");
                 break;
 
             case "Tridente":

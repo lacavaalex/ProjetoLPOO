@@ -60,9 +60,10 @@ public class ItemRecurso extends Item {
     // Itens
     public void definirRecurso(String nome) {
         setTipo("recurso");
+        setNome(nome);
+
         switch (nome) {
             case "Madeira":
-                setNome(nome);
                 if (painel.getInvent().acharItem("Pedra")) {
                     setItemParaRemoverNoCrafting("Pedra");
                     setOpcaoCrafting("Estilingue");
@@ -77,7 +78,6 @@ public class ItemRecurso extends Item {
                 break;
 
             case "Pedra":
-                setNome(nome);
                 if (painel.getInvent().acharItem("Madeira")) {
                     setItemParaRemoverNoCrafting("Madeira");
                     setOpcaoCrafting("Estilingue");
@@ -88,9 +88,26 @@ public class ItemRecurso extends Item {
                 }
                 break;
 
-            case "Punhado de sementes":
-                setNome(nome);
+            case "Lâmina metálica":
+                if (painel.getInvent().acharItem("Madeira")) {
+                    setItemParaRemoverNoCrafting("Madeira");
 
+                    if (getQuantidade() == 1) {
+                        setOpcaoCrafting("Lança");
+                        setTipoNovoItem("combate");
+                    }
+                    else if (getQuantidade() >= 2) {
+                        setOpcaoCrafting("Foice");
+                        setTipoNovoItem("combate");
+                    }
+                }
+                else {
+                    setOpcaoCrafting("...");
+                    setTipoNovoItem(null);
+                }
+                break;
+
+            case "Punhado de sementes":
                 if (painel.getPlaySubState() == 1) {
                     setOpcaoCrafting("Plantio");
                 }
@@ -101,7 +118,6 @@ public class ItemRecurso extends Item {
                 break;
 
             case "Corda":
-                setNome(nome);
                 if (painel.getInvent().acharItem("Galho pontiagudo")) {
                     setItemParaRemoverNoCrafting("Galho pontiagudo");
                     setOpcaoCrafting("Vara de pesca");

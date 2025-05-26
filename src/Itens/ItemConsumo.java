@@ -33,14 +33,20 @@ public class ItemConsumo extends Item {
                     System.out.println("Você está de barriga cheia. Fome: " + jogador.getFome());
                 } else {
                     jogador.setFome(jogador.getFome() + getSustancia());
+                    int fomeAtualizada = jogador.getFome();
 
-                    if (jogador.getFome() > jogador.getFomeMax()) {
+                    if (fomeAtualizada > jogador.getFomeMax()) {
                         jogador.setFome(jogador.getFomeMax());
                     }
+                    else if (fomeAtualizada == jogador.getFomeMax()) {
+                        jogador.setVida(jogador.getVida() + 1);
+                    }
 
-                    if (getNome().equals("Fruta")) {
+                    if (getNome().equals("Fruta") || getNome().equals("Peixe")) {
                         int probabilidade = getPainel().definirUmaProbabilidade();
-                        if (probabilidade <= 20) {
+
+                        if (probabilidade <= 20 && getNome().equals("Fruta")
+                        || probabilidade <= 5 && getNome().equals("Peixe")) {
                             jogador.setEnvenenado(true);
                         }
                     }
@@ -77,6 +83,12 @@ public class ItemConsumo extends Item {
 
             case "Fruta":
                 setDurabilidadeMax(1);
+                setEfeito("fome");
+                setSustancia(3);
+                break;
+
+            case "Peixe":
+                setDurabilidade(2);
                 setEfeito("fome");
                 setSustancia(3);
                 break;

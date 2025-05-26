@@ -114,6 +114,32 @@ public class Painel extends JPanel implements Runnable {
         updateBotoes();
     }
 
+    // Atualizacoes contínuas de mecanicas do jogo
+    public void updateBotoes() {
+        if (gameState == titleState || !invent.isFechado()
+                || clima.isAnalisandoClima() || ambienteAtual.isCardVisivel()) {
+            botoes.setVisible(false);
+        } else {
+            botoes.setVisible(true);
+        }
+    }
+
+    public void updateClima() {
+        String climaAtual = eventoClimatico.getClima();
+
+        switch (climaAtual) {
+            case "chuva":
+                if (eventoCriatura.getContadorDeEncontros() >= 6) {
+                    eventoClimatico.finalizarEventoClimatico();
+                }
+                break;
+
+            case "tempestade" :
+                break;
+            default: break;
+        }
+    }
+
     // Implementação do game loop
     public void run() {
 
@@ -138,32 +164,6 @@ public class Painel extends JPanel implements Runnable {
                 drawCount = 0;
                 timer = 0;
             }
-        }
-    }
-
-    // Atualizacoes contínuas de mecanicas do jogo
-    public void updateBotoes() {
-        if (gameState == titleState || !invent.isFechado()
-                || clima.isAnalisandoClima() || ambienteAtual.isCardVisivel()) {
-            botoes.setVisible(false);
-        } else {
-            botoes.setVisible(true);
-        }
-    }
-
-    public void updateClima() {
-        String climaAtual = eventoClimatico.getClima();
-
-        switch (climaAtual) {
-            case "chuva":
-                if (eventoCriatura.getContadorDeEncontros() >= 6) {
-                    eventoClimatico.finalizarEventoClimatico();
-                }
-                break;
-
-            case "tempestade" :
-                break;
-            default: break;
         }
     }
 
@@ -225,11 +225,20 @@ public class Painel extends JPanel implements Runnable {
         setPlaySubState(subStateNoNovoAmbiente);
     }
 
+    // Gerador de número aleatório entre 1 e 100 (para probabilidades)
+    public int definirUmaProbabilidade() {
+        int probabilidade = (rand.nextInt(100) + 1);
+        System.out.println("Probabilidade :" + probabilidade);
+        return probabilidade;
+    }
+
     // Definicoes de game over
     public void resetAposGameOver() {
         resetPlayState();
 
         invent.esvazearInventario();
+
+        eventoClimatico.setClima("ameno");
 
         jogador.resetVida();
         jogador.resetFome();
@@ -239,11 +248,6 @@ public class Painel extends JPanel implements Runnable {
 
         getEventoCriatura().resetContador();
         getAmbienteAtual().resetarSubStatesVisitadosTotal();
-    }
-
-    // Gerador de número aleatório entre 1 e 100 (para probabilidades)
-    public int definirUmaProbabilidade() {
-        return (rand.nextInt(100) + 1);
     }
 
 

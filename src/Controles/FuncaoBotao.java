@@ -137,6 +137,7 @@ public class FuncaoBotao implements ActionListener {
                     painel.setPlaySubState(1002);
                     break;
                 case 404:
+                    painel.getAmbienteAtual().setSubStateParaRetornar(412);
                     painel.setPlaySubState(2001);
                     break;
                 case 420:

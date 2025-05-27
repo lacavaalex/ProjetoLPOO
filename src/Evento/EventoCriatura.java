@@ -35,10 +35,9 @@ public class EventoCriatura extends Evento {
             getPainel().getEventoCriatura().setEventoCriaturaAtivo(true);
             getPainel().setGameState(getPainel().getPlayState());
             getPainel().getCombate().iniciarCombate(criatura);
+            criatura.definirCriatura(tipo);
 
             if (tipo == 11) {
-                viboraRubroFloresta(g2);
-
                 if (isSurpresa()) {
                     g2.setColor(Color.red);
                     getUi().escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y += tileSize * 4);
@@ -52,12 +51,9 @@ public class EventoCriatura extends Evento {
                         setSurpresa(false);
                     }
                 }
-
             }
 
             else if (tipo == 12) {
-                ursoPai(g2);
-
                 g2.setColor(Color.red);
                 getUi().escreverTexto("*GROAAAAAR*", y += tileSize * 4);
                 g2.setColor(Color.white);
@@ -66,15 +62,13 @@ public class EventoCriatura extends Evento {
             }
 
             else if (tipo == 21) {
-                crustaceoTriclope(g2);
-
                 g2.setColor(Color.white);
                 getUi().escreverTexto("Espere, há algo vindo, o que é... nossa!", y += tileSize * 4);
                 getUi().escreverTexto("Parece um caranguejo com... três olhos!?", y += tileSize);
             }
 
             else if (tipo == 22) {
-                crustosoCruel();
+                criatura.definirCriatura(22);
                 getPainel().getBotoes().esconderBotaoClima();
                 getPainel().setFightState(true);
             }
@@ -108,44 +102,6 @@ public class EventoCriatura extends Evento {
 
         System.out.println("PROBABILIDADE: " + getProbabilidade());
     }
-
-
-    // Cards de mensagem de encontro
-    public void viboraRubroFloresta(Graphics2D g2) {
-        int tileSize = getPainel().getTileSize();
-        int y = tileSize * 8;
-
-        g2.setColor(Color.red);
-        criatura.definirCriatura(11);
-        getUi().escreverTexto(criatura.getDescricao(), y += tileSize);
-        g2.setColor(Color.white);
-    }
-
-
-    public void ursoPai(Graphics2D g2) {
-        int tileSize = getPainel().getTileSize();
-        int y = tileSize * 8;
-
-        g2.setColor(Color.red);
-        criatura.definirCriatura(12);
-        getUi().escreverTexto(criatura.getDescricao(), y += tileSize);
-        g2.setColor(Color.white);
-    }
-
-    public void crustaceoTriclope(Graphics2D g2) {
-        int tileSize = getPainel().getTileSize();
-        int y = tileSize * 8;
-
-        g2.setColor(Color.red);
-        criatura.definirCriatura(21);
-        getUi().escreverTexto(criatura.getDescricao(), y += tileSize);
-        g2.setColor(Color.white);
-    }
-
-    public void crustosoCruel() {
-        criatura.definirCriatura(22);
-    }
-
 
     public void incrementarContador() { contadorDeEncontros++; }
     public void resetContador() { contadorDeEncontros = 0; }

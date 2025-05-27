@@ -16,7 +16,13 @@ public abstract class Ambiente {
     private Jogador jogador;
     private Botoes botoes;
 
-    private String nome, descricao, dificuldade, recursos, frequenciaEventos, climaAmbiente;
+    private String nome;
+    private String descricao;
+    private String dificuldade;
+    private String recursos;
+    private String frequenciaEventos;
+    private String climaAmbiente;
+    private String nomeFundoCombate;
     private boolean cardVisivel;
 
     // Atributos de gerencia de inventário/eventos
@@ -200,6 +206,9 @@ public abstract class Ambiente {
 
     public String getClimaAmbiente() { return climaAmbiente; }
     public void setClimaAmbiente(String climaAmbiente) { this.climaAmbiente = climaAmbiente; }
+
+    public String getNomeFundoCombate() { return nomeFundoCombate; }
+    public void setNomeFundoCombate(String nomeFundoCombate) { this.nomeFundoCombate = nomeFundoCombate; }
 
     public boolean isTransicaoIniciada() { return transicaoIniciada; }
     public void setTransicaoIniciada(boolean transicaoIniciada) { this.transicaoIniciada = transicaoIniciada; }

@@ -35,9 +35,9 @@ public class Criatura {
                 setAtaqueCriatura(100);
 
                 setNomeImagem("urso_pai");
-                setLarguraImagemEscala(8);
-                setAlturaImagemEscala(8);
-                setDistanciaBordaEscala(9);
+                setLarguraImagemEscala(9);
+                setAlturaImagemEscala(9);
+                setDistanciaBordaEscala(11);
 
                 setBoss(true);
                 break;
@@ -76,10 +76,7 @@ public class Criatura {
         }
     }
 
-    public String getDescricao() {
-        return "" + getNomeCriatura() + ": " + String.valueOf(getVidaCriatura()) + "HP / " + String.valueOf(getAtaqueCriatura()) + "ATK";
-    }
-
+    // Getters e setters
     public String getNomeImagem() { return nomeImagem; }
     public void setNomeImagem(String nomeImagem) { this.nomeImagem = nomeImagem; }
 

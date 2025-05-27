@@ -277,26 +277,43 @@ public class Teclado implements KeyListener {
 
                 // Configuração própria da tela de combate
                 if (painel.getFightState()) {
-                    if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                        painel.getCombate().subtrairNumComandoCombate(3);
+
+                    if (painel.getCombate().isTurnoJogador()) {
+
+                        if (painel.getCombate().getCriaturaEmCombate() != null
+                                && painel.getCombate().getCriaturaEmCombate().isBoss()) {
+                            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                                painel.getCombate().subtrairNumComandoCombate(4);
+                            }
+                            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                                painel.getCombate().adicionarNumComandoCombate(4);
+                            }
+                        } else {
+                            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                                painel.getCombate().subtrairNumComandoCombate(5);
+                            }
+                            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                                painel.getCombate().adicionarNumComandoCombate(5);
+                            }
+                        }
+
+                        if (code == KeyEvent.VK_ENTER) {
+                            int opcao = painel.getCombate().getNumComando();
+                            if (opcao == 0 || opcao == 1 || opcao == 2 || opcao == 4) {
+                                painel.getCombate().sistemaTurno();
+                            } else if (opcao == 3) {
+                                painel.getUi().mostrarInventario();
+                            }
+                        }
                     }
-                    if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                        painel.getCombate().adicionarNumComandoCombate(3);
-                    }
-                    if (code == KeyEvent.VK_ENTER) {
-                        int opcao = painel.getCombate().getNumComando();
-                        if (opcao == 0) {
+                    else {
+                        painel.getCombate().setNumComando(0);
+                        if (code == KeyEvent.VK_ENTER) {
                             painel.getCombate().sistemaTurno();
                         }
-                        else if (opcao == 1) {
-
-                        }
-                        else if (opcao == 2) {
-                            painel.getUi().mostrarInventario();
-                        }
                     }
 
-                    if (painel.getCombate().isCombateFinalizado()) {
+                    if (painel.getCombate().isCombateFinalizado() || painel.getCombate().conseguiuEscapar()) {
                         if (code == KeyEvent.VK_ESCAPE) {
                             painel.getCombate().finalizarCombate();
                             painel.setPlaySubState(painel.getAmbienteAtual().getSubStateParaRetornar());

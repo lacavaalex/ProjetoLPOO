@@ -52,6 +52,7 @@ public class AmbienteFloresta extends Ambiente {
         this.setRecursos("frutas, água, madeira, pedras.");
         this.setFrequenciaEventos("muitas criaturas, esconderijos, riscos à saúde.");
         this.setClimaAmbiente("levemente frio.");
+        this.setNomeFundoCombate("floresta_macabra_combate");
     }
 
     @Override
@@ -211,8 +212,8 @@ public class AmbienteFloresta extends Ambiente {
 
             case 202:
                 ui.escreverTexto("Já é hora de pensar no que fazer para se sustentar nessa mata.", y);
-                ui.escreverTexto("Você já tem madeira para fogueira, mas precisa de", y += tileSize);
-                ui.escreverTexto("remédio para o veneno e alguma arma melhor para caça.", y += tileSize);
+                ui.escreverTexto("Você já tem madeira para fogueira, mas é importante ter", y += tileSize);
+                ui.escreverTexto("remédios e alguma arma melhor para caça.", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
                 ui.escreverTexto("O que fazer?", y += tileSize);
 

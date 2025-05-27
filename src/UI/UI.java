@@ -375,12 +375,14 @@ public class UI {
             g2.setColor(Color.white);
             g2.drawString(texto, x, y);
 
-            switch (contadorChama) {
-                case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
-                case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
-                case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
+            desenharContadorChama(x, y);
+
+            if (painel.getCombate().getCriaturaEmCombate() != null
+                    && painel.getCombate().getCriaturaEmCombate().isBoss()) {
+                g2.setColor(Color.blue);
             }
-            g2.setColor(Color.red);
+            else { g2.setColor(Color.red); }
+
             g2.drawString(texto, x, y);
         }
 
@@ -395,22 +397,7 @@ public class UI {
 
 
                 if (numComando == i) {
-                    if (painel.getCombate().getCriaturaEmCombate() != null
-                            && painel.getCombate().getCriaturaEmCombate().isBoss()) {
-
-                        switch (contadorChama) {
-                            case 1: g2.drawImage(azul1, x - 65, y - 30, tileSize, tileSize, null); break;
-                            case 2: g2.drawImage(azul2, x - 65, y - 30, tileSize, tileSize, null); break;
-                            case 3: g2.drawImage(azul3, x - 65, y - 30, tileSize, tileSize, null); break;
-                        }
-                    }
-                    else {
-                        switch (contadorChama) {
-                            case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
-                            case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
-                            case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
-                        }
-                    }
+                    desenharContadorChama(x, y);
                 }
 
                 if (numComando == i) {
@@ -429,6 +416,24 @@ public class UI {
         g2.setColor(Color.white);
     }
 
+    public void desenharContadorChama(int x, int y) {
+        if (painel.getCombate().getCriaturaEmCombate() != null
+                && painel.getCombate().getCriaturaEmCombate().isBoss()) {
+
+            switch (contadorChama) {
+                case 1: g2.drawImage(azul1, x - 65, y - 30, tileSize, tileSize, null); break;
+                case 2: g2.drawImage(azul2, x - 65, y - 30, tileSize, tileSize, null); break;
+                case 3: g2.drawImage(azul3, x - 65, y - 30, tileSize, tileSize, null); break;
+            }
+        }
+        else {
+            switch (contadorChama) {
+                case 1: g2.drawImage(chama1, x - 65, y - 30, tileSize, tileSize, null); break;
+                case 2: g2.drawImage(chama2, x - 65, y - 30, tileSize, tileSize, null); break;
+                case 3: g2.drawImage(chama3, x - 65, y - 30, tileSize, tileSize, null); break;
+            }
+        }
+    }
 
     public int coordenadaXParaTextoCentralizado(Graphics2D g2, int largura, String texto) {
         this.g2 = g2;
@@ -455,19 +460,19 @@ public class UI {
         BufferedImage energia = null;
 
         // Fome
-        if (jogador.getFome() <= jogador.getFomeMax()) {
+        if (jogador.getFome() > jogador.getFomeMax() * 4 / 5) {
             fome = setupImagens("fome_cheia", "status");
 
-            if (jogador.getFome() <= jogador.getFomeMax() * 9 / 10) {
+            if (jogador.getFome() <= jogador.getFomeMax() * 4 / 5) {
                 fome = setupImagens("fome_decente", "status");
 
-                if (jogador.getFome() <= jogador.getFomeMax() * 6 / 10) {
+                if (jogador.getFome() <= jogador.getFomeMax() * 3 / 5) {
                     fome = setupImagens("fome_mediana", "status");
 
-                    if (jogador.getFome() <= jogador.getFomeMax() * 3 / 10) {
+                    if (jogador.getFome() <= jogador.getFomeMax() * 2 / 5) {
                         fome = setupImagens("fome_perigosa", "status");
 
-                        if (jogador.getFome() <= jogador.getFomeMax() / 10) {
+                        if (jogador.getFome() <= jogador.getFomeMax() / 5) {
                             fome = setupImagens("fome_zerada", "status");
                         }
                     }

@@ -9,20 +9,23 @@ public class Jogador {
     private String nome;
     private String localizacao;
 
-    private int vidaMax = 10;
+    private int vidaMax = 20;
     private int vida = getVidaMax();
 
     private boolean sede = false;
     private int contadorDaSede;
     private String nivelSede = "alto";
+
     private int fomeMax = 10;
     private int fome = 10;
+
     private int energiaMax = 10;
     private int energia = getEnergiaMax();
+
     private boolean envenenado;
     private boolean sanidade;
 
-    private String armaAtual = "Nenhuma arma definida.";
+    private String armaAtual = "Nenhuma arma equipada.";
     private int ataqueAtual = 1;
 
     public Jogador(Painel painel) {
@@ -105,6 +108,17 @@ public class Jogador {
                 setAtaqueAtual(getAtaqueAtual() / 2);
             }
         }
+    }
+
+    public void resetarTodosOsAtributos() {
+        resetVida();
+        resetFome();
+        resetEnergia();
+        setAtaqueAtual(1);
+        setArmaAtual("Nenhuma arma equipada.");
+        setSede(false);
+        setEnvenenado(false);
+        setNome(null);
     }
 
     // Getters e setters

@@ -183,7 +183,7 @@ public class Painel extends JPanel implements Runnable {
                 }
             }
         } else {
-            combate.estruturaTelaCombate(g2, ui);
+            combate.estruturaTelaCombate(g2);
         }
 
         // Mostra a situacao climatica
@@ -236,15 +236,13 @@ public class Painel extends JPanel implements Runnable {
     public void resetAposGameOver() {
         resetPlayState();
 
+        getCombate().resetarCriaturaEmCombate();
+
         invent.esvazearInventario();
 
         eventoClimatico.setClima("ameno");
 
-        jogador.resetVida();
-        jogador.resetFome();
-        jogador.resetEnergia();
-        jogador.setSede(false);
-        jogador.setNome(null);
+        jogador.resetarTodosOsAtributos();
 
         getEventoCriatura().resetContador();
         getAmbienteAtual().resetarSubStatesVisitadosTotal();

@@ -1,5 +1,6 @@
 package UI;
 
+import Ambiente.AmbienteFloresta;
 import Controles.Botoes;
 import Entidade.*;
 import Evento.EventoCriatura;
@@ -60,10 +61,12 @@ public class CombateUI extends UI {
 
         String nomeImagem = painel.getAmbienteAtual().getNomeFundoCombate();
 
-        if (criaturaEmCombate.isBoss()) {
-            fundoCombate = setupImagens(nomeImagem + "boss", "background");
-        } else {
-            fundoCombate = setupImagens(nomeImagem, "background");
+        if (painel.getAmbienteAtual() instanceof AmbienteFloresta) {
+            if (criaturaEmCombate.isBoss()) {
+                fundoCombate = setupImagens(nomeImagem + "boss", "background");
+            } else {
+                fundoCombate = setupImagens(nomeImagem, "background");
+            }
         }
     }
 
@@ -104,7 +107,9 @@ public class CombateUI extends UI {
         int tileSize = painel.getTileSize();
         int y = tileSize * 2;
 
-        desenharPlanoDeFundoCombate(g2);
+        if (painel.getAmbienteAtual() instanceof AmbienteFloresta) {
+            desenharPlanoDeFundoCombate(g2);
+        }
 
         // Titulo
         desenharTitulo(g2);
@@ -188,7 +193,8 @@ public class CombateUI extends UI {
 
                     g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
 
-                    escreverTexto("Seu oponente foi derrotado, FIM DE COMBATE!", y += tileSize * 2);
+                    escreverTexto("FIM DE COMBATE", y += tileSize * 2);
+                    escreverTexto("SEU OPONENTE FOI DERROTADO!", y += tileSize);
                     g2.setColor(Color.yellow);
                     escreverTexto("DESFECHO", y += tileSize * 2);
                     escreverTexto("- Vida: " + getJogador().getVida() + "HP", y += tileSize);
@@ -322,7 +328,7 @@ public class CombateUI extends UI {
         g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 30F));
         String combate = "COMBATE";
         int y = painel.getTileSize();
-        int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(),"COMBATE");
+        int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), "COMBATE");
 
 
         Color[] tonsVermelho = {
@@ -357,12 +363,12 @@ public class CombateUI extends UI {
 
 
         for (int i = 8; i >= 5; i--) {
-            g2.setColor((criaturaEmCombate.isBoss()? tonsAzul[8 - i] : tonsVermelho[8 - i]));
+            g2.setColor((criaturaEmCombate.isBoss() ? tonsAzul[8 - i] : tonsVermelho[8 - i]));
             g2.drawString(combate, x + i, y + i);
         }
 
         for (int i = 4; i >= 0; i--) {
-            g2.setColor((criaturaEmCombate.isBoss()? tonsBranco[4 - i] : tonsAmarelo[4 - i]));
+            g2.setColor((criaturaEmCombate.isBoss() ? tonsBranco[4 - i] : tonsAmarelo[4 - i]));
             g2.drawString(combate, x + i, y + i);
         }
     }
@@ -377,7 +383,7 @@ public class CombateUI extends UI {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f - alphaFade));
             g2.drawImage(imagemInimigo,
                     painel.getLargura()/2 - (criaturaEmCombate.getLarguraImagemEscala() * tileSize)/2,
-                    painel.getAltura()/2 - criaturaEmCombate.getAlturaImagemEscala(),
+                    painel.getAltura()/2 - (criaturaEmCombate.getAlturaImagemEscala() * tileSize)/2,
                     tileSize * criaturaEmCombate.getLarguraImagemEscala(),
                     tileSize * criaturaEmCombate.getAlturaImagemEscala(),
                     null);
@@ -399,7 +405,8 @@ public class CombateUI extends UI {
 
     public void inimigoSeEsvaindo(Graphics2D g2) {
         if (transicaoIniciada && alphaFade < 1.0f) {
-            alphaFade += 0.008f;
+            if (criaturaEmCombate.isBoss()) {alphaFade += 0.002f; }
+            else { alphaFade += 0.008f; }
             if (alphaFade >= 1.0f) {
                 alphaFade = 1.0f;
                 transicaoFinalizada = true;

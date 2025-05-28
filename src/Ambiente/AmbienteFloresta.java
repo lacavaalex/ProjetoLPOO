@@ -178,15 +178,16 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Em torno dessa fogueira há vegetação baixa.", y += tileSize);
                 ui.escreverTexto("Há um cervo à distância, mas você não tem equipamento para caça.", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("Mais adiante, um barulho animador: água corrente!", y += tileSize);
+                ui.escreverTexto("Mais adiante, o barulho animador aumenta: água corrente!", y += tileSize);
                 ui.escreverTexto("Apressando o passo, em minutos você chega ao lago.", y += tileSize);
                 break;
 
             case 104:
                 ui.escreverTexto("Você retorna a atenção à fogueira.", y);
                 ui.escreverTexto("O fogo parece estar muito mais fraco desde que você chegou...", y +=tileSize);
+                ui.escreverTexto("Você ouve um barulho de água à distância. Pode ser um lago.", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Explorar arredores"}, y += tileSize, numComando);
+                ui.desenharOpcoes(new String[]{"Ir ao lago"}, y += tileSize, numComando);
                 break;
 
             // BRANCH DA VÍBORA

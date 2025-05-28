@@ -27,12 +27,12 @@ public class ItemCombate extends Item {
         setTipo("combate");
         switch (nome) {
             case "Galho pontiagudo":
-                setPoder(2);
+                setPoder(3);
                 setNomeImagem("galho_pontiagudo");
                 break;
 
             case "Estilingue":
-                setPoder(3);
+                setPoder(4);
                 setNomeImagem("estilingue");
                 break;
 
@@ -42,7 +42,7 @@ public class ItemCombate extends Item {
                 break;
 
             case "Faca":
-                setPoder(3);
+                setPoder(4);
                 setNomeImagem("faca");
                 break;
 
@@ -64,6 +64,11 @@ public class ItemCombate extends Item {
             case "Tridente":
                 setPoder(10);
                 setNomeImagem("tridente");
+                break;
+
+            case "Espeto crustáceo":
+                setPoder(9);
+                setNomeImagem("espeto_crustaceo");
                 break;
 
             default:

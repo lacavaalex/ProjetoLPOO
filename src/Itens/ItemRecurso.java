@@ -134,10 +134,15 @@ public class ItemRecurso extends Item {
                 }
                 break;
 
-             case "Corda de escalada":
-                 setOpcaoCrafting("...");
-                 setTipoNovoItem(null);
-                 break;
+            case "Corda de escalada":
+                setOpcaoCrafting("...");
+                setTipoNovoItem(null);
+                break;
+
+            case "Jóia azul":
+                setOpcaoCrafting("...");
+                setTipoNovoItem(null);
+                break;
 
             default:
                 throw new IllegalArgumentException("Recurso desconhecido: " + nome);

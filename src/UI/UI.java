@@ -132,7 +132,7 @@ public class UI {
         String vidaTxt = jogador.getVida() + "HP";
         String atkTxt = jogador.getAtaqueAtual() + " ATK";
 
-        int xCentralHP = coordenadaXParaTextoCentralizado(g2, tileSize * 4,vidaTxt);
+        int xCentralHP = coordenadaXParaTextoCentralizado(g2, tileSize * 4, vidaTxt);
         int xCentralATK = coordenadaXParaTextoCentralizado(g2, tileSize * 4, atkTxt);
 
         g2.drawRect(x, y += tileSize/2, tileSize * 4, tileSize*2/3);
@@ -462,23 +462,20 @@ public class UI {
         // Fome
         if (jogador.getFome() > jogador.getFomeMax() * 4 / 5) {
             fome = setupImagens("fome_cheia", "status");
-
-            if (jogador.getFome() <= jogador.getFomeMax() * 4 / 5) {
-                fome = setupImagens("fome_decente", "status");
-
-                if (jogador.getFome() <= jogador.getFomeMax() * 3 / 5) {
-                    fome = setupImagens("fome_mediana", "status");
-
-                    if (jogador.getFome() <= jogador.getFomeMax() * 2 / 5) {
-                        fome = setupImagens("fome_perigosa", "status");
-
-                        if (jogador.getFome() <= jogador.getFomeMax() / 5) {
-                            fome = setupImagens("fome_zerada", "status");
-                        }
-                    }
-                }
-            }
         }
+        else if (jogador.getFome() <= jogador.getFomeMax() * 4 / 5) {
+            fome = setupImagens("fome_decente", "status");
+        }
+        else if (jogador.getFome() <= jogador.getFomeMax() * 3 / 5) {
+            fome = setupImagens("fome_mediana", "status");
+        }
+        else if (jogador.getFome() <= jogador.getFomeMax() * 2 / 5) {
+            fome = setupImagens("fome_perigosa", "status");
+        }
+        else if (jogador.getFome() <= jogador.getFomeMax() / 5) {
+            fome = setupImagens("fome_zerada", "status");
+        }
+
 
         // Sede
         String nivelSede = jogador.getNivelSede();

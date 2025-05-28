@@ -321,7 +321,7 @@ public class Painel extends JPanel implements Runnable {
         }
         System.out.println("Substate atual: " + getPlaySubState());
         System.out.println("Substate para retornar: " + getAmbienteAtual().getSubStateParaRetornar());
-        System.out.println("Fome: " + jogador.getFome() + " / Sede: " + jogador.estaComSede() + " / Energia: " + jogador.getEnergia());
+        //System.out.println("Fome: " + jogador.getFome() + " / Sede: " + jogador.estaComSede() + " / Energia: " + jogador.getEnergia());
     }
 
     public boolean getFightState() { return fightState; }

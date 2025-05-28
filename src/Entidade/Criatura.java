@@ -16,7 +16,7 @@ public class Criatura {
         switch (tipo) {
             case 11:
                 setNomeCriatura("Víbora-Rubro");
-                setVidaMaxCriatura(3);
+                setVidaMaxCriatura(11);
                 setVidaCriatura(getVidaMaxCriatura());
                 setAtaqueCriatura(1);
 
@@ -44,7 +44,7 @@ public class Criatura {
 
             case 21:
                 setNomeCriatura("Crustáceo Tríclope");
-                setVidaMaxCriatura(3);
+                setVidaMaxCriatura(12);
                 setVidaCriatura(getVidaMaxCriatura());
                 setAtaqueCriatura(2);
 
@@ -59,14 +59,14 @@ public class Criatura {
 
             case 22:
                 setNomeCriatura("O Crustoso Cruel");
-                setVidaMaxCriatura(50);
+                setVidaMaxCriatura(70);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(10);
+                setAtaqueCriatura(5);
 
                 setNomeImagem("crustoso_cruel");
                 setLarguraImagemEscala(12);
                 setAlturaImagemEscala(12);
-                setDistanciaBordaEscala(14);
+                setDistanciaBordaEscala(13);
 
                 setBoss(true);
                 break;

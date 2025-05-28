@@ -22,7 +22,7 @@ public class AmbienteLago extends Ambiente {
     private EventoCriatura eventoTriclope;
     private EventoCriatura eventoCrustoso;
 
-    private BufferedImage placaFrente, placaVerso, crustoso;
+    private BufferedImage placaFrente, placaVerso, crustoso, joia;
 
     private final int caranguejo = 2001;
     private final int boss = 2002;
@@ -49,6 +49,7 @@ public class AmbienteLago extends Ambiente {
         placaFrente = ui.setupImagens("placa_lago_frente", "analises");
         placaVerso = ui.setupImagens("placa_lago_verso", "analises");
         crustoso = ui.setupImagens("crustoso_cruel", "criatura");
+        joia = ui.setupImagens("joia_carcaca", "analises");
     }
 
     @Override
@@ -123,8 +124,8 @@ public class AmbienteLago extends Ambiente {
 
             case 400:
                 ui.escreverTexto("Este lago parece bom para descanso.", y);
-                ui.escreverTexto("Você pode buscar um bom lugar acampamento aqui,", y += tileSize);
-                ui.escreverTexto("ou retornar para a floresta.", y += tileSize);
+                ui.escreverTexto("Você pode buscar um bom lugar para acampar", y += tileSize);
+                ui.escreverTexto("aqui, ou retornar para a floresta.", y += tileSize);
 
                 ui.desenharOpcoes(new String[] {"Explorar lago", "Retornar à floresta"}, y += tileSize * 2, numComando);
                 break;
@@ -178,10 +179,14 @@ public class AmbienteLago extends Ambiente {
 
                     if (recursoEncontrado) {
                         if (!isRecursosColetados()) {
-                            painel.getInvent().adicionarItem("Galho pontiagudo", "combate", 1);
+                            if (probabilidade <= 50) {
+                                if (!painel.getInvent().acharItem("Corda")) {
+                                    painel.getInvent().adicionarItem("Corda", "recurso", 1);
+                                }
+                            }
 
-                            if (painel.getInvent().getInvent().size() < 6 && !painel.getInvent().acharItem("Corda")) {
-
+                            if (painel.getInvent().getInvent().size() < 7) {
+                                painel.getInvent().adicionarItem("Galho pontiagudo", "combate", 1);
                                 if (probabilidade <= 65 && probabilidade >= 15) {
                                     painel.getInvent().adicionarItem("Pedra", "recurso", 2);
                                     if (probabilidade <= 45) {
@@ -192,11 +197,7 @@ public class AmbienteLago extends Ambiente {
                                             }
                                         }
                                     }
-                                if (probabilidade <= 40) {
-                                    if (!painel.getInvent().acharItem("Corda")) {
-                                        painel.getInvent().adicionarItem("Corda", "recurso", 1);
-                                    }
-                                }
+
                                 if (probabilidade <= 15) {
                                     painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
                                 }
@@ -325,7 +326,10 @@ public class AmbienteLago extends Ambiente {
                         aguardando = false;
 
                         if (!isChanceTirada()) {
-                            int probabilidade = painel.definirUmaProbabilidade();
+                            double probabilidade = painel.definirUmaProbabilidade();
+                            if (painel.getInvent().acharItem("Jóia azul")) {
+                                probabilidade = probabilidade * 0.80;
+                            }
                             boolean pescouPeixe = probabilidade <= 40;
                             boolean pescouItem = probabilidade >= 96;
 
@@ -380,7 +384,10 @@ public class AmbienteLago extends Ambiente {
                         aguardando = false;
 
                         if (!isChanceTirada()) {
-                            int probabilidade = painel.definirUmaProbabilidade();
+                            double probabilidade = painel.definirUmaProbabilidade();
+                            if (painel.getInvent().acharItem("Jóia azul")) {
+                                probabilidade = probabilidade * 0.80;
+                            }
                             boolean pescouPeixe = probabilidade <= 30;
 
                             if (painel.getInvent().acharItem("Pedra")) {//(contadorMovimento == 4 && contadorMovimento > contadorEspera) {
@@ -436,8 +443,8 @@ public class AmbienteLago extends Ambiente {
                     if (!isTransicaoFinalizada()) {
                         transicaoDeTelaBoss(g2);
 
-                        ui.escreverTexto("Você sente que fisgou algo. Algo grande.", painel.getAltura() / 2 - tileSize);
-                        ui.escreverTexto("...", painel.getAltura() / 2 - tileSize * 2);
+                        ui.escreverTexto("Você sente que fisgou algo. Algo grande.", painel.getAltura() / 2 - tileSize * 2);
+                        ui.escreverTexto("...", painel.getAltura() / 2 - tileSize);
                         ui.escreverTexto(jogador.getNome() + ", solte essa vara de pesca...", painel.getAltura() / 2);
 
                         ui.desenharOpcoes(new String[]{"Soltar vara"}, painel.getAltura() / 2 + tileSize * 2, numComando);
@@ -453,9 +460,71 @@ public class AmbienteLago extends Ambiente {
 
             case 420:
                 resetAtributosTransicao();
+
+                if (!isRecursosGastos()) {
+                    painel.getInvent().removerItem("Vara de pesca", 1);
+                    setRecursosGastos(true);
+                }
+
                 definirTelaDeBotao("continuar");
                 desenharImagemLago(g2, crustoso);
                 ui.escreverTexto("Uma fera incrustada emerge do lago.", painel.getAltura() - tileSize);
+                break;
+
+            case 421:
+                definirTelaDeBotao("continuar");
+
+                if (!isRecursosColetados()) {
+                    jogador.setVidaMax(jogador.getVidaMax() + 5);
+                    jogador.setVida(jogador.getVidaMax());
+                    painel.getInvent().adicionarItem("Espeto crustáceo", "combate", 1);
+                    painel.getInvent().adicionarItem("Jóia azul", "recurso", 1);
+                    setRecursosColetados(true);
+                }
+
+                ui.escreverTexto("...", y);
+                ui.escreverTexto("...", y += tileSize);
+                ui.escreverTexto("...", y += tileSize);
+                ui.escreverTexto("Essa... foi uma experiência desagradável.", y += tileSize);
+                ui.escreverTexto("Não é como se as criaturas deste lugar fossem normais, mas aquilo?", y += tileSize);
+                ui.escreverTexto("Absurdamente extraterreste.", y += tileSize);
+                ui.escreverTexto("", y += tileSize);
+                ui.escreverTexto("Este embate te fortalece, mas não parece ter sido o último do tipo.", y += tileSize);
+                ui.escreverTexto("Que outros monstros ainda podem habitar neste mundo funesto?", y += tileSize);
+                break;
+
+            case 422:
+                definirTelaDeBotao("continuar");
+
+                ui.escreverTexto("Seu golpe fatal foi tão poderoso", y);
+                ui.escreverTexto("que arrancou uma das pernas da criatura.", y += tileSize);
+                ui.escreverTexto("É uma crosta assustadoramente rígida,", y += tileSize);
+                ui.escreverTexto( "além de ser afiada (Você que o diga).", y += tileSize);
+                ui.escreverTexto("Pode vir a ser útil.", y+= tileSize);
+                ui.escreverTexto("", y += tileSize);
+                ui.escreverTexto("Espere... há algo mais.", y += tileSize);
+                ui.escreverTexto("Há uma iluminação estranha vindo de dentro da carcaça do crustáceo.", y += tileSize);
+                break;
+
+            case 423:
+                definirTelaDeBotao("continuar");
+                desenharImagemLago(g2, joia);
+                ui.escreverTexto("Isso... é melhor guardar.", painel.getAltura() - tileSize);
+                break;
+
+            case 424:
+                definirTelaDeBotao("voltar");
+                ui.escreverTexto("O lago não era tão sereno quanto aparentava.", y += tileSize);
+                ui.escreverTexto("Ainda assim, esses crustáceos não causam tanto problema.", y += tileSize);
+                ui.escreverTexto("O acampamento pode ser movido, mas nada impede você de voltar", y += tileSize);
+                ui.escreverTexto("e pescar um pouco. Dificilmente o lago é lar de algo maior que aquilo...", y += tileSize);
+                ui.escreverTexto("De volta àquela floresta, por ora.", y += tileSize);
+                break;
+
+            case 425:
+                ui.escreverTexto("Este é o lago. O que fazer?", y);
+
+                ui.desenharOpcoes(new String[] {"Pescar", "Retornar à floresta"}, y += tileSize * 2, numComando);
                 break;
 
             default:
@@ -477,9 +546,6 @@ public class AmbienteLago extends Ambiente {
         aguardando = true;
     }
 
-    public int getContadorEspera() { return contadorEspera; }
     public void setContadorEspera(int contadorEspera) { this.contadorEspera = contadorEspera; }
-
-    public int getContadorMovimento() { return contadorMovimento; }
     public void setContadorMovimento(int contadorMovimento) { this.contadorMovimento = contadorMovimento; }
 }

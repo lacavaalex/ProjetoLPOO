@@ -127,16 +127,21 @@ public class Painel extends JPanel implements Runnable {
     public void updateClima() {
         String climaAtual = eventoClimatico.getClima();
 
-        switch (climaAtual) {
-            case "chuva":
-                if (eventoCriatura.getContadorDeEncontros() >= 6) {
-                    eventoClimatico.finalizarEventoClimatico();
-                }
-                break;
+        if (jogador.getHabilidade() != null &&
+                !jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+            switch (climaAtual) {
+                case "chuva":
+                    if (eventoCriatura.getContadorDeEncontros() >= 6) {
+                        eventoClimatico.finalizarEventoClimatico();
+                    }
+                    break;
 
-            case "tempestade" :
-                break;
-            default: break;
+                case "tempestade":
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 

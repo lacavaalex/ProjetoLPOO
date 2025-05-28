@@ -18,7 +18,7 @@ public class Criatura {
                 setNomeCriatura("Víbora-Rubro");
                 setVidaMaxCriatura(11);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(1);
+                setAtaqueCriatura(2);
 
                 setNomeImagem("vibora_rubro");
                 setLarguraImagemEscala(4);
@@ -46,7 +46,7 @@ public class Criatura {
                 setNomeCriatura("Crustáceo Tríclope");
                 setVidaMaxCriatura(12);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(2);
+                setAtaqueCriatura(3);
 
                 setNomeImagem("crustaceo_triclope");
                 setLarguraImagemEscala(4);

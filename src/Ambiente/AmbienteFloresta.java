@@ -248,7 +248,7 @@ public class AmbienteFloresta extends Ambiente {
 
                 if (!isChanceTirada()) {
                     int probabilidade = painel.definirUmaProbabilidade();
-                    boolean fogoAceso = probabilidade <= 50;
+                    boolean fogoAceso = probabilidade <= 50 || jogador.getHabilidade().equals("SOBREVIVENCIAL");
                     setBaseFogoAceso(fogoAceso);
                     setChanceTirada(true);
                 }
@@ -275,18 +275,6 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("O que fazer?", y += tileSize);
 
                 ui.desenharOpcoes(new String[]{"Buscar frutas e medicação natural", "Buscar por arma de caça"}, y += tileSize * 2, numComando);
-                break;
-
-            case 999:
-               definirTelaDeBotao("continuar");
-
-                ui.escreverTexto("Você pensa em fugir, mas se sente meio tonto...", y);
-                ui.escreverTexto("Porcaria, a mordida da víbora o deixou", y += tileSize);
-                g2.setColor(Color.red);
-                ui.escreverTexto("envenenado.", y += tileSize);
-                g2.setColor(Color.white);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("Ela é rápida, e você está abatido(a). É melhor não arriscar.", y += tileSize);
                 break;
 
             // BRANCH DA MONTANHA

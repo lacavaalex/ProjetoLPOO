@@ -7,6 +7,7 @@ public class Jogador {
     private Painel painel;
 
     private String nome;
+    private String habilidade;
     private String localizacao;
 
     private int vidaMax = 20;
@@ -37,7 +38,9 @@ public class Jogador {
         atualizarEnergia();
         atualizarAtaqueAtual();
         if (numLimite == painel.getQuantidadeSubStatesVisitadosTemporario()) {
-            if (estaEnvenenado()) { setEnergia(getEnergia() - 2); }
+            if (estaEnvenenado()) {
+                setEnergia(getEnergia() - 2);
+            }
             atualizarFome();
             atualizarSede();
             atualizarVida();
@@ -46,12 +49,21 @@ public class Jogador {
     }
 
     public void atualizarVida() {
-        if (getEnergia() > getEnergiaMax()/2
-                && !estaComSede()
-                && getFome() > getFomeMax()/2
-                && getVida() < getVidaMax()
-        ) {
-            setVida(getVida() + 1);
+        if (!getHabilidade().equals("MEDICINAL")) {
+            if (getEnergia() > getEnergiaMax() / 2
+                    && !estaComSede()
+                    && getFome() > getFomeMax() * 2 / 3
+                    && getVida() < getVidaMax()
+            ) {
+                setVida(getVida() + 1);
+            }
+        } else {
+            if (!estaComSede()
+                    && getFome() > getFomeMax()/4
+                    && getVida() < getVidaMax()
+            ) {
+                setVida(getVida() + 1);
+            }
         }
     }
 
@@ -59,7 +71,12 @@ public class Jogador {
         if (!estaComSede()) {
             setFome(getFome() - 1);
         } else {
-            setFome(getFome() - 2);
+            if (!getHabilidade().equals("MEDICINAL")) {
+                setFome(getFome() - 1);
+            }
+            else {
+                setFome(getFome() - 2);
+            }
         }
         if (getFome() <= 0) {
             setFome(0);
@@ -129,10 +146,10 @@ public class Jogador {
     public void setAtaqueAtual(int ataqueAtual) { this.ataqueAtual = ataqueAtual; }
 
     public String getNome() { return nome; }
-    public String setNome(String nome) {
-        this.nome = nome;
-        return nome;
-    }
+    public void setNome(String nome) { this.nome = nome;}
+
+    public String getHabilidade() { return habilidade; }
+    public void setHabilidade(String habilidade) { this.habilidade = habilidade; }
 
     public String getLocalizacao() { return localizacao; }
     public void setLocalizacao(String localizacao) { this.localizacao = localizacao; }
@@ -156,7 +173,11 @@ public class Jogador {
     public void setEnergiaMax(int energiaMax) { this.energiaMax = energiaMax; }
 
     public boolean estaEnvenenado() { return envenenado; }
-    public void setEnvenenado(boolean envenenado) { this.envenenado = envenenado; }
+    public void setEnvenenado(boolean envenenado) {
+        if (!getHabilidade().equals("MEDICINAL")) {
+            this.envenenado = envenenado;
+        }
+    }
 
     public String getNivelSede() { return nivelSede; }
 

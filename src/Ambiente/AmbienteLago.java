@@ -22,6 +22,7 @@ public class AmbienteLago extends Ambiente {
     private EventoCriatura eventoTriclope;
     private EventoCriatura eventoCrustoso;
 
+    private BufferedImage fundoLago, fundoLago2;
     private BufferedImage placaFrente, placaVerso, crustoso, joia;
 
     private final int caranguejo = 2001;
@@ -46,6 +47,9 @@ public class AmbienteLago extends Ambiente {
         this.eventoCrustoso = new EventoCriatura(painel, ui, jogador, criatura);
 
         descreverAmbiente();
+
+        fundoLago = ui.setupImagens("lago_sereno", "background");
+        fundoLago2 = ui.setupImagens("lago_sereno-2", "background");
         placaFrente = ui.setupImagens("placa_lago_frente", "analises");
         placaVerso = ui.setupImagens("placa_lago_verso", "analises");
         crustoso = ui.setupImagens("crustoso_cruel", "criatura");
@@ -60,6 +64,7 @@ public class AmbienteLago extends Ambiente {
         this.setRecursos("água.");
         this.setFrequenciaEventos("quieto, um certo ar de misticismo.");
         this.setClimaAmbiente("levemente frio");
+        this.setNomeFundoCombate("lago_sereno_combate");
     }
 
     @Override
@@ -69,8 +74,10 @@ public class AmbienteLago extends Ambiente {
             int tileSize = painel.getTileSize();
             int y = tileSize * 3;
 
-            g2.setColor(new Color(115, 155, 255));
+            g2.setColor(new Color(0, 0, 0));
             g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+
+            ui.desenharPlanoDeFundo(fundoLago);
 
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
             g2.setColor(Color.white);
@@ -100,8 +107,8 @@ public class AmbienteLago extends Ambiente {
 
         int numComando = ui.getNumComando();
 
-        g2.setColor(Color.black);
         g2.fillRect(0, 0, larguraTela, alturaTela);
+        ui.desenharPlanoDeFundo(fundoLago2);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
         g2.setColor(Color.white);
@@ -174,7 +181,10 @@ public class AmbienteLago extends Ambiente {
 
                 if (!isChanceTirada()) {
 
-                    int probabilidade = painel.definirUmaProbabilidade();
+                    double probabilidade = painel.definirUmaProbabilidade();
+                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                        probabilidade = probabilidade - probabilidade * 0.1;
+                    }
                     boolean recursoEncontrado = probabilidade <= 80;
 
                     if (recursoEncontrado) {
@@ -283,7 +293,10 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("É difícil enxergar a utilidade disso.", y += tileSize);
 
                 if (!isChanceTirada()) {
-                    int probabilidade = painel.definirUmaProbabilidade();
+                    double probabilidade = painel.definirUmaProbabilidade();
+                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                        probabilidade = probabilidade - probabilidade * 0.1;
+                    }
                     boolean recursoEncontrado = probabilidade <= 1;
 
                     if (recursoEncontrado) {
@@ -327,6 +340,9 @@ public class AmbienteLago extends Ambiente {
 
                         if (!isChanceTirada()) {
                             double probabilidade = painel.definirUmaProbabilidade();
+                            if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                                probabilidade = probabilidade - probabilidade * 0.1;
+                            }
                             if (painel.getInvent().acharItem("Jóia azul")) {
                                 probabilidade = probabilidade * 0.80;
                             }
@@ -385,12 +401,15 @@ public class AmbienteLago extends Ambiente {
 
                         if (!isChanceTirada()) {
                             double probabilidade = painel.definirUmaProbabilidade();
+                            if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                                probabilidade = probabilidade - probabilidade * 0.1;
+                            }
                             if (painel.getInvent().acharItem("Jóia azul")) {
                                 probabilidade = probabilidade * 0.80;
                             }
                             boolean pescouPeixe = probabilidade <= 30;
 
-                            if (painel.getInvent().acharItem("Pedra")) {//(contadorMovimento == 4 && contadorMovimento > contadorEspera) {
+                            if (contadorMovimento == 4 && contadorMovimento > contadorEspera) {
                                 if (probabilidade >= 85) {
                                     if (!isRecursosColetados()) {
                                         painel.getInvent().adicionarItem("Tridente", "combate", 1);

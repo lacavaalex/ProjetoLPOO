@@ -24,6 +24,7 @@ public class Teclado implements KeyListener {
     public void keyPressed(KeyEvent e) {
 
         int code = e.getKeyCode();
+        char caracter = e.getKeyChar();
 
         int gameState = painel.getGameState();
         int titleState = painel.getTitleState();
@@ -32,13 +33,11 @@ public class Teclado implements KeyListener {
         int subState = painel.getPlaySubState();
 
         UI ui = painel.getUi();
-        int telaInicialState = ui.getTelaInicialState();
-
 
         // Tela inicial
         if (gameState == titleState) {
 
-            if (telaInicialState == 1) {
+            if (ui.getTelaInicialState() == 1) {
 
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     ui.subtrairNumComando(3);
@@ -49,7 +48,10 @@ public class Teclado implements KeyListener {
                 if (code == KeyEvent.VK_ENTER) {
                     // Novo jogo
                     if (ui.getNumComando() == 0) {
-                        telaInicialState = 2;
+                        ui.setDigitandoNome(true);
+                        ui.setDigitacaoConfirmada(false);
+                        ui.getNomeDigitado().setLength(0);
+                        ui.setTelaInicialState(2);
                     }
                     // Controles
                     if (ui.getNumComando() == 1) {
@@ -61,8 +63,32 @@ public class Teclado implements KeyListener {
                     }
                 }
 
-            } else if (telaInicialState == 2) {
+            } else if (ui.getTelaInicialState() == 2) {
 
+                // Nome do jogador
+                if (ui.isDigitandoNome() && !ui.isDigitacaoConfirmada()) {
+
+                    if (Character.isLetterOrDigit(caracter) || caracter == ' ') {
+                        if (ui.getNomeDigitado().length() < 15) {
+                            ui.getNomeDigitado().append(caracter);
+                        }
+                    } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && !ui.getNomeDigitado().isEmpty()) {
+                        ui.getNomeDigitado().deleteCharAt(ui.getNomeDigitado().length() - 1);
+                    } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        if (ui.getNomeDigitado().length() >= 3) {
+                            ui.setDigitacaoConfirmada(true);
+                            ui.setDigitandoNome(false);
+
+                            String nomeFinal = ui.getNomeDigitado().toString().strip();
+                            jogador.setNome(nomeFinal);
+
+                            ui.setNumComando(0);
+                            ui.setTelaInicialState(3);
+                        }
+                    }
+                }
+
+            } else if (ui.getTelaInicialState() == 3) {
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     ui.subtrairNumComando(5);
                 }
@@ -71,41 +97,21 @@ public class Teclado implements KeyListener {
                 }
 
                 if (code == KeyEvent.VK_ENTER) {
-                    switch (ui.getNumComando()) {
-                        case 0:
-                            painel.getJogador().setNome("Coleen, a guerreira");
-                            painel.setGameState(openingState);
-                            telaInicialState = 0;
-                            break;
-                        case 1:
-                            painel.getJogador().setNome("Ben, o sobrevivente");
-                            painel.setGameState(openingState);
-                            telaInicialState = 0;
-                            break;
-                        case 2:
-                            painel.getJogador().setNome("Dr. Murphy, o médico");
-                            painel.setGameState(openingState);
-                            telaInicialState = 0;
-                            break;
-                        case 3:
-                            painel.getJogador().setNome("Alice, a caçadora");
-                            painel.setGameState(openingState);
-                            telaInicialState = 0;
-                            break;
-                        case 4:
-                            telaInicialState = 0;
-                            ui.setNumComando(0);
-                            break;
-                    }
-                    if (painel.getJogador().getNome() != null) {
+                    if (ui.getNumComando() != 4) {
+                        String[] habilidades = {"COMBATIVA", "SOBREVIVENCIAL", "MEDICINAL", "CAÇADORA"};
+                        String habilidadeEscolhida = habilidades[ui.getNumComando()];
+                        jogador.setHabilidade(habilidadeEscolhida);
+
+                        painel.setGameState(openingState);
+                        ui.setTelaInicialState(0);
                         ui.setNumComando(0);
+                    } else {
+                        ui.setNumComando(0);
+                        ui.setTelaInicialState(1);
                     }
                 }
             }
         }
-
-        // Joga a atualização dos valores dessas duas variáveis à sua classe natal
-        ui.setTelaInicialState(telaInicialState);
 
         // Atualização gráfica
         painel.repaint();
@@ -180,7 +186,7 @@ public class Teclado implements KeyListener {
                                             && (painel.getInvent().acharItem("Tridente") || painel.getInvent().acharItem("Cimitarra"))) {
                                         painel.setPlaySubState(419);
                                     } else {
-                                        painel.setPlaySubState(416 + (opcao + 1)); // exemplo: 417 ou 418
+                                        painel.setPlaySubState(416 + (opcao + 1));
                                     }
                                 }
 
@@ -323,6 +329,7 @@ public class Teclado implements KeyListener {
                     else {
                         painel.getCombate().setNumComando(0);
                         if (code == KeyEvent.VK_ENTER) {
+                            painel.getCombate().setResistiu(false);
                             painel.getCombate().sistemaTurno();
                         }
                     }

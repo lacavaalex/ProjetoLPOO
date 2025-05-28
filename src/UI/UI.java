@@ -32,6 +32,10 @@ public class UI {
     private int contadorChama = 1;
     private int telaInicialState = 0;
 
+    private StringBuilder nomeDigitado = new StringBuilder();
+    private boolean digitandoNome = false;
+    private boolean digitacaoConfirmada = false;
+
     // Atributos do efeito de transição
     private String recadoAutor;
     private int indiceChar = 0;
@@ -269,16 +273,29 @@ public class UI {
         }
 
 
-        // Tela inicial 3 (seleção de personagem)
-        else if(getTelaInicialState() == 2) {
+        // Tela inicial 3 (nome do jogador)
+        else if (getTelaInicialState() == 2) {
             desenharPlanoDeFundo(fundoTitulo);
             g2.setColor(Color.white);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
-            int y;
-            escreverTexto("Escolha seu personagem.", y = tileSize*3);
+            int y = tileSize * 3;
+            escreverTexto("Digite seu nome.", y);
+            escreverTexto(nomeDigitado.toString(), y += tileSize * 3);
 
-            desenharOpcoes(new String[]{"A GUERREIRA", "O SOBREVIVENTE", "O MÉDICO", "A CAÇADORA", "Voltar ao início"}, y += tileSize * 3, numComando);
+            mensagemNomeInvalido();
+        }
+
+        // Tela inicial 4 (seleção de habilidade)
+        else if (getTelaInicialState() == 3) {
+            desenharPlanoDeFundo(fundoTitulo);
+            g2.setColor(Color.white);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+
+            int y = tileSize * 3;
+            escreverTexto("Escolha sua especialidade.", y);
+
+            desenharOpcoes(new String[]{"COMBATE", "SOBREVIVÊNCIA", "SAÚDE", "CAÇA", "Voltar ao início"}, y += tileSize * 3, numComando);
         }
     }
 
@@ -327,17 +344,18 @@ public class UI {
 
         tileSize = painel.getTileSize();
 
-        g2.setColor(new Color(20, 0, 10));
+        g2.setColor(new Color(0, 0, 0));
         g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));;
         int y = tileSize * 2;
         g2.setColor(Color.white);
 
-        escreverTexto("Você é: " + painel.getJogador().getNome(), y += tileSize);
+        escreverTexto(painel.getJogador().getNome() + ",", y += tileSize);
         escreverTexto("Você acorda em um mundo desconhecido e inóspito. Está de noite.", y += tileSize);
         escreverTexto("O chão treme ao andar sobre ele, e o céu vasto aparenta ter", y += tileSize);
-        escreverTexto("ânsia em te engolir. Tudo que você tem é uma mochila vazia.", y += tileSize);
+        escreverTexto("ânsia em te engolir. Tudo que você tem é uma mochila vazia,", y += tileSize);
+        escreverTexto("e a vaga memória de alguma experiência " + jogador.getHabilidade().toLowerCase() + " passada...", y += tileSize);
         escreverTexto("Seus arredores lembram uma clareira. Há uma luz à distância.", y += tileSize);
         escreverTexto("Sem memória de como chegou aqui, ou idéia de como escapar,", y += tileSize);
         escreverTexto("sua única opção é descobrir explorando.", y += tileSize);
@@ -394,7 +412,6 @@ public class UI {
                 if (painel.getGameState() == painel.getTitleState() && opcoes.length == 3) {
                     x = y + tileSize;
                 }
-
 
                 if (numComando == i) {
                     desenharContadorChama(x, y);
@@ -517,6 +534,15 @@ public class UI {
 
     }
 
+    public void mensagemNomeInvalido() {
+        if (nomeDigitado.length() < 3 && !nomeDigitado.isEmpty()) {
+            int largura = painel.getLargura();
+            int y = painel.getAltura() - tileSize;
+            String msg = "Nome muito curto!";
+            g2.drawString(msg, coordenadaXParaTextoCentralizado(g2, largura, msg), y);
+        }
+    }
+
     public void updateFrames() {
         frame++;
         if (frame % 20 == 0) {
@@ -561,6 +587,14 @@ public class UI {
     // Getters e setters
     public Jogador getJogador() { return jogador; }
     public Font getPixelsans_30() { return pixelsans_30; }
+
+    public StringBuilder getNomeDigitado() { return nomeDigitado; }
+
+    public boolean isDigitandoNome() { return digitandoNome; }
+    public void setDigitandoNome(boolean digitandoNome) { this.digitandoNome = digitandoNome; }
+
+    public boolean isDigitacaoConfirmada() { return digitacaoConfirmada; }
+    public void setDigitacaoConfirmada(boolean digitacaoConfirmada) { this.digitacaoConfirmada = digitacaoConfirmada; }
 
     public int getTelaInicialState() { return telaInicialState; }
     public void setTelaInicialState(int telaInicialState) { this.telaInicialState = telaInicialState; }

@@ -34,13 +34,13 @@ public class EventoCriatura extends Evento {
 
             getPainel().getEventoCriatura().setEventoCriaturaAtivo(true);
             getPainel().setGameState(getPainel().getPlayState());
-            getPainel().getCombate().iniciarCombate(criatura);
             criatura.definirCriatura(tipo);
+            getPainel().getCombate().iniciarCombate(criatura);
 
             if (tipo == 11) {
                 if (isSurpresa()) {
                     g2.setColor(Color.red);
-                    getUi().escreverTexto("ATAQUE SURPRESA! -1 DE VIDA", y += tileSize * 4);
+                    getUi().escreverTexto("ATAQUE SURPRESA! -" + criatura.getAtaqueCriatura() +"HP", y += tileSize * 4);
                     g2.setColor(Color.white);
                     getUi().escreverTexto("O que diabos!?... é uma VÍBORA-RUBRO!", y += tileSize);
 

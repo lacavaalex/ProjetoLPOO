@@ -1,6 +1,7 @@
 package UI;
 
 import Ambiente.AmbienteFloresta;
+import Ambiente.AmbienteLago;
 import Controles.Botoes;
 import Entidade.*;
 import Evento.EventoCriatura;
@@ -29,6 +30,7 @@ public class CombateUI extends UI {
     private boolean defesaFalha = false;
     private boolean escapou = false;
     private boolean fugaFalha = false;
+    private boolean resistiu = false;
 
     private int ataqueOriginal;
     private int ataqueFraco;
@@ -54,6 +56,7 @@ public class CombateUI extends UI {
     public void iniciarCombate(Criatura criatura) {
         this.criaturaEmCombate = criatura;
         ataqueOriginal = criaturaEmCombate.getAtaqueCriatura();
+        criaturaEmCombate.setAtaqueCriatura(ataqueOriginal);
 
         fimDeCombate = false;
         turnoJogador = true;
@@ -61,7 +64,7 @@ public class CombateUI extends UI {
 
         String nomeImagem = painel.getAmbienteAtual().getNomeFundoCombate();
 
-        if (painel.getAmbienteAtual() instanceof AmbienteFloresta) {
+        if (painel.getAmbienteAtual() instanceof AmbienteFloresta || painel.getAmbienteAtual() instanceof AmbienteLago) {
             if (criaturaEmCombate.isBoss()) {
                 fundoCombate = setupImagens(nomeImagem + "boss", "background");
             } else {
@@ -94,10 +97,16 @@ public class CombateUI extends UI {
         resetarCriaturaEmCombate();
 
         escapou = false;
+
+        if (getJogador().getHabilidade().equals("MEDICINAL")) {
+            getJogador().setVida(getJogador().getVida() + 2);
+        }
     }
 
     // UI da tela
     public void estruturaTelaCombate(Graphics2D g2) {
+
+        setGraphics(g2);
 
         updateFrames();
 
@@ -107,12 +116,9 @@ public class CombateUI extends UI {
         int tileSize = painel.getTileSize();
         int y = tileSize * 2;
 
-        if (painel.getAmbienteAtual() instanceof AmbienteFloresta) {
+        if (painel.getAmbienteAtual() instanceof AmbienteFloresta || painel.getAmbienteAtual() instanceof AmbienteLago) {
             desenharPlanoDeFundoCombate(g2);
         }
-
-        // Titulo
-        desenharTitulo(g2);
 
         // Dentro de combate
         if (!escapou) {
@@ -126,8 +132,8 @@ public class CombateUI extends UI {
 
                 g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 20F));
 
-                g2.setColor(criaturaEmCombate.isBoss() ? Color.white : Color.red);
-
+                // Inimigo
+                g2.setColor(Color.white);
                 String nome = criaturaEmCombate.getNomeCriatura();
                 String descricao = (criaturaEmCombate.getVidaCriatura()) + "HP / " + (criaturaEmCombate.getAtaqueCriatura()) + "ATK";
 
@@ -137,18 +143,24 @@ public class CombateUI extends UI {
                 g2.drawString(nome, painel.getLargura() - tileSize - comprimentoNome, y);
                 g2.drawString(descricao, painel.getLargura() - tileSize - comprimentoDescricao, y += tileSize);
 
+                // Jogador
                 g2.setColor(Color.white);
                 String vida = "Sua vida: " + getJogador().getVida() + "HP";
-                g2.drawString(vida, tileSize, y);
+                g2.drawString(vida, tileSize, painel.getAltura() - tileSize * 2);
 
                 String atk = "Seu ataque: " + getJogador().getAtaqueAtual() + "ATK";
-                g2.drawString(atk, tileSize, y += tileSize);
+                g2.drawString(atk, tileSize, painel.getAltura() - tileSize);
 
                 g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));
 
                 // Turno do jogador
                 if (turnoJogador) {
-                    escreverTexto("Aja enquanto pode.", y += tileSize * 2);
+
+                    if (resistiu) {
+                        escreverTexto("Após aquele último golpe.. você ainda se ergue.", y);
+                        escreverTexto("Essa luta não acabou.", y += tileSize);
+                    }
+                    escreverTexto("Aja enquanto pode.", y += tileSize * 3);
                     if (painel.getCombate().getCriaturaEmCombate() != null
                             && painel.getCombate().getCriaturaEmCombate().isBoss()) {
                         desenharOpcoes(new String[]{"ATACAR", "ESQUIVAR", "DEFENDER", "MOCHILA"}, y += tileSize, numComandoCombate);
@@ -167,11 +179,11 @@ public class CombateUI extends UI {
                             escreverTexto("Oponente perde -" + getJogador().getAtaqueAtual() * 2 + "HP.", y += tileSize * 2);
                         }
                         else if (bloqueou) {
-                            escreverTexto("Você defendeu! Seu momentum pega o inimigo de surpresa.", y += tileSize * 2);
+                            escreverTexto("Você defende! Seu momentum pega o monstro desprevenido.", y += tileSize * 2);
                             escreverTexto("O ataque dele está temporariamente mais fraco.", y += tileSize);
                         }
                         else {
-                            escreverTexto("Você infere -" + getJogador().getAtaqueAtual() + "HP de dano no oponente.", y += tileSize * 2);
+                            escreverTexto("Inferiu -" + getJogador().getAtaqueAtual() + "HP de dano no oponente!", y += tileSize * 2);
                             g2.setColor(Color.red);
                             escreverTexto("O inimigo ataca!", y += tileSize);
                             escreverTexto("-" + criaturaEmCombate.getAtaqueCriatura() + "HP", y += tileSize);
@@ -179,7 +191,7 @@ public class CombateUI extends UI {
                         }
 
                     }
-                    desenharOpcoes(new String[]{"Continuar"}, y += tileSize, numComandoCombate);
+                    desenharOpcoes(new String[]{"Continuar"}, y += tileSize * 2, numComandoCombate);
                 }
             }
 
@@ -191,7 +203,7 @@ public class CombateUI extends UI {
                     botoes.esconderBotaoMochila();
                     botoes.esconderBotaoClima();
 
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
+                    g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));
 
                     escreverTexto("FIM DE COMBATE", y += tileSize * 2);
                     escreverTexto("SEU OPONENTE FOI DERROTADO!", y += tileSize);
@@ -210,7 +222,7 @@ public class CombateUI extends UI {
             botoes.esconderBotaoClima();
 
             g2.setColor(Color.yellow);
-            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 15F));
+            g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));
 
             escreverTexto("A tensão se esvaiu como fumaça... o silêncio agora parece até confortável.", y += tileSize * 2);
             escreverTexto("Você conseguiu despistar a criatura...", y += tileSize * 2);
@@ -251,7 +263,10 @@ public class CombateUI extends UI {
                 // ESQUIVAR
                 else if (numComandoCombate == 1) {
 
-                    int probabilidade = painel.definirUmaProbabilidade();
+                    double probabilidade = painel.definirUmaProbabilidade();
+                    if (getJogador().getHabilidade().equals("COMBATIVA")) {
+                        probabilidade = probabilidade - probabilidade * 0.20;
+                    }
 
                     if (probabilidade <= 30) {
                         esquivou = true;
@@ -273,18 +288,20 @@ public class CombateUI extends UI {
                 // BLOQUEAR
                 else if (numComandoCombate == 2) {
 
-                    int probabilidade = painel.definirUmaProbabilidade();
+                    double probabilidade = painel.definirUmaProbabilidade();
+                    if (getJogador().getHabilidade().equals("COMBATIVA")) {
+                        probabilidade = probabilidade - probabilidade * 0.15;
+                    }
 
                     if (probabilidade <= 50) {
                         bloqueou = true;
 
                         criaturaEmCombate.setAtaqueCriatura(ataqueFraco);
 
-                        turnoJogador = false;
                     } else {
                         defesaFalha = true;
-                        turnoJogador = false;
                     }
+                    turnoJogador = false;
                 }
 
                 // FUGIR
@@ -309,67 +326,28 @@ public class CombateUI extends UI {
 
                     // Cálculo de morte do jogador/troca de turno
                     if (getJogador().getVida() <= 0) {
-                        fimDeCombate = true;
-                        finalizarCombate();
-                        painel.setGameState(painel.getGameOverState());
+
+                        double probabilidade = painel.definirUmaProbabilidade();
+                        if (probabilidade <= 20 && getJogador().getHabilidade().equals("COMBATIVA")
+                        || probabilidade <= 10 && getJogador().getHabilidade().equals("SOBREVIVENCIAL")) {
+                            getJogador().setVida(getJogador().getVidaMax()/4);
+                            turnoJogador = true;
+                            resistiu = true;
+                        }
+                        else {
+                            fimDeCombate = true;
+                            finalizarCombate();
+                            painel.setGameState(painel.getGameOverState());
+                        }
                     } else {
                         turnoJogador = true;
+                        criaturaEmCombate.setAtaqueCriatura(ataqueOriginal);
                     }
-                    criaturaEmCombate.setAtaqueCriatura(ataqueOriginal);
                 } else {
                     turnoJogador = true;
                 }
             }
             numComandoCombate = 0;
-        }
-    }
-
-    public void desenharTitulo(Graphics2D g2) {
-        g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 30F));
-        String combate = "COMBATE";
-        int y = painel.getTileSize();
-        int x = coordenadaXParaTextoCentralizado(g2, painel.getLargura(), "COMBATE");
-
-
-        Color[] tonsVermelho = {
-                new Color(50, 0, 0),
-                new Color(75, 0, 0),
-                new Color(100, 0, 0),
-                new Color(125, 0, 0),
-        };
-
-        Color[] tonsAzul = {
-                new Color(0, 0, 50),
-                new Color(0, 0, 75),
-                new Color(0, 0, 100),
-                new Color(0, 0, 125),
-        };
-
-        Color[] tonsAmarelo = {
-                new Color(100, 60, 0),
-                new Color(120, 70, 0),
-                new Color(150, 100, 0),
-                new Color(190, 120, 0),
-                new Color(250, 200, 0)
-        };
-
-        Color[] tonsBranco = {
-                new Color(95, 95, 95),
-                new Color(115, 115, 115),
-                new Color(165, 165, 165),
-                new Color(215, 215, 215),
-                new Color(255, 255, 255)
-        };
-
-
-        for (int i = 8; i >= 5; i--) {
-            g2.setColor((criaturaEmCombate.isBoss() ? tonsAzul[8 - i] : tonsVermelho[8 - i]));
-            g2.drawString(combate, x + i, y + i);
-        }
-
-        for (int i = 4; i >= 0; i--) {
-            g2.setColor((criaturaEmCombate.isBoss() ? tonsBranco[4 - i] : tonsAmarelo[4 - i]));
-            g2.drawString(combate, x + i, y + i);
         }
     }
 
@@ -440,6 +418,8 @@ public class CombateUI extends UI {
     public boolean isTurnoJogador() { return turnoJogador; }
 
     public boolean conseguiuEscapar() { return escapou; }
+
+    public void setResistiu(boolean resistiu) { this.resistiu = resistiu; }
 
     public boolean isCombateFinalizado() { return fimDeCombate; }
 

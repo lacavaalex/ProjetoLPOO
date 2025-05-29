@@ -27,7 +27,7 @@ public class ClimaUI extends UI {
     }
     public void sair() {
         analisandoClima = false;
-        botoes.mostrarBotaoClima();
+        botoes.mostrarBotao("Clima");
     }
 
     // Descrição dos climas

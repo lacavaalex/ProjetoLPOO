@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class UI {
@@ -208,11 +209,17 @@ public class UI {
         escreverTexto("Você está em sua base.", y += tileSize);
 
         g2.setColor(Color.yellow);
+
         boolean fonteAlimento = painel.getAmbienteAtual().isBaseFonteDeAlimento();
-        String plantio = fonteAlimento ? "sementes plantadas." : "não há fonte de alimento.";
+        boolean colheitaPronta = painel.getAmbienteAtual().isColheitaPronta();
+        boolean fogoAceso = painel.getAmbienteAtual().isBaseFogoAceso();
+
+        String plantio = fonteAlimento ? "sementes plantadas. Retorne em breve." : "não há fonte de alimento.";
+        if (painel.getAmbienteAtual().isColheitaPronta()) {
+            plantio = "pronta para colher.";
+        }
         escreverTexto("Fonte de alimento: " + plantio, y += tileSize);
 
-        boolean fogoAceso = painel.getAmbienteAtual().isBaseFogoAceso();
         String fogo = fogoAceso ? "aceso e forte." : "não há fogueira acesa na base.";
         escreverTexto("Fogo: " + fogo, y += tileSize);
 
@@ -220,7 +227,13 @@ public class UI {
         escreverTexto("Fortificação: " + fortificacao + " / 20", y += tileSize);
 
         g2.setColor(Color.white);
-        desenharOpcoes(new String[]{"Descansar", "Continuar a aventura"}, y += tileSize * 2, numComando);
+
+        ArrayList<String> opcoes = new ArrayList<>();
+        opcoes.add("Continuar a aventura");
+        if (fogoAceso) opcoes.add("Descansar");
+        if (fonteAlimento && colheitaPronta) opcoes.add("Comer");
+
+        desenharOpcoes(opcoes.toArray(new String[0]), y += tileSize * 2, numComando);
     }
 
     public void mostrarInventario() {
@@ -240,7 +253,7 @@ public class UI {
 
     public void mostrarTelaInicial() {
 
-        botoes.esconderBotaoContinuar();
+        botoes.esconderBotao("Continuar");
 
         // Tela inicial 1 (autor)
         if (getTelaInicialState() == 0) {
@@ -362,7 +375,7 @@ public class UI {
         escreverTexto(" ", y += tileSize);
         escreverTexto("Você adentra a FLORESTA MACABRA...", y += tileSize);
 
-        botoes.mostrarBotaoContinuar();
+        botoes.mostrarBotao("Continuar");
     }
 
     // Métodos de compactação de código

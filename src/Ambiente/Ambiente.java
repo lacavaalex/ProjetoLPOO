@@ -31,9 +31,15 @@ public abstract class Ambiente {
     private boolean chanceTirada = false;
 
     private int subStateParaRetornar;
+
+    // Atributos do acampamento
     private boolean baseFontedeAlimento = false;
+    private boolean colheitaPronta = false;
+
     private boolean baseFogoAceso;
     private int baseFortificacao = 0;
+
+    private int timerAcampamento = 0;
 
     // Criacao de um set que conta os substates visitados
     private int subStateAtual;
@@ -56,7 +62,7 @@ public abstract class Ambiente {
     }
     public void sair() {
         cardVisivel = false;
-        botoes.mostrarBotaoCardAmbiente();
+        botoes.mostrarBotao("Local");
     }
 
     // Metodo-base para o polimorfismo da superclasse
@@ -112,6 +118,21 @@ public abstract class Ambiente {
         transicaoFinalizada = false;
     }
 
+    public void atualizarAcampamento() {
+        int numLimite = 10;
+        timerAcampamento++;
+
+        if (timerAcampamento == numLimite) {
+            if (isBaseFonteDeAlimento()) {
+                setColheitaPronta(true);
+            }
+            if (isBaseFogoAceso()) {
+                setBaseFogoAceso(false);
+            }
+            timerAcampamento = 0;
+        }
+    }
+
     // Metodo que define o substate após um evento de criatura
     public void definirSubStateParaRetornar () {
         if (painel.getPlaySubState() < 1000 && painel.getPlaySubState() != 1) {
@@ -138,6 +159,7 @@ public abstract class Ambiente {
 
         painel.getSubStatesVisitadosTemporario().add(novoSubState);
         subStatesVisitadosTotal.add(novoSubState);
+        atualizarAcampamento();
 
         recursosColetados = false;
         recursosGastos = false;
@@ -154,14 +176,14 @@ public abstract class Ambiente {
     public void definirTelaDeBotao(String voltarOuContinuar) {
         switch (voltarOuContinuar) {
             case "continuar":
-                botoes.mostrarBotaoContinuar();
+                botoes.mostrarBotao("Continuar");
                 break;
             case "voltar":
-                botoes.mostrarBotaoVoltar();
+                botoes.mostrarBotao("Voltar");
                 break;
         }
-        botoes.esconderBotaoMochila();
-        botoes.esconderBotaoBase();
+        botoes.esconderBotao("Abrir mochila");
+        botoes.esconderBotao("Voltar à base");
     }
 
     // Getters e setters
@@ -182,6 +204,9 @@ public abstract class Ambiente {
 
     public boolean isBaseFonteDeAlimento() { return baseFontedeAlimento; }
     public void setBaseFonteDeAlimento(boolean baseFonteDeAlimento) { this.baseFontedeAlimento = baseFonteDeAlimento; }
+
+    public boolean isColheitaPronta() { return colheitaPronta; }
+    public void setColheitaPronta(boolean colheitaPronta) { this.colheitaPronta = colheitaPronta; }
 
     public boolean isBaseFogoAceso() { return baseFogoAceso; }
     public void setBaseFogoAceso(boolean baseFogoAceso) { this.baseFogoAceso = baseFogoAceso; }

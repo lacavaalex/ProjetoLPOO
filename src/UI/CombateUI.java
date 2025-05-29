@@ -86,12 +86,12 @@ public class CombateUI extends UI {
 
         resetAtributosTransicao();
 
-        botoes.mostrarBotaoMochila();
-        botoes.mostrarBotaoClima();
+        botoes.mostrarBotao("Abrir mochila");
+        botoes.mostrarBotao("Clima");
 
-        botoes.mostrarBotaoCardAmbiente();
+        botoes.mostrarBotao("Local");
         if (painel.getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
-            botoes.mostrarBotaoBase();
+            botoes.mostrarBotao("Voltar à base");
         }
 
         resetarCriaturaEmCombate();
@@ -110,8 +110,8 @@ public class CombateUI extends UI {
 
         updateFrames();
 
-        botoes.esconderBotaoContinuar();
-        botoes.esconderBotaoClima();
+        botoes.esconderBotao("Continuar");
+        botoes.esconderBotao("Clima");
 
         int tileSize = painel.getTileSize();
         int y = tileSize * 2;
@@ -200,8 +200,8 @@ public class CombateUI extends UI {
                 inimigoSeEsvaindo(g2);
 
                 if (transicaoFinalizada) {
-                    botoes.esconderBotaoMochila();
-                    botoes.esconderBotaoClima();
+                    botoes.esconderBotao("Abrir mochila");
+                    botoes.esconderBotao("Clima");
 
                     g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));
 
@@ -218,8 +218,8 @@ public class CombateUI extends UI {
 
         // Fuga bem sucedida
         else {
-            botoes.esconderBotaoMochila();
-            botoes.esconderBotaoClima();
+            botoes.esconderBotao("Abrir mochila");
+            botoes.esconderBotao("Clima");
 
             g2.setColor(Color.yellow);
             g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 15F));

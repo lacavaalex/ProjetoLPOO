@@ -27,7 +27,7 @@ public class Jogador {
     private boolean sanidade;
 
     private String armaAtual = "Nenhuma arma equipada.";
-    private int ataqueAtual = 1;
+    private int ataqueAtual = 100;
 
     public Jogador(Painel painel) {
         this.painel = painel;
@@ -65,6 +65,8 @@ public class Jogador {
                 setVida(getVida() + 1);
             }
         }
+
+        setVidaMax(getVidaMax() + painel.getAmbienteAtual().getBaseFortificacao());
     }
 
     public void atualizarFome() {

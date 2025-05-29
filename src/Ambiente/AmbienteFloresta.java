@@ -127,7 +127,7 @@ public class AmbienteFloresta extends Ambiente {
 
             // ACAMPAMENTO/BASE
             case 1:
-                botoes.esconderBotaoBase();
+                botoes.esconderBotao("Voltar à base");
                 ui.mostrarAcampamento();
                 break;
 
@@ -154,19 +154,20 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("O que fazer?", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Pegar água e alimento", "Explorar arredores"}, y += tileSize * 2, numComando);
+                ui.desenharOpcoes(new String[]{"Saquear acampamento", "Explorar arredores"}, y += tileSize * 2, numComando);
                 break;
 
             case 102:
                 definirTelaDeBotao("voltar");
 
                 if (!isRecursosColetados()) {
-                painel.getInvent().adicionarItem("Cantil", "consumo", 1);
-                painel.getInvent().adicionarItem("Carne", "consumo", 2);
+                    painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                    painel.getInvent().adicionarItem("Carne", "consumo", 2);
+                    painel.getInvent().adicionarItem("Carvão", "recurso", 1);
                     setRecursosColetados(true);
                 }
 
-                ui.escreverTexto("Você pega o cantil e a carne.", y);
+                ui.escreverTexto("Você pega o cantil, a carne, e um resto de carvão.", y);
                 break;
 
             case 103:
@@ -235,7 +236,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 205:
-                botoes.mostrarBotaoContinuar();
+                botoes.mostrarBotao("Continuar");
 
                 ui.escreverTexto("(Você usa as madeiras que encontrou para montar uma fogueira.)", y);
                 ui.escreverTexto("Agora, hora de tentar fazer fogo.", y += tileSize);
@@ -244,7 +245,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 208:
-                botoes.mostrarBotaoContinuar();
+                botoes.mostrarBotao("Continuar");
 
                 if (!isChanceTirada()) {
                     int probabilidade = painel.definirUmaProbabilidade();

@@ -59,7 +59,7 @@ public class Painel extends JPanel implements Runnable {
     private Map<String, Ambiente> ambientes = new HashMap<>();
     private Set<Integer> subStatesVisitadosTemporario = new HashSet<>();
 
-    private final int contadorDeSubState = 5;
+    private final int numSubStatesAtualizacao = 5;
 
 
     public Painel(){
@@ -109,7 +109,7 @@ public class Painel extends JPanel implements Runnable {
 
         getAmbienteAtual().definirSubStateParaRetornar();
 
-        jogador.atualizarCondicaoJogador(contadorDeSubState);
+        jogador.atualizarCondicaoJogador(numSubStatesAtualizacao);
 
         updateBotoes();
     }
@@ -268,51 +268,51 @@ public class Painel extends JPanel implements Runnable {
         this.gameState = gameState;
 
         botoes.setVisible(false);
-        botoes.esconderBotaoInicio();
-        botoes.esconderBotaoClima();
-        botoes.esconderBotaoCardAmbiente();
-        botoes.esconderBotaoMochila();
-        botoes.esconderBotaoVoltar();
-        botoes.esconderBotaoContinuar();
-        botoes.esconderBotaoBase();
+        botoes.esconderBotao("Voltar ao início");
+        botoes.esconderBotao("CLima");
+        botoes.esconderBotao("Local");
+        botoes.esconderBotao("Abrir mochila");
+        botoes.esconderBotao("Voltar");
+        botoes.esconderBotao("Continuar");
+        botoes.esconderBotao("Voltar à base");
 
         // Não-play states
         if (gameState == openingState) {
             botoes.setVisible(true);
-            botoes.mostrarBotaoContinuar();
+            botoes.mostrarBotao("Continuar");
         }
         if (gameState == tutorialControles) {
             botoes.setVisible(true);
-            botoes.mostrarBotaoVoltar();
+            botoes.mostrarBotao("Voltar");
         }
         if (gameState == gameOverState) {
             botoes.setVisible(true);
-            botoes.mostrarBotaoInicio();
+            botoes.mostrarBotao("Voltar ao início");
         }
 
         // Play state
         if (gameState == playState) {
             botoes.setVisible(true);
-            botoes.mostrarBotaoMochila();
-            botoes.mostrarBotaoClima();
-            botoes.mostrarBotaoCardAmbiente();
+            botoes.mostrarBotao("Abrir mochila");
+            botoes.mostrarBotao("Clima");
+            botoes.mostrarBotao("Local");
             if (getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
-                botoes.mostrarBotaoBase();
+                botoes.mostrarBotao("Voltar à base");
             }
         }
 
         // Fight state
         if (getEventoCriatura().isEventoCriaturaAtivo()) {
-            botoes.esconderBotaoBase();
-            botoes.esconderBotaoMochila();
-            botoes.esconderBotaoCardAmbiente();
-            botoes.mostrarBotaoContinuar();
+            botoes.esconderBotao("Voltar à base");
+            botoes.esconderBotao("Abrir mochila");
+            botoes.esconderBotao("Local");
+            botoes.mostrarBotao("Continuar");
 
             if (fightState) {
-                botoes.esconderBotaoCardAmbiente();
-                botoes.esconderBotaoMochila();
-                botoes.esconderBotaoClima();
-                botoes.esconderBotaoContinuar();
+                botoes.esconderBotao("Local");
+                botoes.esconderBotao("Abrir mochila");
+                botoes.esconderBotao("Clima");
+                botoes.esconderBotao("Continuar");
             }
         }
     }

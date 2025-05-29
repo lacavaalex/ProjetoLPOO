@@ -69,7 +69,7 @@ public class EventoCriatura extends Evento {
 
             else if (tipo == 22) {
                 criatura.definirCriatura(22);
-                getPainel().getBotoes().esconderBotaoClima();
+                getPainel().getBotoes().esconderBotao("Clima");
                 getPainel().setFightState(true);
             }
 

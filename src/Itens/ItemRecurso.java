@@ -47,6 +47,9 @@ public class ItemRecurso extends Item {
                         case "Plantio":
                             painel.getAmbienteAtual().setBaseFonteDeAlimento(true);
                             break;
+                        case "Fogueira":
+                            painel.getAmbienteAtual().setBaseFogoAceso(true);
+                            break;
                         case "Cercado":
                             painel.getAmbienteAtual().setBaseFortificacao(painel.getAmbienteAtual().getBaseFortificacao() + 1);
                             break;
@@ -115,6 +118,28 @@ public class ItemRecurso extends Item {
                     setOpcaoCrafting("...");
                 }
                 setTipoNovoItem(null);
+                break;
+
+            case "Carvão":
+                if (painel.getPlaySubState() == 1) {
+                    setOpcaoCrafting("Fogueira");
+                }
+                else {
+                    setOpcaoCrafting("...");
+                }
+                setTipoNovoItem(null);
+                break;
+
+            case "Carvão estranho":
+                if (painel.getInvent().acharItem("Espada Basilar")) {
+                    setItemParaRemoverNoCrafting("Espada Basilar");
+                    setOpcaoCrafting("Espada Flamejante");
+                    setTipoNovoItem("combate");
+                }
+                else {
+                    setOpcaoCrafting("...");
+                    setTipoNovoItem(null);
+                }
                 break;
 
             case "Corda":

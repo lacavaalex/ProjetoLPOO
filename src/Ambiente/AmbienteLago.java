@@ -125,7 +125,7 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 1:
-                botoes.esconderBotaoBase();
+                botoes.esconderBotao("Voltar à base");;
                 ui.mostrarAcampamento();
                 break;
 
@@ -153,7 +153,7 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 403:
-                botoes.mostrarBotaoBase();
+                botoes.mostrarBotao("Voltar à base");
                 ui.escreverTexto("O que fazer agora?", y += tileSize);
 
                 ui.desenharOpcoes(new String[]{"Checar o lago de perto", "Analisar terras do mangue", "Buscar recursos"}, y += tileSize * 2, numComando);
@@ -247,10 +247,10 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 411:
-                botoes.mostrarBotaoBase();
+                botoes.mostrarBotao("Voltar à base");
                 ui.escreverTexto("O que fazer?", y);
 
-                ui.desenharOpcoes(new String[]{"Inspecionar o lago", "Buscar recursos"}, y += tileSize * 2, numComando);
+                ui.desenharOpcoes(new String[]{"Inspecionar o lago", "Buscar recursos", "Retornar à floresta"}, y += tileSize * 2, numComando);
                 break;
 
             case 412:
@@ -260,7 +260,7 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 413:
-                botoes.esconderBotaoBase();
+                botoes.esconderBotao("Voltar à base");
 
                 setContadorEspera(0);
                 setContadorMovimento(0);
@@ -275,7 +275,7 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 414:
-                botoes.esconderBotaoBase();
+                botoes.esconderBotao("Voltar à base");
                 definirTelaDeBotao("voltar");
 
                 ui.escreverTexto("Uma luz está visível, ainda que trêmula, bem no fundo do lago", y);
@@ -314,7 +314,7 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 416:
-                botoes.esconderBotaoBase();
+                botoes.esconderBotao("Voltar à base");
 
                 iniciarEspera();
                 g2.setColor(new Color (0, 70, 100));
@@ -440,7 +440,7 @@ public class AmbienteLago extends Ambiente {
                 break;
 
             case 419:
-                botoes.esconderBotaoMochila();
+                botoes.esconderBotao("Abrir mochila");
 
                 if (aguardando) {
                     ui.escreverTexto("Ainda sem sinal de sol...", y);

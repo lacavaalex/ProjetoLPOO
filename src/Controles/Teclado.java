@@ -150,7 +150,8 @@ public class Teclado implements KeyListener {
             else {
                 if (!painel.getFightState()) {
                     // States com 3 opcoes
-                    if (subState == 0 || subState == 202 || subState == 403 || subState == 413 || subState == 416) {
+                    if (subState == 0 || subState == 202 ||
+                            subState == 403 || subState == 411 ||subState == 413 || subState == 416) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(3);
                         }
@@ -164,6 +165,12 @@ public class Teclado implements KeyListener {
                             if (subState == 0) {
                                 painel.setPlaySubState((opcao + 1) * 100);
                                 painel.getUi().setNumComando(0);
+                            }
+
+                            else if (subState == 411) {
+                                if (opcao == 0) { painel.setPlaySubState(2001); }
+                                else if (opcao == 1) { painel.setPlaySubState(406); }
+                                else if (opcao == 2) { painel.trocarAmbiente("floresta", 104); };
                             }
 
                             else if (subState == 413) {
@@ -208,10 +215,54 @@ public class Teclado implements KeyListener {
                         }
                     }
 
+                    // Acampamento/base
+                    if (subState == 1) {
+                        boolean colheitaPronta = painel.getAmbienteAtual().isColheitaPronta();
+                        boolean fogoAceso = painel.getAmbienteAtual().isBaseFogoAceso();
+
+                        int numOpcoes = 1;
+                        if ((fogoAceso && !colheitaPronta) || (colheitaPronta && !fogoAceso)) { numOpcoes = 2; }
+                        if (colheitaPronta && fogoAceso) { numOpcoes = 3; }
+
+                        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                            painel.getUi().subtrairNumComando(numOpcoes);
+                        }
+                        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                            painel.getUi().adicionarNumComando(numOpcoes);
+                        }
+                        if (code == KeyEvent.VK_ENTER) {
+                            int opcao = painel.getUi().getNumComando();
+
+                            if (opcao == 0) {
+                                painel.getUi().setNumComando(0);
+                                int stateRetornar = painel.getAmbienteAtual().getSubStateParaRetornar();
+                                if (stateRetornar == 211 || stateRetornar == 403) {
+                                    painel.setPlaySubState(painel.getAmbienteAtual().getSubStateParaRetornar());
+                                } else {
+                                    painel.getAmbienteAtual().voltarStateAnterior();
+                                }
+                                painel.getBotoes().mostrarBotao("Voltar à base");
+                            } else if (opcao == 1) {
+                                if (fogoAceso) {
+                                    if (jogador.getEnergia() <= jogador.getEnergiaMax() / 2) {
+                                        jogador.setEnergia(jogador.getEnergiaMax());
+                                    }
+                                } else {
+                                    jogador.setFome(jogador.getFome() + 5);
+                                    painel.getAmbienteAtual().setColheitaPronta(false);
+                                }
+                            } else if (opcao == 2) {
+                                jogador.setFome(jogador.getFome() + 5);
+                                painel.getAmbienteAtual().setColheitaPronta(false);
+                            }
+
+                        }
+                    }
+
 
                     // States com 2 opcoes
-                    if (subState == 1 || subState == 101 || subState == 211||
-                            subState == 301 || subState == 400 || subState == 411 || subState == 425) {
+                    if (subState == 101 || subState == 211||
+                            subState == 301 || subState == 400 || subState == 425) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(2);
                         }
@@ -220,42 +271,22 @@ public class Teclado implements KeyListener {
                         }
                         if (code == KeyEvent.VK_ENTER) {
                             int opcao = painel.getUi().getNumComando();
-
-                            // State da Base/Acampamento
-                            if (subState == 1) {
-                                if (opcao == 0) {
-                                    if (jogador.getEnergia() <= jogador.getEnergiaMax()/2) {
-                                        jogador.setEnergia(jogador.getEnergiaMax());
-                                    }
-                                }
-                                else if (opcao == 1) {
-                                    painel.getUi().setNumComando(0);
-                                    int stateRetornar = painel.getAmbienteAtual().getSubStateParaRetornar();
-                                    if (stateRetornar == 211 || stateRetornar == 403 ) {
-                                        painel.setPlaySubState(painel.getAmbienteAtual().getSubStateParaRetornar());
-                                    }
-                                    else {
-                                        painel.getAmbienteAtual().voltarStateAnterior();
-                                    }
-                                    painel.getBotoes().mostrarBotaoBase();
-                                }
-                            }
-
-                            else if (subState == 211) {
+                            if (subState == 211) {
                                 if (opcao == 0) { painel.setPlaySubState(203); }
                                 else if (opcao == 1) { painel.setPlaySubState(204); }
                             }
 
                             else if (subState == 400) {
-                                if (opcao == 0) { painel.setPlaySubState(401); }
+                                if (opcao == 0) {
+                                    if (!painel.getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
+                                        painel.setPlaySubState(401);
+                                    } else {
+                                        painel.setPlaySubState(403);
+                                    }
+                                }
                                 else if (opcao == 1) {
                                     painel.trocarAmbiente("floresta", 104);
                                 }
-                            }
-
-                            else if (subState == 411) {
-                                if (opcao == 0) { painel.setPlaySubState(2001); }
-                                else if (opcao == 1) { painel.setPlaySubState(406);}
                             }
 
                             else if (subState == 425) {

@@ -88,7 +88,7 @@ public class ItemConsumo extends Item {
                 break;
 
             case "Peixe":
-                setDurabilidade(2);
+                setDurabilidadeMax(2);
                 setEfeito("fome");
                 setSustancia(3);
                 break;

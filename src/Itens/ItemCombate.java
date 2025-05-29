@@ -26,6 +26,11 @@ public class ItemCombate extends Item {
     public void definirArma(String nome) {
         setTipo("combate");
         switch (nome) {
+            case "Vara de pesca":
+                setPoder(1);
+                setNomeImagem("vara_de_pesca");
+                break;
+
             case "Galho pontiagudo":
                 setPoder(3);
                 setNomeImagem("galho_pontiagudo");
@@ -36,19 +41,34 @@ public class ItemCombate extends Item {
                 setNomeImagem("estilingue");
                 break;
 
-            case "Vara de pesca":
-                setPoder(1);
-                setNomeImagem("vara_de_pesca");
-                break;
-
             case "Faca":
                 setPoder(4);
                 setNomeImagem("faca");
                 break;
 
+            case "Tasco de Gelo":
+                setPoder(5);
+                setNomeImagem("tasco_gelo");
+                break;
+
+            case "Escudo":
+                setPoder(6);
+                setNomeImagem("escudo");
+                break;
+
             case "Lança":
                 setPoder(6);
                 setNomeImagem("lanca");
+                break;
+
+            case "Espada Basilar":
+                setPoder(7);
+                setNomeImagem("espada_basilar");
+                break;
+
+            case "Machado":
+                setPoder(8);
+                setNomeImagem("machado");
                 break;
 
             case "Foice":
@@ -61,14 +81,24 @@ public class ItemCombate extends Item {
                 setNomeImagem("cimitarra");
                 break;
 
+            case "Espeto crustáceo":
+                setPoder(9);
+                setNomeImagem("espeto_crustaceo");
+                break;
+
             case "Tridente":
                 setPoder(10);
                 setNomeImagem("tridente");
                 break;
 
-            case "Espeto crustáceo":
-                setPoder(9);
-                setNomeImagem("espeto_crustaceo");
+            case "Espada Nobre":
+                setPoder(10);
+                setNomeImagem("espada_nobre");
+                break;
+
+            case "Espada Flamejante":
+                setPoder(12);
+                setNomeImagem("espada_flamejante");
                 break;
 
             default:

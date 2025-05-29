@@ -91,13 +91,12 @@ public class AmbienteMontanha extends Ambiente {
         switch (subState) {
 
             case 1:
-                botoes.esconderBotaoBase();
+                botoes.esconderBotao("Voltar à base");
                 ui.mostrarAcampamento();
                 break;
 
             case 500:
-                botoes.mostrarBotaoVoltar();
-                botoes.esconderBotaoMochila();
+                definirTelaDeBotao("voltar");
 
                 ui.escreverTexto("O trecho acabou. O único caminho para além daqui...", y);
                 ui.escreverTexto("é para cima. A montanha sussura seu nome...", y += tileSize);

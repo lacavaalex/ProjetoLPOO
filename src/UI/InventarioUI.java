@@ -322,7 +322,7 @@ public class InventarioUI extends UI {
         fechado = true;
         numComandoInvent = 0;
         if (!painel.getFightState()) {
-            botoes.mostrarBotaoMochila();
+            botoes.mostrarBotao("Abrir mochila");
         }
     }
 

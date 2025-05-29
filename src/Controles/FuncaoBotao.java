@@ -21,105 +21,109 @@ public class FuncaoBotao implements ActionListener {
         Object fonte = e.getSource();
 
         // CONTINUAR
-        if (fonte == botoes.getBotaoContinuar()) {
+        if (fonte == botoes.getBotao("Continuar")) {
             actionPerformedContinuar();
         }
 
         // VOLTAR
-        else if (fonte == botoes.getBotaoVoltar()) {
-
-            botoes.esconderBotaoVoltar();
-
-            if (painel.getGameState() == painel.getTutorialControles()) {
-                painel.setGameState(painel.getTitleState());
-
-            } else {
-                botoes.mostrarBotaoMochila();
-
-                int subState = painel.getPlaySubState();
-
-                switch (subState) {
-                    case 102:
-                        painel.setPlaySubState(104);
-                        break;
-
-                    case 406:
-                        painel.setPlaySubState(2001);
-                        painel.getAmbienteAtual().setSubStateParaRetornar(403);
-                        break;
-                    case 410:
-                        painel.setPlaySubState(2001);
-                        painel.getAmbienteAtual().setSubStateParaRetornar(411);
-                        break;
-
-                    case 415:
-                        painel.setPlaySubState(413);
-                        break;
-
-                    case 417:
-                    case 418:
-                        painel.setPlaySubState(416);
-                        break;
-
-                    case 424:
-                        painel.trocarAmbiente("floresta", 104);
-                        break;
-
-                    case 500:
-                        painel.trocarAmbiente("floresta", 303);
-                        break;
-
-                    default:
-                        painel.setPlaySubState(painel.getPlaySubState() - 1);
-                        break;
-                }
-            }
+        else if (fonte == botoes.getBotao("Voltar")) {
+            actionPerformedVoltar();
         }
 
         // MOCHILA/INVENTÁRIO
-        else if (fonte == botoes.getBotaoMochila()) {
+        else if (fonte == botoes.getBotao("Abrir mochila")) {
             painel.getUi().mostrarInventario();
         }
 
         // VOLTAR À BASE
-        else if (fonte == botoes.getBotaoBase()) {
+        else if (fonte == botoes.getBotao("Voltar à base")) {
             painel.setPlaySubState(1);
         }
 
         // CARD DE AMBIENTE
-        else if (fonte == botoes.getBotaoCardAmbiente()) {
+        else if (fonte == botoes.getBotao("Local")) {
             painel.getUi().mostrarCardAmbiente();
         }
 
         // CLIMA
-        else if (fonte == botoes.getBotaoClima()) {
+        else if (fonte == botoes.getBotao("Clima")) {
             painel.getUi().mostrarClima();
         }
 
         // DE VOLTA AO INÍCIO
-        else if (fonte == botoes.getBotaoInicio()) {
+        else if (fonte == botoes.getBotao("Voltar ao início")) {
             painel.setGameState(painel.getTitleState());
         }
 
     }
 
+    public void actionPerformedVoltar() {
+
+        botoes.esconderBotao("Voltar");
+
+        if (painel.getGameState() == painel.getTutorialControles()) {
+            painel.setGameState(painel.getTitleState());
+
+        } else {
+            botoes.mostrarBotao("Abrir mochila");
+
+            int subState = painel.getPlaySubState();
+
+            switch (subState) {
+                case 102:
+                    painel.setPlaySubState(104);
+                    break;
+
+                case 406:
+                    painel.setPlaySubState(2001);
+                    painel.getAmbienteAtual().setSubStateParaRetornar(403);
+                    break;
+                case 410:
+                    painel.setPlaySubState(2001);
+                    painel.getAmbienteAtual().setSubStateParaRetornar(411);
+                    break;
+
+                case 415:
+                    painel.setPlaySubState(413);
+                    break;
+
+                case 417:
+                case 418:
+                    painel.setPlaySubState(416);
+                    break;
+
+                case 424:
+                    painel.trocarAmbiente("floresta", 104);
+                    break;
+
+                case 500:
+                    painel.trocarAmbiente("floresta", 303);
+                    break;
+
+                default:
+                    painel.setPlaySubState(painel.getPlaySubState() - 1);
+                    break;
+            }
+        }
+    }
+
     public void actionPerformedContinuar() {
         int gameState = painel.getGameState();
 
-        botoes.esconderBotaoContinuar();
+        botoes.esconderBotao("Continuar");
 
         // FightState
         if (painel.getEventoCriatura().isEventoCriaturaAtivo()) {
-            botoes.esconderBotaoContinuar();
+            botoes.esconderBotao("Continuar");
             painel.setFightState(true);
         }
 
         // PlayState
         if (gameState == painel.getPlayState()) {
-            botoes.esconderBotaoContinuar();
+            botoes.esconderBotao("Continuar");
 
             if (!painel.getFightState()) {
-                botoes.mostrarBotaoMochila();
+                botoes.mostrarBotao("Abrir mochila");;
             }
 
             int subState = painel.getPlaySubState();

@@ -91,6 +91,16 @@ public class ItemRecurso extends Item {
                 }
                 break;
 
+            case "Planta medicinal":
+                if (painel.getJogador().estaEnvenenado()) {
+                    setOpcaoCrafting("Curar veneno");
+                }
+                else {
+                    setOpcaoCrafting("...");
+                }
+                setTipoNovoItem(null);
+                break;
+
             case "Lâmina metálica":
                 if (painel.getInvent().acharItem("Madeira")) {
                     setItemParaRemoverNoCrafting("Madeira");

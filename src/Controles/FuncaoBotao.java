@@ -70,8 +70,22 @@ public class FuncaoBotao implements ActionListener {
             int subState = painel.getPlaySubState();
 
             switch (subState) {
+                case 3:
+                case 203:
+                    painel.setPlaySubState(202);
+                    break;
+
+                case 4:
+                    painel.setPlaySubState(1004);
+                    break;
+
                 case 102:
                     painel.setPlaySubState(104);
+                    break;
+
+                case 204:
+                    painel.setPlaySubState(1001);
+                    painel.getAmbienteAtual().setSubStateParaRetornar(202);
                     break;
 
                 case 406:

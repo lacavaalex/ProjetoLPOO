@@ -166,6 +166,8 @@ public class UI {
             case "chuva" -> "clima_chuva";
             case "tempestade" -> "clima_tempestade";
             case "tornado" -> "clima_tornado";
+            case "cavernoso" -> "clima_cavernoso";
+            case "salgado" -> "clima_salgado";
             case "nevasca" -> "clima_nevasca";
             default -> "clima_ameno";
         };
@@ -335,6 +337,8 @@ public class UI {
     }
 
     public void mostrarGameOverScreen() {
+
+        botoes.esconderBotao("Clima");
 
         tileSize = painel.getTileSize();
 

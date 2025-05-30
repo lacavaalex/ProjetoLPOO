@@ -152,6 +152,9 @@ public class InventarioUI extends UI {
         int larguraCaixinha = tileSize * 7;
         int alturaCaixinha = tileSize * 7;
 
+        g2.setColor(new Color(30, 0, 0));
+        g2.fillRect(xCaixinha, yCaixinha, larguraCaixinha, alturaCaixinha);
+
         g2.setColor(Color.white);
         g2.drawRect(xCaixinha, yCaixinha, larguraCaixinha, alturaCaixinha);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));

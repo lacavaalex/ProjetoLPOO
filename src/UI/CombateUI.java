@@ -31,6 +31,7 @@ public class CombateUI extends UI {
     private boolean escapou = false;
     private boolean fugaFalha = false;
     private boolean resistiu = false;
+    private boolean critico = false;
 
     private int ataqueOriginal;
     private int ataqueFraco;
@@ -135,7 +136,7 @@ public class CombateUI extends UI {
                 // Inimigo
                 g2.setColor(Color.white);
                 String nome = criaturaEmCombate.getNomeCriatura();
-                String descricao = (criaturaEmCombate.getVidaCriatura()) + "HP / " + (criaturaEmCombate.getAtaqueCriatura()) + "ATK";
+                String descricao = (criaturaEmCombate.getVidaCriatura()) + "HP / " + ataqueOriginal + "ATK";
 
                 int comprimentoNome = (int) g2.getFontMetrics().getStringBounds(nome, g2).getWidth();
                 int comprimentoDescricao = (int) g2.getFontMetrics().getStringBounds(descricao, g2).getWidth();
@@ -187,6 +188,9 @@ public class CombateUI extends UI {
                             g2.setColor(Color.red);
                             escreverTexto("O inimigo ataca!", y += tileSize);
                             escreverTexto("-" + criaturaEmCombate.getAtaqueCriatura() + "HP", y += tileSize);
+                            if (critico) {
+                                escreverTexto("Ataque crítico!", y += tileSize);
+                            }
                             g2.setColor(Color.white);
                         }
 
@@ -232,122 +236,135 @@ public class CombateUI extends UI {
 
     // Sistema de turnos
     public void sistemaTurno() {
+        if (!fimDeCombate) {
+            if (this.criaturaEmCombate != null) {
 
-        if (this.criaturaEmCombate != null) {
+                ataqueFraco = ataqueOriginal / 2;
 
-            ataqueFraco = ataqueOriginal / 2;
+                // Turno do jogador
+                if (turnoJogador) {
 
-            // Turno do jogador
-            if (turnoJogador) {
+                    critico = false;
+                    fugaFalha = false;
+                    defesaFalha = false;
+                    esquivou = false;
+                    bloqueou = false;
 
-                fugaFalha = false;
-                defesaFalha = false;
-                esquivou = false;
-                bloqueou = false;
+                    // ATACAR
+                    if (numComandoCombate == 0) {
 
-                // ATACAR
-                if (numComandoCombate == 0) {
-
-                    // Cálculo de vida inimigo
-                    criaturaEmCombate.setVidaCriatura(criaturaEmCombate.getVidaCriatura() - getJogador().getAtaqueAtual());
-
-                    // Cálculo de morte do inimigo/troca de turno
-                    if (criaturaEmCombate.getVidaCriatura() <= 0) {
-                        fimDeCombate = true;
-                        transicaoIniciada = true;
-                    } else {
-                        turnoJogador = false;
-                    }
-                }
-
-                // ESQUIVAR
-                else if (numComandoCombate == 1) {
-
-                    double probabilidade = painel.definirUmaProbabilidade();
-                    if (getJogador().getHabilidade().equals("COMBATIVA")) {
-                        probabilidade = probabilidade - probabilidade * 0.20;
-                    }
-
-                    if (probabilidade <= 30) {
-                        esquivou = true;
-
+                        // Cálculo de vida inimigo
                         criaturaEmCombate.setVidaCriatura(criaturaEmCombate.getVidaCriatura() - getJogador().getAtaqueAtual());
 
+                        // Cálculo de morte do inimigo/troca de turno
                         if (criaturaEmCombate.getVidaCriatura() <= 0) {
                             fimDeCombate = true;
                             transicaoIniciada = true;
                         } else {
                             turnoJogador = false;
                         }
-                    } else {
-                        defesaFalha = true;
-                        turnoJogador = false;
-                    }
-                }
-
-                // BLOQUEAR
-                else if (numComandoCombate == 2) {
-
-                    double probabilidade = painel.definirUmaProbabilidade();
-                    if (getJogador().getHabilidade().equals("COMBATIVA")) {
-                        probabilidade = probabilidade - probabilidade * 0.15;
                     }
 
-                    if (probabilidade <= 50) {
-                        bloqueou = true;
-
-                        criaturaEmCombate.setAtaqueCriatura(ataqueFraco);
-
-                    } else {
-                        defesaFalha = true;
-                    }
-                    turnoJogador = false;
-                }
-
-                // FUGIR
-                else if (numComandoCombate == 4) {
-                    int percentual = painel.definirUmaProbabilidade();
-                    int probabilidade = painel.definirUmaProbabilidade();
-
-                    if (probabilidade <= percentual) {
-                        escapou = true;
-                    } else {
-                        fugaFalha = true;
-                        turnoJogador = false;
-                    }
-                }
-            }
-
-            // Turno do inimigo
-            else {
-                if (!bloqueou && !esquivou) {
-                    // Cálculo de vida jogador
-                    getJogador().setVida(getJogador().getVida() - criaturaEmCombate.getAtaqueCriatura());
-
-                    // Cálculo de morte do jogador/troca de turno
-                    if (getJogador().getVida() <= 0) {
+                    // ESQUIVAR
+                    else if (numComandoCombate == 1) {
 
                         double probabilidade = painel.definirUmaProbabilidade();
-                        if (probabilidade <= 20 && getJogador().getHabilidade().equals("COMBATIVA")
-                        || probabilidade <= 10 && getJogador().getHabilidade().equals("SOBREVIVENCIAL")) {
-                            getJogador().setVida(getJogador().getVidaMax()/4);
-                            turnoJogador = true;
-                            resistiu = true;
+                        if (getJogador().getHabilidade().equals("COMBATIVA")) {
+                            probabilidade = probabilidade * 0.8;
                         }
-                        else {
-                            fimDeCombate = true;
-                            finalizarCombate();
-                            painel.setGameState(painel.getGameOverState());
+
+                        if (probabilidade <= 30) {
+                            esquivou = true;
+
+                            criaturaEmCombate.setVidaCriatura(criaturaEmCombate.getVidaCriatura() - getJogador().getAtaqueAtual());
+
+                            if (criaturaEmCombate.getVidaCriatura() <= 0) {
+                                fimDeCombate = true;
+                                transicaoIniciada = true;
+                            } else {
+                                turnoJogador = false;
+                            }
+                        } else {
+                            defesaFalha = true;
+                            turnoJogador = false;
+                        }
+                    }
+
+                    // BLOQUEAR
+                    else if (numComandoCombate == 2) {
+
+                        double probabilidade = painel.definirUmaProbabilidade();
+                        if (getJogador().getHabilidade().equals("COMBATIVA")) {
+                            probabilidade = probabilidade * 0.9;
+                        }
+
+                        if (getJogador().getArmaAtual().equals("Escudo")) {
+                            probabilidade = probabilidade * 0.8;
+                        }
+
+                        if (probabilidade <= 50) {
+                            bloqueou = true;
+
+                            criaturaEmCombate.setAtaqueCriatura(ataqueFraco);
+
+                        } else {
+                            defesaFalha = true;
+                        }
+                        turnoJogador = false;
+                    }
+
+                    // FUGIR
+                    else if (numComandoCombate == 4) {
+                        int percentual = painel.definirUmaProbabilidade();
+                        int probabilidade = painel.definirUmaProbabilidade();
+
+                        if (probabilidade <= percentual) {
+                            escapou = true;
+                        } else {
+                            fugaFalha = true;
+                            turnoJogador = false;
+                        }
+                    }
+
+                    // Definir criticidade do proximo ataque
+                    int ataqueCriaturaCritico = painel.definirUmaProbabilidade();
+                    if (ataqueCriaturaCritico <= 20) {
+                        int novoAtaque = criaturaEmCombate.getAtaqueCriatura() + criaturaEmCombate.getAtaqueCriatura() / 2;
+                        criaturaEmCombate.setAtaqueCriatura(novoAtaque);
+                        critico = true;
+                    }
+                }
+
+                // Turno do inimigo
+                else {
+                    if (!bloqueou && !esquivou) {
+                        // Cálculo de vida jogador
+                        getJogador().setVida(getJogador().getVida() - criaturaEmCombate.getAtaqueCriatura());
+
+                        // Cálculo de morte do jogador/troca de turno
+                        if (getJogador().getVida() <= 0) {
+
+                            double probabilidade = painel.definirUmaProbabilidade();
+                            if (probabilidade <= 20 && getJogador().getHabilidade().equals("COMBATIVA")
+                                    || probabilidade <= 10 && getJogador().getHabilidade().equals("SOBREVIVENCIAL")) {
+                                getJogador().setVida(getJogador().getVidaMax() / 4);
+                                turnoJogador = true;
+                                resistiu = true;
+                            } else {
+                                fimDeCombate = true;
+                                finalizarCombate();
+                                painel.setGameState(painel.getGameOverState());
+                            }
+                        } else {
+                            turnoJogador = true;
+                            criaturaEmCombate.setAtaqueCriatura(ataqueOriginal);
                         }
                     } else {
                         turnoJogador = true;
-                        criaturaEmCombate.setAtaqueCriatura(ataqueOriginal);
                     }
-                } else {
-                    turnoJogador = true;
                 }
+                numComandoCombate = 0;
             }
-            numComandoCombate = 0;
         }
     }
 

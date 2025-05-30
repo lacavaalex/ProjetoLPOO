@@ -160,11 +160,33 @@ public class Teclado implements KeyListener {
                         }
 
                         if (code == KeyEvent.VK_ENTER) {
+                            boolean derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
+                            boolean derrotouBossFloresta = painel.getInvent().acharItem("Jóia roxa");
+
                             int opcao = painel.getUi().getNumComando();
 
                             if (subState == 0) {
                                 painel.setPlaySubState((opcao + 1) * 100);
                                 painel.getUi().setNumComando(0);
+                            }
+
+                            else if (subState == 202) {
+                                boolean podeCacar = painel.getInvent().acharItem("Machado") || painel.getInvent().acharItem("Faca");
+                                boolean opcaoFogueira = painel.getAmbienteAtual().checarSeSubStateFoiVisitado(1);
+
+                                if (opcao == 0) { painel.setPlaySubState(203);
+                                }
+                                else if (opcao == 1) {
+                                    if (!podeCacar) { painel.setPlaySubState(204); }
+                                    else {
+                                        painel.getAmbienteAtual().setSubStateParaRetornar(202);
+                                        painel.setPlaySubState(4);
+                                    }
+                                }
+                                else if (opcao == 2) {
+                                    if (!opcaoFogueira) { painel.setPlaySubState(205); }
+                                    else { painel.setPlaySubState(3); }
+                                }
                             }
 
                             else if (subState == 411) {
@@ -238,6 +260,7 @@ public class Teclado implements KeyListener {
                                 int stateRetornar = painel.getAmbienteAtual().getSubStateParaRetornar();
                                 if (stateRetornar == 211 || stateRetornar == 403) {
                                     painel.setPlaySubState(painel.getAmbienteAtual().getSubStateParaRetornar());
+                                    painel.getAmbienteAtual().setSubStateParaRetornar(stateRetornar + 1);
                                 } else {
                                     painel.getAmbienteAtual().voltarStateAnterior();
                                 }
@@ -259,9 +282,43 @@ public class Teclado implements KeyListener {
                         }
                     }
 
+                    if (subState == 2) {
+                        int opcao = painel.getUi().getNumComando();
+
+                        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                            painel.getUi().subtrairNumComando(3);
+                        }
+                        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                            painel.getUi().adicionarNumComando(3);
+                        }
+                        if (code == KeyEvent.VK_ENTER) {
+
+                            boolean derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
+                            boolean derrotouBossFloresta = painel.getInvent().acharItem("Jóia roxa");
+
+                            if (opcao == 0) {
+                                if (derrotouBossLago) {
+                                    painel.trocarAmbiente("lago", 425);
+                                } else {
+                                    painel.setPlaySubState(101);
+                                }
+                            } else if (opcao == 1) {
+                                if (derrotouBossFloresta) {
+                                    painel.getAmbienteAtual().setSubStateParaRetornar(2);
+                                    painel.setPlaySubState(4);
+                                } else {
+                                    painel.setPlaySubState(200);
+                                }
+                            } else if (opcao == 2) {
+                                painel.setPlaySubState(300);
+                            }
+                            painel.getUi().setNumComando(0);
+                        }
+                    }
+
 
                     // States com 2 opcoes
-                    if (subState == 101 || subState == 211||
+                    if (subState == 101 || subState == 104 || subState == 211 ||
                             subState == 301 || subState == 400 || subState == 425) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(2);
@@ -271,7 +328,21 @@ public class Teclado implements KeyListener {
                         }
                         if (code == KeyEvent.VK_ENTER) {
                             int opcao = painel.getUi().getNumComando();
-                            if (subState == 211) {
+
+                            if (subState == 104) {
+                                if (opcao == 0) {
+                                    if (painel.getInvent().acharItem("Jóia azul")) {
+                                        painel.trocarAmbiente("lago", 425);
+                                    } else {
+                                        painel.trocarAmbiente("lago", 400);
+                                    }
+                                }
+                                else if (opcao == 1) {
+                                    painel.setPlaySubState(2);
+                                }
+                            }
+
+                            else if (subState == 211) {
                                 if (opcao == 0) { painel.setPlaySubState(203); }
                                 else if (opcao == 1) { painel.setPlaySubState(204); }
                             }
@@ -302,7 +373,7 @@ public class Teclado implements KeyListener {
                     }
 
                     // States com 1 opcao
-                    if (subState == 104 || subState == 419) {
+                    if (subState == 419) {
                         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                             painel.getUi().subtrairNumComando(1);
                         }
@@ -311,14 +382,7 @@ public class Teclado implements KeyListener {
                         }
                         if (code == KeyEvent.VK_ENTER) {
                             if (ui.getNumComando() == 0) {
-                                if (subState == 104) {
-                                    if (painel.getInvent().acharItem("Jóia azul")) {
-                                        painel.trocarAmbiente("lago", 425);
-                                    } else {
-                                        painel.trocarAmbiente("lago", 400);
-                                    }
-                                }
-                                else if (subState == 419) {
+                                if (subState == 419) {
                                     painel.getAmbienteAtual().setTransicaoIniciada(true);
                                 }
                             }

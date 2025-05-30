@@ -39,7 +39,7 @@ public class Jogador {
         atualizarAtaqueAtual();
         if (numLimite == painel.getQuantidadeSubStatesVisitadosTemporario()) {
             if (estaEnvenenado()) {
-                setEnergia(getEnergia() - 2);
+                setEnergia(getEnergia() - 1);
             }
             atualizarFome();
             atualizarSede();

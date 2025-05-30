@@ -30,6 +30,7 @@ public class ItemConsumo extends Item {
         switch (efeito) {
             case "fome":
                 if (jogador.getFome() >= jogador.getFomeMax()) {
+                    jogador.setFome(jogador.getFomeMax());
                     System.out.println("Você está de barriga cheia. Fome: " + jogador.getFome());
                 } else {
                     jogador.setFome(jogador.getFome() + getSustancia());
@@ -50,7 +51,6 @@ public class ItemConsumo extends Item {
                             jogador.setEnvenenado(true);
                         }
                     }
-
                     gastarDurabilidade();
                 }
                 break;
@@ -75,10 +75,16 @@ public class ItemConsumo extends Item {
                 setEfeito("sede");
                 break;
 
-            case "Carne":
-                setDurabilidadeMax(3);
+            case "Carne suculenta":
+                setDurabilidadeMax(2);
                 setEfeito("fome");
                 setSustancia(4);
+                break;
+
+            case "Carne magra":
+                setDurabilidadeMax(1);
+                setEfeito("fome");
+                setSustancia(2);
                 break;
 
             case "Fruta":
@@ -106,16 +112,8 @@ public class ItemConsumo extends Item {
 
     // Calculo de durabilidade
     public void gastarDurabilidade() {
-        if (!durabilidadeAtribuida) {
-            setDurabilidade(getDurabilidadeMax());
-            durabilidadeAtribuida = true;
-        }
-
-        if (getDurabilidade() == getDurabilidadeMax()) {
+        if (getDurabilidade() <= getDurabilidadeMax()) {
             setDurabilidade(getDurabilidadeMax() - 1);
-        }
-        else if (getDurabilidade() < getDurabilidadeMax()) {
-            setDurabilidade(getDurabilidade() - 1);
 
             if (getDurabilidade() == 0) {
                 getPainel().getInvent().removerItem(getNome(), 1);
@@ -135,4 +133,3 @@ public class ItemConsumo extends Item {
     public String getEfeito() { return efeito; }
     public void setEfeito(String efeito) { this.efeito = efeito; }
 }
-

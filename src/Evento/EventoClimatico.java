@@ -34,6 +34,12 @@ public class EventoClimatico extends Evento {
                 setClima("tornado");
             }
             else if (tipo == 4) {
+                setClima("cavernoso");
+            }
+            else if (tipo == 5) {
+                setClima("salgado");
+            }
+            else if (tipo == 6) {
                 setClima("nevasca");
             }
         }
@@ -45,9 +51,21 @@ public class EventoClimatico extends Evento {
         probabilidade = painel.definirUmaProbabilidade();
 
         if (tipo == 1) { // Chuva
-            executavel = (probabilidade <= 30) ? 1 : 0;
+            executavel = (probabilidade <= 45) ? 1 : 0;
         }
-        else if (tipo == 4) { // Nevasca
+        else if (tipo == 2) { // Tempestade
+            executavel = (probabilidade <= 20) ? 1 : 0;
+        }
+        else if (tipo == 3) { // Tornado
+            executavel = (probabilidade <= 25) ? 1 : 0;
+        }
+        else if (tipo == 4) { // Cavernoso
+            executavel = 1;
+        }
+        else if (tipo == 5) { // Salgado
+            executavel = (probabilidade <= 50) ? 1 : 0;
+        }
+        else if (tipo == 6) { // Nevasca
             executavel = 1;
         }
 

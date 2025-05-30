@@ -52,7 +52,7 @@ public class ItemCombate extends Item {
                 break;
 
             case "Escudo":
-                setPoder(6);
+                setPoder(5);
                 setNomeImagem("escudo");
                 break;
 

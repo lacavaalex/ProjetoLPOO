@@ -19,12 +19,17 @@ public class AmbienteFloresta extends Ambiente {
 
     private EventoCriatura eventoVibora;
     private EventoCriatura eventoUrso;
+    private EventoCriatura eventoLobo;
+    private EventoCriatura eventoCorvo;
+
     private EventoClimatico eventoChuva;
 
-    private BufferedImage fundoFloresta, fundoFloresta2;
+    private BufferedImage fundoFloresta2;
 
     private final int vibora = 1001;
     private final int urso = 1002;
+    private final int lobo = 1003;
+    private final int corvo = 1004;
 
     public AmbienteFloresta(Painel painel, Jogador jogador, UI ui) {
         super(painel, jogador);
@@ -36,11 +41,12 @@ public class AmbienteFloresta extends Ambiente {
 
         this.eventoVibora = new EventoCriatura(painel, ui, jogador, criatura);
         this.eventoUrso = new EventoCriatura(painel, ui, jogador, criatura);
+        this.eventoLobo = new EventoCriatura(painel, ui, jogador, criatura);
+        this.eventoCorvo = new EventoCriatura(painel, ui, jogador, criatura);
 
         this.eventoChuva = painel.getEventoClimatico();
 
         descreverAmbiente();
-        fundoFloresta = ui.setupImagens("floresta_macabra", "background");
         fundoFloresta2 = ui.setupImagens("floresta_macabra-2", "background");
     }
 
@@ -52,39 +58,8 @@ public class AmbienteFloresta extends Ambiente {
         this.setRecursos("frutas, água, madeira, pedras.");
         this.setFrequenciaEventos("muitas criaturas, esconderijos, riscos à saúde.");
         this.setClimaAmbiente("levemente frio.");
+        this.setNomeFundoCard("floresta_macabra");
         this.setNomeFundoCombate("floresta_macabra_combate");
-    }
-
-    @Override
-    public void construirCard(Graphics2D g2) {
-        if (isCardVisivel()) {
-
-            int tileSize = painel.getTileSize();
-            int y = tileSize * 3;
-
-            g2.setColor(new Color(0, 0, 0));
-            g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
-
-            ui.desenharPlanoDeFundo(fundoFloresta);
-
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
-            g2.setColor(Color.white);
-            ui.escreverTexto(getNome(), y += tileSize);
-
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-            y = tileSize * 5;
-
-            ui.escreverTexto(getDescricao(), y += tileSize);
-            ui.escreverTexto(" ", y += tileSize);
-            ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
-            ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
-            ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
-            ui.escreverTexto("Clima: " + getClimaAmbiente(), y += tileSize);
-
-            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));
-            String textoEsc = ("Aperte [esc] para sair");
-            g2.drawString(textoEsc, painel.getLargura() - tileSize * 6,painel.getAltura() - tileSize);
-        }
     }
 
     @Override
@@ -112,11 +87,17 @@ public class AmbienteFloresta extends Ambiente {
             case urso:
                 definirOcorrenciaDeEventoCriatura(g2, eventoUrso, 12);
                 break;
+            case lobo:
+                definirOcorrenciaDeEventoCriatura(g2, eventoLobo, 13);
+                break;
+            case corvo:
+                definirOcorrenciaDeEventoCriatura(g2, eventoCorvo, 14);
+                break;
 
             // PONTO INICIAL
             case 0:
                 ui.escreverTexto("A luz misteriosa brilha à distância, floresta adentro.", y);
-                ui.escreverTexto("Espalhadas pelo chão, há coisas que parecem ser úteis.", y += tileSize);
+                ui.escreverTexto("No chão ao seu redor, há coisas que parecem ser úteis.", y += tileSize);
                 ui.escreverTexto("Uma brecha por entre as árvores revela uma montanha próxima.", y += tileSize);
                 ui.escreverTexto("Altitude pode ser uma vantagem.", y += tileSize);
                 ui.escreverTexto("Um chiado estranho parece se aproximar...", y += tileSize);
@@ -131,18 +112,82 @@ public class AmbienteFloresta extends Ambiente {
                 ui.mostrarAcampamento();
                 break;
 
+            case 2:
+                iniciarEspera();
+
+                ui.escreverTexto("O que fazer?", y += tileSize);
+
+                boolean derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
+                boolean derrotouBossFloresta = painel.getInvent().acharItem("Jóia roxa");
+
+                String opcaoLago = derrotouBossLago? "Ir ao lago" : "Seguir luz";
+                String opcaoRecursos = derrotouBossFloresta? "Caçar" : "Coletar recursos";
+
+                ui.desenharOpcoes(new String[]{opcaoLago, opcaoRecursos, "Ir até montanha"}, y += tileSize * 2, numComando);
+
+                break;
+
+            case 3:
+                definirTelaDeBotao("voltar");
+                ui.escreverTexto("O ar sopra uivos e arrastar de folhas.", y);
+                ui.escreverTexto("Há luzes distantes que somem e reacendem,", y += tileSize);
+                ui.escreverTexto("fagulhas de movimentos por toda parte.", y += tileSize);
+                ui.escreverTexto("A sensação de se sentir observado é sufocante,", y += tileSize);
+                ui.escreverTexto("mas, por esse olhos, você é apenas um intruso,", y += tileSize);
+                ui.escreverTexto("ou talvez a próxima refeição?", y += tileSize);
+                ui.escreverTexto("Essa floresta macabra não é como qualquer outra mata que já pisou.", y += tileSize);
+                break;
+
+            case 4:
+                definirTelaDeBotao("voltar");
+
+                if (isAguardando()) {
+                    g2.setColor(Color.red);
+                    ui.escreverTexto("CAÇANDO", y);
+                    g2.setColor(Color.white);
+                    ui.escreverTexto("Não há muitas criaturas para caçar aqui.", y += tileSize);
+                    ui.escreverTexto("Quer dizer, não muitas que esteja disposto a comer...", y += tileSize);
+                    ui.escreverTexto("Ainda assim, é crucial ter alimento.", y += tileSize);
+                    ui.escreverTexto("A qualidade de sua arma equipada influencia na caça.", y += tileSize * 2);
+                    ui.escreverTexto("Quanto mais forte, melhor suas chances de pegar uma boa presa.", y += tileSize);
+                    ui.escreverTexto("Aguarde...", y += tileSize);
+
+                    setContadorTimer(getContadorTimer() + 1);
+                    if (getContadorTimer() >= getTempoDeEsperaEmFPS()/2) {
+                        setAguardando(false);
+
+                        if (!isChanceTirada()) {
+                            double probabilidade = painel.definirUmaProbabilidade();
+                            if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                                probabilidade = probabilidade * 0.9;
+                            }
+                            boolean cacaBemSucedida = probabilidade <= 60;
+
+                            if (cacaBemSucedida) {
+                                if (!isRecursosColetados()) {
+                                    if (probabilidade <= 15) {
+                                        painel.getInvent().adicionarItem("Carne suculenta", "consumo", 1);
+                                    } else {
+                                        painel.getInvent().adicionarItem("Carne magra", "consumo", 1);
+                                    }
+                                    setRecursosColetados(true);
+                                }
+                            }
+                            setChanceTirada(true);
+                        }
+                    }
+                } else {
+                    ui.escreverTexto("Pronto, vamos ver se deu certo...", y += tileSize * 2);
+                }
+
+                break;
+
             // BRANCH DA LUZ
             case 100:
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você deixa a luz te guiar...", y);
-                ui.escreverTexto(". . .", y += tileSize);
-                ui.escreverTexto("Encontrou no caminho: 2 pedras.", y += tileSize);
 
-                if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Pedra", "recurso", 2);
-                    setRecursosColetados(true);
-                }
                 definirOcorrenciaDeEventoClimatico(g2, eventoChuva, 1);
                 break;
 
@@ -160,14 +205,25 @@ public class AmbienteFloresta extends Ambiente {
             case 102:
                 definirTelaDeBotao("voltar");
 
-                if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Cantil", "consumo", 1);
-                    painel.getInvent().adicionarItem("Carne", "consumo", 2);
-                    painel.getInvent().adicionarItem("Carvão", "recurso", 1);
-                    setRecursosColetados(true);
-                }
+                if (!painel.getAmbienteAtual().checarSeSubStateFoiVisitado(104)) {
+                    if (!isRecursosColetados()) {
+                        painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                        painel.getInvent().adicionarItem("Carne suculenta", "consumo", 1);
 
-                ui.escreverTexto("Você pega o cantil, a carne, e um resto de carvão.", y);
+                        int probabilidade = painel.definirUmaProbabilidade();
+                        if (probabilidade <= 5) {
+                            painel.getInvent().adicionarItem("Carvão estranho", "recurso", 1);
+                        } else {
+                            painel.getInvent().adicionarItem("Carvão", "recurso", 1);
+                        }
+                        setRecursosColetados(true);
+                    }
+
+                    ui.escreverTexto("Você pega o cantil, a carne, e um resto de carvão.", y);
+                }
+                else {
+                    ui.escreverTexto("Não há mais nada para pegar aqui.", y);
+                }
                 break;
 
             case 103:
@@ -188,7 +244,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("O fogo parece estar muito mais fraco desde que você chegou...", y +=tileSize);
                 ui.escreverTexto("Você ouve um barulho de água à distância. Pode ser um lago.", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Ir ao lago"}, y += tileSize, numComando);
+                ui.desenharOpcoes(new String[]{"Ir ao lago", "Continuar explorando aqui"}, y += tileSize, numComando);
                 break;
 
             // BRANCH DA VÍBORA
@@ -213,25 +269,90 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 202:
+                iniciarEspera();
+
                 ui.escreverTexto("Já é hora de pensar no que fazer para se sustentar nessa mata.", y);
-                ui.escreverTexto("Você já tem madeira para fogueira, mas é importante ter", y += tileSize);
-                ui.escreverTexto("remédios e alguma arma melhor para caça.", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
                 ui.escreverTexto("O que fazer?", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Buscar frutas e medicação natural", "Buscar por arma de caça", "Montar fogueira"}, y += tileSize * 2, numComando);
+                boolean podeCurar = painel.getInvent().acharItem("Planta medicinal");
+                boolean podeCacar = painel.getInvent().acharItem("Machado") || painel.getInvent().acharItem("Faca");
+
+                String opcaoFrutas = podeCurar? "Buscar um abrigo mais seguro" : "Buscar frutas e medicação natural";
+                String opcaoCaca = podeCacar ? "Caçar" : "Buscar por arma de caça";
+                String opcaoFogueira = checarSeSubStateFoiVisitado(1) ? "Analisar ambiente" : "Montar fogueira";
+
+                ui.desenharOpcoes(new String[]{opcaoFrutas, opcaoCaca, opcaoFogueira}, y += tileSize * 2, numComando);
                 break;
 
             case 203:
-                //frutas e mediccao
+                definirTelaDeBotao("voltar");
+
+                ui.escreverTexto("Deve haver algum vegetal com propriedades de cura", y);
+                ui.escreverTexto("por essas matas. E, por Deus, algo bom pra comer", y += tileSize);
+                ui.escreverTexto("...", y += tileSize);
+                ui.escreverTexto("Tudo o que tinha por aqui já está na mochila.", y += tileSize);
+                if (!isChanceTirada()) {
+                    double probabilidade = painel.definirUmaProbabilidade();
+                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                        probabilidade = probabilidade * 0.9;
+                    }
+                    boolean recursoEncontrado = probabilidade <= 70;
+
+                    if (recursoEncontrado) {
+                        if (!isRecursosColetados()) {
+                            if (probabilidade <= 10) {
+                                painel.getInvent().adicionarItem("Fruta", "consumo", 4);
+                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 4);
+                            }
+                            else if (probabilidade > 10 || probabilidade <= 20) {
+                                painel.getInvent().adicionarItem("Fruta", "consumo", 2);
+                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 3);
+                            }
+                            else if (probabilidade > 20 || probabilidade <= 30) {
+                                painel.getInvent().adicionarItem("Fruta", "consumo", 2);
+                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 3);
+                            }
+                            else if (probabilidade > 30 || probabilidade <= 50) {
+                                painel.getInvent().adicionarItem("Fruta", "consumo", 1);
+                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 2);
+                            }
+                            else {
+                                painel.getInvent().adicionarItem("Planta medicinal", "consumo", 2);
+                            }
+                            setRecursosColetados(true);
+                        }
+                    }
+                    setChanceTirada(true);
+                }
                 break;
 
             case 204:
-                ui.escreverTexto("Você procura por algo melhor para caça.", y);
-                ui.escreverTexto("...", y += tileSize);
-                if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Madeira", "recurso", 2);
-                    setRecursosColetados(true);
+                definirTelaDeBotao("voltar");
+
+                ui.escreverTexto("Você procura por algo que sirva para caçar.", y);
+                if (!isChanceTirada()) {
+                    double probabilidade = painel.definirUmaProbabilidade();
+                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                        probabilidade = probabilidade * 0.9;
+                    }
+                    boolean recursoEncontrado = probabilidade <= 70;
+
+                    if (recursoEncontrado) {
+                        if (!isRecursosColetados()) {
+                            if (probabilidade <= 15) {
+                                painel.getInvent().adicionarItem("Machado", "combate", 1);
+                            }
+                            else {
+                                painel.getInvent().adicionarItem("Faca", "combate", 1);
+                            }
+                            setRecursosColetados(true);
+                        }
+                    }
+                    setChanceTirada(true);
+                }
+                if (painel.getInvent().acharItem("Machado") || painel.getInvent().acharItem("Faca")) {
+                    ui.escreverTexto("Olha só... acho que isso pode servir.", y += tileSize);
                 }
                 break;
 

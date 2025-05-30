@@ -42,6 +42,34 @@ public class Criatura {
                 setBoss(true);
                 break;
 
+            case 13:
+                setNomeCriatura("Lobo Famélico");
+                setVidaMaxCriatura(30);
+                setVidaCriatura(getVidaMaxCriatura());
+                setAtaqueCriatura(8);
+
+                setNomeImagem("lobo_famelico");
+                setLarguraImagemEscala(6);
+                setAlturaImagemEscala(6);
+                setDistanciaBordaEscala(7);
+
+                setBoss(false);
+                break;
+
+            case 14:
+                setNomeCriatura("Corvo Espectral");
+                setVidaMaxCriatura(20);
+                setVidaCriatura(getVidaMaxCriatura());
+                setAtaqueCriatura(2);
+
+                setNomeImagem("corvo_espectral");
+                setLarguraImagemEscala(4);
+                setAlturaImagemEscala(4);
+                setDistanciaBordaEscala(9);
+
+                setBoss(true);
+                break;
+
             case 21:
                 setNomeCriatura("Crustáceo Tríclope");
                 setVidaMaxCriatura(12);

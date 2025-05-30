@@ -126,22 +126,33 @@ public class Painel extends JPanel implements Runnable {
 
     public void updateClima() {
         String climaAtual = eventoClimatico.getClima();
+        switch (climaAtual) {
+            case "chuva":
+                if (eventoCriatura.getContadorDeEncontros() >= 6) {
+                    eventoClimatico.finalizarEventoClimatico();
+                }
+                break;
 
-        if (jogador.getHabilidade() != null &&
-                !jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
-            switch (climaAtual) {
-                case "chuva":
-                    if (eventoCriatura.getContadorDeEncontros() >= 6) {
-                        eventoClimatico.finalizarEventoClimatico();
-                    }
-                    break;
+            case "tempestade":
+                if (eventoCriatura.getContadorDeEncontros() >= 8) {
+                    eventoClimatico.finalizarEventoClimatico();
+                }
+                break;
 
-                case "tempestade":
-                    break;
+            case "tornado":
+                if (eventoCriatura.getContadorDeEncontros() >= 7) {
+                    eventoClimatico.finalizarEventoClimatico();
+                }
+                break;
 
-                default:
-                    break;
-            }
+            case "salgado":
+                if (eventoCriatura.getContadorDeEncontros() >= 5) {
+                    eventoClimatico.finalizarEventoClimatico();
+                }
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -198,7 +209,7 @@ public class Painel extends JPanel implements Runnable {
 
         // Mostra o car do ambiente atual
         if (ambienteAtual.isCardVisivel()) {
-            ambienteAtual.construirCard(g2);
+            ambienteAtual.construirCard(g2, ambienteAtual.getNomeFundoCard());
         }
 
         // Desenha a tela de inventário à frente do resto
@@ -269,7 +280,7 @@ public class Painel extends JPanel implements Runnable {
 
         botoes.setVisible(false);
         botoes.esconderBotao("Voltar ao início");
-        botoes.esconderBotao("CLima");
+        botoes.esconderBotao("Clima");
         botoes.esconderBotao("Local");
         botoes.esconderBotao("Abrir mochila");
         botoes.esconderBotao("Voltar");
@@ -287,6 +298,7 @@ public class Painel extends JPanel implements Runnable {
         }
         if (gameState == gameOverState) {
             botoes.setVisible(true);
+            botoes.esconderBotao("Clima");
             botoes.mostrarBotao("Voltar ao início");
         }
 
@@ -326,7 +338,7 @@ public class Painel extends JPanel implements Runnable {
         }
         System.out.println("Substate atual: " + getPlaySubState());
         System.out.println("Substate para retornar: " + getAmbienteAtual().getSubStateParaRetornar());
-        //System.out.println("Fome: " + jogador.getFome() + " / Sede: " + jogador.estaComSede() + " / Energia: " + jogador.getEnergia());
+        System.out.println("Fome: " + jogador.getFome() + " / Sede: " + jogador.estaComSede() + " / Energia: " + jogador.getEnergia());
     }
 
     public boolean getFightState() { return fightState; }

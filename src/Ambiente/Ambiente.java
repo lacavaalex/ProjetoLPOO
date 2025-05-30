@@ -4,15 +4,18 @@ import Controles.Botoes;
 import Entidade.Jogador;
 import Evento.EventoClimatico;
 import Evento.EventoCriatura;
+import UI.UI;
 import Main.Painel;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Ambiente {
 
     private Painel painel;
+    private UI ui;
     private Jogador jogador;
     private Botoes botoes;
 
@@ -23,6 +26,8 @@ public abstract class Ambiente {
     private String frequenciaEventos;
     private String climaAmbiente;
     private String nomeFundoCombate;
+    private String nomeFundoCard;
+    private BufferedImage fundoCard;
     private boolean cardVisivel;
 
     // Atributos de gerencia de inventário/eventos
@@ -35,11 +40,14 @@ public abstract class Ambiente {
     // Atributos do acampamento
     private boolean baseFontedeAlimento = false;
     private boolean colheitaPronta = false;
-
     private boolean baseFogoAceso;
     private int baseFortificacao = 0;
-
     private int timerAcampamento = 0;
+
+    // Atributos da pescaria e caça
+    private int contadorTimer = 0;
+    private final int tempoDeEsperaEmFPS = 600;
+    private boolean aguardando = true;
 
     // Criacao de um set que conta os substates visitados
     private int subStateAtual;
@@ -54,7 +62,50 @@ public abstract class Ambiente {
     public Ambiente(Painel painel, Jogador jogador) {
         this.painel = painel;
         this.jogador = jogador;
+        this.ui = painel.getUi();
         this.botoes = painel.getBotoes();
+    }
+
+    // Metodo-base para o polimorfismo da superclasse
+    public abstract void descreverAmbiente();
+
+    // Metodo-base para integrar a UI
+    public abstract void playState(Graphics2D g2);
+
+    // Metodo-base para construir o card de introdução de ambiente
+    public void construirCard(Graphics2D g2, String nomeFundoCard) {
+        if (isCardVisivel()) {
+
+            int tileSize = painel.getTileSize();
+            int y = tileSize * 3;
+
+            g2.setColor(new Color(0, 0, 0));
+            g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+
+            fundoCard = ui.setupImagens(nomeFundoCard, "background");
+
+            if (fundoCard != null) {
+                ui.desenharPlanoDeFundo(fundoCard);
+            }
+
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+            g2.setColor(Color.white);
+            ui.escreverTexto(getNome(), y += tileSize);
+
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+            y = tileSize * 5;
+
+            ui.escreverTexto(getDescricao(), y += tileSize);
+            ui.escreverTexto(" ", y += tileSize);
+            ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
+            ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
+            ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
+            ui.escreverTexto("Clima: " + getClimaAmbiente(), y += tileSize);
+
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));
+            String textoEsc = ("Aperte [esc] para sair");
+            g2.drawString(textoEsc, painel.getLargura() - tileSize * 6,painel.getAltura() - tileSize);
+        }
     }
 
     public void verCard() {
@@ -65,14 +116,21 @@ public abstract class Ambiente {
         botoes.mostrarBotao("Local");
     }
 
-    // Metodo-base para o polimorfismo da superclasse
-    public abstract void descreverAmbiente();
+    // Atualização da condição do acampamento
+    public void atualizarAcampamento() {
+        int numLimite = 20;
+        timerAcampamento++;
 
-    // Metodo=base para construir o card de introdução de ambiente
-    public abstract void construirCard(Graphics2D g2);
-
-    // Metodo-base para integrar a UI
-    public abstract void playState(Graphics2D g2);
+        if (timerAcampamento == numLimite) {
+            if (isBaseFonteDeAlimento()) {
+                setColheitaPronta(true);
+            }
+            if (isBaseFogoAceso()) {
+                setBaseFogoAceso(false);
+            }
+            timerAcampamento = 0;
+        }
+    }
 
     // Metodos de definicao de evento
     public void definirOcorrenciaDeEventoCriatura (Graphics2D g2, EventoCriatura nomeEventoCriatura, int tipo) {
@@ -101,6 +159,20 @@ public abstract class Ambiente {
         }
     }
 
+    // Recursos visuais do playstate
+    public void definirTelaDeBotao(String voltarOuContinuar) {
+        switch (voltarOuContinuar) {
+            case "continuar":
+                botoes.mostrarBotao("Continuar");
+                break;
+            case "voltar":
+                botoes.mostrarBotao("Voltar");
+                break;
+        }
+        botoes.esconderBotao("Abrir mochila");
+        botoes.esconderBotao("Voltar à base");
+    }
+
     public void transicaoDeTelaBoss (Graphics2D g2) {
         if (transicaoIniciada && alphaFade < 1.0f) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f - alphaFade));
@@ -118,24 +190,17 @@ public abstract class Ambiente {
         transicaoFinalizada = false;
     }
 
-    public void atualizarAcampamento() {
-        int numLimite = 10;
-        timerAcampamento++;
-
-        if (timerAcampamento == numLimite) {
-            if (isBaseFonteDeAlimento()) {
-                setColheitaPronta(true);
-            }
-            if (isBaseFogoAceso()) {
-                setBaseFogoAceso(false);
-            }
-            timerAcampamento = 0;
-        }
+    // Reestruturação do timer de pescaria e caça
+    public void iniciarEspera() {
+        contadorTimer = 0;
+        aguardando = true;
     }
 
     // Metodo que define o substate após um evento de criatura
     public void definirSubStateParaRetornar () {
-        if (painel.getPlaySubState() < 1000 && painel.getPlaySubState() != 1) {
+        int subState = painel.getPlaySubState();
+
+        if (subState < 1000 && subState != 1 && subState != 4) {
             setSubStateParaRetornar(painel.getPlaySubState() + 1);
         }
     }
@@ -147,19 +212,21 @@ public abstract class Ambiente {
         }
     }
 
-    // Metodos do Set
+    // Metodos do Set de substates
     public int getSubState () { return subStateAtual; }
 
     public void setSubState ( int novoSubState){
         if (novoSubState == 1 && painel.getPlaySubState() != 1) {
             subStateAnterior = painel.getPlaySubState();
         }
+        if (novoSubState != 1 && subStateAnterior != painel.getPlaySubState()) {
+            atualizarAcampamento();
+        }
 
         this.subStateAtual = novoSubState;
 
         painel.getSubStatesVisitadosTemporario().add(novoSubState);
         subStatesVisitadosTotal.add(novoSubState);
-        atualizarAcampamento();
 
         recursosColetados = false;
         recursosGastos = false;
@@ -173,18 +240,6 @@ public abstract class Ambiente {
 
     public boolean checarSeSubStateFoiVisitado(int num) { return subStatesVisitadosTotal.contains(num); }
 
-    public void definirTelaDeBotao(String voltarOuContinuar) {
-        switch (voltarOuContinuar) {
-            case "continuar":
-                botoes.mostrarBotao("Continuar");
-                break;
-            case "voltar":
-                botoes.mostrarBotao("Voltar");
-                break;
-        }
-        botoes.esconderBotao("Abrir mochila");
-        botoes.esconderBotao("Voltar à base");
-    }
 
     // Getters e setters
     public boolean isCardVisivel() { return cardVisivel; }
@@ -235,9 +290,20 @@ public abstract class Ambiente {
     public String getNomeFundoCombate() { return nomeFundoCombate; }
     public void setNomeFundoCombate(String nomeFundoCombate) { this.nomeFundoCombate = nomeFundoCombate; }
 
+    public String getNomeFundoCard() { return nomeFundoCard; }
+    public void setNomeFundoCard(String nomeFundoCard) { this.nomeFundoCard = nomeFundoCard; }
+
     public boolean isTransicaoIniciada() { return transicaoIniciada; }
     public void setTransicaoIniciada(boolean transicaoIniciada) { this.transicaoIniciada = transicaoIniciada; }
 
     public boolean isTransicaoFinalizada() { return transicaoFinalizada; }
     public void setTransicaoFinalizada (boolean transicaoFinalizada) { this.transicaoFinalizada = transicaoFinalizada; }
+
+    public int getContadorTimer() { return contadorTimer; }
+    public void setContadorTimer(int contadorTimer) { this.contadorTimer = contadorTimer; }
+
+    public int getTempoDeEsperaEmFPS() { return tempoDeEsperaEmFPS; }
+
+    public boolean isAguardando() { return aguardando; }
+    public void setAguardando(boolean aguardando) { this.aguardando = aguardando; }
 }

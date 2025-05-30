@@ -22,18 +22,14 @@ public class AmbienteLago extends Ambiente {
     private EventoCriatura eventoTriclope;
     private EventoCriatura eventoCrustoso;
 
-    private BufferedImage fundoLago, fundoLago2;
+    private BufferedImage fundoLago2;
     private BufferedImage placaFrente, placaVerso, crustoso, joia;
+
+    private int contadorEspera = 0;
+    private int contadorMovimento = 0;
 
     private final int caranguejo = 2001;
     private final int boss = 2002;
-
-    // Atributos da pescaria
-    private int contadorEspera = 0;
-    private int contadorMovimento = 0;
-    private int contadorTimer = 0;
-    private final int tempoDeEsperaEmFPS = 600;
-    private boolean aguardando = true;
 
     public AmbienteLago(Painel painel, Jogador jogador, UI ui) {
         super(painel, jogador);
@@ -48,7 +44,6 @@ public class AmbienteLago extends Ambiente {
 
         descreverAmbiente();
 
-        fundoLago = ui.setupImagens("lago_sereno", "background");
         fundoLago2 = ui.setupImagens("lago_sereno-2", "background");
         placaFrente = ui.setupImagens("placa_lago_frente", "analises");
         placaVerso = ui.setupImagens("placa_lago_verso", "analises");
@@ -61,42 +56,11 @@ public class AmbienteLago extends Ambiente {
         this.setNome("LAGO SERENO");
         this.setDescricao("Limpo, vasto, estranhamente silencioso.");
         this.setDificuldade("tranquilas.");
-        this.setRecursos("água.");
-        this.setFrequenciaEventos("quieto, um certo ar de misticismo.");
+        this.setRecursos("peixe, madeira, água.");
+        this.setFrequenciaEventos("quieto, uma espécie predominante.");
         this.setClimaAmbiente("levemente frio");
+        this.setNomeFundoCard("lago_sereno");
         this.setNomeFundoCombate("lago_sereno_combate");
-    }
-
-    @Override
-    public void construirCard(Graphics2D g2) {
-        if (isCardVisivel()) {
-
-            int tileSize = painel.getTileSize();
-            int y = tileSize * 3;
-
-            g2.setColor(new Color(0, 0, 0));
-            g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
-
-            ui.desenharPlanoDeFundo(fundoLago);
-
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
-            g2.setColor(Color.white);
-            ui.escreverTexto(getNome(), y += tileSize);
-
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-            y = tileSize * 5;
-
-            ui.escreverTexto(getDescricao(), y += tileSize);
-            ui.escreverTexto(" ", y += tileSize);
-            ui.escreverTexto("Condições de exploração: " + getDificuldade(), y += tileSize);
-            ui.escreverTexto("Recursos possíveis: " + getRecursos(), y += tileSize);
-            ui.escreverTexto("Ecossistema: " + getFrequenciaEventos(), y += tileSize);
-            ui.escreverTexto("Clima: " + getClimaAmbiente(), y += tileSize);
-
-            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));
-            String textoEsc = ("Aperte [esc] para sair");
-            g2.drawString(textoEsc, painel.getLargura() - tileSize * 6,painel.getAltura() - tileSize);
-        }
     }
 
     @Override
@@ -183,7 +147,7 @@ public class AmbienteLago extends Ambiente {
 
                     double probabilidade = painel.definirUmaProbabilidade();
                     if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
-                        probabilidade = probabilidade - probabilidade * 0.1;
+                        probabilidade = probabilidade * 0.9;
                     }
                     boolean recursoEncontrado = probabilidade <= 80;
 
@@ -295,9 +259,9 @@ public class AmbienteLago extends Ambiente {
                 if (!isChanceTirada()) {
                     double probabilidade = painel.definirUmaProbabilidade();
                     if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
-                        probabilidade = probabilidade - probabilidade * 0.1;
+                        probabilidade = probabilidade * 0.9;
                     }
-                    boolean recursoEncontrado = probabilidade <= 1;
+                    boolean recursoEncontrado = probabilidade <= 5;
 
                     if (recursoEncontrado) {
                         if (!isRecursosColetados()) {
@@ -329,25 +293,25 @@ public class AmbienteLago extends Ambiente {
             case 417:
                 definirTelaDeBotao("voltar");
 
-                if (aguardando) {
+                if (isAguardando()) {
                     g2.setColor(Color.red);
                     ui.escreverTexto("Não há pressa... Aguarde...", y += tileSize * 2);
                     g2.setColor(Color.white);
 
-                    contadorTimer++;
-                    if (contadorTimer >= tempoDeEsperaEmFPS) {
-                        aguardando = false;
+                    setContadorTimer(getContadorTimer() + 1);
+                    if (getContadorTimer() >= getTempoDeEsperaEmFPS()) {
+                        setAguardando(false);
 
                         if (!isChanceTirada()) {
                             double probabilidade = painel.definirUmaProbabilidade();
                             if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
-                                probabilidade = probabilidade - probabilidade * 0.1;
+                                probabilidade = probabilidade * 0.9;
                             }
                             if (painel.getInvent().acharItem("Jóia azul")) {
                                 probabilidade = probabilidade * 0.80;
                             }
                             boolean pescouPeixe = probabilidade <= 40;
-                            boolean pescouItem = probabilidade >= 96;
+                            boolean pescouItem = probabilidade >= 70;
 
                             if (contadorEspera == 6 && contadorEspera > contadorMovimento) {
                                 if (probabilidade >= 50) {
@@ -370,8 +334,12 @@ public class AmbienteLago extends Ambiente {
                                 }
                             } else if (pescouItem) {
                                 if (!isRecursosColetados()) {
-                                    if (!painel.getInvent().acharItem("Lâmina metálica")) {
-                                        painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
+                                    if (probabilidade < 90) {
+                                        painel.getInvent().adicionarItem("Planta medicinal", "recurso", 1);
+                                    } else {
+                                        if (!painel.getInvent().acharItem("Lâmina metálica")) {
+                                            painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
+                                        }
                                     }
                                     setRecursosColetados(true);
                                 }
@@ -390,19 +358,19 @@ public class AmbienteLago extends Ambiente {
             case 418:
                 definirTelaDeBotao("voltar");
 
-                if (aguardando) {
+                if (isAguardando()) {
                     g2.setColor(Color.red);
                     ui.escreverTexto("Vamos ver se há sinal de vida nesse lago... Aguarde...", y += tileSize * 2);
                     g2.setColor(Color.white);
 
-                    contadorTimer++;
-                    if (contadorTimer >= tempoDeEsperaEmFPS/2) {
-                        aguardando = false;
+                    setContadorTimer(getContadorTimer() + 1);
+                    if (getContadorTimer() >= getTempoDeEsperaEmFPS()/2) {
+                        setAguardando(false);
 
                         if (!isChanceTirada()) {
                             double probabilidade = painel.definirUmaProbabilidade();
                             if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
-                                probabilidade = probabilidade - probabilidade * 0.1;
+                                probabilidade = probabilidade * 0.9;
                             }
                             if (painel.getInvent().acharItem("Jóia azul")) {
                                 probabilidade = probabilidade * 0.80;
@@ -442,7 +410,7 @@ public class AmbienteLago extends Ambiente {
             case 419:
                 botoes.esconderBotao("Abrir mochila");
 
-                if (aguardando) {
+                if (isAguardando()) {
                     ui.escreverTexto("Ainda sem sinal de sol...", y);
                     ui.escreverTexto("Sem sinal de um caminho para fora desse lugar...", y += tileSize);
                     ui.escreverTexto("Sem um pingo de sentido sobre como veio parar aqui....", y += tileSize);
@@ -453,9 +421,9 @@ public class AmbienteLago extends Ambiente {
                     ui.escreverTexto("Aguarde...", y += tileSize);
                     g2.setColor(Color.white);
 
-                    contadorTimer++;
-                    if (contadorTimer >= tempoDeEsperaEmFPS) {
-                        aguardando = false;
+                    setContadorTimer(getContadorTimer() + 1);
+                    if (getContadorTimer() >= getTempoDeEsperaEmFPS()) {
+                        setAguardando(false);
                     }
                 } else {
                     Composite composite = g2.getComposite();
@@ -551,18 +519,12 @@ public class AmbienteLago extends Ambiente {
         }
     }
 
-
     public void desenharImagemLago (Graphics2D g2, BufferedImage imagem) {
        int tileSize = painel.getTileSize();
        int escala = tileSize * 12;
        int x = painel.getLargura()/2 - escala/2;
 
        g2.drawImage(imagem, x, tileSize/2, escala, escala, null);
-    }
-
-    public void iniciarEspera() {
-        contadorTimer = 0;
-        aguardando = true;
     }
 
     public void setContadorEspera(int contadorEspera) { this.contadorEspera = contadorEspera; }

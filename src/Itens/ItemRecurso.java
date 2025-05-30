@@ -51,11 +51,21 @@ public class ItemRecurso extends Item {
                             painel.getAmbienteAtual().setBaseFogoAceso(true);
                             break;
                         case "Cercado":
+                        case "Muro":
                             painel.getAmbienteAtual().setBaseFortificacao(painel.getAmbienteAtual().getBaseFortificacao() + 1);
                             break;
                     }
+                    painel.getInvent().removerItem(getNome(), 1);
                 }
-                painel.getInvent().removerItem(getNome(), 1);
+                else if (painel.getPlaySubState() == 1 || painel.getPlaySubState() != 1) {
+
+                    if (getOpcaoCrafting().equals("Curar veneno")) {
+                        if (painel.getJogador().estaEnvenenado()) {
+                            painel.getJogador().setEnvenenado(false);
+                            painel.getInvent().removerItem(getNome(), 1);
+                        }
+                    }
+                }
             }
         }
     }
@@ -85,6 +95,9 @@ public class ItemRecurso extends Item {
                     setItemParaRemoverNoCrafting("Madeira");
                     setOpcaoCrafting("Estilingue");
                     setTipoNovoItem("combate");
+                } else if (painel.getPlaySubState() == 1) {
+                    setOpcaoCrafting("Muro");
+                    setTipoNovoItem(null);
                 } else {
                     setOpcaoCrafting("...");
                     setTipoNovoItem(null);

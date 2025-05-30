@@ -31,7 +31,6 @@ public class ItemConsumo extends Item {
             case "fome":
                 if (jogador.getFome() >= jogador.getFomeMax()) {
                     jogador.setFome(jogador.getFomeMax());
-                    System.out.println("Você está de barriga cheia. Fome: " + jogador.getFome());
                 } else {
                     jogador.setFome(jogador.getFome() + getSustancia());
                     int fomeAtualizada = jogador.getFome();
@@ -40,25 +39,52 @@ public class ItemConsumo extends Item {
                         jogador.setFome(jogador.getFomeMax());
                     }
                     else if (fomeAtualizada == jogador.getFomeMax()) {
-                        jogador.setVida(jogador.getVida() + 1);
+                        if (jogador.getVida() < jogador.getVidaMax()) {
+                            jogador.setVida(jogador.getVida() + 1);
+                        }
                     }
 
-                    if (getNome().equals("Fruta") || getNome().equals("Peixe")) {
+                    if (getNome().equals("Fruta") || getNome().equals("Peixe") ||
+                    getNome().equals("Carne magra") || getNome().equals("Carne suculenta")) {
+
                         int probabilidade = getPainel().definirUmaProbabilidade();
 
-                        if (probabilidade <= 20 && getNome().equals("Fruta")
-                        || probabilidade <= 5 && getNome().equals("Peixe")) {
+                        if (probabilidade <= 4 && getNome().equals("Peixe")
+                                || probabilidade <= 8 && getNome().equals("Carne magra")
+                                || probabilidade <= 8 && getNome().equals("Carne suculenta")
+                                || probabilidade <= 20 && getNome().equals("Fruta")) {
                             jogador.setEnvenenado(true);
                         }
                     }
                     gastarDurabilidade();
                 }
                 break;
+
             case "sede":
                 if (!jogador.estaComSede()) {
                     System.out.println("Você está sem sede. Sede: " + jogador.estaComSede());
                 } else {
                     jogador.setSede(false);
+                    gastarDurabilidade();
+                }
+                break;
+
+            case "energia":
+                if (jogador.getEnergia() >= jogador.getEnergiaMax()) {
+                    jogador.setEnergia(jogador.getEnergiaMax());
+                    System.out.println("Sua energia está no máximo.");
+                } else {
+                    jogador.setEnergia(jogador.getEnergia() + getSustancia());
+                    int energiaAtualizada = jogador.getEnergia();
+
+                    if (energiaAtualizada > jogador.getEnergiaMax()) {
+                        jogador.setEnergia(jogador.getEnergiaMax());
+                    }
+                    else if (energiaAtualizada == jogador.getEnergiaMax()) {
+                        if (jogador.getVida() < jogador.getVidaMax()) {
+                            jogador.setVida(jogador.getVida() + 1);
+                        }
+                    }
                     gastarDurabilidade();
                 }
                 break;
@@ -71,8 +97,14 @@ public class ItemConsumo extends Item {
         setTipo("consumo");
         switch (nome) {
             case "Cantil":
-                setDurabilidadeMax(4);
+                setDurabilidadeMax(3);
                 setEfeito("sede");
+                break;
+
+            case "Mel":
+                setDurabilidadeMax(1);
+                setEfeito("energia");
+                setSustancia(2);
                 break;
 
             case "Carne suculenta":

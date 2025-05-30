@@ -320,20 +320,21 @@ public class UI {
         g2.setColor(new Color(20, 0, 10));
         g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
-        int y = tileSize * 3;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25F));
+        int y = tileSize * 2;
         g2.setColor(Color.white);
         escreverTexto("CONTROLES", y);
 
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));;
-        escreverTexto(" ", y += tileSize);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 14F));;
         escreverTexto("Enquanto estiver no menu de seleção de opção:", y += tileSize);
-        escreverTexto("- Pressione [W] ou [UP] para subir o cursor.", y += tileSize);
-        escreverTexto("- Pressione [S] ou [DOWN] para descer o cursor.", y += tileSize);
+        escreverTexto("- Pressione [W]/[S] ou [UP]/[DOWN] para subir/descer o cursor.", y += tileSize);
         escreverTexto("- Pressione [ENTER] para escolher sua opção.", y += tileSize);
+        escreverTexto(" ", y += tileSize);
         escreverTexto("Pressione [ESC] para sair de certas telas.", y += tileSize);
         escreverTexto("Para clicar em botões (como [VOLTAR]), use o mouse ou touchpad.", y += tileSize);
+        escreverTexto("Escolha a habilidade do seu personagem para benefícios específicos.", y += tileSize);
         escreverTexto("No inventário, aperte [ENTER] para selecionar armas ou alimento.", y += tileSize);
+        escreverTexto("No combate, você pode ATACAR, ESQUIVAR, BLOQUEAR ou FUGIR.", y += tileSize);
     }
 
     public void mostrarGameOverScreen() {

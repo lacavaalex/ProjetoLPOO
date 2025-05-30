@@ -261,6 +261,9 @@ public class InventarioUI extends UI {
                         String hidratacao = getJogador().estaComSede() ? "DESIDRATADO" : "Hidratado";
                         nivelAtual = "Sua sede: " + hidratacao;
                         break;
+                    case "energia":
+                        nivelAtual = "Sua energia: " + getJogador().getEnergia() + "/" + getJogador().getEnergiaMax();
+                        break;
                     default: nivelAtual = null; break;
                 }
                 g2.drawString(nivelAtual, x, y += tileSize);
@@ -305,7 +308,7 @@ public class InventarioUI extends UI {
                 g2.drawString(opcoesCrafting, x, y += tileSize / 2);
 
                 if (!recurso.getOpcaoCrafting().equals("...")) {
-                    g2.drawString("Construir? (Aperte [ENTER])", x, y += tileSize / 2);
+                    g2.drawString("Utilizar? (Aperte [ENTER])", x, y += tileSize / 2);
                 }
             }
         }

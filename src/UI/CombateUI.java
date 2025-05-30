@@ -400,8 +400,13 @@ public class CombateUI extends UI {
 
     public void inimigoSeEsvaindo(Graphics2D g2) {
         if (transicaoIniciada && alphaFade < 1.0f) {
-            if (criaturaEmCombate.isBoss()) {alphaFade += 0.002f; }
-            else { alphaFade += 0.008f; }
+            if (criaturaEmCombate.isBoss()
+            && !criaturaEmCombate.getNomeCriatura().equals("Corvo Espectral")){
+                alphaFade += 0.002f;
+            }
+            else {
+                alphaFade += 0.008f;
+            }
             if (alphaFade >= 1.0f) {
                 alphaFade = 1.0f;
                 transicaoFinalizada = true;

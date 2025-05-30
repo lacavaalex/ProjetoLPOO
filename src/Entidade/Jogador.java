@@ -10,7 +10,7 @@ public class Jogador {
     private String habilidade;
     private String localizacao;
 
-    private int vidaMax = 20;
+    private int vidaMax = 25;
     private int vida = getVidaMax();
 
     private boolean sede = false;

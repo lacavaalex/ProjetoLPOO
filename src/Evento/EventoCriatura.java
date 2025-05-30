@@ -62,8 +62,8 @@ public class EventoCriatura extends Evento {
                 getUi().escreverTexto("*ÁUUUUUUU*", y += tileSize * 4);
                 getUi().escreverTexto("ATAQUE SURPRESA! -" + criatura.getAtaqueCriatura()/2 +"HP", y += tileSize);
                 g2.setColor(Color.white);
-                getUi().escreverTexto("Antes que você pudesse reagir, a criatura se atira contra você.", y += tileSize * 4);
-                getUi().escreverTexto("Um feroz lobo de mandíbula extraterrestre te escolheu como presa.", y += tileSize);
+                getUi().escreverTexto("Antes que você pudesse reagir, a criatura se atira contra você.", y += tileSize);
+                getUi().escreverTexto("Um lobo de mandíbula extraterrestre te escolhe como presa.", y += tileSize);
             }
 
             else if (tipo == 14) {
@@ -121,7 +121,7 @@ public class EventoCriatura extends Evento {
             executavel = (probabilidade <= 50) ? 1 : 0;
          }
         else if (tipo == 14) { // Corvo Espectral
-            executavel = (probabilidade <= 40) ? 1 : 0;
+            executavel = (probabilidade <= 50) ? 1 : 0;
         }
         else if (tipo == 21) { // Crustaceo Triclope
             executavel = (probabilidade <= 40) ? 1 : 0;

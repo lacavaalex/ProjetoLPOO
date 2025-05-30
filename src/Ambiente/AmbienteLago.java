@@ -45,10 +45,10 @@ public class AmbienteLago extends Ambiente {
         descreverAmbiente();
 
         fundoLago2 = ui.setupImagens("lago_sereno-2", "background");
-        placaFrente = ui.setupImagens("placa_lago_frente", "analises");
-        placaVerso = ui.setupImagens("placa_lago_verso", "analises");
+        placaFrente = ui.setupImagens("placa_lago_frente", "zoom");
+        placaVerso = ui.setupImagens("placa_lago_verso", "zoom");
         crustoso = ui.setupImagens("crustoso_cruel", "criatura");
-        joia = ui.setupImagens("joia_carcaca", "analises");
+        joia = ui.setupImagens("joia_carcaca", "zoom");
     }
 
     @Override
@@ -193,14 +193,14 @@ public class AmbienteLago extends Ambiente {
             case 408:
                 definirTelaDeBotao("continuar");
 
-                desenharImagemLago(g2, placaFrente);
+                desenharImagemZoom(g2, placaFrente);
                 ui.escreverTexto("Estranho. Talvez haja mais no verso.", painel.getAltura() - tileSize);
                 break;
 
             case 409:
                 definirTelaDeBotao("continuar");
 
-                desenharImagemLago(g2, placaVerso);
+                desenharImagemZoom(g2, placaVerso);
                 ui.escreverTexto("...", painel.getAltura() - tileSize);
                 break;
 
@@ -454,7 +454,7 @@ public class AmbienteLago extends Ambiente {
                 }
 
                 definirTelaDeBotao("continuar");
-                desenharImagemLago(g2, crustoso);
+                desenharImagemZoom(g2, crustoso);
                 ui.escreverTexto("Uma fera incrustada emerge do lago.", painel.getAltura() - tileSize);
                 break;
 
@@ -495,7 +495,7 @@ public class AmbienteLago extends Ambiente {
 
             case 423:
                 definirTelaDeBotao("continuar");
-                desenharImagemLago(g2, joia);
+                desenharImagemZoom(g2, joia);
                 ui.escreverTexto("Isso... é melhor guardar.", painel.getAltura() - tileSize);
                 break;
 
@@ -517,14 +517,6 @@ public class AmbienteLago extends Ambiente {
             default:
                 throw new IllegalArgumentException("Substate desconhecido: " + subState);
         }
-    }
-
-    public void desenharImagemLago (Graphics2D g2, BufferedImage imagem) {
-       int tileSize = painel.getTileSize();
-       int escala = tileSize * 12;
-       int x = painel.getLargura()/2 - escala/2;
-
-       g2.drawImage(imagem, x, tileSize/2, escala, escala, null);
     }
 
     public void setContadorEspera(int contadorEspera) { this.contadorEspera = contadorEspera; }

@@ -46,12 +46,12 @@ public class Criatura {
                 setNomeCriatura("Lobo Famélico");
                 setVidaMaxCriatura(30);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(8);
+                setAtaqueCriatura(6);
 
                 setNomeImagem("lobo_famelico");
-                setLarguraImagemEscala(6);
-                setAlturaImagemEscala(6);
-                setDistanciaBordaEscala(7);
+                setLarguraImagemEscala(8);
+                setAlturaImagemEscala(8);
+                setDistanciaBordaEscala(10);
 
                 setBoss(false);
                 break;
@@ -89,7 +89,7 @@ public class Criatura {
                 setNomeCriatura("O Crustoso Cruel");
                 setVidaMaxCriatura(70);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(5);
+                setAtaqueCriatura(6);
 
                 setNomeImagem("crustoso_cruel");
                 setLarguraImagemEscala(12);

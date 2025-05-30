@@ -155,6 +155,23 @@ public class FuncaoBotao implements ActionListener {
                 case 201:
                     painel.setPlaySubState(1001);
                     break;
+
+                case 209:
+                case 211:
+                case 212:
+                    int stateRetornar;
+                    if (subState == 209) { stateRetornar = 210; }
+                    else { stateRetornar = painel.getPlaySubState() + 2; }
+                    painel.getAmbienteAtual().setSubStateParaRetornar(stateRetornar);
+
+                    int probabilidade = painel.definirUmaProbabilidade();
+
+                    int criatura;
+                    if (probabilidade <= 50) {criatura = 1001; }
+                    else { criatura = 1003; }
+                    painel.setPlaySubState(criatura);
+                    break;
+
                 case 303:
                     painel.setPlaySubState(1002);
                     break;
@@ -171,11 +188,10 @@ public class FuncaoBotao implements ActionListener {
                     painel.setPlaySubState(208);
                     break;
                 case 208:
+                    painel.getAmbienteAtual().setSubStateParaRetornar(202);
                     if (painel.getAmbienteAtual().isBaseFogoAceso()) {
-                        painel.getAmbienteAtual().setSubStateParaRetornar(211);
                         painel.setPlaySubState(1);
                     } else {
-                        painel.getAmbienteAtual().setSubStateParaRetornar(202);
                         painel.setPlaySubState(1001);
                     }
                     break;

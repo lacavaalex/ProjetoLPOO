@@ -173,6 +173,14 @@ public abstract class Ambiente {
         botoes.esconderBotao("Voltar à base");
     }
 
+    public void desenharImagemZoom(Graphics2D g2, BufferedImage imagem) {
+        int tileSize = painel.getTileSize();
+        int escala = tileSize * 12;
+        int x = painel.getLargura()/2 - escala/2;
+
+        g2.drawImage(imagem, x, tileSize/2, escala, escala, null);
+    }
+
     public void transicaoDeTelaBoss (Graphics2D g2) {
         if (transicaoIniciada && alphaFade < 1.0f) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f - alphaFade));

@@ -55,11 +55,11 @@ public class Painel extends JPanel implements Runnable {
 
     private final int tutorialControles = 9999;
 
-    // Atributos do sistema de substates
+    // Atributos do sistema de substate
     private Map<String, Ambiente> ambientes = new HashMap<>();
     private Set<Integer> subStatesVisitadosTemporario = new HashSet<>();
 
-    private final int numSubStatesAtualizacao = 5;
+    private final int numSubStatesAtualizacao = 7;
 
 
     public Painel(){
@@ -88,6 +88,7 @@ public class Painel extends JPanel implements Runnable {
     // Inicialização do jogo e aplicação da Thread
     public void setupJogo() {
         gameState = titleState;
+        jogador.setAtaqueAtual(jogador.getAtaqueInicial());
 
         this.setLayout(null);
         botoes.setBounds(0, 0, larguraTela, alturaTela);
@@ -128,26 +129,21 @@ public class Painel extends JPanel implements Runnable {
         String climaAtual = eventoClimatico.getClima();
         switch (climaAtual) {
             case "chuva":
-                if (eventoCriatura.getContadorDeEncontros() >= 6) {
+            case "tornado":
+                if (eventoCriatura.getContadorDeEncontros() >= 5) {
                     eventoClimatico.finalizarEventoClimatico();
                 }
                 break;
 
             case "tempestade":
-                if (eventoCriatura.getContadorDeEncontros() >= 8) {
-                    eventoClimatico.finalizarEventoClimatico();
-                }
-                break;
-
-            case "tornado":
-                if (eventoCriatura.getContadorDeEncontros() >= 7) {
+                if (eventoCriatura.getContadorDeEncontros() >= 6) {
                     eventoClimatico.finalizarEventoClimatico();
                 }
                 break;
 
             case "salgado":
-                if (eventoCriatura.getContadorDeEncontros() >= 5) {
-                    eventoClimatico.finalizarEventoClimatico();
+                if (eventoCriatura.getContadorDeEncontros() >= 4) {
+                    eventoClimatico.setClima("cavernoso");
                 }
                 break;
 
@@ -225,6 +221,7 @@ public class Painel extends JPanel implements Runnable {
             Ambiente novoAmbiente = switch (nome) {
                 case "floresta" -> new AmbienteFloresta(this, jogador, ui);
                 case "lago" -> new AmbienteLago(this, jogador, ui);
+                case "gruta" -> new AmbienteGruta(this, jogador, ui);
                 case "montanha" -> new AmbienteMontanha(this, jogador, ui);
                 default -> throw new IllegalArgumentException("Ambiente desconhecido: " + nome);
             };
@@ -240,6 +237,7 @@ public class Painel extends JPanel implements Runnable {
         }
         setPlaySubState(subStateNoNovoAmbiente);
     }
+
 
     // Gerador de número aleatório entre 1 e 100 (para probabilidades)
     public int definirUmaProbabilidade() {

@@ -27,7 +27,8 @@ public class Jogador {
     private boolean sanidade;
 
     private String armaAtual = "Nenhuma arma equipada.";
-    private int ataqueAtual = 100;
+    private final int ataqueInicial = 100;
+    private int ataqueAtual;
 
     public Jogador(Painel painel) {
         this.painel = painel;
@@ -40,6 +41,15 @@ public class Jogador {
         if (numLimite == painel.getQuantidadeSubStatesVisitadosTemporario()) {
             if (estaEnvenenado()) {
                 setEnergia(getEnergia() - 1);
+            }
+            if (painel.getEventoClimatico().getClima().equals("tornado")
+                    && !getHabilidade().equals("SOBREVIVENCIAL")) {
+                int probabilidade = painel.definirUmaProbabilidade();
+                boolean afetado = probabilidade <= 50;
+                if (afetado) {
+                    setVida(getVida() - 2);
+                    afetado = false;
+                }
             }
             atualizarFome();
             atualizarSede();
@@ -87,20 +97,39 @@ public class Jogador {
 
     public void atualizarSede() {
         if (!estaComSede()) {
-            switch (contadorDaSede) {
-                case 0, 1, 2:
-                    nivelSede = "alto";
-                    setSede(false);
-                    contadorDaSede += 1;
-                    break;
-                case 3, 4, 5:
-                    nivelSede = "media";
-                    setSede(false);
-                    contadorDaSede += 1;
-                    break;
-                default:
-                    nivelSede = "baixa";
-                    setSede(true);
+            if (!painel.getEventoClimatico().getClima().equals("salgado")) {
+                    switch (contadorDaSede) {
+                        case 0, 1:
+                            nivelSede = "alto";
+                            setSede(false);
+                            contadorDaSede += 1;
+                            break;
+                        case 2, 3:
+                            nivelSede = "media";
+                            setSede(false);
+                            contadorDaSede += 1;
+                            break;
+                        default:
+                            nivelSede = "baixa";
+                            setSede(true);
+                    }
+                }
+            else {
+                switch (contadorDaSede) {
+                    case 0:
+                        nivelSede = "alto";
+                        setSede(false);
+                        contadorDaSede += 1;
+                        break;
+                    case 1:
+                        nivelSede = "media";
+                        setSede(false);
+                        contadorDaSede += 1;
+                        break;
+                    default:
+                        nivelSede = "baixa";
+                        setSede(true);
+                }
             }
         } else {
             nivelSede = "baixa";
@@ -133,7 +162,7 @@ public class Jogador {
         resetVida();
         resetFome();
         resetEnergia();
-        setAtaqueAtual(1);
+        setAtaqueAtual(ataqueInicial);
         setArmaAtual("Nenhuma arma equipada.");
         setSede(false);
         setEnvenenado(false);
@@ -144,6 +173,7 @@ public class Jogador {
     public String getArmaAtual() { return armaAtual; }
     public void setArmaAtual(String armaAtual) { this.armaAtual = armaAtual; }
 
+    public int getAtaqueInicial() { return ataqueInicial; }
     public int getAtaqueAtual() { return ataqueAtual; }
     public void setAtaqueAtual(int ataqueAtual) { this.ataqueAtual = ataqueAtual; }
 

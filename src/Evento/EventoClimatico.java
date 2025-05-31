@@ -22,25 +22,17 @@ public class EventoClimatico extends Evento {
 
     @Override
     public void executar(Graphics2D g2, int tipo) {
-        if (executavel == 1) {
+        if (executavel == 1 && !painel.getEventoClimatico().isEventoClimaticoAtivo()) {
+
             painel.getEventoClimatico().setEventoClimaticoAtivo(true);
-            if (tipo == 1) {
-                setClima("chuva");
-            }
-            else if (tipo == 2) {
-                setClima("tempestade");
-            }
-            else if (tipo == 3) {
-                setClima("tornado");
-            }
-            else if (tipo == 4) {
-                setClima("cavernoso");
-            }
-            else if (tipo == 5) {
-                setClima("salgado");
-            }
-            else if (tipo == 6) {
-                setClima("nevasca");
+
+            switch (tipo) {
+                case 1: setClima("chuva"); break;
+                case 2: setClima("tempestade"); break;
+                case 3: setClima("tornado"); break;
+                case 4: setClima("cavernoso"); break;
+                case 5: setClima("salgado"); break;
+                case 6: setClima("nevasca"); break;
             }
         }
     }
@@ -51,13 +43,13 @@ public class EventoClimatico extends Evento {
         probabilidade = painel.definirUmaProbabilidade();
 
         if (tipo == 1) { // Chuva
-            executavel = (probabilidade <= 45) ? 1 : 0;
+            executavel = (probabilidade <= 40) ? 1 : 0;
         }
         else if (tipo == 2) { // Tempestade
-            executavel = (probabilidade <= 20) ? 1 : 0;
+            executavel = (probabilidade <= 50) ? 1 : 0;
         }
         else if (tipo == 3) { // Tornado
-            executavel = (probabilidade <= 25) ? 1 : 0;
+            executavel = (probabilidade <= 50) ? 1 : 0;
         }
         else if (tipo == 4) { // Cavernoso
             executavel = 1;
@@ -75,6 +67,7 @@ public class EventoClimatico extends Evento {
     public void finalizarEventoClimatico() {
         setEventoClimaticoAtivo(false);
         setClima("ameno");
+        executavel = 0;
     }
 
     // Getters e setters

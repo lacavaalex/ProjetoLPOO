@@ -146,7 +146,7 @@ public class AmbienteLago extends Ambiente {
                 if (!isChanceTirada()) {
 
                     double probabilidade = painel.definirUmaProbabilidade();
-                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                    if (jogador.getHabilidade().equals("RASTREADORA")) {
                         probabilidade = probabilidade * 0.9;
                     }
                     boolean recursoEncontrado = probabilidade <= 80;
@@ -258,7 +258,7 @@ public class AmbienteLago extends Ambiente {
 
                 if (!isChanceTirada()) {
                     double probabilidade = painel.definirUmaProbabilidade();
-                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                    if (jogador.getHabilidade().equals("RASTREADORA")) {
                         probabilidade = probabilidade * 0.9;
                     }
                     boolean recursoEncontrado = probabilidade <= 5;
@@ -304,7 +304,7 @@ public class AmbienteLago extends Ambiente {
 
                         if (!isChanceTirada()) {
                             double probabilidade = painel.definirUmaProbabilidade();
-                            if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                            if (jogador.getHabilidade().equals("RASTREADORA")) {
                                 probabilidade = probabilidade * 0.9;
                             }
                             if (painel.getInvent().acharItem("Jóia azul")) {
@@ -369,7 +369,7 @@ public class AmbienteLago extends Ambiente {
 
                         if (!isChanceTirada()) {
                             double probabilidade = painel.definirUmaProbabilidade();
-                            if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                            if (jogador.getHabilidade().equals("RASTREADORA")) {
                                 probabilidade = probabilidade * 0.9;
                             }
                             if (painel.getInvent().acharItem("Jóia azul")) {

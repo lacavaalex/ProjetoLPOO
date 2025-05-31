@@ -156,7 +156,7 @@ public class Teclado implements KeyListener {
 
             if (code == KeyEvent.VK_ENTER) {
                 if (ui.getNumComando() != 4) {
-                    String[] habilidades = {"COMBATIVA", "SOBREVIVENCIAL", "MEDICINAL", "CAÇADORA"};
+                    String[] habilidades = {"COMBATIVA", "SOBREVIVENCIAL", "MEDICINAL", "RASTREADORA"};
                     String habilidadeEscolhida = habilidades[ui.getNumComando()];
                     jogador.setHabilidade(habilidadeEscolhida);
 
@@ -217,6 +217,13 @@ public class Teclado implements KeyListener {
                 if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
                     painel.getCombate().adicionarNumComandoCombate(4);
                 }
+                if (code == KeyEvent.VK_ENTER) {
+                        if (opcao == 0 || opcao == 1 || opcao == 2 || opcao == 4) {
+                            painel.getCombate().sistemaTurno();
+                        } else if (opcao == 3) {
+                            ui.mostrarInventario();
+                        }
+                    }
             } else {
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     painel.getCombate().subtrairNumComandoCombate(5);

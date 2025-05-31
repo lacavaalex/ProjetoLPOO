@@ -1,6 +1,7 @@
 package UI;
 
 import Ambiente.AmbienteFloresta;
+import Ambiente.AmbienteGruta;
 import Ambiente.AmbienteLago;
 import Controles.Botoes;
 import Entidade.*;
@@ -33,8 +34,10 @@ public class CombateUI extends UI {
     private boolean resistiu = false;
     private boolean critico = false;
 
-    private int ataqueOriginal;
-    private int ataqueFraco;
+    private int ataqueOriginalCriatura;
+    private int ataqueFracoCriatura;
+    private int ataqueOriginalJogador;
+    private int ataqueFracoJogador;
 
     private int numComandoCombate;
 
@@ -56,8 +59,23 @@ public class CombateUI extends UI {
     // Configurações da tela de combate
     public void iniciarCombate(Criatura criatura) {
         this.criaturaEmCombate = criatura;
-        ataqueOriginal = criaturaEmCombate.getAtaqueCriatura();
-        criaturaEmCombate.setAtaqueCriatura(ataqueOriginal);
+        ataqueOriginalCriatura = criaturaEmCombate.getAtaqueCriatura();
+
+        if (painel.getEventoClimatico().getClima().equals("tempestade")
+        && !getJogador().getHabilidade().equals("SOBREVIVENCIAL")) {
+            criaturaEmCombate.setAtaqueCriatura(ataqueOriginalCriatura*3/2);
+        } else {
+            criaturaEmCombate.setAtaqueCriatura(ataqueOriginalCriatura);
+        }
+
+        ataqueOriginalJogador = getJogador().getAtaqueAtual();
+
+        if (painel.getEventoClimatico().getClima().equals("salgado")
+                && !getJogador().getHabilidade().equals("SOBREVIVENCIAL")) {
+            getJogador().setAtaqueAtual(ataqueOriginalJogador*2/3);
+        } else {
+            getJogador().setAtaqueAtual(ataqueOriginalJogador);
+        }
 
         fimDeCombate = false;
         turnoJogador = true;
@@ -65,7 +83,8 @@ public class CombateUI extends UI {
 
         String nomeImagem = painel.getAmbienteAtual().getNomeFundoCombate();
 
-        if (painel.getAmbienteAtual() instanceof AmbienteFloresta || painel.getAmbienteAtual() instanceof AmbienteLago) {
+        if (painel.getAmbienteAtual() instanceof AmbienteFloresta || painel.getAmbienteAtual() instanceof AmbienteLago
+                || painel.getAmbienteAtual() instanceof AmbienteGruta) {
             if (criaturaEmCombate.isBoss()) {
                 fundoCombate = setupImagens(nomeImagem + "boss", "background");
             } else {
@@ -86,6 +105,9 @@ public class CombateUI extends UI {
         }
 
         resetAtributosTransicao();
+        resetarCriaturaEmCombate();
+
+        escapou = false;
 
         botoes.mostrarBotao("Abrir mochila");
         botoes.mostrarBotao("Clima");
@@ -95,9 +117,7 @@ public class CombateUI extends UI {
             botoes.mostrarBotao("Voltar à base");
         }
 
-        resetarCriaturaEmCombate();
-
-        escapou = false;
+        getJogador().setAtaqueAtual(ataqueOriginalJogador);
 
         if (getJogador().getHabilidade().equals("MEDICINAL")) {
             getJogador().setVida(getJogador().getVida() + 2);
@@ -117,7 +137,8 @@ public class CombateUI extends UI {
         int tileSize = painel.getTileSize();
         int y = tileSize * 2;
 
-        if (painel.getAmbienteAtual() instanceof AmbienteFloresta || painel.getAmbienteAtual() instanceof AmbienteLago) {
+        if (painel.getAmbienteAtual() instanceof AmbienteFloresta || painel.getAmbienteAtual() instanceof AmbienteLago
+        || painel.getAmbienteAtual() instanceof AmbienteGruta) {
             desenharPlanoDeFundoCombate(g2);
         }
 
@@ -132,20 +153,16 @@ public class CombateUI extends UI {
             if (!fimDeCombate) {
 
                 g2.setFont(pixelsans_30.deriveFont(Font.PLAIN, 20F));
+                g2.setColor(Color.white);
 
                 // Inimigo
-                g2.setColor(Color.white);
                 String nome = criaturaEmCombate.getNomeCriatura();
-                String descricao = (criaturaEmCombate.getVidaCriatura()) + "HP / " + ataqueOriginal + "ATK";
+                g2.drawString(nome, tileSize, y);
 
-                int comprimentoNome = (int) g2.getFontMetrics().getStringBounds(nome, g2).getWidth();
-                int comprimentoDescricao = (int) g2.getFontMetrics().getStringBounds(descricao, g2).getWidth();
-
-                g2.drawString(nome, painel.getLargura() - tileSize - comprimentoNome, y);
-                g2.drawString(descricao, painel.getLargura() - tileSize - comprimentoDescricao, y += tileSize);
+                String descricao = (criaturaEmCombate.getVidaCriatura()) + "HP / " + criaturaEmCombate.getAtaqueCriatura() + "ATK";
+                g2.drawString(descricao, tileSize, y += tileSize);
 
                 // Jogador
-                g2.setColor(Color.white);
                 String vida = "Sua vida: " + getJogador().getVida() + "HP";
                 g2.drawString(vida, tileSize, painel.getAltura() - tileSize * 2);
 
@@ -239,7 +256,7 @@ public class CombateUI extends UI {
         if (!fimDeCombate) {
             if (this.criaturaEmCombate != null) {
 
-                ataqueFraco = ataqueOriginal / 2;
+                ataqueFracoCriatura = ataqueOriginalCriatura / 2;
 
                 // Turno do jogador
                 if (turnoJogador) {
@@ -270,7 +287,7 @@ public class CombateUI extends UI {
 
                         double probabilidade = painel.definirUmaProbabilidade();
                         if (getJogador().getHabilidade().equals("COMBATIVA")) {
-                            probabilidade = probabilidade * 0.8;
+                            probabilidade = probabilidade * 0.85;
                         }
 
                         if (probabilidade <= 30) {
@@ -299,13 +316,13 @@ public class CombateUI extends UI {
                         }
 
                         if (getJogador().getArmaAtual().equals("Escudo")) {
-                            probabilidade = probabilidade * 0.8;
+                            probabilidade = probabilidade * 0.9;
                         }
 
                         if (probabilidade <= 50) {
                             bloqueou = true;
 
-                            criaturaEmCombate.setAtaqueCriatura(ataqueFraco);
+                            criaturaEmCombate.setAtaqueCriatura(ataqueFracoCriatura);
 
                         } else {
                             defesaFalha = true;
@@ -346,7 +363,7 @@ public class CombateUI extends UI {
 
                             double probabilidade = painel.definirUmaProbabilidade();
                             if (probabilidade <= 20 && getJogador().getHabilidade().equals("COMBATIVA")
-                                    || probabilidade <= 10 && getJogador().getHabilidade().equals("SOBREVIVENCIAL")) {
+                                    || probabilidade <= 15 && getJogador().getHabilidade().equals("SOBREVIVENCIAL")) {
                                 getJogador().setVida(getJogador().getVidaMax() / 4);
                                 turnoJogador = true;
                                 resistiu = true;
@@ -357,7 +374,7 @@ public class CombateUI extends UI {
                             }
                         } else {
                             turnoJogador = true;
-                            criaturaEmCombate.setAtaqueCriatura(ataqueOriginal);
+                            criaturaEmCombate.setAtaqueCriatura(ataqueOriginalCriatura);
                         }
                     } else {
                         turnoJogador = true;

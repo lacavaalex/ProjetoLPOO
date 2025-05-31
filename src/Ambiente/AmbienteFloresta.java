@@ -23,6 +23,8 @@ public class AmbienteFloresta extends Ambiente {
     private EventoCriatura eventoCorvo;
 
     private EventoClimatico eventoChuva;
+    private EventoClimatico eventoTempestade;
+    private EventoClimatico eventoTornado;
 
     private BufferedImage fundoFloresta2;
     private BufferedImage figura;
@@ -46,6 +48,8 @@ public class AmbienteFloresta extends Ambiente {
         this.eventoCorvo = new EventoCriatura(painel, ui, jogador, criatura);
 
         this.eventoChuva = painel.getEventoClimatico();
+        this.eventoTempestade = painel.getEventoClimatico();
+        this.eventoTornado = painel.getEventoClimatico();
 
         descreverAmbiente();
         fundoFloresta2 = ui.setupImagens("floresta_macabra-2", "background");
@@ -161,7 +165,7 @@ public class AmbienteFloresta extends Ambiente {
 
                         if (!isChanceTirada()) {
                             double probabilidade = painel.definirUmaProbabilidade();
-                            if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                            if (jogador.getHabilidade().equals("RASTREADORA")) {
                                 probabilidade = probabilidade * 0.9;
                             }
                             boolean cacaBemSucedida = probabilidade <= 60;
@@ -311,7 +315,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Tudo o que tinha por aqui já está na mochila.", y += tileSize);
                 if (!isChanceTirada()) {
                     double probabilidade = painel.definirUmaProbabilidade();
-                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                    if (jogador.getHabilidade().equals("RASTREADORA")) {
                         probabilidade = probabilidade * 0.9;
                     }
                     boolean recursoEncontrado = probabilidade <= 70;
@@ -338,6 +342,7 @@ public class AmbienteFloresta extends Ambiente {
                     }
                     setChanceTirada(true);
                 }
+                definirOcorrenciaDeEventoClimatico(g2, eventoChuva, 1);
                 break;
 
             case 204:
@@ -346,7 +351,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Você procura por algo que sirva para caçar.", y);
                 if (!isChanceTirada()) {
                     double probabilidade = painel.definirUmaProbabilidade();
-                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                    if (jogador.getHabilidade().equals("RASTREADORA")) {
                         probabilidade = probabilidade * 0.9;
                     }
                     boolean recursoEncontrado = probabilidade <= 70;
@@ -366,6 +371,7 @@ public class AmbienteFloresta extends Ambiente {
                 if (painel.getInvent().acharItem("Machado") || painel.getInvent().acharItem("Faca")) {
                     ui.escreverTexto("Olha só... acho que isso pode servir.", y += tileSize);
                 }
+                definirOcorrenciaDeEventoClimatico(g2, eventoTempestade, 2);
                 break;
 
             case 205:
@@ -411,7 +417,7 @@ public class AmbienteFloresta extends Ambiente {
 
                 if (!isChanceTirada()) {
                     double probabilidade = painel.definirUmaProbabilidade();
-                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                    if (jogador.getHabilidade().equals("RASTREADORA")) {
                         probabilidade = probabilidade * 0.9;
                     }
 
@@ -454,7 +460,7 @@ public class AmbienteFloresta extends Ambiente {
 
                 if (!isChanceTirada()) {
                     double probabilidade = painel.definirUmaProbabilidade();
-                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                    if (jogador.getHabilidade().equals("RASTREADORA")) {
                         probabilidade = probabilidade * 0.9;
                     }
 
@@ -474,6 +480,7 @@ public class AmbienteFloresta extends Ambiente {
                     }
                     setChanceTirada(true);
                 }
+                definirOcorrenciaDeEventoClimatico(g2, eventoTornado, 3);
                 break;
 
             case 212:
@@ -485,7 +492,7 @@ public class AmbienteFloresta extends Ambiente {
 
                 if (!isChanceTirada()) {
                     double probabilidade = painel.definirUmaProbabilidade();
-                    if (jogador.getHabilidade().equals("SOBREVIVENCIAL")) {
+                    if (jogador.getHabilidade().equals("RASTREADORA")) {
                         probabilidade = probabilidade * 0.9;
                     }
 
@@ -506,6 +513,7 @@ public class AmbienteFloresta extends Ambiente {
                     }
                     setChanceTirada(true);
                 }
+                definirOcorrenciaDeEventoClimatico(g2, eventoTempestade, 2);
                 break;
 
             case 213:
@@ -524,7 +532,7 @@ public class AmbienteFloresta extends Ambiente {
             case 214:
                 botoes.esconderBotao("Voltar à base");
 
-                ui.escreverTexto("Foram-se horas vagando nesse infenro, e ainda nenhum sinal de sentido.", y);
+                ui.escreverTexto("Foram-se horas vagando, e ainda nenhum sinal de sentido.", y);
                 ui.escreverTexto("'Como posso me livrar dessa prisão?'", y += tileSize);
                 ui.escreverTexto("A essa altura, as escolhas são: permanecer e se virar,", y += tileSize);
                 ui.escreverTexto("ou botar fé na caminhada até achar algum rumo real.", y += tileSize);
@@ -573,6 +581,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 217:
+                botoes.esconderBotao("Abrir mochila");
                 Composite composite = g2.getComposite();
                 if (!isTransicaoFinalizada()) {
                     transicaoDeTelaBoss(g2);
@@ -602,6 +611,15 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("*PUSH*", painel.getAltura()/2 - tileSize);
                 ui.escreverTexto(jogador.getNome() + " foi empurrado da vala.", painel.getAltura()/2);
                 g2.setColor(Color.white);
+                break;
+
+            case 220:
+                definirTelaDeBotao("continuar");
+
+                ui.escreverTexto("...", y += tileSize);
+                ui.escreverTexto("Você passou alguns minutos desacordado.", y += tileSize);
+                ui.escreverTexto("Aparentemente, a queda foi feia. E maior do que aparentava.", y += tileSize);
+                ui.escreverTexto("E, espere um pouco, você não está mais na floresta...", y += tileSize);
                 break;
 
             // BRANCH DA MONTANHA
@@ -644,6 +662,8 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Vai ter que servir. Você já se afastou demais da clareira.", y += tileSize);
                 ui.escreverTexto("A energia aqui não é ideal, mas não parece ter mais nada à espreita", y += tileSize);
                 ui.escreverTexto("De olhos entreabertos, você deita para descansar...", y += tileSize);
+
+                definirOcorrenciaDeEventoClimatico(g2, eventoChuva, 1);
                 break;
 
             case 304:

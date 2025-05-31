@@ -9,7 +9,9 @@ import Main.Painel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class Ambiente {
@@ -34,6 +36,7 @@ public abstract class Ambiente {
     private boolean recursosColetados = false;
     private boolean recursosGastos = false;
     private boolean chanceTirada = false;
+    private boolean chanceClimaTirada = false;
 
     private int subStateParaRetornar;
 
@@ -88,7 +91,6 @@ public abstract class Ambiente {
                 ui.desenharPlanoDeFundo(fundoCard);
             }
 
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
             g2.setColor(Color.white);
             ui.escreverTexto(getNome(), y += tileSize);
 
@@ -105,6 +107,7 @@ public abstract class Ambiente {
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12F));
             String textoEsc = ("Aperte [esc] para sair");
             g2.drawString(textoEsc, painel.getLargura() - tileSize * 6,painel.getAltura() - tileSize);
+            g2.setColor(Color.white);
         }
     }
 
@@ -118,7 +121,7 @@ public abstract class Ambiente {
 
     // Atualização da condição do acampamento
     public void atualizarAcampamento() {
-        int numLimite = 20;
+        int numLimite = 40;
         timerAcampamento++;
 
         if (timerAcampamento == numLimite) {
@@ -136,11 +139,13 @@ public abstract class Ambiente {
     public void definirOcorrenciaDeEventoCriatura (Graphics2D g2, EventoCriatura nomeEventoCriatura, int tipo) {
         if (!isChanceTirada()) {
             nomeEventoCriatura.chance(g2, tipo);
+            if (nomeEventoCriatura.getExecutavel() == 1) {
+                nomeEventoCriatura.setSurpresa(true);
+            }
             setChanceTirada(true);
         }
 
         if (nomeEventoCriatura.getExecutavel() == 1) {
-            nomeEventoCriatura.setSurpresa(true);
             nomeEventoCriatura.executar(g2, tipo);
         }
 
@@ -150,10 +155,11 @@ public abstract class Ambiente {
     }
 
     public void definirOcorrenciaDeEventoClimatico(Graphics2D g2, EventoClimatico nomeEventoClimatico, int tipo) {
-        if (!isChanceTirada()) {
+        if (!isChanceClimaTirada()) {
             nomeEventoClimatico.chance(g2, tipo);
-            setChanceTirada(true);
+            setChanceClimaTirada(true);
         }
+
         if (nomeEventoClimatico.getExecutavel() == 1) {
             nomeEventoClimatico.executar(g2, tipo);
         }
@@ -227,7 +233,8 @@ public abstract class Ambiente {
         if (novoSubState == 1 && painel.getPlaySubState() != 1) {
             subStateAnterior = painel.getPlaySubState();
         }
-        if (novoSubState != 1 && subStateAnterior != painel.getPlaySubState()) {
+        if (novoSubState >= 10 &&
+                subStateAnterior != painel.getPlaySubState()) {
             atualizarAcampamento();
         }
 
@@ -239,6 +246,7 @@ public abstract class Ambiente {
         recursosColetados = false;
         recursosGastos = false;
         chanceTirada = false;
+        chanceClimaTirada = false;
 
     }
 
@@ -247,7 +255,6 @@ public abstract class Ambiente {
     public void resetarSubStatesVisitadosTotal() { subStatesVisitadosTotal.clear(); }
 
     public boolean checarSeSubStateFoiVisitado(int num) { return subStatesVisitadosTotal.contains(num); }
-
 
     // Getters e setters
     public boolean isCardVisivel() { return cardVisivel; }
@@ -260,6 +267,9 @@ public abstract class Ambiente {
 
     public boolean isChanceTirada() { return chanceTirada; }
     public void setChanceTirada(boolean chanceTirada) { this.chanceTirada = chanceTirada; }
+
+    public boolean isChanceClimaTirada() { return chanceClimaTirada; }
+    public void setChanceClimaTirada(boolean chanceClimaTirada) { this.chanceClimaTirada = chanceClimaTirada; }
 
     public int getSubStateAnterior() { return subStateAnterior; }
     public int getSubStateParaRetornar() { return subStateParaRetornar; }

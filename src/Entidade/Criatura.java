@@ -84,7 +84,6 @@ public class Criatura {
                 setBoss(false);
                 break;
 
-
             case 22:
                 setNomeCriatura("O Crustoso Cruel");
                 setVidaMaxCriatura(70);
@@ -92,6 +91,48 @@ public class Criatura {
                 setAtaqueCriatura(6);
 
                 setNomeImagem("crustoso_cruel");
+                setLarguraImagemEscala(12);
+                setAlturaImagemEscala(12);
+                setDistanciaBordaEscala(13);
+
+                setBoss(true);
+                break;
+
+            case 31:
+                setNomeCriatura("Víbora-Mineral");
+                setVidaMaxCriatura(28);
+                setVidaCriatura(getVidaMaxCriatura());
+                setAtaqueCriatura(2);
+
+                setNomeImagem("vibora_mineral");
+                setLarguraImagemEscala(4);
+                setAlturaImagemEscala(4);
+                setDistanciaBordaEscala(7);
+
+                setBoss(false);
+                break;
+
+            case 32:
+                setNomeCriatura("Goblin Salgado");
+                setVidaMaxCriatura(20);
+                setVidaCriatura(getVidaMaxCriatura());
+                setAtaqueCriatura(8);
+
+                setNomeImagem("goblin_sal");
+                setLarguraImagemEscala(8);
+                setAlturaImagemEscala(8);
+                setDistanciaBordaEscala(10);
+
+                setBoss(false);
+                break;
+
+            case 33:
+                setNomeCriatura("Golem de Sódio");
+                setVidaMaxCriatura(90);
+                setVidaCriatura(getVidaMaxCriatura());
+                setAtaqueCriatura(8);
+
+                setNomeImagem("golem_sal");
                 setLarguraImagemEscala(12);
                 setAlturaImagemEscala(12);
                 setDistanciaBordaEscala(13);

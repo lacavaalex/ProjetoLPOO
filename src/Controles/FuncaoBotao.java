@@ -110,7 +110,7 @@ public class FuncaoBotao implements ActionListener {
                     painel.trocarAmbiente("floresta", 104);
                     break;
 
-                case 500:
+                case 600:
                     painel.trocarAmbiente("floresta", 303);
                     break;
 
@@ -147,8 +147,11 @@ public class FuncaoBotao implements ActionListener {
                 case 103:
                     painel.trocarAmbiente("lago", 400);
                     break;
+                case 220:
+                    painel.trocarAmbiente("gruta", 500);
+                    break;
                 case 302:
-                    painel.trocarAmbiente("montanha", 500);
+                    painel.trocarAmbiente("montanha", 600);
                     break;
 
                 // EVENTOS DE CRIATURA

@@ -14,7 +14,6 @@ public class EventoCriatura extends Evento {
     private double probabilidade;
     private int executavel;
     private boolean encontroSurpresa;
-    private boolean ataqueSurpresaExecutado = false;
 
     private int contadorDeEncontros = 0;
 
@@ -37,9 +36,12 @@ public class EventoCriatura extends Evento {
             criatura.definirCriatura(tipo);
             getPainel().getCombate().iniciarCombate(criatura);
 
-            if (tipo == 11) {
+            if ((tipo == 11 || tipo == 13)) {
                 ataqueSurpresa();
+                setSurpresa(false);
+            }
 
+            if (tipo == 11) {
                 g2.setColor(Color.red);
                 getUi().escreverTexto("ATAQUE SURPRESA! -" + criatura.getAtaqueCriatura()/2 +"HP", y += tileSize * 4);
                 g2.setColor(Color.white);
@@ -56,8 +58,6 @@ public class EventoCriatura extends Evento {
             }
 
             else if (tipo == 13) {
-                ataqueSurpresa();
-
                 g2.setColor(Color.red);
                 getUi().escreverTexto("*ÁUUUUUUU*", y += tileSize * 4);
                 getUi().escreverTexto("ATAQUE SURPRESA! -" + criatura.getAtaqueCriatura()/2 +"HP", y += tileSize);
@@ -113,8 +113,8 @@ public class EventoCriatura extends Evento {
 
         if (tipo == 11) { // Víbora
             executavel = (probabilidade <= 65) ? 1 : 0;
-
-        } else if (tipo == 12) { // Urso Pai
+        }
+        else if (tipo == 12) { // Urso Pai
             executavel = (probabilidade <= 50) ? 1 : 0;
         }
         else if (tipo == 13) { // Lobo Famélico
@@ -138,11 +138,8 @@ public class EventoCriatura extends Evento {
 
     public void ataqueSurpresa() {
         if (isSurpresa()) {
-            if (!ataqueSurpresaExecutado) {
-                getJogador().setVida(getJogador().getVida() - criatura.getAtaqueCriatura()/2);
-                ataqueSurpresaExecutado = true;
-                setSurpresa(false);
-            }
+            getJogador().setVida(getJogador().getVida() - criatura.getAtaqueCriatura()/2);
+            setSurpresa(false);
         }
     }
 

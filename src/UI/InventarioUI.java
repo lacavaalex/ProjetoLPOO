@@ -98,7 +98,7 @@ public class InventarioUI extends UI {
             System.out.println("Item " + nomeReal + " não encontrado no inventário.");
         }
     }
-
+    
     // Metodos de construção e vizualização do layout da tela
     public void estruturaTelaDeInventario(Graphics2D g2, UI ui) {
         if (!fechado) {

@@ -57,6 +57,41 @@ public class ClimaUI extends UI {
                     ui.escreverTexto("(Chances de encontro com criaturas aumentadas.)", y += tileSize);
                     g2.setColor(Color.white);
                     break;
+                case "tempestade":
+                    ui.escreverTexto("Uma tempestade furiosa se inicia.", y);
+                    ui.escreverTexto("Nesse caos relampejante, parece que seus inimigos se fortalecem", y += tileSize);
+                    g2.setColor(Color.gray);
+                    g2.setFont(g2.getFont().deriveFont(Font.ITALIC, 15F));
+                    ui.escreverTexto("(Chances de encontro com criaturas aumentadas.)", y += tileSize);
+                    ui.escreverTexto("(Ataque de criatura aumentado.)", y += tileSize);
+                    g2.setColor(Color.white);
+                    break;
+                case "tornado":
+                    ui.escreverTexto("Um tornado se formou de repente!", y);
+                    ui.escreverTexto("Ele assola tudo que toca, você está em perigo!", y += tileSize);
+                    g2.setColor(Color.gray);
+                    g2.setFont(g2.getFont().deriveFont(Font.ITALIC, 15F));
+                    ui.escreverTexto("(Chances de encontro com criaturas aumentadas.)", y += tileSize);
+                    ui.escreverTexto("(Chances de dano aleatório aumentadas.)", y += tileSize);
+                    g2.setColor(Color.white);
+                    break;
+                case "cavernoso":
+                    ui.escreverTexto("Essa caverna não demonstra instabilidade.", y);
+                    ui.escreverTexto("Porém, a humidade é estranha. O ambiente parece drenar você.", y += tileSize);
+                    g2.setColor(Color.gray);
+                    g2.setFont(g2.getFont().deriveFont(Font.ITALIC, 15F));
+                    ui.escreverTexto("(Sua sede será gasta mais rapidamente.)", y += tileSize);
+                    g2.setColor(Color.white);
+                    break;
+                case "salgado":
+                    ui.escreverTexto("O goblin maldito fez algo com as pedras... uma poeira de sódio", y);
+                    ui.escreverTexto("se espalha no ar, e seu organismo não está adaptado para respirá-la.", y += tileSize);
+                    g2.setColor(Color.gray);
+                    g2.setFont(g2.getFont().deriveFont(Font.ITALIC, 15F));
+                    ui.escreverTexto("(Sua sede será gasta mais rapidamente.)", y += tileSize);
+                    ui.escreverTexto("(Você está mais fraco contra as criaturas da caverna.)", y += tileSize);
+                    g2.setColor(Color.white);
+                    break;
                 case "ameno":
                     ui.escreverTexto("O clima está ameno.", y);
                     ui.escreverTexto("Sem sinais de mudanças, por agora...", y += tileSize);

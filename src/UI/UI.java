@@ -310,7 +310,7 @@ public class UI {
             int y = tileSize * 3;
             escreverTexto("Escolha sua especialidade.", y);
 
-            desenharOpcoes(new String[]{"COMBATE", "SOBREVIVÊNCIA", "SAÚDE", "CAÇA", "Voltar ao início"}, y += tileSize * 3, numComando);
+            desenharOpcoes(new String[]{"COMBATE", "SOBREVIVÊNCIA", "SAÚDE", "RASTREAMENTO", "Voltar ao início"}, y += tileSize * 3, numComando);
         }
     }
 

@@ -310,10 +310,10 @@ public class AmbienteLago extends Ambiente {
                             if (painel.getInvent().acharItem("Jóia azul")) {
                                 probabilidade = probabilidade * 0.80;
                             }
-                            boolean pescouPeixe = probabilidade <= 40;
-                            boolean pescouItem = probabilidade >= 70;
+                            boolean pescouPeixe = probabilidade <= 60;
+                            boolean pescouItem = probabilidade >= 80;
 
-                            if (contadorEspera == 6 && contadorEspera > contadorMovimento) {
+                            if (contadorEspera == 5 && contadorEspera > contadorMovimento) {
                                 if (probabilidade >= 50) {
                                     if (!isRecursosColetados()) {
                                         painel.getInvent().adicionarItem("Tridente", "combate", 1);
@@ -375,7 +375,7 @@ public class AmbienteLago extends Ambiente {
                             if (painel.getInvent().acharItem("Jóia azul")) {
                                 probabilidade = probabilidade * 0.80;
                             }
-                            boolean pescouPeixe = probabilidade <= 30;
+                            boolean pescouPeixe = probabilidade <= 50;
 
                             if (contadorMovimento == 4 && contadorMovimento > contadorEspera) {
                                 if (probabilidade >= 85) {
@@ -428,7 +428,7 @@ public class AmbienteLago extends Ambiente {
                 } else {
                     Composite composite = g2.getComposite();
                     if (!isTransicaoFinalizada()) {
-                        transicaoDeTelaBoss(g2);
+                        transicaoDeTela(g2);
 
                         ui.escreverTexto("Você sente que fisgou algo. Algo grande.", painel.getAltura() / 2 - tileSize * 2);
                         ui.escreverTexto("...", painel.getAltura() / 2 - tileSize);

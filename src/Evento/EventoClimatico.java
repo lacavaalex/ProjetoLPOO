@@ -22,17 +22,22 @@ public class EventoClimatico extends Evento {
 
     @Override
     public void executar(Graphics2D g2, int tipo) {
-        if (executavel == 1 && !painel.getEventoClimatico().isEventoClimaticoAtivo()) {
+        if (executavel == 1) {
 
-            painel.getEventoClimatico().setEventoClimaticoAtivo(true);
+            if (!painel.getEventoClimatico().isEventoClimaticoAtivo()
+                    || getClima().equals("cavernoso")
+                    || getClima().equals("nevasca")
+                    || (tipo == 4 || tipo == 5 || tipo == 6)) {
 
-            switch (tipo) {
-                case 1: setClima("chuva"); break;
-                case 2: setClima("tempestade"); break;
-                case 3: setClima("tornado"); break;
-                case 4: setClima("cavernoso"); break;
-                case 5: setClima("salgado"); break;
-                case 6: setClima("nevasca"); break;
+                painel.getEventoClimatico().setEventoClimaticoAtivo(true);
+                switch (tipo) {
+                    case 1: setClima("chuva"); break;
+                    case 2: setClima("tempestade"); break;
+                    case 3: setClima("tornado"); break;
+                    case 4: setClima("cavernoso"); break;
+                    case 5: setClima("salgado"); break;
+                    case 6: setClima("nevasca"); break;
+                }
             }
         }
     }
@@ -55,13 +60,13 @@ public class EventoClimatico extends Evento {
             executavel = 1;
         }
         else if (tipo == 5) { // Salgado
-            executavel = (probabilidade <= 50) ? 1 : 0;
+            executavel = (probabilidade <= 60) ? 1 : 0;
         }
         else if (tipo == 6) { // Nevasca
             executavel = 1;
         }
 
-        System.out.println("PROBABILIDADE: " + getProbabilidade());
+        System.out.println("Probabilidade evento climatico:" + getProbabilidade());
     }
 
     public void finalizarEventoClimatico() {

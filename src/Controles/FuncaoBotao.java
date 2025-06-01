@@ -101,13 +101,28 @@ public class FuncaoBotao implements ActionListener {
                     painel.setPlaySubState(111);
                     break;
 
-                case 115:
                 case 116:
                     painel.setPlaySubState(114);
                     break;
 
                 case 122:
                     painel.trocarAmbiente("floresta", 12);
+                    break;
+
+                case 204:
+                case 205:
+                case 206:
+                case 207:
+                case 208:
+                    if (subState == 204) {
+                        painel.setPlaySubState(3001);
+                        painel.getAmbienteAtual().setSubStateParaRetornar(201);
+                    } else { painel.setPlaySubState(201); }
+                    break;
+
+                case 214:
+                    painel.setPlaySubState(3001);
+                    painel.getAmbienteAtual().setSubStateParaRetornar(213);
                     break;
 
                 case 300:
@@ -153,6 +168,9 @@ public class FuncaoBotao implements ActionListener {
                 case 35:
                     painel.trocarAmbiente("montanha", 300);
                     break;
+                case 226:
+                    painel.trocarAmbiente("floresta", 32);
+                    break;
 
                 // EVENTOS DE CRIATURA
                 case 14:
@@ -186,10 +204,40 @@ public class FuncaoBotao implements ActionListener {
                     painel.setPlaySubState(2002);
                     break;
 
-                // FLORESTA
-                case 18:
-                    painel.setPlaySubState(19);
+                case 210:
+                    painel.getAmbienteAtual().setSubStateParaRetornar(211);
+
+                    int probabilidade2 = painel.definirUmaProbabilidade();
+                    int criaturaGruta;
+
+                    if (probabilidade2 <= 50) {criaturaGruta = 3001; }
+                    else { criaturaGruta = 3002; }
+                    painel.setPlaySubState(criaturaGruta);
                     break;
+
+                case 212:
+                case 225:
+                    painel.setPlaySubState(3002);
+                    break;
+
+                case 218:
+                case 219:
+                case 221:
+                case 223:
+                    painel.setPlaySubState(3002);
+                    if (subState == 223) {
+                        painel.getAmbienteAtual().setSubStateParaRetornar(220);
+                    }
+                    else {
+                        painel.getAmbienteAtual().setSubStateParaRetornar(subState + 2);
+                    }
+                    break;
+
+                case 224:
+                    painel.setPlaySubState(3003);
+                    break;
+
+                // FLORESTA
                 case 19:
                     painel.getAmbienteAtual().setSubStateParaRetornar(15);
                     if (painel.getAmbienteAtual().isBaseFogoAceso()) {
@@ -197,6 +245,10 @@ public class FuncaoBotao implements ActionListener {
                     } else {
                         painel.setPlaySubState(1001);
                     }
+                    break;
+
+                case 32:
+                    painel.setPlaySubState(2);
                     break;
 
                 // LAGO

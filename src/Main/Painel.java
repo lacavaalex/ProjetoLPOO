@@ -131,19 +131,34 @@ public class Painel extends JPanel implements Runnable {
             case "chuva":
             case "tornado":
                 if (eventoCriatura.getContadorDeEncontros() >= 5) {
+                    getEventoCriatura().resetContador();
                     eventoClimatico.finalizarEventoClimatico();
                 }
                 break;
 
             case "tempestade":
                 if (eventoCriatura.getContadorDeEncontros() >= 6) {
+                    getEventoCriatura().resetContador();
+                    eventoClimatico.finalizarEventoClimatico();
+                }
+                break;
+
+            case "cavernoso":
+                if (!jogador.getLocalizacao().equals("GRUTA DE SAL")) {
+                    getEventoCriatura().resetContador();
                     eventoClimatico.finalizarEventoClimatico();
                 }
                 break;
 
             case "salgado":
-                if (eventoCriatura.getContadorDeEncontros() >= 4) {
-                    eventoClimatico.setClima("cavernoso");
+                if (!jogador.getLocalizacao().equals("GRUTA DE SAL")) {
+                    getEventoCriatura().resetContador();
+                    eventoClimatico.finalizarEventoClimatico();
+                } else {
+                    if (eventoCriatura.getContadorDeEncontros() >= 4) {
+                        getEventoCriatura().resetContador();
+                        eventoClimatico.setClima("cavernoso");
+                    }
                 }
                 break;
 
@@ -248,6 +263,8 @@ public class Painel extends JPanel implements Runnable {
 
     // Definicoes de game over
     public void resetAposGameOver() {
+        botoes.esconderBotao("Voltar à base");
+
         resetPlayState();
 
         getCombate().resetarCriaturaEmCombate();
@@ -259,7 +276,10 @@ public class Painel extends JPanel implements Runnable {
         jogador.resetarTodosOsAtributos();
 
         getEventoCriatura().resetContador();
-        getAmbienteAtual().resetarSubStatesVisitadosTotal();
+        ambienteAtual.resetarSubStatesVisitadosTotal();
+
+        ambienteAtual.setBaseFogoAceso(false);
+        ambienteAtual.setBaseFonteDeAlimento(false);
     }
 
 

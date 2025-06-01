@@ -9,9 +9,7 @@ import Main.Painel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public abstract class Ambiente {
@@ -37,6 +35,7 @@ public abstract class Ambiente {
     private boolean recursosGastos = false;
     private boolean chanceTirada = false;
     private boolean chanceClimaTirada = false;
+    private boolean eventoEspecialDefinido = false;
 
     private int subStateParaRetornar;
 
@@ -187,7 +186,7 @@ public abstract class Ambiente {
         g2.drawImage(imagem, x, tileSize/2, escala, escala, null);
     }
 
-    public void transicaoDeTelaBoss (Graphics2D g2) {
+    public void transicaoDeTela(Graphics2D g2) {
         if (transicaoIniciada && alphaFade < 1.0f) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f - alphaFade));
             alphaFade += 0.01f;
@@ -247,6 +246,7 @@ public abstract class Ambiente {
         recursosGastos = false;
         chanceTirada = false;
         chanceClimaTirada = false;
+        eventoEspecialDefinido = false;
 
     }
 
@@ -270,6 +270,9 @@ public abstract class Ambiente {
 
     public boolean isChanceClimaTirada() { return chanceClimaTirada; }
     public void setChanceClimaTirada(boolean chanceClimaTirada) { this.chanceClimaTirada = chanceClimaTirada; }
+
+    public boolean isEventoEspecialDefinido() { return eventoEspecialDefinido; }
+    public void setEventoEspecialDefinido(boolean eventoEspecialDefinido) { this.eventoEspecialDefinido = eventoEspecialDefinido; }
 
     public int getSubStateAnterior() { return subStateAnterior; }
     public int getSubStateParaRetornar() { return subStateParaRetornar; }

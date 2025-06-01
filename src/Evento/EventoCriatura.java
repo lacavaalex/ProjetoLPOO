@@ -78,12 +78,29 @@ public class EventoCriatura extends Evento {
                 getUi().escreverTexto("Parece um caranguejo com... três olhos!?", y += tileSize);
             }
 
-            else if (tipo == 12) {
+            else if (tipo == 12 || tipo == 23) {
                 getPainel().getBotoes().esconderBotao("Clima");
                 getPainel().setFightState(true);
             }
 
-        // Probabilidade mal sucedida
+            else if (tipo == 21) {
+                g2.setColor(Color.white);
+                getUi().escreverTexto("Uma víbora coberta de rochas te persegue.", y += tileSize * 4);
+                getUi().escreverTexto("Você invadiu seu domínio, e ela não vai parar até te pegar.", y += tileSize);
+            }
+
+            else if (tipo == 22) {
+                g2.setColor(Color.white);
+                getUi().escreverTexto("Há algo seguindo seus movimentos...", y += tileSize * 4);
+                g2.setColor(Color.red);
+                getUi().escreverTexto("*SWOOP*", y += tileSize);
+                g2.setColor(Color.white);
+                getUi().escreverTexto("Do teto, um monstro esquisito te observa atentamente.", y += tileSize);
+                getUi().escreverTexto("Esse olhar... não é confortável.", y += tileSize);
+            }
+
+
+            // Probabilidade mal sucedida
         } else if (executavel == 0) {
             encontroSurpresa = false;
         }
@@ -126,6 +143,15 @@ public class EventoCriatura extends Evento {
             executavel = (probabilidade <= 40) ? 1 : 0;
         }
         else if (tipo == 12) { // Crustoso Cruel
+            executavel = 1;
+        }
+        else if (tipo == 21) { // Víbora-Mineral
+            executavel = (probabilidade <= 65) ? 1 : 0;
+        }
+        else if (tipo == 22) { // Goblin Salgado
+            executavel = 1;
+        }
+        else if (tipo == 23) { // Golem de Sódio
             executavel = 1;
         }
 

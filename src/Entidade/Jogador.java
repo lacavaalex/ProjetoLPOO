@@ -24,7 +24,6 @@ public class Jogador {
     private int energia = getEnergiaMax();
 
     private boolean envenenado;
-    private boolean sanidade;
 
     private String armaAtual = "Nenhuma arma equipada.";
     private final int ataqueInicial = 100;
@@ -97,7 +96,8 @@ public class Jogador {
 
     public void atualizarSede() {
         if (!estaComSede()) {
-            if (!painel.getEventoClimatico().getClima().equals("salgado")) {
+            if (!painel.getEventoClimatico().getClima().equals("cavernoso")
+                || !painel.getEventoClimatico().getClima().equals("salgado")) {
                     switch (contadorDaSede) {
                         case 0, 1:
                             nivelSede = "alto";
@@ -152,13 +152,15 @@ public class Jogador {
 
     public void atualizarAtaqueAtual() {
         if (getEnergia() == 0) {
-            if (ataqueAtual > 1) {
-                setAtaqueAtual(getAtaqueAtual() / 2);
-            }
+            int ataqueFraco = ataqueInicial / 2;
+            setAtaqueAtual(ataqueFraco);
+        } else {
+            setAtaqueAtual(ataqueAtual);
         }
     }
 
     public void resetarTodosOsAtributos() {
+        setVidaMax(vidaMax);
         resetVida();
         resetFome();
         resetEnergia();

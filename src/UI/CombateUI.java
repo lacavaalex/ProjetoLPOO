@@ -36,8 +36,7 @@ public class CombateUI extends UI {
 
     private int ataqueOriginalCriatura;
     private int ataqueFracoCriatura;
-    private int ataqueOriginalJogador;
-    private int ataqueFracoJogador;
+    private int ataqueBaseJogador;
 
     private int numComandoCombate;
 
@@ -61,20 +60,22 @@ public class CombateUI extends UI {
         this.criaturaEmCombate = criatura;
         ataqueOriginalCriatura = criaturaEmCombate.getAtaqueCriatura();
 
+        if (ataqueBaseJogador == 0) {
+            ataqueBaseJogador = getJogador().getAtaqueAtual();
+        }
+        int ataqueFracoJogador = (int) (ataqueBaseJogador * 0.66f);
+
         if (painel.getEventoClimatico().getClima().equals("tempestade")
-        && !getJogador().getHabilidade().equals("SOBREVIVENCIAL")) {
-            criaturaEmCombate.setAtaqueCriatura(ataqueOriginalCriatura*3/2);
+                && !getJogador().getHabilidade().equals("SOBREVIVENCIAL")) {
+            criaturaEmCombate.setAtaqueCriatura((int) (ataqueOriginalCriatura * 1.33f));
         } else {
             criaturaEmCombate.setAtaqueCriatura(ataqueOriginalCriatura);
         }
-
-        ataqueOriginalJogador = getJogador().getAtaqueAtual();
-
         if (painel.getEventoClimatico().getClima().equals("salgado")
                 && !getJogador().getHabilidade().equals("SOBREVIVENCIAL")) {
-            getJogador().setAtaqueAtual(ataqueOriginalJogador*2/3);
+            getJogador().setAtaqueAtual(Math.max(1, ataqueFracoJogador)); // Garante mínimo 1
         } else {
-            getJogador().setAtaqueAtual(ataqueOriginalJogador);
+            getJogador().setAtaqueAtual(ataqueBaseJogador); // Restaura o valor original
         }
 
         fimDeCombate = false;
@@ -83,20 +84,19 @@ public class CombateUI extends UI {
 
         String nomeImagem = painel.getAmbienteAtual().getNomeFundoCombate();
 
-        if (painel.getAmbienteAtual() instanceof AmbienteFloresta || painel.getAmbienteAtual() instanceof AmbienteLago
-                || painel.getAmbienteAtual() instanceof AmbienteGruta) {
-            if (criaturaEmCombate.isBoss()) {
-                fundoCombate = setupImagens(nomeImagem + "boss", "background");
-            } else {
-                fundoCombate = setupImagens(nomeImagem, "background");
-            }
+        if (painel.getAmbienteAtual() instanceof AmbienteFloresta ||
+                painel.getAmbienteAtual() instanceof AmbienteLago ||
+                painel.getAmbienteAtual() instanceof AmbienteGruta) {
+            fundoCombate = setupImagens(
+                    criaturaEmCombate.isBoss() ? nomeImagem + "boss" : nomeImagem,
+                    "background"
+            );
         }
     }
 
     // Finaliza o combate e reseta os atributos
     public void finalizarCombate() {
         painel.setFightState(false);
-
         eventoCriatura.setEventoCriaturaAtivo(false);
 
         if (!escapou) {
@@ -104,10 +104,16 @@ public class CombateUI extends UI {
             getJogador().setEnergia(getJogador().getEnergia() - 1);
         }
 
+        getJogador().setAtaqueAtual(ataqueBaseJogador);
+        ataqueBaseJogador = 0;
+
+        if (criaturaEmCombate != null) {
+            criaturaEmCombate.setAtaqueCriatura(criaturaEmCombate.getAtaqueCriatura());
+        }
+
         resetAtributosTransicao();
         resetarCriaturaEmCombate();
-
-        escapou = false;
+        escapou = false;;
 
         botoes.mostrarBotao("Abrir mochila");
         botoes.mostrarBotao("Clima");
@@ -116,8 +122,6 @@ public class CombateUI extends UI {
         if (painel.getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
             botoes.mostrarBotao("Voltar à base");
         }
-
-        getJogador().setAtaqueAtual(ataqueOriginalJogador);
 
         if (getJogador().getHabilidade().equals("MEDICINAL")) {
             getJogador().setVida(getJogador().getVida() + 2);
@@ -335,7 +339,7 @@ public class CombateUI extends UI {
                         int percentual = painel.definirUmaProbabilidade();
                         int probabilidade = painel.definirUmaProbabilidade();
 
-                        if (probabilidade <= percentual) {
+                        if (probabilidade <= percentual/2) {
                             escapou = true;
                         } else {
                             fugaFalha = true;

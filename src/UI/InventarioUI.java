@@ -98,7 +98,7 @@ public class InventarioUI extends UI {
             System.out.println("Item " + nomeReal + " não encontrado no inventário.");
         }
     }
-    
+
     // Metodos de construção e vizualização do layout da tela
     public void estruturaTelaDeInventario(Graphics2D g2, UI ui) {
         if (!fechado) {
@@ -124,6 +124,7 @@ public class InventarioUI extends UI {
             String textoEsc = ("Aperte [esc] para sair");
             g2.drawString(textoEsc, painel.getLargura() - tileSize * 6,painel.getAltura() - tileSize);
 
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 14F));
             // Lista de itens
             listaItens = new String[invent.size()];
             int i = 0;
@@ -133,6 +134,8 @@ public class InventarioUI extends UI {
                 listaItens[i++] = nome + " x" + item.getQuantidade();
             }
             ui.desenharOpcoes(listaItens, tileSize*2, numComandoInvent);
+
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
             estruturaArmaEquipada(g2);
             estruturaAlimentoSelecionado(g2);

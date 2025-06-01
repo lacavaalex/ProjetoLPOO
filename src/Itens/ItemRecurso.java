@@ -57,11 +57,33 @@ public class ItemRecurso extends Item {
                     }
                     painel.getInvent().removerItem(getNome(), 1);
                 }
-                else if (painel.getPlaySubState() == 1 || painel.getPlaySubState() != 1) {
+                if (painel.getPlaySubState() == 1 || painel.getPlaySubState() != 1) {
 
                     if (getOpcaoCrafting().equals("Curar veneno")) {
                         if (painel.getJogador().estaEnvenenado()) {
                             painel.getJogador().setEnvenenado(false);
+                            painel.getInvent().removerItem(getNome(), 1);
+                        }
+                    }
+                    else if (getOpcaoCrafting().equals("Regenerar")) {
+                        if (painel.getJogador().getVida() < painel.getJogador().getVidaMax()) {
+                            int novaVida = (painel.getJogador().getVida() + 5);
+                            if (novaVida <= painel.getJogador().getVidaMax()) {
+                                painel.getJogador().setVida(novaVida);
+                            } else {
+                                painel.getJogador().setVida(painel.getJogador().getVidaMax());
+                            }
+                            painel.getInvent().removerItem(getNome(), 1);
+                        }
+                    }
+                    else if (getOpcaoCrafting().equals("Se energizar")) {
+                        if (painel.getJogador().getEnergia() < painel.getJogador().getEnergiaMax()) {
+                            int novaEnergia = (painel.getJogador().getEnergia() + 5);
+                            if (novaEnergia <= painel.getJogador().getEnergiaMax()) {
+                                painel.getJogador().setEnergia(novaEnergia);
+                            } else {
+                                painel.getJogador().setEnergia(painel.getJogador().getEnergiaMax());
+                            }
                             painel.getInvent().removerItem(getNome(), 1);
                         }
                     }
@@ -107,6 +129,26 @@ public class ItemRecurso extends Item {
             case "Planta medicinal":
                 if (painel.getJogador().estaEnvenenado()) {
                     setOpcaoCrafting("Curar veneno");
+                }
+                else {
+                    setOpcaoCrafting("...");
+                }
+                setTipoNovoItem(null);
+                break;
+
+            case "Rocha regenerativa":
+                if (painel.getJogador().getVida() < painel.getJogador().getVidaMax()) {
+                    setOpcaoCrafting("Regenerar");
+                }
+                else {
+                    setOpcaoCrafting("...");
+                }
+                setTipoNovoItem(null);
+                break;
+
+            case "Rocha intensa":
+                if (painel.getJogador().getEnergia() < painel.getJogador().getEnergiaMax()) {
+                    setOpcaoCrafting("Se energizar");
                 }
                 else {
                     setOpcaoCrafting("...");
@@ -188,6 +230,11 @@ public class ItemRecurso extends Item {
                 break;
 
             case "Jóia azul":
+                setOpcaoCrafting("...");
+                setTipoNovoItem(null);
+                break;
+
+            case "Jóia vermelha":
                 setOpcaoCrafting("...");
                 setTipoNovoItem(null);
                 break;

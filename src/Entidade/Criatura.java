@@ -93,7 +93,7 @@ public class Criatura {
                 setNomeImagem("crustoso_cruel");
                 setLarguraImagemEscala(12);
                 setAlturaImagemEscala(12);
-                setDistanciaBordaEscala(13);
+                setDistanciaBordaEscala(12);
 
                 setBoss(true);
                 break;
@@ -116,12 +116,12 @@ public class Criatura {
                 setNomeCriatura("Goblin Salgado");
                 setVidaMaxCriatura(20);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(8);
+                setAtaqueCriatura(7);
 
                 setNomeImagem("goblin_sal");
-                setLarguraImagemEscala(8);
-                setAlturaImagemEscala(8);
-                setDistanciaBordaEscala(10);
+                setLarguraImagemEscala(6);
+                setAlturaImagemEscala(6);
+                setDistanciaBordaEscala(8);
 
                 setBoss(false);
                 break;
@@ -135,7 +135,7 @@ public class Criatura {
                 setNomeImagem("golem_sal");
                 setLarguraImagemEscala(12);
                 setAlturaImagemEscala(12);
-                setDistanciaBordaEscala(13);
+                setDistanciaBordaEscala(12);
 
                 setBoss(true);
                 break;

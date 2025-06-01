@@ -207,6 +207,7 @@ public class UI {
 
         tileSize = painel.getTileSize();
         int y = tileSize * 3;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
         escreverTexto("Você está em sua base.", y += tileSize);
 
@@ -282,6 +283,8 @@ public class UI {
             g2.drawString("O MUNDO FUNESTO", x + 5, y + 5);
             g2.setColor(Color.white);
             g2.drawString("O MUNDO FUNESTO", x, y);
+
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
             //MENU
             desenharOpcoes(new String[]{"NOVO JOGO", "CONTROLES", "ENCERRAR"}, y += tileSize * 5/2, numComando);
@@ -399,8 +402,6 @@ public class UI {
     }
 
     public void desenharOpcoes(String[] opcoes, int yInicial, int numComando) {
-
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
         int y = yInicial;
 

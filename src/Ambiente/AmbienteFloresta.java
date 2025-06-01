@@ -124,10 +124,10 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("O que fazer?", y += tileSize);
 
                 boolean derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
-                boolean derrotouBossFloresta = painel.getInvent().acharItem("Jóia roxa");
+                boolean derrotouBossCaverna = painel.getInvent().acharItem("Jóia vermelha");
 
                 String opcaoLago = derrotouBossLago ? "Ir ao lago" : "Seguir luz";
-                String opcaoRecursos = derrotouBossFloresta ? "Caçar" : "Coletar recursos";
+                String opcaoRecursos = derrotouBossCaverna ? "Caçar" : "Coletar recursos";
 
                 ui.desenharOpcoes(new String[]{opcaoLago, opcaoRecursos, "Ir até montanha"}, y += tileSize * 2, numComando);
 
@@ -255,10 +255,7 @@ public class AmbienteFloresta extends Ambiente {
 
                 ui.escreverTexto("Melhor não mexer com o que não é seu.", y);
                 ui.escreverTexto("(e, afinal, quem sabe de quem pode ser...)", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
                 ui.escreverTexto("Em torno dessa fogueira há vegetação baixa.", y += tileSize);
-                ui.escreverTexto("Há um cervo à distância, mas você não tem equipamento para caça.", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
                 ui.escreverTexto("Mais adiante, o barulho animador aumenta: água corrente!", y += tileSize);
                 ui.escreverTexto("Apressando o passo, em minutos você chega ao lago.", y += tileSize);
                 break;
@@ -295,6 +292,10 @@ public class AmbienteFloresta extends Ambiente {
 
             case 15:
                 iniciarEspera();
+
+                if (checarSeSubStateFoiVisitado(1)) {
+                    botoes.mostrarBotao("Voltar à base");
+                }
 
                 ui.escreverTexto("Já é hora de pensar no que fazer para se sustentar nessa mata.", y);
                 ui.escreverTexto("", y += tileSize);
@@ -591,7 +592,7 @@ public class AmbienteFloresta extends Ambiente {
                 botoes.esconderBotao("Abrir mochila");
                 Composite composite = g2.getComposite();
                 if (!isTransicaoFinalizada()) {
-                    transicaoDeTelaBoss(g2);
+                    transicaoDeTela(g2);
 
                     ui.escreverTexto("Você sente que está sendo observado.", painel.getAltura() / 2 - tileSize);
                     ui.desenharOpcoes(new String[]{"Se virar"},painel.getAltura() / 2, numComando);
@@ -626,10 +627,21 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("...", y += tileSize);
                 ui.escreverTexto("Você passou alguns minutos desacordado.", y += tileSize);
                 ui.escreverTexto("Aparentemente, a queda foi feia. E maior do que aparentava.", y += tileSize);
-                ui.escreverTexto("E, espere um pouco, você não está mais na floresta...", y += tileSize);
+                ui.escreverTexto("E, evidentemente, você não está mais na floresta...", y += tileSize);
                 break;
 
             case 32:
+                definirTelaDeBotao("continuar");
+
+                ui.escreverTexto("...",painel.getAltura()/2 - tileSize * 3);
+                ui.escreverTexto("Entre tu e este mundo funesto, há uma coisa em comum:", painel.getAltura()/2 - tileSize * 2);
+                ui.escreverTexto("sua morte soa melhor do que permanecer nele.", painel.getAltura()/2 - tileSize);
+                ui.escreverTexto("...", painel.getAltura()/2);
+                ui.escreverTexto("Caminhando apenas mais um pouco, você avista algo familiar...", painel.getAltura()/2 + tileSize);
+                ui.escreverTexto("Aquela clareira. Pelo jeito, por todo esse tempo, você andou em círculo.", painel.getAltura()/2 + tileSize * 2);
+                ui.escreverTexto("Retornando a ela, você avalia o seu próximo passo...", painel.getAltura()/2 + tileSize * 3);
+
+                definirOcorrenciaDeEventoClimatico(g2, eventoTempestade, 2);
                 break;
 
             // BRANCH DA MONTANHA

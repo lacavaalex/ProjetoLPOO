@@ -85,18 +85,63 @@ public class AmbienteGruta extends Ambiente {
         switch (subState) {
             // STATES DE EVENTO
             case vibora:
-                definirOcorrenciaDeEventoCriatura(g2, eventoVibora, 31);
+                definirOcorrenciaDeEventoCriatura(g2, eventoVibora, 21);
                 break;
             case goblin:
-                definirOcorrenciaDeEventoCriatura(g2, eventoGoblin, 32);
+                definirOcorrenciaDeEventoCriatura(g2, eventoGoblin, 22);
                 break;
             case boss:
-                definirOcorrenciaDeEventoCriatura(g2, eventoGolem, 33);
+                definirOcorrenciaDeEventoCriatura(g2, eventoGolem, 23);
                 break;
 
-            case 500:
+            case 200:
                 definirOcorrenciaDeEventoClimatico(g2, eventoCavernoso, 4);
-                ui.escreverTexto("Esta é a gruta.", y);
+
+                definirTelaDeBotao("continuar");
+
+                ui.escreverTexto("Você se encontra dentro de uma caverna.", y);
+                ui.escreverTexto("Um local diferente de qualquer outro que já tenha visto,", y += tileSize);
+                ui.escreverTexto("paredes e teto compostas por minerais ricos em sódio,", y += tileSize);
+                ui.escreverTexto("concedendo um gradiente branco, cinza e rosado. É quase etéreo.", y += tileSize);
+                ui.escreverTexto("Infelizmente, não há tempo para apreciar formações geológicas,", y += tileSize);
+                ui.escreverTexto("sua queda o fez tombar em um buraco que agora está", y += tileSize);
+                ui.escreverTexto("alto demais para escalar de volta à floresta.", y += tileSize);
+                ui.escreverTexto("Não deu para enxergar como era a figura que te empurrou...", y += tileSize);
+                ui.escreverTexto("Enfim... é hora de montar uma base aqui", y += tileSize);
+                ui.escreverTexto("E avançar atrás de uma saída.", y += tileSize);
+                break;
+
+            case 201:
+                ui.escreverTexto("Como prosseguir agora?", y);
+
+                boolean achouAgua = painel.getAmbienteAtual().checarSeSubStateFoiVisitado();
+                boolean podeMinerar = painel.getInvent().acharItem("Picareta");
+
+                String opcaoAgua = achouAgua ? "Tentar pegar mais água" : "Achar fonte de água";
+                String opcaoMinerio = podeMinerar ? "Minerar" : "Checar minérios";
+
+                ui.desenharOpcoes(new String[] {opcaoAgua, opcaoMinerio, "Descobrir como escapar"}, y += tileSize * 2, numComando);
+                break;
+
+            case 202:
+                break;
+
+            case 203:
+                break;
+
+            case 204:
+                break;
+
+            case 205:
+                break;
+
+            case 206:
+                break;
+
+            case 207:
+                break;
+
+            case 208:
                 break;
 
             default:

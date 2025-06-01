@@ -61,8 +61,13 @@ public class ItemCombate extends Item {
                 setNomeImagem("lanca");
                 break;
 
-            case "Espada Basilar":
+            case "Picareta":
                 setPoder(7);
+                setNomeImagem("picareta");
+                break;
+
+            case "Espada Basilar":
+                setPoder(8);
                 setNomeImagem("espada_basilar");
                 break;
 

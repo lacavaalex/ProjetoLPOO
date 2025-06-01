@@ -14,7 +14,7 @@ public class Criatura {
 
     public void definirCriatura(int tipo) {
         switch (tipo) {
-            case 11:
+            case 1:
                 setNomeCriatura("Víbora-Rubro");
                 setVidaMaxCriatura(11);
                 setVidaCriatura(getVidaMaxCriatura());
@@ -28,7 +28,7 @@ public class Criatura {
                 setBoss(false);
                 break;
 
-            case 12:
+            case 2:
                 setNomeCriatura("Urso Pai");
                 setVidaMaxCriatura(100);
                 setVidaCriatura(getVidaMaxCriatura());
@@ -42,7 +42,7 @@ public class Criatura {
                 setBoss(true);
                 break;
 
-            case 13:
+            case 3:
                 setNomeCriatura("Lobo Famélico");
                 setVidaMaxCriatura(30);
                 setVidaCriatura(getVidaMaxCriatura());
@@ -56,7 +56,7 @@ public class Criatura {
                 setBoss(false);
                 break;
 
-            case 14:
+            case 4:
                 setNomeCriatura("Corvo Espectral");
                 setVidaMaxCriatura(20);
                 setVidaCriatura(getVidaMaxCriatura());
@@ -70,7 +70,7 @@ public class Criatura {
                 setBoss(true);
                 break;
 
-            case 21:
+            case 11:
                 setNomeCriatura("Crustáceo Tríclope");
                 setVidaMaxCriatura(12);
                 setVidaCriatura(getVidaMaxCriatura());
@@ -84,7 +84,7 @@ public class Criatura {
                 setBoss(false);
                 break;
 
-            case 22:
+            case 12:
                 setNomeCriatura("O Crustoso Cruel");
                 setVidaMaxCriatura(70);
                 setVidaCriatura(getVidaMaxCriatura());
@@ -98,7 +98,7 @@ public class Criatura {
                 setBoss(true);
                 break;
 
-            case 31:
+            case 21:
                 setNomeCriatura("Víbora-Mineral");
                 setVidaMaxCriatura(28);
                 setVidaCriatura(getVidaMaxCriatura());
@@ -112,7 +112,7 @@ public class Criatura {
                 setBoss(false);
                 break;
 
-            case 32:
+            case 22:
                 setNomeCriatura("Goblin Salgado");
                 setVidaMaxCriatura(20);
                 setVidaCriatura(getVidaMaxCriatura());
@@ -126,7 +126,7 @@ public class Criatura {
                 setBoss(false);
                 break;
 
-            case 33:
+            case 23:
                 setNomeCriatura("Golem de Sódio");
                 setVidaMaxCriatura(90);
                 setVidaCriatura(getVidaMaxCriatura());

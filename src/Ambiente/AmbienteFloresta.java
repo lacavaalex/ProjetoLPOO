@@ -88,16 +88,16 @@ public class AmbienteFloresta extends Ambiente {
         switch (subState) {
             // STATES DE EVENTO
             case vibora:
-                definirOcorrenciaDeEventoCriatura(g2, eventoVibora, 11);
+                definirOcorrenciaDeEventoCriatura(g2, eventoVibora, 1);
                 break;
             case urso:
-                definirOcorrenciaDeEventoCriatura(g2, eventoUrso, 12);
+                definirOcorrenciaDeEventoCriatura(g2, eventoUrso, 2);
                 break;
             case lobo:
-                definirOcorrenciaDeEventoCriatura(g2, eventoLobo, 13);
+                definirOcorrenciaDeEventoCriatura(g2, eventoLobo, 3);
                 break;
             case corvo:
-                definirOcorrenciaDeEventoCriatura(g2, eventoCorvo, 14);
+                definirOcorrenciaDeEventoCriatura(g2, eventoCorvo, 4);
                 break;
 
             // PONTO INICIAL
@@ -200,8 +200,15 @@ public class AmbienteFloresta extends Ambiente {
                 ui.desenharOpcoes(new String[]{"Caçar", "Adentrar floresta", "Voltar à área desmatada"}, y += tileSize * 2, numComando);
                 break;
 
+
+            case 6:
+                break;
+
+            case 7:
+                break;
+
             // BRANCH DA LUZ
-            case 100:
+            case 8:
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você deixa a luz te guiar...", y);
@@ -209,7 +216,7 @@ public class AmbienteFloresta extends Ambiente {
                 definirOcorrenciaDeEventoClimatico(g2, eventoChuva, 1);
                 break;
 
-            case 101:
+            case 9:
                 ui.escreverTexto("Arbustos chacoalham ao seu redor enquanto anda.", y);
                 ui.escreverTexto("...", y += tileSize);
                 ui.escreverTexto("Você está perto o suficiente da luz... é uma fogueira.", y += tileSize);
@@ -220,10 +227,10 @@ public class AmbienteFloresta extends Ambiente {
                 ui.desenharOpcoes(new String[]{"Saquear acampamento", "Explorar arredores"}, y += tileSize * 2, numComando);
                 break;
 
-            case 102:
+            case 10:
                 definirTelaDeBotao("voltar");
 
-                if (!painel.getAmbienteAtual().checarSeSubStateFoiVisitado(104)) {
+                if (!painel.getAmbienteAtual().checarSeSubStateFoiVisitado(12)) {
                     if (!isRecursosColetados()) {
                         painel.getInvent().adicionarItem("Cantil", "consumo", 1);
                         painel.getInvent().adicionarItem("Carne suculenta", "consumo", 1);
@@ -243,7 +250,7 @@ public class AmbienteFloresta extends Ambiente {
                 }
                 break;
 
-            case 103:
+            case 11:
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Melhor não mexer com o que não é seu.", y);
@@ -256,7 +263,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Apressando o passo, em minutos você chega ao lago.", y += tileSize);
                 break;
 
-            case 104:
+            case 12:
                 ui.escreverTexto("Você retorna a atenção à fogueira.", y);
                 ui.escreverTexto("O fogo parece estar muito mais fraco desde que você chegou...", y += tileSize);
                 ui.escreverTexto("Você ouve um barulho de água à distância. Pode ser um lago.", y += tileSize);
@@ -265,7 +272,7 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             // BRANCH DA VÍBORA
-            case 200:
+            case 13:
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você busca por recursos.", y);
@@ -280,13 +287,13 @@ public class AmbienteFloresta extends Ambiente {
                 }
                 break;
 
-            case 201:
+            case 14:
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Aquele chiado... parece estar tão perto...", y);
                 break;
 
-            case 202:
+            case 15:
                 iniciarEspera();
 
                 ui.escreverTexto("Já é hora de pensar no que fazer para se sustentar nessa mata.", y);
@@ -306,7 +313,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.desenharOpcoes(new String[]{opcaoFrutas, opcaoCaca, opcaoFogueira}, y += tileSize * 2, numComando);
                 break;
 
-            case 203:
+            case 16:
                 definirTelaDeBotao("voltar");
 
                 ui.escreverTexto("Deve haver algum vegetal com propriedades de cura", y);
@@ -345,7 +352,7 @@ public class AmbienteFloresta extends Ambiente {
                 definirOcorrenciaDeEventoClimatico(g2, eventoChuva, 1);
                 break;
 
-            case 204:
+            case 17:
                 definirTelaDeBotao("voltar");
 
                 ui.escreverTexto("Você procura por algo que sirva para caçar.", y);
@@ -374,7 +381,7 @@ public class AmbienteFloresta extends Ambiente {
                 definirOcorrenciaDeEventoClimatico(g2, eventoTempestade, 2);
                 break;
 
-            case 205:
+            case 18:
                 botoes.mostrarBotao("Continuar");
 
                 ui.escreverTexto("(Você usa as madeiras que encontrou para montar uma fogueira.)", y);
@@ -383,7 +390,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("...", y += tileSize);
                 break;
 
-            case 208:
+            case 19:
                 botoes.mostrarBotao("Continuar");
 
                 if (!isChanceTirada()) {
@@ -407,7 +414,7 @@ public class AmbienteFloresta extends Ambiente {
                 }
                 break;
 
-            case 209:
+            case 20:
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("O que seria este lugar? Independente, não", y);
@@ -441,7 +448,7 @@ public class AmbienteFloresta extends Ambiente {
                 }
                 break;
 
-            case 210:
+            case 21:
                 ui.escreverTexto("Você segue caminhando. Há uma bifurcação á frente.", y);
                 ui.escreverTexto("À esquerda há planícies, à direita, mais mata.", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
@@ -450,7 +457,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.desenharOpcoes(new String[]{"Seguir pela esquerda", "Seguir pela direita"}, y += tileSize * 2, numComando);
                 break;
 
-            case 211:
+            case 22:
                 definirTelaDeBotao("continuar");
                 ui.escreverTexto("Aqui o céu jorra sua escuridão imensa.", y);
                 ui.escreverTexto("Não havia tido uma vista tão boa dele desde aquela clareira", y += tileSize);
@@ -483,7 +490,7 @@ public class AmbienteFloresta extends Ambiente {
                 definirOcorrenciaDeEventoClimatico(g2, eventoTornado, 3);
                 break;
 
-            case 212:
+            case 23:
                 definirTelaDeBotao("continuar");
                 ui.escreverTexto("Por ora, é bom verificar se a mata é muito extensa.", y);
                 ui.escreverTexto("É só não se afastar demais.", y += tileSize);
@@ -516,7 +523,7 @@ public class AmbienteFloresta extends Ambiente {
                 definirOcorrenciaDeEventoClimatico(g2, eventoTempestade, 2);
                 break;
 
-            case 213:
+            case 24:
                 botoes.esconderBotao("Voltar à base");
 
                 ui.escreverTexto("Após mais uma longa caminhada... nada", y);
@@ -529,7 +536,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.desenharOpcoes(new String[]{"Ir à montanha", "Retornar à floresta"}, y += tileSize * 2, numComando);
                 break;
 
-            case 214:
+            case 25:
                 botoes.esconderBotao("Voltar à base");
 
                 ui.escreverTexto("Foram-se horas vagando, e ainda nenhum sinal de sentido.", y);
@@ -542,7 +549,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.desenharOpcoes(new String[]{"Seguir adiante", "Voltar para perto do abrigo"}, y += tileSize * 2, numComando);
                 break;
 
-            case 215:
+            case 26:
                 definirTelaDeBotao("continuar");
                 ui.escreverTexto("Quanto mais caminha, mais perdido se sente.", y);
                 ui.escreverTexto("Seus pés doem, sua energia se esgota. As árvores", y += tileSize);
@@ -575,12 +582,12 @@ public class AmbienteFloresta extends Ambiente {
                 }
                 break;
 
-            case 216:
+            case 27:
                 definirTelaDeBotao("continuar");
                 ui.escreverTexto("...", painel.getAltura()/2);
                 break;
 
-            case 217:
+            case 28:
                 botoes.esconderBotao("Abrir mochila");
                 Composite composite = g2.getComposite();
                 if (!isTransicaoFinalizada()) {
@@ -592,11 +599,11 @@ public class AmbienteFloresta extends Ambiente {
                 g2.setComposite(composite);
 
                 if (isTransicaoFinalizada()) {
-                    painel.setPlaySubState(218);
+                    painel.setPlaySubState(29);
                 }
                 break;
 
-            case 218:
+            case 29:
                 resetAtributosTransicao();
 
                 definirTelaDeBotao("continuar");
@@ -604,7 +611,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("...", painel.getAltura() - tileSize);
                 break;
 
-            case 219:
+            case 30:
                 definirTelaDeBotao("continuar");
 
                 g2.setColor(Color.red);
@@ -613,7 +620,7 @@ public class AmbienteFloresta extends Ambiente {
                 g2.setColor(Color.white);
                 break;
 
-            case 220:
+            case 31:
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("...", y += tileSize);
@@ -622,8 +629,11 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("E, espere um pouco, você não está mais na floresta...", y += tileSize);
                 break;
 
+            case 32:
+                break;
+
             // BRANCH DA MONTANHA
-            case 300:
+            case 33:
                definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você se direciona até a montanha", y);
@@ -634,7 +644,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto(". . .", y += tileSize);
                 break;
 
-            case 301:
+            case 34:
                 ui.escreverTexto("Atingido o pé da montanha, você enxerga um trecho de subida.", y);
                 ui.escreverTexto("O que quer que estava te seguindo aparenta ter parado...", y += tileSize);
                 ui.escreverTexto("Não há nada de destaque neste local, além de uma rocha firme.", y += tileSize);
@@ -645,7 +655,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.desenharOpcoes(new String[]{"Subir pelo trecho", "Descansar até o amanhecer"}, y += tileSize * 2, numComando);
                 break;
 
-            case 302:
+            case 35:
                definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você sobe o trecho semi-íngreme.", y);
@@ -655,7 +665,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Você chega num paredão.", y += tileSize);
                 break;
 
-            case 303:
+            case 36:
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você se dirige àquela rocha para um abrigo temporário.", y);
@@ -666,7 +676,7 @@ public class AmbienteFloresta extends Ambiente {
                 definirOcorrenciaDeEventoClimatico(g2, eventoChuva, 1);
                 break;
 
-            case 304:
+            case 37:
                 ui.escreverTexto("Você descansa os olhos...", y);
                 break;
 

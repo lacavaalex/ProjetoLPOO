@@ -82,10 +82,10 @@ public class AmbienteLago extends Ambiente {
 
         switch (subState) {
             case caranguejo:
-                definirOcorrenciaDeEventoCriatura(g2, eventoTriclope, 21);
+                definirOcorrenciaDeEventoCriatura(g2, eventoTriclope, 11);
                 break;
             case boss:
-                definirOcorrenciaDeEventoCriatura(g2, eventoCrustoso, 22);
+                definirOcorrenciaDeEventoCriatura(g2, eventoCrustoso, 12);
                 break;
 
             case 1:
@@ -93,7 +93,7 @@ public class AmbienteLago extends Ambiente {
                 ui.mostrarAcampamento();
                 break;
 
-            case 400:
+            case 100:
                 ui.escreverTexto("Este lago parece bom para descanso.", y);
                 ui.escreverTexto("Você pode buscar um bom lugar para acampar", y += tileSize);
                 ui.escreverTexto("aqui, ou retornar para a floresta.", y += tileSize);
@@ -101,7 +101,7 @@ public class AmbienteLago extends Ambiente {
                 ui.desenharOpcoes(new String[] {"Explorar lago", "Retornar à floresta"}, y += tileSize * 2, numComando);
                 break;
 
-            case 401:
+            case 101:
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("O lago é extenso, cobrindo quase todo o horizonte.", y);
@@ -116,19 +116,19 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Aqui parece ser um bom lugar para montar acampamento.", y+= tileSize);
                 break;
 
-            case 403:
+            case 102:
                 botoes.mostrarBotao("Voltar à base");
                 ui.escreverTexto("O que fazer agora?", y += tileSize);
 
                 ui.desenharOpcoes(new String[]{"Checar o lago de perto", "Analisar terras do mangue", "Buscar recursos"}, y += tileSize * 2, numComando);
                 break;
 
-            case 404:
+            case 103:
                 definirTelaDeBotao("continuar");
                 ui.escreverTexto("Você se aproxima do lago...", y += tileSize);
                 break;
 
-            case 405:
+            case 104:
                 definirTelaDeBotao("continuar");
                 ui.escreverTexto("Há uma população de crustáceos bizarros aqui.", y += tileSize);
                 ui.escreverTexto("Eles marcham ao redor do lago quase que com coordenação,", y += tileSize);
@@ -139,7 +139,7 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Ilegível, mas há algum tipo de gravura...", y += tileSize);
                 break;
 
-            case 406:
+            case 105:
                 definirTelaDeBotao("voltar");
                 ui.escreverTexto("Você busca por recursos.", y);
 
@@ -190,40 +190,40 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Há bons recursos em sua mochila.", y += tileSize);
                 break;
 
-            case 408:
+            case 106:
                 definirTelaDeBotao("continuar");
 
                 desenharImagemZoom(g2, placaFrente);
                 ui.escreverTexto("Estranho. Talvez haja mais no verso.", painel.getAltura() - tileSize);
                 break;
 
-            case 409:
+            case 107:
                 definirTelaDeBotao("continuar");
 
                 desenharImagemZoom(g2, placaVerso);
                 ui.escreverTexto("...", painel.getAltura() - tileSize);
                 break;
 
-            case 410:
+            case 108:
                 definirTelaDeBotao("voltar");
                 ui.escreverTexto("Esse lago esconde algo...", y);
                 ui.escreverTexto("É vital medir os próximos passos.", y += tileSize);
                 break;
 
-            case 411:
+            case 109:
                 botoes.mostrarBotao("Voltar à base");
                 ui.escreverTexto("O que fazer?", y);
 
                 ui.desenharOpcoes(new String[]{"Inspecionar o lago", "Buscar recursos", "Retornar à floresta"}, y += tileSize * 2, numComando);
                 break;
 
-            case 412:
+            case 110:
                 definirTelaDeBotao("continuar");
                 ui.escreverTexto("Esses bichos parecem não gostar da sua presença.", y);
                 ui.escreverTexto("Enfim, há terra firme e sem muita atividade em uma margem próxima", y += tileSize);
                 break;
 
-            case 413:
+            case 111:
                 botoes.esconderBotao("Voltar à base");
 
                 setContadorEspera(0);
@@ -238,7 +238,7 @@ public class AmbienteLago extends Ambiente {
                 }
                 break;
 
-            case 414:
+            case 112:
                 botoes.esconderBotao("Voltar à base");
                 definirTelaDeBotao("voltar");
 
@@ -249,7 +249,7 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("(Ao encarar demais, você sente um calafrio subir sua espinha).", y += tileSize);
                 break;
 
-            case 415:
+            case 113:
                 definirTelaDeBotao("voltar");
 
                 ui.escreverTexto("Você chuta um dos bichos no lago", y);
@@ -277,7 +277,7 @@ public class AmbienteLago extends Ambiente {
                 }
                 break;
 
-            case 416:
+            case 114:
                 botoes.esconderBotao("Voltar à base");
 
                 iniciarEspera();
@@ -290,7 +290,7 @@ public class AmbienteLago extends Ambiente {
 
                 break;
 
-            case 417:
+            case 115:
                 definirTelaDeBotao("voltar");
 
                 if (isAguardando()) {
@@ -355,7 +355,7 @@ public class AmbienteLago extends Ambiente {
 
                 break;
 
-            case 418:
+            case 116:
                 definirTelaDeBotao("voltar");
 
                 if (isAguardando()) {
@@ -407,7 +407,7 @@ public class AmbienteLago extends Ambiente {
                 }
                 break;
 
-            case 419:
+            case 117:
                 botoes.esconderBotao("Abrir mochila");
 
                 if (isAguardando()) {
@@ -440,12 +440,12 @@ public class AmbienteLago extends Ambiente {
 
                 }
                 if (isTransicaoFinalizada()) {
-                    painel.setPlaySubState(420);
+                    painel.setPlaySubState(118);
                 }
 
                 break;
 
-            case 420:
+            case 118:
                 resetAtributosTransicao();
 
                 if (!isRecursosGastos()) {
@@ -458,7 +458,7 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Uma fera incrustada emerge do lago.", painel.getAltura() - tileSize);
                 break;
 
-            case 421:
+            case 119:
                 definirTelaDeBotao("continuar");
 
                 if (!isRecursosColetados()) {
@@ -480,7 +480,7 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Que outros monstros ainda podem habitar neste mundo funesto?", y += tileSize);
                 break;
 
-            case 422:
+            case 120:
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Seu golpe fatal foi tão poderoso", y);
@@ -493,13 +493,13 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Há uma iluminação estranha vindo de dentro da carcaça do crustáceo.", y += tileSize);
                 break;
 
-            case 423:
+            case 121:
                 definirTelaDeBotao("continuar");
                 desenharImagemZoom(g2, joia);
                 ui.escreverTexto("Isso... é melhor guardar.", painel.getAltura() - tileSize);
                 break;
 
-            case 424:
+            case 122:
                 definirTelaDeBotao("voltar");
                 ui.escreverTexto("O lago não era tão sereno quanto aparentava.", y += tileSize);
                 ui.escreverTexto("Ainda assim, esses crustáceos não causam tanto problema.", y += tileSize);
@@ -508,7 +508,7 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("De volta àquela floresta, por ora.", y += tileSize);
                 break;
 
-            case 425:
+            case 123:
                 ui.escreverTexto("Este é o lago. O que fazer?", y);
 
                 ui.desenharOpcoes(new String[] {"Pescar", "Retornar à floresta"}, y += tileSize * 2, numComando);

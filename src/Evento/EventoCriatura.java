@@ -36,12 +36,12 @@ public class EventoCriatura extends Evento {
             criatura.definirCriatura(tipo);
             getPainel().getCombate().iniciarCombate(criatura);
 
-            if ((tipo == 11 || tipo == 13)) {
+            if ((tipo == 1 || tipo == 3)) {
                 ataqueSurpresa();
                 setSurpresa(false);
             }
 
-            if (tipo == 11) {
+            if (tipo == 1) {
                 g2.setColor(Color.red);
                 getUi().escreverTexto("ATAQUE SURPRESA! -" + criatura.getAtaqueCriatura()/2 +"HP", y += tileSize * 4);
                 g2.setColor(Color.white);
@@ -49,7 +49,7 @@ public class EventoCriatura extends Evento {
                 getJogador().setEnvenenado(true);
             }
 
-            else if (tipo == 12) {
+            else if (tipo == 2) {
                 g2.setColor(Color.red);
                 getUi().escreverTexto("*GROAAAAAR*", y += tileSize * 4);
                 g2.setColor(Color.white);
@@ -57,7 +57,7 @@ public class EventoCriatura extends Evento {
                 getUi().escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
             }
 
-            else if (tipo == 13) {
+            else if (tipo == 3) {
                 g2.setColor(Color.red);
                 getUi().escreverTexto("*ÁUUUUUUU*", y += tileSize * 4);
                 getUi().escreverTexto("ATAQUE SURPRESA! -" + criatura.getAtaqueCriatura()/2 +"HP", y += tileSize);
@@ -66,20 +66,19 @@ public class EventoCriatura extends Evento {
                 getUi().escreverTexto("Um lobo de mandíbula extraterrestre te escolhe como presa.", y += tileSize);
             }
 
-            else if (tipo == 14) {
+            else if (tipo == 4) {
                 g2.setColor(Color.white);
                 getUi().escreverTexto("De repente, um vulto passa rasante.", y += tileSize * 4);
                 getUi().escreverTexto("O que é aquilo? É um corvo... ou... parte de um...", y += tileSize);
             }
 
-            else if (tipo == 21) {
+            else if (tipo == 11) {
                 g2.setColor(Color.white);
                 getUi().escreverTexto("Espere, há algo vindo, o que é... nossa!", y += tileSize * 4);
                 getUi().escreverTexto("Parece um caranguejo com... três olhos!?", y += tileSize);
             }
 
-            else if (tipo == 22) {
-                criatura.definirCriatura(22);
+            else if (tipo == 12) {
                 getPainel().getBotoes().esconderBotao("Clima");
                 getPainel().setFightState(true);
             }
@@ -111,22 +110,22 @@ public class EventoCriatura extends Evento {
             }
         }
 
-        if (tipo == 11) { // Víbora
+        if (tipo == 1) { // Víbora
             executavel = (probabilidade <= 65) ? 1 : 0;
         }
-        else if (tipo == 12) { // Urso Pai
+        else if (tipo == 2) { // Urso Pai
             executavel = (probabilidade <= 50) ? 1 : 0;
         }
-        else if (tipo == 13) { // Lobo Famélico
+        else if (tipo == 3) { // Lobo Famélico
             executavel = (probabilidade <= 50) ? 1 : 0;
          }
-        else if (tipo == 14) { // Corvo Espectral
+        else if (tipo == 4) { // Corvo Espectral
             executavel = (probabilidade <= 50) ? 1 : 0;
         }
-        else if (tipo == 21) { // Crustaceo Triclope
+        else if (tipo == 11) { // Crustaceo Triclope
             executavel = (probabilidade <= 40) ? 1 : 0;
         }
-        else if (tipo == 22) { // Crustoso Cruel
+        else if (tipo == 12) { // Crustoso Cruel
             executavel = 1;
         }
 

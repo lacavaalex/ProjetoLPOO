@@ -56,7 +56,7 @@ public class AmbienteMontanha extends Ambiente {
         int subState = painel.getPlaySubState();
         int y = tileSize * 2;
 
-        if (subState != 600) {
+        if (subState != 300) {
             definirOcorrenciaDeEventoClimatico(g2, eventoNevasca, 4);
         }
 
@@ -67,7 +67,7 @@ public class AmbienteMontanha extends Ambiente {
                 ui.mostrarAcampamento();
                 break;
 
-            case 600:
+            case 300:
                 definirTelaDeBotao("voltar");
 
                 ui.escreverTexto("O trecho acabou. O único caminho para além daqui...", y);

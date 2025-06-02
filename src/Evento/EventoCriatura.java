@@ -131,7 +131,7 @@ public class EventoCriatura extends Evento {
             executavel = (probabilidade <= 65) ? 1 : 0;
         }
         else if (tipo == 2) { // Urso Pai
-            executavel = (probabilidade <= 50) ? 1 : 0;
+            executavel = 1;
         }
         else if (tipo == 3) { // Lobo Famélico
             executavel = (probabilidade <= 50) ? 1 : 0;
@@ -158,7 +158,8 @@ public class EventoCriatura extends Evento {
         System.out.println("PROBABILIDADE: " + getProbabilidade());
     }
 
-    public void incrementarContador() { contadorDeEncontros++; }
+    public void incrementarContador() { contadorDeEncontros++;
+        System.out.println("Contador de encontros: " + contadorDeEncontros); }
     public void resetContador() { contadorDeEncontros = 0; }
 
     public void ataqueSurpresa() {

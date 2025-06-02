@@ -162,6 +162,13 @@ public class Painel extends JPanel implements Runnable {
                 }
                 break;
 
+            case "nevasca":
+                if (!jogador.getLocalizacao().equals("MONTANHA EPOPEICA")) {
+                    getEventoCriatura().resetContador();
+                    eventoClimatico.finalizarEventoClimatico();
+                }
+                break;
+
             default:
                 break;
         }

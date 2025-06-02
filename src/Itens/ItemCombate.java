@@ -77,7 +77,7 @@ public class ItemCombate extends Item {
                 break;
 
             case "Foice":
-                setPoder(8);
+                setPoder(10);
                 setNomeImagem("foice");
                 break;
 
@@ -96,9 +96,9 @@ public class ItemCombate extends Item {
                 setNomeImagem("tridente");
                 break;
 
-            case "Espada Nobre":
-                setPoder(10);
-                setNomeImagem("espada_nobre");
+            case "Espada Insigne":
+                setPoder(12);
+                setNomeImagem("espada_insigne");
                 break;
 
             case "Espada Flamejante":

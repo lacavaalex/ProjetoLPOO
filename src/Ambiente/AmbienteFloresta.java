@@ -85,6 +85,9 @@ public class AmbienteFloresta extends Ambiente {
         int subState = painel.getPlaySubState();
         int y = tileSize * 2;
 
+        boolean podeCurar = painel.getInvent().acharItem("Planta medicinal");
+        boolean podeCacar = painel.getInvent().acharItem("Machado") || painel.getInvent().acharItem("Faca");
+
         switch (subState) {
             // STATES DE EVENTO
             case vibora:
@@ -202,9 +205,54 @@ public class AmbienteFloresta extends Ambiente {
 
 
             case 6:
+                iniciarEspera();
+
+                ui.escreverTexto("O que fazer?", y += tileSize);
+
+                derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
+                derrotouBossCaverna = painel.getInvent().acharItem("Jóia vermelha");
+
+                String opcaoLago2 = derrotouBossLago ? "Ir ao lago" : "Seguir luz";
+                String opcaoRecursos2 = derrotouBossCaverna ? "Caçar" : "Coletar recursos";
+
+                ui.desenharOpcoes(new String[]{opcaoLago2, opcaoRecursos2, "Ir para a grande árvore"}, y += tileSize * 2, numComando);
                 break;
 
             case 7:
+                definirTelaDeBotao("voltar");
+
+                if (painel.getInvent().acharItem("Pedra")) {
+                    ui.escreverTexto("Você atira uma pedra num pássaro voando próximo.", y += tileSize * 2);
+                    if (!isRecursosGastos()) {
+                        painel.getInvent().removerItem("Pedra", 1);
+                        setRecursosGastos(true);
+                    }
+                    ui.escreverTexto("Parece que ele deixou cair algo...", y += tileSize);
+                    ui.escreverTexto("Você buscou e colocou na mochila.", y += tileSize);
+
+                    if (!isRecursosColetados()) {
+                        painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                        painel.getInvent().adicionarItem("Carne suculenta", "consumo", 1);
+
+                        int probabilidade = painel.definirUmaProbabilidade();
+                        if (probabilidade <= 5) {
+                            painel.getInvent().adicionarItem("Carvão estranho", "recurso", 1);
+                        }
+                        else if (probabilidade <= 15) {
+                            painel.getInvent().adicionarItem("Rocha regenerativa", "recurso", 1);
+                        }
+                        else if (probabilidade <= 50) {
+                            painel.getInvent().adicionarItem("Fruta", "consumo", 1);
+                        }
+                        else if (probabilidade <= 100) {
+                            painel.getInvent().adicionarItem("Pedra", "recurso", 1);
+                        }
+                        setRecursosColetados(true);
+                    }
+                }
+                else {
+                    ui.escreverTexto("Você não tem pedras para jogar...", y += tileSize * 2);
+                }
                 break;
 
             // BRANCH DA LUZ
@@ -301,8 +349,6 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("", y += tileSize);
                 ui.escreverTexto("O que fazer?", y += tileSize);
 
-                boolean podeCurar = painel.getInvent().acharItem("Planta medicinal");
-                boolean podeCacar = painel.getInvent().acharItem("Machado") || painel.getInvent().acharItem("Faca");
 
                 String opcaoFrutas = "Buscar frutas e medicação natural";
                 if (podeCurar && checarSeSubStateFoiVisitado(1)) {
@@ -689,7 +735,143 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 37:
-                ui.escreverTexto("Você descansa os olhos...", y);
+                definirTelaDeBotao("continuar");
+                ui.escreverTexto("...mas é impossível. Há algo nessa floresta...", y);
+                ui.escreverTexto("Você monta um pequeno acampamento perto da rocha.", y += tileSize);
+                ui.escreverTexto("Seria bom descobrir a natureza deste lugar, porém,", y += tileSize);
+                ui.escreverTexto("fazer isso sem um porto seguro não é viável.", y += tileSize);
+                break;
+
+            case 38:
+                iniciarEspera();
+
+                botoes.mostrarBotao("Voltar à base");
+                ui.escreverTexto("Essa rocha parece um local bom o suficiente por agora.", y);
+                ui.escreverTexto("Mas algo chama a atenção... uma árvore gigante.", y += tileSize);
+                ui.escreverTexto("Lá do alto, talvez consiga alguma noção de direção.", y += tileSize);
+                ui.escreverTexto("E evita ter que subir naquela montanha", y += tileSize);
+                ui.escreverTexto("Mas há o que fazer aqui embaixo, também.", y += tileSize);
+
+                String opcaoFrutas2 = podeCurar ? "Analisar ambiente" : "Buscar frutas e medicação natural";
+                String opcaoCaca2 = podeCacar ? "Caçar" : "Buscar por arma de caça";
+
+                ui.desenharOpcoes(new String[]{opcaoFrutas2, opcaoCaca2, "Subir na árvore"}, y += tileSize * 2, numComando);
+                break;
+
+            case 39:
+                definirTelaDeBotao("continuar");
+                ui.escreverTexto("Você começa a escalar a árvore...", y);
+
+                definirOcorrenciaDeEventoClimatico(g2, eventoTempestade, 2);
+                break;
+
+            case 40:
+                definirTelaDeBotao("continuar");
+
+                ui.escreverTexto("Metade do caminho já foi...", y);
+                ui.escreverTexto("Há um pouco de mel misturado com seiva. Açúcar é bom.", y += tileSize);
+
+                if (!isRecursosColetados()) {
+                    painel.getInvent().adicionarItem("Mel", "consumo", 1);
+                    setRecursosColetados(true);
+                }
+
+                ui.escreverTexto("Daqui, o que dá para ver não é promissor...", y += tileSize * 2);
+                ui.escreverTexto("Mas agora já está alto. Melhor continuar.", y += tileSize);
+                ui.escreverTexto("Em pouco tempo, você atinge o topo da árvore.", y += tileSize);
+                ui.escreverTexto("E a vista é... perturbadora.", y += tileSize);
+                break;
+
+            case 41:
+                ui.escreverTexto("A floresta é INFINITA. O horizonte é mata pura.", y);
+                ui.escreverTexto("É possível ver algumas áreas sem cobertura,", y += tileSize);
+                ui.escreverTexto("desmatamento ou corpos aquáticos, provavelmente.", y += tileSize);
+                ui.escreverTexto("Há uma pequena caverna, em um pico.", y += tileSize);
+                ui.escreverTexto("Mas, fora isso, apenas a imponente montanha...", y += tileSize);
+                ui.escreverTexto("O que fazer?", y += tileSize);
+
+                ui.desenharOpcoes(new String[]{"Transferir base para a caverna", "Retornar à clareira", "Jogar pedras em pássaros"}, y += tileSize * 2, numComando);
+                break;
+
+            case 42:
+                definirTelaDeBotao("continuar");
+
+                ui.escreverTexto("Você se dirige ao pico.", y);
+                ui.escreverTexto("Nada de especial ao longo do caminho.", y += tileSize);
+                ui.escreverTexto("Ainda há criaturas aqui, mas, quanto mais se aproxima,", y += tileSize);
+                ui.escreverTexto("menos delas você vê. Esse pico pode ser seguro mesmo.", y += tileSize);
+
+                definirOcorrenciaDeEventoClimatico(g2, eventoTornado, 3);
+                break;
+
+            case 43:
+                definirTelaDeBotao("continuar");
+                ui.escreverTexto("Finalmente, você chega à pequena caverna.", y);
+                ui.escreverTexto("Verdadeiramente, é um lugar ordinário.", y += tileSize);
+                ui.escreverTexto("Porém, bem localizado. Vai servir para a nova base", y += tileSize);
+                break;
+
+            case 44:
+                iniciarEspera();
+                botoes.mostrarBotao("continuar");
+
+                ui.escreverTexto("A sobrevivência deve ser prioridade.", y);
+                ui.escreverTexto("Armas, comida, e materiais são vitais.", y += tileSize);
+                ui.escreverTexto("Essa caverna é boa até mesmo para dormir...", y += tileSize);
+                ui.escreverTexto("O que fazer?", y += tileSize);
+
+                ui.desenharOpcoes(new String[]{"Buscar recursos", "Caçar", "Dormir profundamente"}, y += tileSize * 2, numComando);
+                break;
+
+            case 45:
+                definirTelaDeBotao("voltar");
+                ui.escreverTexto("Você busca por recursos.", y);
+
+                if (!isChanceTirada()) {
+                    double probabilidade = painel.definirUmaProbabilidade();
+                    if (jogador.getHabilidade().equals("RASTREADORA")) {
+                        probabilidade = probabilidade * 0.9;
+                    }
+                    boolean recursoEncontrado = probabilidade <= 80;
+
+                    if (recursoEncontrado) {
+                        if (!isRecursosColetados()) {
+                            if (!painel.getInvent().acharItem("Escudo") && !painel.getInvent().acharItem("Foice")) {
+                                if (probabilidade <= 50) {
+                                    painel.getInvent().adicionarItem("Escudo", "combate", 1);
+                                }
+                                else {
+                                    painel.getInvent().adicionarItem("Foice", "combate", 1);
+                                }
+                            }
+
+                            if (painel.getInvent().getInvent().size() < 7) {
+                                if (probabilidade <= 65 && probabilidade >= 15) {
+                                    painel.getInvent().adicionarItem("Fruta", "consumo", 2);
+                                    if (probabilidade <= 45) {
+                                        painel.getInvent().adicionarItem("Madeira", "recurso", 1);
+                                    }
+                                }
+
+                                if (probabilidade <= 20) {
+                                    painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 2);
+                                }
+                                if (probabilidade <= 15) {
+                                    painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                                }
+                            }
+                            setRecursosColetados(true);
+                        }
+                    }
+                    setChanceTirada(true);
+                }
+
+                ui.escreverTexto("...", y += tileSize);
+                ui.escreverTexto("Parece que você já pegou tudo de útil por aqui.", y += tileSize);
+                ui.escreverTexto("Há bons recursos em sua mochila.", y += tileSize);
+                break;
+
+            case 46:
                 break;
 
             default:

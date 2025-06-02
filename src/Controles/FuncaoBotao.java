@@ -72,20 +72,21 @@ public class FuncaoBotao implements ActionListener {
             switch (subState) {
                 case 3:
                 case 16:
-                    painel.setPlaySubState(15);
+                case 17:
+                    painel.setPlaySubState(painel.getAmbienteAtual().getSubStateOrigem());
                     break;
 
                 case 4:
                     painel.setPlaySubState(1004);
                     break;
 
-                case 10:
-                    painel.setPlaySubState(12);
+                case 7:
+                    painel.setPlaySubState(1004);
+                    painel.getAmbienteAtual().setSubStateParaRetornar(41);
                     break;
 
-                case 17:
-                    painel.setPlaySubState(1001);
-                    painel.getAmbienteAtual().setSubStateParaRetornar(15);
+                case 10:
+                    painel.setPlaySubState(12);
                     break;
 
                 case 105:
@@ -180,6 +181,7 @@ public class FuncaoBotao implements ActionListener {
                 case 20:
                 case 22:
                 case 23:
+                case 42:
                     int stateRetornar;
                     if (subState == 20) { stateRetornar = 21; }
                     else { stateRetornar = painel.getPlaySubState() + 2; }
@@ -193,9 +195,15 @@ public class FuncaoBotao implements ActionListener {
                     painel.setPlaySubState(criatura);
                     break;
 
-                case 36:
-                    painel.setPlaySubState(1002);
+                case 7:
+                case 39:
+                case 40:
+                    if (subState == 7) {
+                        painel.getAmbienteAtual().setSubStateParaRetornar(41);
+                    }
+                    painel.setPlaySubState(1004);
                     break;
+
                 case 103:
                     painel.getAmbienteAtual().setSubStateParaRetornar(110);
                     painel.setPlaySubState(2001);
@@ -249,6 +257,11 @@ public class FuncaoBotao implements ActionListener {
 
                 case 32:
                     painel.setPlaySubState(2);
+                    break;
+
+                case 37:
+                    painel.getAmbienteAtual().setSubStateParaRetornar(38);
+                    painel.setPlaySubState(1);
                     break;
 
                 // LAGO

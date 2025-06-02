@@ -38,6 +38,7 @@ public abstract class Ambiente {
     private boolean eventoEspecialDefinido = false;
 
     private int subStateParaRetornar;
+    private int subStateOrigem;
 
     // Atributos do acampamento
     private boolean baseFontedeAlimento = false;
@@ -275,8 +276,12 @@ public abstract class Ambiente {
     public void setEventoEspecialDefinido(boolean eventoEspecialDefinido) { this.eventoEspecialDefinido = eventoEspecialDefinido; }
 
     public int getSubStateAnterior() { return subStateAnterior; }
+
     public int getSubStateParaRetornar() { return subStateParaRetornar; }
     public void setSubStateParaRetornar(int subStateParaRetornar) { this.subStateParaRetornar = subStateParaRetornar; }
+
+    public int getSubStateOrigem() { return subStateOrigem; }
+    public void setSubStateOrigem(int subStateOrigem) { this.subStateOrigem = subStateOrigem; }
 
     public boolean isBaseFonteDeAlimento() { return baseFontedeAlimento; }
     public void setBaseFonteDeAlimento(boolean baseFonteDeAlimento) { this.baseFontedeAlimento = baseFonteDeAlimento; }

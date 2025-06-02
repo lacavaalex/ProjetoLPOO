@@ -209,34 +209,42 @@ public class UI {
         int y = tileSize * 3;
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
 
-        escreverTexto("Você está em sua base.", y += tileSize);
+        if (!jogador.getLocalizacao().equals("MONTANHA EPOPEICA")) {
 
-        g2.setColor(Color.yellow);
+            escreverTexto("Você está em sua base.", y += tileSize);
 
-        boolean fonteAlimento = painel.getAmbienteAtual().isBaseFonteDeAlimento();
-        boolean colheitaPronta = painel.getAmbienteAtual().isColheitaPronta();
-        boolean fogoAceso = painel.getAmbienteAtual().isBaseFogoAceso();
+            g2.setColor(Color.yellow);
 
-        String plantio = fonteAlimento ? "sementes plantadas. Retorne em breve." : "não há fonte de alimento.";
-        if (painel.getAmbienteAtual().isColheitaPronta()) {
-            plantio = "pronta para colher.";
+            boolean fonteAlimento = painel.getAmbienteAtual().isBaseFonteDeAlimento();
+            boolean colheitaPronta = painel.getAmbienteAtual().isColheitaPronta();
+            boolean fogoAceso = painel.getAmbienteAtual().isBaseFogoAceso();
+
+            String plantio = fonteAlimento ? "sementes plantadas. Retorne em breve." : "não há fonte de alimento.";
+            if (painel.getAmbienteAtual().isColheitaPronta()) {
+                plantio = "pronta para colher.";
+            }
+            escreverTexto("Fonte de alimento: " + plantio, y += tileSize);
+
+            String fogo = fogoAceso ? "aceso e forte." : "não há fogueira acesa na base.";
+            escreverTexto("Fogo: " + fogo, y += tileSize);
+
+            int fortificacao = painel.getAmbienteAtual().getBaseFortificacao();
+            escreverTexto("Fortificação: " + fortificacao + " / 20", y += tileSize);
+
+            g2.setColor(Color.white);
+
+            ArrayList<String> opcoes = new ArrayList<>();
+            opcoes.add("Continuar a aventura");
+            if (fogoAceso) opcoes.add("Descansar");
+            if (fonteAlimento && colheitaPronta) opcoes.add("Comer");
+
+            desenharOpcoes(opcoes.toArray(new String[0]), y += tileSize * 2, numComando);
         }
-        escreverTexto("Fonte de alimento: " + plantio, y += tileSize);
 
-        String fogo = fogoAceso ? "aceso e forte." : "não há fogueira acesa na base.";
-        escreverTexto("Fogo: " + fogo, y += tileSize);
-
-        int fortificacao = painel.getAmbienteAtual().getBaseFortificacao();
-        escreverTexto("Fortificação: " + fortificacao + " / 20", y += tileSize);
-
-        g2.setColor(Color.white);
-
-        ArrayList<String> opcoes = new ArrayList<>();
-        opcoes.add("Continuar a aventura");
-        if (fogoAceso) opcoes.add("Descansar");
-        if (fonteAlimento && colheitaPronta) opcoes.add("Comer");
-
-        desenharOpcoes(opcoes.toArray(new String[0]), y += tileSize * 2, numComando);
+        else {
+            escreverTexto("É impossível montar ou acessar base neste clima", painel.getAltura()/2 - tileSize);
+            desenharOpcoes(new String[]{"Continuar a aventura"}, painel.getAltura()/2, numComando);
+        }
     }
 
     public void mostrarInventario() {

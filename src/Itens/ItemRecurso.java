@@ -239,6 +239,11 @@ public class ItemRecurso extends Item {
                 setTipoNovoItem(null);
                 break;
 
+            case "Jóia roxa":
+                setOpcaoCrafting("...");
+                setTipoNovoItem(null);
+                break;
+
             default:
                 throw new IllegalArgumentException("Recurso desconhecido: " + nome);
         }

@@ -35,9 +35,9 @@ public class Criatura {
                 setAtaqueCriatura(100);
 
                 setNomeImagem("urso_pai");
-                setLarguraImagemEscala(9);
-                setAlturaImagemEscala(9);
-                setDistanciaBordaEscala(11);
+                setLarguraImagemEscala(11);
+                setAlturaImagemEscala(11);
+                setDistanciaBordaEscala(12);
 
                 setBoss(true);
                 break;

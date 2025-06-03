@@ -49,14 +49,6 @@ public class EventoCriatura extends Evento {
                 getJogador().setEnvenenado(true);
             }
 
-            else if (tipo == 2) {
-                g2.setColor(Color.red);
-                getUi().escreverTexto("*GROAAAAAR*", y += tileSize * 4);
-                g2.setColor(Color.white);
-                getUi().escreverTexto("O RUGIDO ESTREMECE TODA A FLORESTA. VOCÊ PULA EM DESESPERO.", y += tileSize);
-                getUi().escreverTexto("É... minha nossa... um urso negro gigante!", y += tileSize);
-            }
-
             else if (tipo == 3) {
                 g2.setColor(Color.red);
                 getUi().escreverTexto("*ÁUUUUUUU*", y += tileSize * 4);
@@ -78,7 +70,7 @@ public class EventoCriatura extends Evento {
                 getUi().escreverTexto("Parece um caranguejo com... três olhos!?", y += tileSize);
             }
 
-            else if (tipo == 12 || tipo == 23) {
+            else if (tipo == 2 || tipo == 12 || tipo == 23) {
                 getPainel().getBotoes().esconderBotao("Clima");
                 getPainel().setFightState(true);
             }

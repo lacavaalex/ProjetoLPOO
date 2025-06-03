@@ -15,7 +15,7 @@ public class Teclado implements KeyListener {
     private UI ui;
 
     private long ultimaInteracao = 0;
-    private final long cooldown = 100;
+    private final long cooldown = 70;
 
     public Teclado(Painel painel, InventarioUI invent) {
         this.painel = painel;
@@ -77,7 +77,7 @@ public class Teclado implements KeyListener {
                     }
 
                     // States com 1 opcao
-                    if (subState == 28 || subState == 117 || subState == 220) {
+                    if (subState == 28 || subState == 46|| subState == 117 || subState == 220) {
                         kPUmaOpcaoPlayState(e);
                     }
                 }
@@ -332,7 +332,7 @@ public class Teclado implements KeyListener {
             else if (subState == 2 || subState == 6) {
                 boolean derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
                 boolean derrotouBossCaverna = painel.getInvent().acharItem("Jóia vermelha");
-                boolean derrotouBossFloresta = painel.getInvent().acharItem("Jóia roxa");
+                boolean derrotouBossFloresta = painel.getInvent().acharItem("Espada Insigne");
 
                 if (opcao == 0) {
                     if (derrotouBossLago) {
@@ -350,7 +350,7 @@ public class Teclado implements KeyListener {
                 } else if (opcao == 2) {
                     if (subState == 2) {
                         if (derrotouBossFloresta) {
-                            painel.setPlaySubState(50);
+                            painel.trocarAmbiente("montanha", 300);
                         } else {
                             painel.setPlaySubState(24);
                         }
@@ -558,6 +558,12 @@ public class Teclado implements KeyListener {
                     }
                 }
             }
+            else if (subState == 302) {
+                if (painel.getInvent().acharItem("Corda de escalada")) {
+                    if (opcao == 0) { painel.setPlaySubState(303); }
+                    else if (opcao == 1) { painel.setPlaySubState(2); }
+                }
+            }
             else {
                 painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
             }
@@ -577,7 +583,7 @@ public class Teclado implements KeyListener {
         }
         if (code == KeyEvent.VK_ENTER) {
             if (ui.getNumComando() == 0) {
-                if (subState == 28 || subState == 117 || subState == 220) {
+                if (subState == 28 || subState == 46 || subState == 117 || subState == 220) {
                     painel.getAmbienteAtual().setTransicaoIniciada(true);
                 }
             }

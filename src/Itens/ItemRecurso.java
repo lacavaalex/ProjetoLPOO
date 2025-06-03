@@ -164,7 +164,7 @@ public class ItemRecurso extends Item {
                         setOpcaoCrafting("Lança");
                         setTipoNovoItem("combate");
                     }
-                    else if (getQuantidade() >= 2) {
+                    if (getQuantidade() >= 2) {
                         setOpcaoCrafting("Foice");
                         setTipoNovoItem("combate");
                     }
@@ -208,19 +208,19 @@ public class ItemRecurso extends Item {
                 break;
 
             case "Corda":
-                if (painel.getInvent().acharItem("Galho pontiagudo")) {
-                    setItemParaRemoverNoCrafting("Galho pontiagudo");
-                    setOpcaoCrafting("Vara de pesca");
-                    setTipoNovoItem("combate");
-                }
-                else if (painel.getInvent().acharItem("Espeto crustáceo")) {
+                if (painel.getInvent().acharItem("Espeto crustáceo")) {
                     setItemParaRemoverNoCrafting("Espeto crustáceo");
                     setOpcaoCrafting("Corda de escalada");
                     setTipoNovoItem("recurso");
-                }
-                else {
-                    setOpcaoCrafting("...");
-                    setTipoNovoItem(null);
+                } else {
+                    if (painel.getInvent().acharItem("Galho pontiagudo")) {
+                        setItemParaRemoverNoCrafting("Galho pontiagudo");
+                        setOpcaoCrafting("Vara de pesca");
+                        setTipoNovoItem("combate");
+                    } else {
+                        setOpcaoCrafting("...");
+                        setTipoNovoItem(null);
+                    }
                 }
                 break;
 
@@ -235,11 +235,6 @@ public class ItemRecurso extends Item {
                 break;
 
             case "Jóia vermelha":
-                setOpcaoCrafting("...");
-                setTipoNovoItem(null);
-                break;
-
-            case "Jóia roxa":
                 setOpcaoCrafting("...");
                 setTipoNovoItem(null);
                 break;

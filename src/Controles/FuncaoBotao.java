@@ -89,6 +89,11 @@ public class FuncaoBotao implements ActionListener {
                     painel.setPlaySubState(12);
                     break;
 
+                case 45:
+                    painel.setPlaySubState(1001);
+                    painel.getAmbienteAtual().setSubStateParaRetornar(44);
+                    break;
+
                 case 105:
                     painel.setPlaySubState(2001);
                     painel.getAmbienteAtual().setSubStateParaRetornar(102);
@@ -127,7 +132,16 @@ public class FuncaoBotao implements ActionListener {
                     break;
 
                 case 300:
-                    painel.trocarAmbiente("floresta", 36);
+                    boolean derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
+                    boolean derrotouBossCaverna = painel.getInvent().acharItem("Jóia vermelha");
+                    boolean derrotouBossFloresta = painel.getInvent().acharItem("Espada Insigne");
+
+                    if (derrotouBossCaverna && derrotouBossLago && derrotouBossFloresta) {
+                        painel.setPlaySubState(301);
+                    }
+                    else {
+                        painel.trocarAmbiente("floresta", 36);
+                    }
                     break;
 
                 default:
@@ -175,6 +189,7 @@ public class FuncaoBotao implements ActionListener {
 
                 // EVENTOS DE CRIATURA
                 case 14:
+                case 33:
                     painel.setPlaySubState(1001);
                     break;
 
@@ -182,6 +197,7 @@ public class FuncaoBotao implements ActionListener {
                 case 22:
                 case 23:
                 case 42:
+                case 43:
                     int stateRetornar;
                     if (subState == 20) { stateRetornar = 21; }
                     else { stateRetornar = painel.getPlaySubState() + 2; }
@@ -202,6 +218,14 @@ public class FuncaoBotao implements ActionListener {
                         painel.getAmbienteAtual().setSubStateParaRetornar(41);
                     }
                     painel.setPlaySubState(1004);
+                    break;
+
+                case 49:
+                    painel.setDialogueState(painel.getDialogueState() + 1);
+
+                    if (painel.getDialogueState() == 10) {
+                        painel.setPlaySubState(1002);
+                    }
                     break;
 
                 case 103:
@@ -256,6 +280,7 @@ public class FuncaoBotao implements ActionListener {
                     break;
 
                 case 32:
+                case 52:
                     painel.setPlaySubState(2);
                     break;
 

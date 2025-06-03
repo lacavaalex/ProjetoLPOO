@@ -51,6 +51,7 @@ public class Painel extends JPanel implements Runnable {
     private final int gameOverState = 1;
     private final int openingState = 2;
     private final int playState = 3;
+    private int dialogueState = 0;
     private boolean fightState = false;
 
     private final int tutorialControles = 9999;
@@ -372,6 +373,8 @@ public class Painel extends JPanel implements Runnable {
     public void resetPlayState() { setPlaySubState(0); }
 
     // G/S dos game states diversos
+    public int getDialogueState() { return dialogueState; }
+    public void setDialogueState(int dialogueState) { this.dialogueState = dialogueState; }
     public int getTitleState() { return titleState; }
     public int getTutorialControles() { return tutorialControles; }
     public int getOpeningState() { return openingState; }

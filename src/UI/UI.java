@@ -15,6 +15,7 @@ public class UI {
 
     private BufferedImage fundoTitulo;
     private BufferedImage chama1, chama2, chama3, azul1, azul2, azul3;
+    private BufferedImage ursoFace1, ursoFace2, ursoFace3;
     private BufferedImage imagemClima;
 
     private Painel painel;
@@ -31,6 +32,8 @@ public class UI {
     private int numComando = 0;
     private int frame = 1;
     private int contadorChama = 1;
+    private int contadorUrso = 1;
+    private int direcaoUrso = 1;
     private int telaInicialState = 0;
 
     private StringBuilder nomeDigitado = new StringBuilder();
@@ -76,6 +79,9 @@ public class UI {
         azul1 = setupImagens("chama_azul-1", "animacao");
         azul2 = setupImagens("chama_azul-2", "animacao");
         azul3 = setupImagens("chama_azul-3", "animacao");
+        ursoFace1 = setupImagens("urso_face-1", "animacao");
+        ursoFace2 = setupImagens("urso_face-2", "animacao");
+        ursoFace3 = setupImagens("urso_face-3", "animacao");
     }
 
     // Metodo geral de desenho
@@ -479,6 +485,19 @@ public class UI {
         }
     }
 
+    public void desenharAnimacaoUrso() {
+        if (painel.getDialogueState() == 4 || painel.getDialogueState() == 9) {
+            painel.getAmbienteAtual().desenharImagemZoom(g2, ursoFace1);
+        }
+        else {
+            switch (contadorUrso) {
+                case 1: painel.getAmbienteAtual().desenharImagemZoom(g2, ursoFace1); break;
+                case 2: painel.getAmbienteAtual().desenharImagemZoom(g2, ursoFace2); break;
+                case 3: painel.getAmbienteAtual().desenharImagemZoom(g2, ursoFace3); break;
+            }
+        }
+    }
+
     public int coordenadaXParaTextoCentralizado(Graphics2D g2, int largura, String texto) {
         this.g2 = g2;
 
@@ -578,6 +597,17 @@ public class UI {
                 contadorChama = 1;
             }
         }
+
+        if (frame % 20 == 0) {
+            if (contadorUrso == 1) {
+                direcaoUrso = 1;
+            }
+            else if (contadorUrso == 3) {
+                direcaoUrso = -1;
+            }
+            contadorUrso += direcaoUrso;
+        }
+
         if (this.recadoAutor != null) {
             frameCounterRecado++;
             if (frameCounterRecado >= framesPorLetra && indiceChar < recadoAutor.length()) {

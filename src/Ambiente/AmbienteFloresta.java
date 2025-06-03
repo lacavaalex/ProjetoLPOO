@@ -28,6 +28,7 @@ public class AmbienteFloresta extends Ambiente {
 
     private BufferedImage fundoFloresta2;
     private BufferedImage figura;
+    private BufferedImage ursoFace1;
 
     private final int vibora = 1001;
     private final int urso = 1002;
@@ -54,6 +55,7 @@ public class AmbienteFloresta extends Ambiente {
         descreverAmbiente();
         fundoFloresta2 = ui.setupImagens("floresta_macabra-2", "background");
         figura = ui.setupImagens("figura_misteriosa", "zoom");
+        ursoFace1 = ui.setupImagens("urso_face-1", "animacao");
     }
 
     @Override
@@ -716,11 +718,8 @@ public class AmbienteFloresta extends Ambiente {
             case 35:
                definirTelaDeBotao("continuar");
 
-                ui.escreverTexto("Você sobe o trecho semi-íngreme.", y);
-                ui.escreverTexto("Olhando pra trás, há um olhar a espreita.", y += tileSize);
-                ui.escreverTexto("(Ainda bem que não fiquei).", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("Você chega num paredão.", y += tileSize);
+                ui.escreverTexto("Subindo o trecho semi-íngreme.", y);
+                ui.escreverTexto("você atinge um paredão.", y += tileSize);
                 break;
 
             case 36:
@@ -736,7 +735,7 @@ public class AmbienteFloresta extends Ambiente {
 
             case 37:
                 definirTelaDeBotao("continuar");
-                ui.escreverTexto("...mas é impossível. Há algo nessa floresta...", y);
+                ui.escreverTexto("... Mas é impossível. Há algo nessa floresta...", y);
                 ui.escreverTexto("Você monta um pequeno acampamento perto da rocha.", y += tileSize);
                 ui.escreverTexto("Seria bom descobrir a natureza deste lugar, porém,", y += tileSize);
                 ui.escreverTexto("fazer isso sem um porto seguro não é viável.", y += tileSize);
@@ -806,7 +805,8 @@ public class AmbienteFloresta extends Ambiente {
 
             case 43:
                 definirTelaDeBotao("continuar");
-                ui.escreverTexto("Finalmente, você chega à pequena caverna.", y);
+                ui.escreverTexto("Finalmente, você chega ao pé do pico.", y);
+                ui.escreverTexto("Daqui, enxerga a pequena caverna. Basta subir.", y += tileSize);
                 ui.escreverTexto("Verdadeiramente, é um lugar ordinário.", y += tileSize);
                 ui.escreverTexto("Porém, bem localizado. Vai servir para a nova base", y += tileSize);
                 break;
@@ -820,7 +820,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Essa caverna é boa até mesmo para dormir...", y += tileSize);
                 ui.escreverTexto("O que fazer?", y += tileSize);
 
-                ui.desenharOpcoes(new String[]{"Buscar recursos", "Caçar", "Dormir profundamente"}, y += tileSize * 2, numComando);
+                ui.desenharOpcoes(new String[]{"Buscar recursos", "Caçar", "Dormir por algumas horas"}, y += tileSize * 2, numComando);
                 break;
 
             case 45:
@@ -872,6 +872,114 @@ public class AmbienteFloresta extends Ambiente {
                 break;
 
             case 46:
+                botoes.esconderBotao("Abrir mochila");
+                botoes.esconderBotao("Voltar à base");
+                Composite composite2 = g2.getComposite();
+                if (!isTransicaoFinalizada()) {
+                    transicaoDeTela(g2);
+
+                    ui.escreverTexto("Finalmente, você encontra um tempo para repouso.", y);
+                    ui.escreverTexto("Tudo o que está havendo é obscuro, mas, com fé,", y += tileSize);
+                    ui.escreverTexto("o dia de amanhã será melhor.", y += tileSize);
+
+                    ui.desenharOpcoes(new String[]{"Dormir"},painel.getAltura() / 2, numComando);
+                }
+                g2.setComposite(composite2);
+
+                if (isTransicaoFinalizada()) {
+                    painel.setPlaySubState(47);
+                }
+                break;
+
+            case 47:
+                resetAtributosTransicao();
+
+                definirTelaDeBotao("continuar");
+                desenharImagemZoom(g2, ursoFace1);
+                ui.escreverTexto("...", painel.getAltura() - tileSize);
+                break;
+
+            case 48:
+                definirTelaDeBotao("continuar");
+                ui.escreverTexto("Você acorda com companhia.", painel.getAltura()/2);
+                break;
+
+            case 49:
+                definirTelaDeBotao("continuar");
+
+                ui.desenharAnimacaoUrso();
+
+                int dS = painel.getDialogueState();
+
+                String comentario;
+                if (painel.getInvent().acharItem("Jóia vermelha")
+                        && !painel.getInvent().acharItem("Jóia azul")) {
+                    comentario = "``O genocídio na gruta?``";
+                }
+                else if (painel.getInvent().acharItem("Jóia azul")
+                        && !painel.getInvent().acharItem("Jóia vermelha")) {
+                   comentario = "``A invasão ao lago?``";
+                }
+                else if (painel.getInvent().acharItem("Jóia vermelha")
+                        && painel.getInvent().acharItem("Jóia azul")) {
+                   comentario = "``Toda a violência contra nós?``";
+                }
+                else {
+                    comentario = "``Seu atentado a nossa paz?``";
+                }
+
+                String dialogo = switch (dS) {
+                    case 0 -> "``Você é previsível.``";
+                    case 1 -> "``Até sua expressão de surpresa é sempre idêntica.``";
+                    case 2 -> "``Valeu a pena?``";
+                    case 3 -> comentario;
+                    case 4 -> "``...``";
+                    case 5 -> "``Não irei me extender dessa vez.``";
+                    case 6 -> "``Seus pecados serão pagos.``";
+                    case 7 -> "``Seja nesta vida, ou na próxima.``";
+                    case 8 -> "``E hoje...``";
+                    case 9 -> "``Sua carcaça será minha ceia.``";
+                    default -> throw new IllegalStateException("Diálogo desconhecido: " + dS);
+                };
+
+                g2.setColor(Color.red);
+                ui.escreverTexto(dialogo, painel.getAltura() - tileSize);
+                g2.setColor(Color.white);
+                break;
+
+            case 50:
+                definirTelaDeBotao("continuar");
+                ui.escreverTexto("...", y);
+                ui.escreverTexto("Esse encontro o deixa reflexivo.", y += tileSize);
+                ui.escreverTexto("As coisas que aquele monstro disse...", y += tileSize * 2);
+                ui.escreverTexto("O que ele quis dizer?", y += tileSize);
+                ui.escreverTexto(jogador.getNome() + ", há mais nessa história do que parece.", y += tileSize);
+                ui.escreverTexto("A floresta grita, a morte do urso parece", y += tileSize * 2);
+                ui.escreverTexto("ter causado um impacto no ambiente.", y += tileSize);
+                ui.escreverTexto("A luta te enche de vigor, mas deve haver mais por vir.", y += tileSize);
+                break;
+
+            case 51:
+                definirTelaDeBotao("continuar");
+                ui.escreverTexto("Aquela espada que estava encravada na criatura...", y);
+                ui.escreverTexto("É melhor não desperdiçar uma boa arma.", y += tileSize);
+                ui.escreverTexto("...", y += tileSize);
+                ui.escreverTexto("Ela tem uma energia estranha.", y += tileSize);
+                if (!isRecursosColetados()) {
+                    jogador.setVidaMax(jogador.getVidaMax() + 5);
+                    jogador.setVida(jogador.getVidaMax());
+                    painel.getInvent().adicionarItem("Espada Insigne", "combate", 1);
+                    painel.getInvent().adicionarItem("Corda de escalada", "recurso", 1);
+                    painel.getInvent().adicionarItem("Jóia azul", "recurso", 1);
+                    painel.getInvent().adicionarItem("Jóia vermelha", "recurso", 1);
+                    setRecursosColetados(true);
+                }
+                break;
+
+            case 52:
+                definirTelaDeBotao("continuar");
+                ui.escreverTexto("É inviável permanecer aqui.", y);
+                ui.escreverTexto("Retorne à clareira para se estabelecer em outro local.", y += tileSize);
                 break;
 
             default:

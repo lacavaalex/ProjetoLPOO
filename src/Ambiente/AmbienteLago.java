@@ -477,7 +477,7 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Absurdamente extraterreste.", y += tileSize);
                 ui.escreverTexto("", y += tileSize);
                 ui.escreverTexto("Este embate te fortalece, mas não parece ter sido o último do tipo.", y += tileSize);
-                ui.escreverTexto("Que outros monstros ainda podem habitar neste mundo funesto?", y += tileSize);
+                ui.escreverTexto("Que outros monstros essa terra maldita ainda esconde?", y += tileSize);
                 break;
 
             case 120:

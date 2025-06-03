@@ -10,7 +10,7 @@ public class Jogador {
     private String habilidade;
     private String localizacao;
 
-    private int vidaMax = 25;
+    private int vidaMax = 100;
     private int vida = getVidaMax();
 
     private boolean sede = false;
@@ -26,7 +26,7 @@ public class Jogador {
     private boolean envenenado;
 
     private String armaAtual = "Nenhuma arma equipada.";
-    private final int ataqueInicial = 100;
+    private final int ataqueInicial = 1000;
     private int ataqueAtual;
 
     public Jogador(Painel painel) {

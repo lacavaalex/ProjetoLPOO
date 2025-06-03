@@ -10,6 +10,18 @@ public class FuncaoBotao implements ActionListener {
     private Painel painel;
     private Botoes botoes;
 
+    private final int viboraRubro = 1001;
+    private final int urso = 1002;
+    private final int lobo = 1003;
+    private final int corvo = 1004;
+    private final int caranguejo = 2001;
+    private final int cruel = 2002;
+    private final int viboraMineral = 3001;
+    private final int goblin = 3002;
+    private final int golem = 3003;
+    private final int leopardo = 4001;
+    private final int funesto = 4002;
+
     public FuncaoBotao(Painel painel, Botoes botoes) {
         this.painel = painel;
         this.botoes = botoes;
@@ -71,6 +83,7 @@ public class FuncaoBotao implements ActionListener {
             int subState = painel.getPlaySubState();
 
             switch (subState) {
+                // FLORESTA
                 case 3:
                 case 16:
                 case 17:
@@ -78,12 +91,11 @@ public class FuncaoBotao implements ActionListener {
                     break;
 
                 case 4:
-                    painel.setPlaySubState(1004);
-                    break;
-
                 case 7:
-                    painel.setPlaySubState(1004);
-                    painel.getAmbienteAtual().setSubStateParaRetornar(41);
+                    painel.setPlaySubState(corvo);
+                    if (subState == 7) {
+                        painel.getAmbienteAtual().setSubStateParaRetornar(41);
+                    }
                     break;
 
                 case 10:
@@ -91,17 +103,17 @@ public class FuncaoBotao implements ActionListener {
                     break;
 
                 case 45:
-                    painel.setPlaySubState(1001);
+                    painel.setPlaySubState(viboraRubro);
                     painel.getAmbienteAtual().setSubStateParaRetornar(44);
                     break;
 
+                // LAGO
                 case 105:
-                    painel.setPlaySubState(2001);
-                    painel.getAmbienteAtual().setSubStateParaRetornar(102);
-                    break;
                 case 108:
-                    painel.setPlaySubState(2001);
-                    painel.getAmbienteAtual().setSubStateParaRetornar(109);
+                    painel.setPlaySubState(caranguejo);
+                    if (subState == 105) {
+                        painel.getAmbienteAtual().setSubStateParaRetornar(102);
+                    }
                     break;
 
                 case 113:
@@ -116,22 +128,24 @@ public class FuncaoBotao implements ActionListener {
                     painel.trocarAmbiente("floresta", 12);
                     break;
 
+                // GRUTA
                 case 204:
                 case 205:
                 case 206:
                 case 207:
                 case 208:
                     if (subState == 204) {
-                        painel.setPlaySubState(3001);
+                        painel.setPlaySubState(viboraMineral);
                         painel.getAmbienteAtual().setSubStateParaRetornar(201);
                     } else { painel.setPlaySubState(201); }
                     break;
 
                 case 214:
-                    painel.setPlaySubState(3001);
+                    painel.setPlaySubState(viboraMineral);
                     painel.getAmbienteAtual().setSubStateParaRetornar(213);
                     break;
 
+                // MONTANHA
                 case 300:
                     boolean derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
                     boolean derrotouBossCaverna = painel.getInvent().acharItem("Jóia vermelha");
@@ -188,10 +202,19 @@ public class FuncaoBotao implements ActionListener {
                     painel.trocarAmbiente("floresta", 32);
                     break;
 
-                // EVENTOS DE CRIATURA
+                // FLORESTA
                 case 14:
                 case 33:
-                    painel.setPlaySubState(1001);
+                    painel.setPlaySubState(viboraRubro);
+                    break;
+
+                case 19:
+                    painel.getAmbienteAtual().setSubStateParaRetornar(15);
+                    if (painel.getAmbienteAtual().isBaseFogoAceso()) {
+                        painel.setPlaySubState(1);
+                    } else {
+                        painel.setPlaySubState(viboraRubro);
+                    }
                     break;
 
                 case 20:
@@ -207,8 +230,8 @@ public class FuncaoBotao implements ActionListener {
                     int probabilidade = painel.definirUmaProbabilidade();
 
                     int criatura;
-                    if (probabilidade <= 50) {criatura = 1001; }
-                    else { criatura = 1003; }
+                    if (probabilidade <= 50) {criatura = viboraRubro; }
+                    else { criatura = lobo; }
                     painel.setPlaySubState(criatura);
                     break;
 
@@ -218,24 +241,53 @@ public class FuncaoBotao implements ActionListener {
                     if (subState == 7) {
                         painel.getAmbienteAtual().setSubStateParaRetornar(41);
                     }
-                    painel.setPlaySubState(1004);
+                    painel.setPlaySubState(corvo);
                     break;
 
                 case 49:
                     painel.setDialogueState(painel.getDialogueState() + 1);
 
                     if (painel.getDialogueState() == 10) {
-                        painel.setPlaySubState(1002);
+                        painel.setPlaySubState(urso);
                         painel.setDialogueState(0);
                     }
                     break;
 
+                case 32:
+                case 52:
+                    painel.setPlaySubState(2);
+                    break;
+
+                case 37:
+                    painel.getAmbienteAtual().setSubStateParaRetornar(38);
+                    painel.setPlaySubState(1);
+                    break;
+
+                // LAGO
+                case 101:
+                    painel.getAmbienteAtual().setSubStateParaRetornar(102);
+                    painel.setPlaySubState(1);
+                    break;
+
                 case 103:
                     painel.getAmbienteAtual().setSubStateParaRetornar(110);
-                    painel.setPlaySubState(2001);
+                    painel.setPlaySubState(caranguejo);
                     break;
+
+                case 104:
+                    painel.setPlaySubState(106);
+                    break;
+
                 case 118:
-                    painel.setPlaySubState(2002);
+                    painel.setPlaySubState(cruel);
+                    break;
+
+                // GRUTA
+                case 200:
+                    painel.getAmbienteAtual().setSubStateParaRetornar(201);
+                    painel.getAmbienteAtual().setBaseFogoAceso(false);
+                    painel.getAmbienteAtual().setBaseFonteDeAlimento(false);
+                    painel.setPlaySubState(1);
                     break;
 
                 case 210:
@@ -244,21 +296,21 @@ public class FuncaoBotao implements ActionListener {
                     int probabilidade2 = painel.definirUmaProbabilidade();
                     int criaturaGruta;
 
-                    if (probabilidade2 <= 50) {criaturaGruta = 3001; }
-                    else { criaturaGruta = 3002; }
+                    if (probabilidade2 <= 50) {criaturaGruta = viboraMineral; }
+                    else { criaturaGruta = goblin; }
                     painel.setPlaySubState(criaturaGruta);
                     break;
 
                 case 212:
                 case 225:
-                    painel.setPlaySubState(3002);
+                    painel.setPlaySubState(goblin);
                     break;
 
                 case 218:
                 case 219:
                 case 221:
                 case 223:
-                    painel.setPlaySubState(3002);
+                    painel.setPlaySubState(goblin);
                     if (subState == 223) {
                         painel.getAmbienteAtual().setSubStateParaRetornar(220);
                     }
@@ -268,19 +320,20 @@ public class FuncaoBotao implements ActionListener {
                     break;
 
                 case 224:
-                    painel.setPlaySubState(3003);
+                    painel.setPlaySubState(golem);
                     break;
 
+                // MONTANHA
                 case 305:
                 case 309:
                 case 310:
                 case 311:
-                    painel.setPlaySubState(4001);
+                    painel.setPlaySubState(leopardo);
                     break;
 
                 case 308:
                 case 312:
-                    painel.setPlaySubState(4001);
+                    painel.setPlaySubState(leopardo);
                     painel.getAmbienteAtual().setSubStateParaRetornar(313);
                     break;
 
@@ -306,48 +359,10 @@ public class FuncaoBotao implements ActionListener {
                     painel.setDialogueState(painel.getDialogueState() + 1);
 
                     if (painel.getDialogueState() == 6) {
-                        painel.setPlaySubState(4002);
+                        painel.setPlaySubState(funesto);
                         painel.setDialogueState(0);
                     }
                     break;
-
-                // FLORESTA
-                case 19:
-                    painel.getAmbienteAtual().setSubStateParaRetornar(15);
-                    if (painel.getAmbienteAtual().isBaseFogoAceso()) {
-                        painel.setPlaySubState(1);
-                    } else {
-                        painel.setPlaySubState(1001);
-                    }
-                    break;
-
-                case 32:
-                case 52:
-                    painel.setPlaySubState(2);
-                    break;
-
-                case 37:
-                    painel.getAmbienteAtual().setSubStateParaRetornar(38);
-                    painel.setPlaySubState(1);
-                    break;
-
-                // LAGO
-                case 101:
-                    painel.getAmbienteAtual().setSubStateParaRetornar(102);
-                    painel.setPlaySubState(1);
-                    break;
-                case 104:
-                    painel.setPlaySubState(106);
-                    break;
-
-                // GRUTA
-                case 200:
-                    painel.getAmbienteAtual().setSubStateParaRetornar(201);
-                    painel.getAmbienteAtual().setBaseFogoAceso(false);
-                    painel.getAmbienteAtual().setBaseFonteDeAlimento(false);
-                    painel.setPlaySubState(1);
-                    break;
-
 
                 default:
                     if (painel.getPlaySubState() < 1000) {

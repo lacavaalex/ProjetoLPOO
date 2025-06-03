@@ -36,7 +36,7 @@ public class EventoClimatico extends Evento {
                     case 3: setClima("tornado"); break;
                     case 4: setClima("cavernoso"); break;
                     case 5: setClima("salgado"); break;
-                    case 6: setClima("nevasca"); System.out.println("oi"); break;
+                    case 6: setClima("nevasca"); break;
                 }
             }
         }

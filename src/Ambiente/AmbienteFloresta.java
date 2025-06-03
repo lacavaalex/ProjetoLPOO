@@ -961,7 +961,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("...", y += tileSize);
                 ui.escreverTexto("Ela tem uma energia estranha.", y += tileSize);
                 if (!isRecursosColetados()) {
-                    jogador.setVidaMax(jogador.getVidaMax() + 5);
+                    jogador.setVidaMax(jogador.getVidaMax() + 10);
                     jogador.setVida(jogador.getVidaMax());
                     painel.getInvent().adicionarItem("Espada Insigne", "combate", 1);
                     painel.getInvent().adicionarItem("Corda de escalada", "recurso", 1);

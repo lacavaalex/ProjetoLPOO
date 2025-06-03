@@ -27,77 +27,77 @@ public class ItemCombate extends Item {
         setTipo("combate");
         switch (nome) {
             case "Vara de pesca":
-                setPoder(1);
+                setPoder(5);
                 setNomeImagem("vara_de_pesca");
                 break;
 
             case "Galho pontiagudo":
-                setPoder(3);
+                setPoder(10);
                 setNomeImagem("galho_pontiagudo");
                 break;
 
             case "Estilingue":
-                setPoder(4);
+                setPoder(14);
                 setNomeImagem("estilingue");
                 break;
 
             case "Faca":
-                setPoder(4);
+                setPoder(15);
                 setNomeImagem("faca");
                 break;
 
             case "Escudo":
-                setPoder(5);
+                setPoder(15);
                 setNomeImagem("escudo");
                 break;
 
             case "Lança":
-                setPoder(6);
+                setPoder(17);
                 setNomeImagem("lanca");
                 break;
 
             case "Picareta":
-                setPoder(7);
+                setPoder(18);
                 setNomeImagem("picareta");
                 break;
 
             case "Espada Basilar":
-                setPoder(8);
+                setPoder(20);
                 setNomeImagem("espada_basilar");
                 break;
 
             case "Machado":
-                setPoder(8);
+                setPoder(24);
                 setNomeImagem("machado");
                 break;
 
-            case "Foice":
-                setPoder(10);
-                setNomeImagem("foice");
-                break;
-
             case "Cimitarra":
-                setPoder(8);
+                setPoder(24);
                 setNomeImagem("cimitarra");
                 break;
 
+            case "Foice":
+                setPoder(26);
+                setNomeImagem("foice");
+                break;
+
             case "Espeto crustáceo":
-                setPoder(9);
+                setPoder(26);
                 setNomeImagem("espeto_crustaceo");
                 break;
 
             case "Tridente":
-                setPoder(10);
+                setPoder(28);
                 setNomeImagem("tridente");
                 break;
 
             case "Espada Insigne":
-                setPoder(12);
+                setPoder(35);
                 setNomeImagem("espada_insigne");
                 break;
 
             case "Espada Flamejante":
-                setPoder(12);
+                setPoder(40);
                 setNomeImagem("espada_flamejante");
                 break;
 

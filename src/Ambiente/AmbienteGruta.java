@@ -32,7 +32,7 @@ public class AmbienteGruta extends Ambiente {
 
     private final int vibora = 3001;
     private final int goblin = 3002;
-    private final int boss = 3003;
+    private final int golem = 3003;
 
     public AmbienteGruta(Painel painel, Jogador jogador, UI ui) {
         super(painel, jogador);
@@ -96,7 +96,7 @@ public class AmbienteGruta extends Ambiente {
                     setEventoEspecialDefinido(true);
                 }
                 break;
-            case boss:
+            case golem:
                 definirOcorrenciaDeEventoCriatura(g2, eventoGolem, 23);
                 break;
 
@@ -471,7 +471,7 @@ public class AmbienteGruta extends Ambiente {
                 ui.escreverTexto("Você agarra aquela jóia e parte para o túnel.", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    jogador.setVidaMax(jogador.getVidaMax() + 5);
+                    jogador.setVidaMax(jogador.getVidaMax() + 10);
                     jogador.setVida(jogador.getVidaMax());
                     painel.getInvent().adicionarItem("Jóia vermelha", "recurso", 1);
                     setRecursosColetados(true);

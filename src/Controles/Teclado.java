@@ -17,6 +17,8 @@ public class Teclado implements KeyListener {
     private long ultimaInteracao = 0;
     private final long cooldown = 70;
 
+    private final int caranguejo = 2001;
+
     public Teclado(Painel painel, InventarioUI invent) {
         this.painel = painel;
         this.invent = invent;
@@ -426,7 +428,7 @@ public class Teclado implements KeyListener {
             }
             else if (subState == 109) {
                 if (opcao == 0) {
-                    painel.setPlaySubState(2001);
+                    painel.setPlaySubState(caranguejo);
                 } else if (opcao == 1) {
                     painel.setPlaySubState(105);
                 } else if (opcao == 2) {
@@ -617,7 +619,7 @@ public class Teclado implements KeyListener {
             else {
                 painel.getAmbienteAtual().setSubStateParaRetornar(123);
             }
-            painel.setPlaySubState(2001);
+            painel.setPlaySubState(caranguejo);
         }
     }
 

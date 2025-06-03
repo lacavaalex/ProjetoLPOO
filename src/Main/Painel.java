@@ -174,6 +174,12 @@ public class Painel extends JPanel implements Runnable {
             default:
                 break;
         }
+
+        if (jogador.getLocalizacao() != null) {
+            if (jogador.getLocalizacao().equals("MONTANHA EPOPEICA")) {
+                eventoClimatico.setClima("nevasca");
+            }
+        }
     }
 
     // Implementação do game loop

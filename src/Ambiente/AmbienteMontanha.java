@@ -98,6 +98,7 @@ public class AmbienteMontanha extends Ambiente {
 
             case 300:
                 definirTelaDeBotao("voltar");
+                definirOcorrenciaDeEventoClimatico(g2, eventoNevasca, 4);
 
                 ui.escreverTexto("O trecho da floresta até a montanha acabou.", y);
                 ui.escreverTexto("O único caminho para além daqui é para cima.", y += tileSize);
@@ -144,8 +145,6 @@ public class AmbienteMontanha extends Ambiente {
                 break;
 
             case 303:
-                definirOcorrenciaDeEventoClimatico(g2, eventoNevasca, 4);
-
                 definirTelaDeBotao("continuar");
 
                 ui.escreverTexto("Você atira a corda improvisada para o alto.", y);

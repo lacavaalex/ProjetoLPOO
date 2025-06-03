@@ -29,7 +29,7 @@ public class AmbienteLago extends Ambiente {
     private int contadorMovimento = 0;
 
     private final int caranguejo = 2001;
-    private final int boss = 2002;
+    private final int cruel = 2002;
 
     public AmbienteLago(Painel painel, Jogador jogador, UI ui) {
         super(painel, jogador);
@@ -84,7 +84,7 @@ public class AmbienteLago extends Ambiente {
             case caranguejo:
                 definirOcorrenciaDeEventoCriatura(g2, eventoTriclope, 11);
                 break;
-            case boss:
+            case cruel:
                 definirOcorrenciaDeEventoCriatura(g2, eventoCrustoso, 12);
                 break;
 
@@ -464,7 +464,7 @@ public class AmbienteLago extends Ambiente {
                 definirTelaDeBotao("continuar");
 
                 if (!isRecursosColetados()) {
-                    jogador.setVidaMax(jogador.getVidaMax() + 5);
+                    jogador.setVidaMax(jogador.getVidaMax() + 10);
                     jogador.setVida(jogador.getVidaMax());
                     painel.getInvent().adicionarItem("Espeto crustáceo", "combate", 1);
                     painel.getInvent().adicionarItem("Jóia azul", "recurso", 1);

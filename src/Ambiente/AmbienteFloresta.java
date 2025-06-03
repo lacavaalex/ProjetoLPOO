@@ -272,7 +272,6 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Você está perto o suficiente da luz... é uma fogueira.", y += tileSize);
                 ui.escreverTexto("Nínguem a vista, mas há um cantil com água e um pouco de carne...", y += tileSize);
                 ui.escreverTexto("O que fazer?", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
 
                 ui.desenharOpcoes(new String[]{"Saquear acampamento", "Explorar arredores"}, y += tileSize * 2, numComando);
                 break;
@@ -348,8 +347,7 @@ public class AmbienteFloresta extends Ambiente {
                 }
 
                 ui.escreverTexto("Já é hora de pensar no que fazer para se sustentar nessa mata.", y);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("O que fazer?", y += tileSize);
+                ui.escreverTexto("O que fazer?", y += tileSize * 2);
 
 
                 String opcaoFrutas = "Buscar frutas e medicação natural";
@@ -391,7 +389,7 @@ public class AmbienteFloresta extends Ambiente {
                                 painel.getInvent().adicionarItem("Fruta", "consumo", 1);
                                 painel.getInvent().adicionarItem("Planta medicinal", "recurso", 2);
                             } else {
-                                painel.getInvent().adicionarItem("Planta medicinal", "consumo", 2);
+                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 2);
                             }
                             setRecursosColetados(true);
                         }
@@ -500,8 +498,7 @@ public class AmbienteFloresta extends Ambiente {
             case 21:
                 ui.escreverTexto("Você segue caminhando. Há uma bifurcação á frente.", y);
                 ui.escreverTexto("À esquerda há planícies, à direita, mais mata.", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("O que fazer?", y += tileSize);
+                ui.escreverTexto("O que fazer?", y += tileSize * 2);
 
                 ui.desenharOpcoes(new String[]{"Seguir pela esquerda", "Seguir pela direita"}, y += tileSize * 2, numComando);
                 break;
@@ -576,11 +573,10 @@ public class AmbienteFloresta extends Ambiente {
                 botoes.esconderBotao("Voltar à base");
 
                 ui.escreverTexto("Após mais uma longa caminhada... nada", y);
-                ui.escreverTexto("Pouca floresta, mas sem sinal de algo familiar.", y += tileSize);
-                ui.escreverTexto("De onde você está, apenas aquela enorme montanha é visível.", y += tileSize);
-                ui.escreverTexto("E mesmo depois de horas, o sol continua tímido em surgir", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("O que fazer?", y += tileSize);
+                ui.escreverTexto("Pouca floresta, mas sem sinal de algo civilizado.", y += tileSize);
+                ui.escreverTexto("E, mesmo depois de horas, o sol continua tímido em surgir", y += tileSize);
+                ui.escreverTexto("De onde você está, realmente, apenas a montanha é visível.", y += tileSize);
+                ui.escreverTexto("O que fazer?", y += tileSize * 2);
 
                 ui.desenharOpcoes(new String[]{"Ir à montanha", "Retornar à floresta"}, y += tileSize * 2, numComando);
                 break;
@@ -592,8 +588,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("'Como posso me livrar dessa prisão?'", y += tileSize);
                 ui.escreverTexto("A essa altura, as escolhas são: permanecer e se virar,", y += tileSize);
                 ui.escreverTexto("ou botar fé na caminhada até achar algum rumo real.", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("O que fazer?", y += tileSize);
+                ui.escreverTexto("O que fazer?", y += tileSize * 2);
 
                 ui.desenharOpcoes(new String[]{"Seguir adiante", "Voltar para perto do abrigo"}, y += tileSize * 2, numComando);
                 break;
@@ -710,7 +705,6 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Não há nada de destaque neste local, além de uma rocha firme.", y += tileSize);
                 ui.escreverTexto("Sua formação pode conceder um abrigo com boa visibilidade.", y += tileSize);
                 ui.escreverTexto("O que fazer?", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
 
                 ui.desenharOpcoes(new String[]{"Subir pelo trecho", "Descansar até o amanhecer"}, y += tileSize * 2, numComando);
                 break;
@@ -848,15 +842,16 @@ public class AmbienteFloresta extends Ambiente {
                             if (painel.getInvent().getInvent().size() < 7) {
                                 if (probabilidade <= 65 && probabilidade >= 15) {
                                     painel.getInvent().adicionarItem("Fruta", "consumo", 2);
+                                    painel.getInvent().adicionarItem("Planta medicinal", "recurso", 1);
                                     if (probabilidade <= 45) {
                                         painel.getInvent().adicionarItem("Madeira", "recurso", 1);
                                     }
                                 }
 
-                                if (probabilidade <= 20) {
+                                if (probabilidade <= 30) {
                                     painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 2);
                                 }
-                                if (probabilidade <= 15) {
+                                if (probabilidade <= 20) {
                                     painel.getInvent().adicionarItem("Cantil", "consumo", 1);
                                 }
                             }

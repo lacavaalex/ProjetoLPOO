@@ -95,45 +95,44 @@ public class Jogador {
     }
 
     public void atualizarSede() {
-        if (!estaComSede()) {
-            if (!painel.getEventoClimatico().getClima().equals("cavernoso")
-                || !painel.getEventoClimatico().getClima().equals("salgado")) {
-                    switch (contadorDaSede) {
-                        case 0, 1:
-                            nivelSede = "alto";
-                            setSede(false);
-                            contadorDaSede += 1;
-                            break;
-                        case 2, 3:
-                            nivelSede = "media";
-                            setSede(false);
-                            contadorDaSede += 1;
-                            break;
-                        default:
-                            nivelSede = "baixa";
-                            setSede(true);
-                    }
-                }
-            else {
-                switch (contadorDaSede) {
-                    case 0:
-                        nivelSede = "alto";
-                        setSede(false);
-                        contadorDaSede += 1;
-                        break;
-                    case 1:
-                        nivelSede = "media";
-                        setSede(false);
-                        contadorDaSede += 1;
-                        break;
-                    default:
-                        nivelSede = "baixa";
-                        setSede(true);
-                }
+        // Se o jogador já está com sede, mantém o estado
+        if (estaComSede()) {
+            setNivelSede("baixa");
+            return;
+        }
+
+        // Verifica se o clima acelera a sede (cavernoso ou salgado)
+        boolean climaAceleraSede = painel.getEventoClimatico().getClima().equals("cavernoso")
+                || painel.getEventoClimatico().getClima().equals("salgado");
+
+        if (climaAceleraSede) {
+            switch (contadorDaSede) {
+                case 0:
+                    setNivelSede("alto");
+                    break;
+                case 1:
+                    setNivelSede("media");
+                    break;
+                default:
+                    setNivelSede("baixa");
+                    setSede(true);
             }
         } else {
-            nivelSede = "baixa";
+            switch (contadorDaSede) {
+                case 0:
+                case 1:
+                    setNivelSede("alto");
+                    break;
+                case 2:
+                case 3:
+                    setNivelSede("media");
+                    break;
+                default:
+                    setNivelSede("baixa");
+                    setSede(true);
+            }
         }
+        setContadorDaSede(getContadorDaSede() + 1);
     }
 
     public void atualizarEnergia() {
@@ -167,6 +166,8 @@ public class Jogador {
         setAtaqueAtual(ataqueInicial);
         setArmaAtual("Nenhuma arma equipada.");
         setSede(false);
+        contadorDaSede = 0;
+        nivelSede = "alto";
         setEnvenenado(false);
         setNome(null);
     }
@@ -213,13 +214,18 @@ public class Jogador {
         }
     }
 
-    public String getNivelSede() { return nivelSede; }
-
     public boolean estaComSede() { return sede; }
     public void setSede(boolean sede) {
         this.sede = sede;
         if (!sede) {
-            contadorDaSede = 0;
+            setContadorDaSede(0);
+            setNivelSede("alto");
         }
     }
+
+    public int getContadorDaSede() { return contadorDaSede; }
+    public void setContadorDaSede(int contadorDaSede) { this.contadorDaSede = contadorDaSede; }
+
+    public String getNivelSede() { return nivelSede; }
+    public void setNivelSede(String nivelSede) { this.nivelSede = nivelSede; }
 }

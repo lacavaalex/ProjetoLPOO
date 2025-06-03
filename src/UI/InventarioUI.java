@@ -88,14 +88,16 @@ public class InventarioUI extends UI {
 
     // Define qual ítem foi selecionado
     public void selecionouItem() {
-        itemEscolhido = listaItens[numComandoInvent];
-        String nomeReal = itemEscolhido.substring(0, itemEscolhido.lastIndexOf(" x"));
-        Item item = invent.get(nomeReal);
+        if (!invent.isEmpty()) {
+            itemEscolhido = listaItens[numComandoInvent];
+            String nomeReal = itemEscolhido.substring(0, itemEscolhido.lastIndexOf(" x"));
+            Item item = invent.get(nomeReal);
 
-        if (item != null) {
-            item.usar(nomeReal);
-        } else {
-            System.out.println("Item " + nomeReal + " não encontrado no inventário.");
+            if (item != null) {
+                item.usar(nomeReal);
+            } else {
+                System.out.println("Item " + nomeReal + " não encontrado no inventário.");
+            }
         }
     }
 

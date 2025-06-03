@@ -72,12 +72,14 @@ public class Teclado implements KeyListener {
                             || subState == 24 || subState == 25 || subState == 34
                             || subState == 100 || subState == 123
                             || subState == 202 || subState == 203 || subState == 209
-                            || subState == 213 || subState == 217) {
+                            || subState == 213 || subState == 217 || subState == 302
+                            || subState == 304 || subState == 318) {
                         kPDuasOpcoesPlayState(e);
                     }
 
                     // States com 1 opcao
-                    if (subState == 28 || subState == 46|| subState == 117 || subState == 220) {
+                    if (subState == 28 || subState == 46|| subState == 117
+                            || subState == 220 || subState == 322) {
                         kPUmaOpcaoPlayState(e);
                     }
                 }
@@ -561,8 +563,13 @@ public class Teclado implements KeyListener {
             else if (subState == 302) {
                 if (painel.getInvent().acharItem("Corda de escalada")) {
                     if (opcao == 0) { painel.setPlaySubState(303); }
-                    else if (opcao == 1) { painel.setPlaySubState(2); }
+                    else if (opcao == 1) {
+                        painel.trocarAmbiente("floresta", 2); }
                 }
+            }
+            else if (subState == 304) {
+                if (opcao == 0) { painel.setPlaySubState(305);}
+                else if (opcao == 1) { painel.setPlaySubState(309); }
             }
             else {
                 painel.setPlaySubState(painel.getPlaySubState() + (opcao + 1));
@@ -583,7 +590,8 @@ public class Teclado implements KeyListener {
         }
         if (code == KeyEvent.VK_ENTER) {
             if (ui.getNumComando() == 0) {
-                if (subState == 28 || subState == 46 || subState == 117 || subState == 220) {
+                if (subState == 28 || subState == 46 || subState == 117
+                        || subState == 220 || subState == 322) {
                     painel.getAmbienteAtual().setTransicaoIniciada(true);
                 }
             }

@@ -97,6 +97,7 @@ public class UI {
         int openingState = painel.getOpeningState();
         int playState = painel.getPlayState();
         int gameOverState = painel.getGameOverState();
+        int victoryState = painel.getVictoryState();
 
         // Title state
         if (gameState == titleState) {
@@ -122,7 +123,10 @@ public class UI {
         // Game over
         if (gameState == gameOverState) {
             mostrarGameOverScreen();
-            painel.resetAposGameOver();
+        }
+        // Vitória
+        if (gameState == victoryState) {
+            mostrarVitoria();
         }
     }
 
@@ -398,6 +402,20 @@ public class UI {
         escreverTexto("Você adentra a FLORESTA MACABRA...", y += tileSize);
 
         botoes.mostrarBotao("Continuar");
+    }
+
+    public void mostrarVitoria() {
+        tileSize = painel.getTileSize();
+
+        int y = painel.getAltura()/2;
+
+        g2.setColor(Color.black);
+        g2.fillRect(0, 0, painel.getLargura(), painel.getAltura());
+
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+        escreverTexto("Parabéns, " + jogador.getNome(), y);
+        escreverTexto("Você sobreviveu ao mundo funesto.", y += tileSize);
     }
 
     // Métodos de compactação de código

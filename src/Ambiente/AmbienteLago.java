@@ -134,9 +134,8 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Eles marcham ao redor do lago quase que com coordenação,", y += tileSize);
                 ui.escreverTexto("até parece que o fazem com algum propósito.", y += tileSize);
                 ui.escreverTexto("A maioria não parece realmente hostil, já outros...", y += tileSize);
-                ui.escreverTexto("Há uma placa meio apagada próxima à margem do lago.", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("Ilegível, mas há algum tipo de gravura...", y += tileSize);
+                ui.escreverTexto("Há uma placa meio apagada próxima à margem do lago.", y += tileSize);;
+                ui.escreverTexto("Ilegível, mas há algum tipo de gravura...", y += tileSize * 2);
                 break;
 
             case 105:
@@ -172,11 +171,11 @@ public class AmbienteLago extends Ambiente {
                                         }
                                     }
 
-                                if (probabilidade <= 15) {
-                                    painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
+                                if (probabilidade <= 20) {
+                                    painel.getInvent().adicionarItem("Cantil", "consumo", 1);
                                 }
                                 if (probabilidade <= 10) {
-                                    painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                                    painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
                                 }
                             }
                             setRecursosColetados(true);
@@ -303,6 +302,8 @@ public class AmbienteLago extends Ambiente {
                         setAguardando(false);
 
                         if (!isChanceTirada()) {
+                            jogador.setContadorDaSede(0);
+
                             double probabilidade = painel.definirUmaProbabilidade();
                             if (jogador.getHabilidade().equals("RASTREADORA")) {
                                 probabilidade = probabilidade * 0.9;
@@ -368,6 +369,8 @@ public class AmbienteLago extends Ambiente {
                         setAguardando(false);
 
                         if (!isChanceTirada()) {
+                            jogador.setContadorDaSede(0);
+
                             double probabilidade = painel.definirUmaProbabilidade();
                             if (jogador.getHabilidade().equals("RASTREADORA")) {
                                 probabilidade = probabilidade * 0.9;
@@ -415,8 +418,7 @@ public class AmbienteLago extends Ambiente {
                     ui.escreverTexto("Sem sinal de um caminho para fora desse lugar...", y += tileSize);
                     ui.escreverTexto("Sem um pingo de sentido sobre como veio parar aqui....", y += tileSize);
                     ui.escreverTexto("''O que fiz para merecer parar neste inferno?''", y += tileSize);
-                    ui.escreverTexto("", y += tileSize);
-                    ui.escreverTexto("Por ora, o que lhe resta é esta pescaria...", y += tileSize);
+                    ui.escreverTexto("Por ora, o que lhe resta é esta pescaria...", y += tileSize * 2);
                     g2.setColor(Color.red);
                     ui.escreverTexto("Aguarde...", y += tileSize);
                     g2.setColor(Color.white);
@@ -475,8 +477,7 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Essa... foi uma experiência desagradável.", y += tileSize);
                 ui.escreverTexto("Não é como se as criaturas deste lugar fossem normais, mas aquilo?", y += tileSize);
                 ui.escreverTexto("Absurdamente extraterreste.", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("Este embate te fortalece, mas não parece ter sido o último do tipo.", y += tileSize);
+                ui.escreverTexto("Este embate te fortalece, mas não parece ter sido o último do tipo.", y += tileSize * 2);
                 ui.escreverTexto("Que outros monstros essa terra maldita ainda esconde?", y += tileSize);
                 break;
 
@@ -488,8 +489,7 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("É uma crosta assustadoramente rígida,", y += tileSize);
                 ui.escreverTexto( "além de ser afiada (Você que o diga).", y += tileSize);
                 ui.escreverTexto("Pode vir a ser útil.", y+= tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("Espere... há algo mais.", y += tileSize);
+                ui.escreverTexto("Espere... há algo mais.", y += tileSize * 2);
                 ui.escreverTexto("Há uma iluminação estranha vindo de dentro da carcaça do crustáceo.", y += tileSize);
                 break;
 

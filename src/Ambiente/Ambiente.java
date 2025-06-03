@@ -91,7 +91,9 @@ public abstract class Ambiente {
                 ui.desenharPlanoDeFundo(fundoCard);
             }
 
-            g2.setColor(Color.white);
+            if (nomeFundoCard.equals("montanha_epopeica")) { g2.setColor(Color.blue); }
+            else { g2.setColor(Color.white); }
+
             ui.escreverTexto(getNome(), y += tileSize);
 
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));

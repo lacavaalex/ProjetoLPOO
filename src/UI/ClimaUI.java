@@ -97,7 +97,7 @@ public class ClimaUI extends UI {
                     g2.setColor(Color.white);
                     break;
 
-                case "montanha":
+                case "nevasca":
                     ui.escreverTexto("Aqui, não há como escapar.", y);
                     ui.escreverTexto("Essa nevasca te envolverá até o último suspiro", y += tileSize);
                     g2.setColor(Color.gray);

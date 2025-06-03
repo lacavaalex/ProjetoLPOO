@@ -46,11 +46,6 @@ public class ItemCombate extends Item {
                 setNomeImagem("faca");
                 break;
 
-            case "Tasco de Gelo":
-                setPoder(5);
-                setNomeImagem("tasco_gelo");
-                break;
-
             case "Escudo":
                 setPoder(5);
                 setNomeImagem("escudo");

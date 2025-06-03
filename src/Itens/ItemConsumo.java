@@ -97,7 +97,7 @@ public class ItemConsumo extends Item {
         setTipo("consumo");
         switch (nome) {
             case "Cantil":
-                setDurabilidadeMax(3);
+                setDurabilidadeMax(2);
                 setEfeito("sede");
                 break;
 

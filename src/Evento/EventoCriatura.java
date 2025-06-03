@@ -70,11 +70,6 @@ public class EventoCriatura extends Evento {
                 getUi().escreverTexto("Parece um caranguejo com... três olhos!?", y += tileSize);
             }
 
-            else if (tipo == 2 || tipo == 12 || tipo == 23) {
-                getPainel().getBotoes().esconderBotao("Clima");
-                getPainel().setFightState(true);
-            }
-
             else if (tipo == 21) {
                 g2.setColor(Color.white);
                 getUi().escreverTexto("Uma víbora coberta de rochas te persegue.", y += tileSize * 4);
@@ -89,6 +84,19 @@ public class EventoCriatura extends Evento {
                 g2.setColor(Color.white);
                 getUi().escreverTexto("Do teto, um monstro esquisito te observa atentamente.", y += tileSize);
                 getUi().escreverTexto("Esse olhar... não é confortável.", y += tileSize);
+            }
+
+            else if (tipo == 31) {
+                g2.setColor(Color.red);
+                getUi().escreverTexto("*RAWWWR*", y += tileSize);
+                g2.setColor(Color.white);
+                getUi().escreverTexto("Você foi avistado por uma fera cristalina.", y += tileSize * 4);
+                getUi().escreverTexto("Um leopardo que mira te espetar com sua cauda gélida.", y += tileSize);
+            }
+
+            else if (tipo == 2 || tipo == 12 || tipo == 23 || tipo == 32) {
+                getPainel().getBotoes().esconderBotao("Clima");
+                getPainel().setFightState(true);
             }
 
 
@@ -144,6 +152,12 @@ public class EventoCriatura extends Evento {
             executavel = 1;
         }
         else if (tipo == 23) { // Golem de Sódio
+            executavel = 1;
+        }
+        else if (tipo == 31) { // Leopardo Glacial
+            executavel = 1;
+        }
+        else if (tipo == 32) { // Funesto
             executavel = 1;
         }
 

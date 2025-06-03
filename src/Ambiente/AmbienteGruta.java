@@ -115,8 +115,7 @@ public class AmbienteGruta extends Ambiente {
                 ui.escreverTexto("Um local diferente de qualquer outro que já tenha visto,", y += tileSize);
                 ui.escreverTexto("paredes e teto compostas por minerais ricos em sódio,", y += tileSize);
                 ui.escreverTexto("concedendo um gradiente branco, cinza e rosado. É quase etéreo.", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("Infelizmente, não há tempo para apreciar formações geológicas,", y += tileSize);
+                ui.escreverTexto("Infelizmente, não há tempo para apreciar formações geológicas,", y += tileSize * 2);
                 ui.escreverTexto("sua queda o fez tombar em um buraco que agora está", y += tileSize);
                 ui.escreverTexto("alto demais para escalar de volta à floresta.", y += tileSize);
                 ui.escreverTexto("Não deu para enxergar como era a figura que te empurrou...", y += tileSize);
@@ -298,8 +297,7 @@ public class AmbienteGruta extends Ambiente {
                 ui.escreverTexto("Sair desse lugar o quanto antes é imperativo.", y);
                 ui.escreverTexto("Parece que as criaturas daqui são, de alguma forma,", y += tileSize);
                 ui.escreverTexto("mais hostis em relação a sua presença.", y += tileSize);
-                ui.escreverTexto("", y += tileSize);
-                ui.escreverTexto("Caminhando mais, você avista uma pintura nas paredes...", y += tileSize);
+                ui.escreverTexto("Caminhando mais, você avista uma pintura nas paredes...", y += tileSize * 2);
                 break;
 
             case 212:

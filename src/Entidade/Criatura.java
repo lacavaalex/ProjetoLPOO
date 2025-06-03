@@ -140,6 +140,34 @@ public class Criatura {
                 setBoss(true);
                 break;
 
+            case 31:
+                setNomeCriatura("Leopardo Glacial");
+                setVidaMaxCriatura(30);
+                setVidaCriatura(getVidaMaxCriatura());
+                setAtaqueCriatura(8);
+
+                setNomeImagem("leopardo_glacial");
+                setLarguraImagemEscala(8);
+                setAlturaImagemEscala(8);
+                setDistanciaBordaEscala(10);
+
+                setBoss(false);
+                break;
+
+            case 32:
+                setNomeCriatura("O Funesto");
+                setVidaMaxCriatura(100);
+                setVidaCriatura(getVidaMaxCriatura());
+                setAtaqueCriatura(10);
+
+                setNomeImagem("funesto");
+                setLarguraImagemEscala(10);
+                setAlturaImagemEscala(10);
+                setDistanciaBordaEscala(11);
+
+                setBoss(true);
+                break;
+
             default:
                 throw new IllegalArgumentException("Criatura desconhecida: " + tipo);
         }

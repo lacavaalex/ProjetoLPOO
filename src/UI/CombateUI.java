@@ -84,14 +84,10 @@ public class CombateUI extends UI {
 
         String nomeImagem = painel.getAmbienteAtual().getNomeFundoCombate();
 
-        if (painel.getAmbienteAtual() instanceof AmbienteFloresta ||
-                painel.getAmbienteAtual() instanceof AmbienteLago ||
-                painel.getAmbienteAtual() instanceof AmbienteGruta) {
-            fundoCombate = setupImagens(
-                    criaturaEmCombate.isBoss() ? nomeImagem + "boss" : nomeImagem,
-                    "background"
-            );
-        }
+        fundoCombate = setupImagens(
+                criaturaEmCombate.isBoss() ? nomeImagem + "boss" : nomeImagem,
+                "background"
+        );
     }
 
     // Finaliza o combate e reseta os atributos
@@ -141,10 +137,7 @@ public class CombateUI extends UI {
         int tileSize = painel.getTileSize();
         int y = tileSize * 2;
 
-        if (painel.getAmbienteAtual() instanceof AmbienteFloresta || painel.getAmbienteAtual() instanceof AmbienteLago
-        || painel.getAmbienteAtual() instanceof AmbienteGruta) {
-            desenharPlanoDeFundoCombate(g2);
-        }
+        desenharPlanoDeFundoCombate(g2);
 
         // Dentro de combate
         if (!escapou) {

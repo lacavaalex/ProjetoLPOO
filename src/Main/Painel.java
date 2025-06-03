@@ -51,6 +51,7 @@ public class Painel extends JPanel implements Runnable {
     private final int gameOverState = 1;
     private final int openingState = 2;
     private final int playState = 3;
+    private final int victoryState = 4;
     private int dialogueState = 0;
     private boolean fightState = false;
 
@@ -211,7 +212,7 @@ public class Painel extends JPanel implements Runnable {
         // Desenha a UI
         if (!fightState) {
             if (gameState == titleState || gameState == openingState || gameState == playState ||
-                    gameState == gameOverState || gameState == tutorialControles) {
+                    gameState == gameOverState || gameState == tutorialControles || gameState == victoryState) {
                 ui.mostrarInterface(g2);
                 if (gameState == playState) {
                     ui.mostrarStatus(g2);
@@ -322,7 +323,7 @@ public class Painel extends JPanel implements Runnable {
             botoes.setVisible(true);
             botoes.mostrarBotao("Voltar");
         }
-        if (gameState == gameOverState) {
+        if (gameState == gameOverState || gameState == victoryState) {
             botoes.setVisible(true);
             botoes.esconderBotao("Clima");
             botoes.mostrarBotao("Voltar ao início");
@@ -364,7 +365,7 @@ public class Painel extends JPanel implements Runnable {
         }
         System.out.println("Substate atual: " + getPlaySubState());
         System.out.println("Substate para retornar: " + getAmbienteAtual().getSubStateParaRetornar());
-        System.out.println("Fome: " + jogador.getFome() + " / Sede: " + jogador.estaComSede() + " / Energia: " + jogador.getEnergia());
+        System.out.println("Fome: " + jogador.getFome() + " / Sede: " + jogador.getNivelSede() + " / Energia: " + jogador.getEnergia());
     }
 
     public boolean getFightState() { return fightState; }
@@ -379,6 +380,7 @@ public class Painel extends JPanel implements Runnable {
     public int getTutorialControles() { return tutorialControles; }
     public int getOpeningState() { return openingState; }
     public int getGameOverState() { return gameOverState; }
+    public int getVictoryState() { return victoryState; }
 
     // G/S das classes intermediadas pelo Painel
     public UI getUi() { return ui; }

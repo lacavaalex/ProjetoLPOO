@@ -52,6 +52,7 @@ public class FuncaoBotao implements ActionListener {
 
         // DE VOLTA AO INÍCIO
         else if (fonte == botoes.getBotao("Voltar ao início")) {
+            painel.resetAposGameOver();
             painel.setGameState(painel.getTitleState());
         }
 
@@ -225,6 +226,7 @@ public class FuncaoBotao implements ActionListener {
 
                     if (painel.getDialogueState() == 10) {
                         painel.setPlaySubState(1002);
+                        painel.setDialogueState(0);
                     }
                     break;
 
@@ -269,6 +271,46 @@ public class FuncaoBotao implements ActionListener {
                     painel.setPlaySubState(3003);
                     break;
 
+                case 305:
+                case 309:
+                case 310:
+                case 311:
+                    painel.setPlaySubState(4001);
+                    break;
+
+                case 308:
+                case 312:
+                    painel.setPlaySubState(4001);
+                    painel.getAmbienteAtual().setSubStateParaRetornar(313);
+                    break;
+
+                case 317:
+                    painel.setDialogueState(painel.getDialogueState() + 1);
+
+                    if (painel.getDialogueState() == 28) {
+                        painel.setPlaySubState(318);
+                        painel.setDialogueState(0);
+                    }
+                    break;
+
+                case 319:
+                    painel.setDialogueState(painel.getDialogueState() + 1);
+
+                    if (painel.getDialogueState() == 10) {
+                        painel.setGameState(painel.getGameOverState());
+                        painel.setDialogueState(0);
+                    }
+                    break;
+
+                case 320:
+                    painel.setDialogueState(painel.getDialogueState() + 1);
+
+                    if (painel.getDialogueState() == 6) {
+                        painel.setPlaySubState(4002);
+                        painel.setDialogueState(0);
+                    }
+                    break;
+
                 // FLORESTA
                 case 19:
                     painel.getAmbienteAtual().setSubStateParaRetornar(15);
@@ -306,7 +348,7 @@ public class FuncaoBotao implements ActionListener {
                     painel.setPlaySubState(1);
                     break;
 
-                // MONTANHA
+
                 default:
                     if (painel.getPlaySubState() < 1000) {
                         painel.setPlaySubState(painel.getPlaySubState() + 1);

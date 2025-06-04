@@ -87,8 +87,8 @@ public class AmbienteFloresta extends Ambiente {
         int subState = painel.getPlaySubState();
         int y = tileSize * 2;
 
-        boolean podeCurar = painel.getInvent().acharItem("Planta medicinal");
-        boolean podeCacar = painel.getInvent().acharItem("Machado") || painel.getInvent().acharItem("Faca");
+        boolean podeCurar = painel.getInventSystem().acharItem("Planta medicinal");
+        boolean podeCacar = painel.getInventSystem().acharItem("Machado") || painel.getInventSystem().acharItem("Faca");
 
         switch (subState) {
             // STATES DE EVENTO
@@ -128,8 +128,8 @@ public class AmbienteFloresta extends Ambiente {
 
                 ui.escreverTexto("O que fazer?", y += tileSize);
 
-                boolean derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
-                boolean derrotouBossCaverna = painel.getInvent().acharItem("Jóia vermelha");
+                boolean derrotouBossLago = painel.getInventSystem().acharItem("Jóia azul");
+                boolean derrotouBossCaverna = painel.getInventSystem().acharItem("Jóia vermelha");
 
                 String opcaoLago = derrotouBossLago ? "Ir ao lago" : "Seguir luz";
                 String opcaoRecursos = derrotouBossCaverna ? "Caçar" : "Coletar recursos";
@@ -179,9 +179,9 @@ public class AmbienteFloresta extends Ambiente {
                             if (cacaBemSucedida) {
                                 if (!isRecursosColetados()) {
                                     if (probabilidade <= 10) {
-                                        painel.getInvent().adicionarItem("Carne suculenta", "consumo", 1);
+                                        painel.getInventSystem().adicionarItem("Carne suculenta", "consumo", 1);
                                     } else {
-                                        painel.getInvent().adicionarItem("Carne magra", "consumo", 1);
+                                        painel.getInventSystem().adicionarItem("Carne magra", "consumo", 1);
                                     }
                                     setRecursosColetados(true);
                                 }
@@ -211,8 +211,8 @@ public class AmbienteFloresta extends Ambiente {
 
                 ui.escreverTexto("O que fazer?", y += tileSize);
 
-                derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
-                derrotouBossCaverna = painel.getInvent().acharItem("Jóia vermelha");
+                derrotouBossLago = painel.getInventSystem().acharItem("Jóia azul");
+                derrotouBossCaverna = painel.getInventSystem().acharItem("Jóia vermelha");
 
                 String opcaoLago2 = derrotouBossLago ? "Ir ao lago" : "Seguir luz";
                 String opcaoRecursos2 = derrotouBossCaverna ? "Caçar" : "Coletar recursos";
@@ -223,31 +223,31 @@ public class AmbienteFloresta extends Ambiente {
             case 7:
                 definirTelaDeBotao("voltar");
 
-                if (painel.getInvent().acharItem("Pedra")) {
+                if (painel.getInventSystem().acharItem("Pedra")) {
                     ui.escreverTexto("Você atira uma pedra num pássaro voando próximo.", y += tileSize * 2);
                     if (!isRecursosGastos()) {
-                        painel.getInvent().removerItem("Pedra", 1);
+                        painel.getInventSystem().removerItem("Pedra", 1);
                         setRecursosGastos(true);
                     }
                     ui.escreverTexto("Parece que ele deixou cair algo...", y += tileSize);
                     ui.escreverTexto("Você buscou e colocou na mochila.", y += tileSize);
 
                     if (!isRecursosColetados()) {
-                        painel.getInvent().adicionarItem("Cantil", "consumo", 1);
-                        painel.getInvent().adicionarItem("Carne suculenta", "consumo", 1);
+                        painel.getInventSystem().adicionarItem("Cantil", "consumo", 1);
+                        painel.getInventSystem().adicionarItem("Carne suculenta", "consumo", 1);
 
                         int probabilidade = painel.definirUmaProbabilidade();
                         if (probabilidade <= 5) {
-                            painel.getInvent().adicionarItem("Carvão estranho", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Carvão estranho", "recurso", 1);
                         }
                         else if (probabilidade <= 15) {
-                            painel.getInvent().adicionarItem("Rocha regenerativa", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Rocha regenerativa", "recurso", 1);
                         }
                         else if (probabilidade <= 50) {
-                            painel.getInvent().adicionarItem("Fruta", "consumo", 1);
+                            painel.getInventSystem().adicionarItem("Fruta", "consumo", 1);
                         }
                         else if (probabilidade <= 100) {
-                            painel.getInvent().adicionarItem("Pedra", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Pedra", "recurso", 1);
                         }
                         setRecursosColetados(true);
                     }
@@ -281,14 +281,14 @@ public class AmbienteFloresta extends Ambiente {
 
                 if (!painel.getAmbienteAtual().checarSeSubStateFoiVisitado(12)) {
                     if (!isRecursosColetados()) {
-                        painel.getInvent().adicionarItem("Cantil", "consumo", 1);
-                        painel.getInvent().adicionarItem("Carne suculenta", "consumo", 1);
+                        painel.getInventSystem().adicionarItem("Cantil", "consumo", 1);
+                        painel.getInventSystem().adicionarItem("Carne suculenta", "consumo", 1);
 
                         int probabilidade = painel.definirUmaProbabilidade();
                         if (probabilidade <= 5) {
-                            painel.getInvent().adicionarItem("Carvão estranho", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Carvão estranho", "recurso", 1);
                         } else {
-                            painel.getInvent().adicionarItem("Carvão", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Carvão", "recurso", 1);
                         }
                         setRecursosColetados(true);
                     }
@@ -326,9 +326,9 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Verifique a mochila para usar os itens encontrados.", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Madeira", "recurso", 3);
-                    painel.getInvent().adicionarItem("Pedra", "recurso", 1);
-                    painel.getInvent().adicionarItem("Galho pontiagudo", "combate", 1);
+                    painel.getInventSystem().adicionarItem("Madeira", "recurso", 3);
+                    painel.getInventSystem().adicionarItem("Pedra", "recurso", 1);
+                    painel.getInventSystem().adicionarItem("Galho pontiagudo", "combate", 1);
                     setRecursosColetados(true);
                 }
                 break;
@@ -377,19 +377,19 @@ public class AmbienteFloresta extends Ambiente {
                     if (recursoEncontrado) {
                         if (!isRecursosColetados()) {
                             if (probabilidade <= 10) {
-                                painel.getInvent().adicionarItem("Fruta", "consumo", 4);
-                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 4);
+                                painel.getInventSystem().adicionarItem("Fruta", "consumo", 4);
+                                painel.getInventSystem().adicionarItem("Planta medicinal", "recurso", 4);
                             } else if (probabilidade > 10 || probabilidade <= 20) {
-                                painel.getInvent().adicionarItem("Fruta", "consumo", 2);
-                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 3);
+                                painel.getInventSystem().adicionarItem("Fruta", "consumo", 2);
+                                painel.getInventSystem().adicionarItem("Planta medicinal", "recurso", 3);
                             } else if (probabilidade > 20 || probabilidade <= 30) {
-                                painel.getInvent().adicionarItem("Fruta", "consumo", 2);
-                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 3);
+                                painel.getInventSystem().adicionarItem("Fruta", "consumo", 2);
+                                painel.getInventSystem().adicionarItem("Planta medicinal", "recurso", 3);
                             } else if (probabilidade > 30 || probabilidade <= 50) {
-                                painel.getInvent().adicionarItem("Fruta", "consumo", 1);
-                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 2);
+                                painel.getInventSystem().adicionarItem("Fruta", "consumo", 1);
+                                painel.getInventSystem().adicionarItem("Planta medicinal", "recurso", 2);
                             } else {
-                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 2);
+                                painel.getInventSystem().adicionarItem("Planta medicinal", "recurso", 2);
                             }
                             setRecursosColetados(true);
                         }
@@ -413,16 +413,16 @@ public class AmbienteFloresta extends Ambiente {
                     if (recursoEncontrado) {
                         if (!isRecursosColetados()) {
                             if (probabilidade <= 15) {
-                                painel.getInvent().adicionarItem("Machado", "combate", 1);
+                                painel.getInventSystem().adicionarItem("Machado", "combate", 1);
                             } else {
-                                painel.getInvent().adicionarItem("Faca", "combate", 1);
+                                painel.getInventSystem().adicionarItem("Faca", "combate", 1);
                             }
                             setRecursosColetados(true);
                         }
                     }
                     setChanceTirada(true);
                 }
-                if (painel.getInvent().acharItem("Machado") || painel.getInvent().acharItem("Faca")) {
+                if (painel.getInventSystem().acharItem("Machado") || painel.getInventSystem().acharItem("Faca")) {
                     ui.escreverTexto("Olha só... acho que isso pode servir.", y += tileSize);
                 }
                 definirOcorrenciaDeEventoClimatico(g2, eventoTempestade, 2);
@@ -450,7 +450,7 @@ public class AmbienteFloresta extends Ambiente {
                 if (isBaseFogoAceso()) {
                     ui.escreverTexto("Poxa, deu certo! Uma fonte de calor!", y += tileSize);
                     if (!isRecursosGastos()) {
-                        painel.getInvent().removerItem("Madeira", 2);
+                        painel.getInventSystem().removerItem("Madeira", 2);
                         setRecursosGastos(true);
                     }
                     ui.escreverTexto("Dificilmente alguma criatura tentará te atacar aqui.", y += tileSize);
@@ -476,17 +476,17 @@ public class AmbienteFloresta extends Ambiente {
                     }
 
                     if (!isRecursosColetados()) {
-                        painel.getInvent().adicionarItem("Madeira", "recurso", 1);
+                        painel.getInventSystem().adicionarItem("Madeira", "recurso", 1);
 
                         boolean recursoEncontrado = probabilidade <= 70;
                         if (recursoEncontrado) {
-                            painel.getInvent().adicionarItem("Mel", "consumo", 2);
+                            painel.getInventSystem().adicionarItem("Mel", "consumo", 2);
                             if (probabilidade >= 35) {
-                                painel.getInvent().adicionarItem("Planta medicinal", "recurso", 1);
-                                painel.getInvent().adicionarItem("Punhado de sementes", "recurso", 1);
+                                painel.getInventSystem().adicionarItem("Planta medicinal", "recurso", 1);
+                                painel.getInventSystem().adicionarItem("Punhado de sementes", "recurso", 1);
                             } else {
-                                painel.getInvent().adicionarItem("Fruta", "consumo", 1);
-                                painel.getInvent().adicionarItem("Corda", "recurso", 1);
+                                painel.getInventSystem().adicionarItem("Fruta", "consumo", 1);
+                                painel.getInventSystem().adicionarItem("Corda", "recurso", 1);
                             }
                             setRecursosColetados(true);
                         }
@@ -518,15 +518,15 @@ public class AmbienteFloresta extends Ambiente {
                     }
 
                     if (!isRecursosColetados()) {
-                        painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
+                        painel.getInventSystem().adicionarItem("Lâmina metálica", "recurso", 1);
 
                         boolean recursoEncontrado = probabilidade <= 90;
                         if (recursoEncontrado) {
-                            painel.getInvent().adicionarItem("Carvão", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Carvão", "recurso", 1);
                             if (probabilidade >= 40) {
-                                painel.getInvent().adicionarItem("Pedra", "recurso", 3);
+                                painel.getInventSystem().adicionarItem("Pedra", "recurso", 3);
                             } else {
-                                painel.getInvent().adicionarItem("Escudo", "combate", 1);
+                                painel.getInventSystem().adicionarItem("Escudo", "combate", 1);
                             }
                             setRecursosColetados(true);
                         }
@@ -550,16 +550,16 @@ public class AmbienteFloresta extends Ambiente {
                     }
 
                     if (!isRecursosColetados()) {
-                        painel.getInvent().adicionarItem("Planta medicinal", "recurso", 1);
+                        painel.getInventSystem().adicionarItem("Planta medicinal", "recurso", 1);
 
                         boolean recursoEncontrado = probabilidade <= 90;
                         if (recursoEncontrado) {
-                            painel.getInvent().adicionarItem("Mel", "consumo", 1);
+                            painel.getInventSystem().adicionarItem("Mel", "consumo", 1);
                             if (probabilidade >= 50) {
-                                painel.getInvent().adicionarItem("Fruta", "consumo", 2);
-                                painel.getInvent().adicionarItem("Punhado de sementes", "recurso", 1);
+                                painel.getInventSystem().adicionarItem("Fruta", "consumo", 2);
+                                painel.getInventSystem().adicionarItem("Punhado de sementes", "recurso", 1);
                             } else {
-                                painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                                painel.getInventSystem().adicionarItem("Cantil", "consumo", 1);
                             }
                             setRecursosColetados(true);
                         }
@@ -609,16 +609,16 @@ public class AmbienteFloresta extends Ambiente {
 
                 if (!isChanceTirada()) {
                     if (!isRecursosColetados()) {
-                        painel.getInvent().adicionarItem("Espada Basilar", "combate", 1);
+                        painel.getInventSystem().adicionarItem("Espada Basilar", "combate", 1);
 
                         int probabilidade = painel.definirUmaProbabilidade();
                         boolean carvaoEstranho = probabilidade <= 5;
 
                         if (carvaoEstranho) {
-                            painel.getInvent().adicionarItem("Carvão estranho", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Carvão estranho", "recurso", 1);
                         }
                         else {
-                            painel.getInvent().adicionarItem("Carvão", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Carvão", "recurso", 1);
                         }
                         setRecursosColetados(true);
                     }
@@ -765,7 +765,7 @@ public class AmbienteFloresta extends Ambiente {
                 ui.escreverTexto("Há um pouco de mel misturado com seiva. Açúcar é bom.", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Mel", "consumo", 1);
+                    painel.getInventSystem().adicionarItem("Mel", "consumo", 1);
                     setRecursosColetados(true);
                 }
 
@@ -830,29 +830,29 @@ public class AmbienteFloresta extends Ambiente {
 
                     if (recursoEncontrado) {
                         if (!isRecursosColetados()) {
-                            if (!painel.getInvent().acharItem("Escudo") && !painel.getInvent().acharItem("Foice")) {
+                            if (!painel.getInventSystem().acharItem("Escudo") && !painel.getInventSystem().acharItem("Foice")) {
                                 if (probabilidade <= 50) {
-                                    painel.getInvent().adicionarItem("Escudo", "combate", 1);
+                                    painel.getInventSystem().adicionarItem("Escudo", "combate", 1);
                                 }
                                 else {
-                                    painel.getInvent().adicionarItem("Foice", "combate", 1);
+                                    painel.getInventSystem().adicionarItem("Foice", "combate", 1);
                                 }
                             }
 
-                            if (painel.getInvent().getInvent().size() < 7) {
+                            if (painel.getInventSystem().getInventario().size() < 7) {
                                 if (probabilidade <= 65 && probabilidade >= 15) {
-                                    painel.getInvent().adicionarItem("Fruta", "consumo", 2);
-                                    painel.getInvent().adicionarItem("Planta medicinal", "recurso", 1);
+                                    painel.getInventSystem().adicionarItem("Fruta", "consumo", 2);
+                                    painel.getInventSystem().adicionarItem("Planta medicinal", "recurso", 1);
                                     if (probabilidade <= 45) {
-                                        painel.getInvent().adicionarItem("Madeira", "recurso", 1);
+                                        painel.getInventSystem().adicionarItem("Madeira", "recurso", 1);
                                     }
                                 }
 
                                 if (probabilidade <= 30) {
-                                    painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 2);
+                                    painel.getInventSystem().adicionarItem("Lâmina metálica", "recurso", 2);
                                 }
                                 if (probabilidade <= 20) {
-                                    painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                                    painel.getInventSystem().adicionarItem("Cantil", "consumo", 1);
                                 }
                             }
                             setRecursosColetados(true);
@@ -907,16 +907,16 @@ public class AmbienteFloresta extends Ambiente {
                 int dS = painel.getDialogueState();
 
                 String comentario;
-                if (painel.getInvent().acharItem("Jóia vermelha")
-                        && !painel.getInvent().acharItem("Jóia azul")) {
+                if (painel.getInventSystem().acharItem("Jóia vermelha")
+                        && !painel.getInventSystem().acharItem("Jóia azul")) {
                     comentario = "``O genocídio na gruta?``";
                 }
-                else if (painel.getInvent().acharItem("Jóia azul")
-                        && !painel.getInvent().acharItem("Jóia vermelha")) {
+                else if (painel.getInventSystem().acharItem("Jóia azul")
+                        && !painel.getInventSystem().acharItem("Jóia vermelha")) {
                    comentario = "``A invasão ao lago?``";
                 }
-                else if (painel.getInvent().acharItem("Jóia vermelha")
-                        && painel.getInvent().acharItem("Jóia azul")) {
+                else if (painel.getInventSystem().acharItem("Jóia vermelha")
+                        && painel.getInventSystem().acharItem("Jóia azul")) {
                    comentario = "``Toda a violência contra nós?``";
                 }
                 else {
@@ -963,10 +963,7 @@ public class AmbienteFloresta extends Ambiente {
                 if (!isRecursosColetados()) {
                     jogador.setVidaMax(jogador.getVidaMax() + 10);
                     jogador.setVida(jogador.getVidaMax());
-                    painel.getInvent().adicionarItem("Espada Insigne", "combate", 1);
-                    painel.getInvent().adicionarItem("Corda de escalada", "recurso", 1);
-                    painel.getInvent().adicionarItem("Jóia azul", "recurso", 1);
-                    painel.getInvent().adicionarItem("Jóia vermelha", "recurso", 1);
+                    painel.getInventSystem().adicionarItem("Espada Insigne", "combate", 1);
                     setRecursosColetados(true);
                 }
                 break;

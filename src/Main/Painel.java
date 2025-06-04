@@ -5,6 +5,8 @@ import Entidade.*;
 import Ambiente.*;
 import Evento.EventoClimatico;
 import Evento.EventoCriatura;
+import Sistema.CombateSistema;
+import Sistema.InventarioSistema;
 import UI.*;
 
 import javax.swing.*;
@@ -27,6 +29,8 @@ public class Painel extends JPanel implements Runnable {
 
     // Construtor de classes internas
     private Ambiente ambienteAtual;
+    private CombateSistema combateSistema;
+    private CombateUI combateUi;
     private Jogador jogador = new Jogador(this);
     private Criatura criatura = new Criatura();
 
@@ -35,12 +39,12 @@ public class Painel extends JPanel implements Runnable {
 
     private EventoCriatura eventoCriatura = new EventoCriatura(this, ui, jogador, criatura);
     private EventoClimatico eventoClimatico = new EventoClimatico(this, ui, jogador);
-
-    private CombateUI combate = new CombateUI(this, jogador, botoes, eventoCriatura);
-    private InventarioUI invent = new InventarioUI(this, jogador, botoes);
     private ClimaUI clima = new ClimaUI(this, jogador, botoes, eventoClimatico);
 
-    private Teclado teclado = new Teclado(this, invent);
+    private InventarioSistema inventSystem = new InventarioSistema(this, jogador);
+    private InventarioUI inventUi = new InventarioUI(this, jogador, botoes, inventSystem);
+
+    private Teclado teclado = new Teclado(this, inventSystem, inventUi);
 
     // Definição de FPS
     private final int fps = 60;
@@ -84,6 +88,8 @@ public class Painel extends JPanel implements Runnable {
         // Adição do ambiente
         ambienteAtual = new AmbienteFloresta(this, jogador, ui);
 
+        inicializarSistemaCombate();
+
         rand = new Random();
     }
 
@@ -110,7 +116,7 @@ public class Painel extends JPanel implements Runnable {
 
         updateClima();
 
-        getAmbienteAtual().definirSubStateParaRetornar();
+        ambienteAtual.definirSubStateParaRetornar();
 
         jogador.atualizarCondicaoJogador(numSubStatesAtualizacao);
 
@@ -119,7 +125,7 @@ public class Painel extends JPanel implements Runnable {
 
     // Atualizacoes contínuas de mecanicas do jogo
     public void updateBotoes() {
-        if (gameState == titleState || !invent.isFechado()
+        if (gameState == titleState || !inventUi.isFechado()
                 || clima.isAnalisandoClima() || ambienteAtual.isCardVisivel()) {
             botoes.setVisible(false);
         } else {
@@ -133,32 +139,32 @@ public class Painel extends JPanel implements Runnable {
             case "chuva":
             case "tornado":
                 if (eventoCriatura.getContadorDeEncontros() >= 5) {
-                    getEventoCriatura().resetContador();
+                    eventoCriatura.resetContador();
                     eventoClimatico.finalizarEventoClimatico();
                 }
                 break;
 
             case "tempestade":
                 if (eventoCriatura.getContadorDeEncontros() >= 6) {
-                    getEventoCriatura().resetContador();
+                    eventoCriatura.resetContador();
                     eventoClimatico.finalizarEventoClimatico();
                 }
                 break;
 
             case "cavernoso":
                 if (!jogador.getLocalizacao().equals("GRUTA DE SAL")) {
-                    getEventoCriatura().resetContador();
+                    eventoCriatura.resetContador();
                     eventoClimatico.finalizarEventoClimatico();
                 }
                 break;
 
             case "salgado":
                 if (!jogador.getLocalizacao().equals("GRUTA DE SAL")) {
-                    getEventoCriatura().resetContador();
+                    eventoCriatura.resetContador();
                     eventoClimatico.finalizarEventoClimatico();
                 } else {
                     if (eventoCriatura.getContadorDeEncontros() >= 4) {
-                        getEventoCriatura().resetContador();
+                        eventoCriatura.resetContador();
                         eventoClimatico.setClima("cavernoso");
                     }
                 }
@@ -166,7 +172,7 @@ public class Painel extends JPanel implements Runnable {
 
             case "nevasca":
                 if (!jogador.getLocalizacao().equals("MONTANHA EPOPEICA")) {
-                    getEventoCriatura().resetContador();
+                    eventoCriatura.resetContador();
                     eventoClimatico.finalizarEventoClimatico();
                 }
                 break;
@@ -225,7 +231,7 @@ public class Painel extends JPanel implements Runnable {
                 }
             }
         } else {
-            combate.estruturaTelaCombate(g2);
+            combateUi.estruturaTelaCombate(g2);
         }
 
         // Mostra a situacao climatica
@@ -239,9 +245,16 @@ public class Painel extends JPanel implements Runnable {
         }
 
         // Desenha a tela de inventário à frente do resto
-        if (!invent.isFechado()) {
-            invent.estruturaTelaDeInventario(g2, ui);
+        if (!inventUi.isFechado()) {
+            inventUi.estruturaTelaDeInventario(g2, ui);
         }
+    }
+
+    // Inicializa as classes de combate
+    private void inicializarSistemaCombate() {
+        this.combateUi = new CombateUI(this, jogador, botoes, null);
+        this.combateSistema = new CombateSistema(this, jogador, eventoCriatura, combateUi);
+        this.combateUi.setCombateSistema(combateSistema);
     }
 
     // Transição de ambientes
@@ -262,7 +275,7 @@ public class Painel extends JPanel implements Runnable {
         ambienteAtual = ambientes.get(nome);
         jogador.setLocalizacao(ambienteAtual.getNome());
 
-        if (!getAmbienteAtual().checarSeSubStateFoiVisitado(subStateNoNovoAmbiente)) {
+        if (!ambienteAtual.checarSeSubStateFoiVisitado(subStateNoNovoAmbiente)) {
             ambienteAtual.verCard();
         }
         setPlaySubState(subStateNoNovoAmbiente);
@@ -282,15 +295,15 @@ public class Painel extends JPanel implements Runnable {
 
         resetPlayState();
 
-        getCombate().resetarCriaturaEmCombate();
+        combateSistema.resetarCriaturaEmCombate();
 
-        invent.esvazearInventario();
+        inventSystem.esvazearInventario();
 
         eventoClimatico.setClima("ameno");
 
         jogador.resetarTodosOsAtributos();
 
-        getEventoCriatura().resetContador();
+        eventoCriatura.resetContador();
         ambienteAtual.resetarSubStatesVisitadosTotal();
 
         ambienteAtual.setBaseFogoAceso(false);
@@ -341,13 +354,13 @@ public class Painel extends JPanel implements Runnable {
             botoes.mostrarBotao("Abrir mochila");
             botoes.mostrarBotao("Clima");
             botoes.mostrarBotao("Local");
-            if (getAmbienteAtual().checarSeSubStateFoiVisitado(1)) {
+            if (ambienteAtual.checarSeSubStateFoiVisitado(1)) {
                 botoes.mostrarBotao("Voltar à base");
             }
         }
 
         // Fight state
-        if (getEventoCriatura().isEventoCriaturaAtivo()) {
+        if (eventoCriatura.isEventoCriaturaAtivo()) {
             botoes.esconderBotao("Voltar à base");
             botoes.esconderBotao("Abrir mochila");
             botoes.esconderBotao("Local");
@@ -390,11 +403,13 @@ public class Painel extends JPanel implements Runnable {
 
     // G/S das classes intermediadas pelo Painel
     public UI getUi() { return ui; }
-    public CombateUI getCombate() { return combate; }
+    public CombateSistema getCombateSistema() { return combateSistema; }
+    public CombateUI getCombateUi() { return combateUi; }
     public Jogador getJogador() { return jogador; }
     public Evento.EventoCriatura getEventoCriatura() { return eventoCriatura; }
     public Evento.EventoClimatico getEventoClimatico() { return eventoClimatico; }
-    public InventarioUI getInvent() { return invent; }
+    public InventarioSistema getInventSystem() { return inventSystem; }
+    public InventarioUI getInventUI() { return inventUi; }
     public ClimaUI getClima() { return clima; }
     public Botoes getBotoes() { return botoes; }
     public Ambiente getAmbienteAtual() { return ambienteAtual; }

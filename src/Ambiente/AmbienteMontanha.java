@@ -122,7 +122,7 @@ public class AmbienteMontanha extends Ambiente {
                 break;
 
             case 302:
-                if (painel.getInvent().acharItem("Corda de escalada")) {
+                if (painel.getInventSystem().acharItem("Corda de escalada")) {
                     ui.escreverTexto("Pelo jeito você tem uma corda de escalada...", y);
                     ui.escreverTexto("Seria agora o momento de enfrentar este desafio?", y += tileSize);
                     g2.setFont(g2.getFont().deriveFont(Font.ITALIC, 15F));
@@ -132,12 +132,12 @@ public class AmbienteMontanha extends Ambiente {
                     ui.desenharOpcoes(new String[] {"Escalar", "Agora não"}, y += tileSize * 2, numComando);
                 }
                 else {
-                    if (!painel.getInvent().acharItem("Corda")) {
+                    if (!painel.getInventSystem().acharItem("Corda")) {
                         if (!isRecursosColetados()) {
-                            painel.getInvent().adicionarItem("Corda", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Corda", "recurso", 1);
                             setRecursosColetados(true);
                         }
-                    } else if (painel.getInvent().acharItem("Corda")) {
+                    } else if (painel.getInventSystem().acharItem("Corda")) {
                         ui.escreverTexto("Algo na sua mochila pode permitir que você crie um", y += tileSize);
                         ui.escreverTexto("equipamento de escalada. Uma corda, e algo firme, pontudo.", y += tileSize);
                     }
@@ -183,7 +183,7 @@ public class AmbienteMontanha extends Ambiente {
                 ui.escreverTexto("Gelados, mas devem servir.", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Fruta", "consumo", 2);
+                    painel.getInventSystem().adicionarItem("Fruta", "consumo", 2);
                     setRecursosColetados(true);
                 }
                 break;
@@ -203,7 +203,7 @@ public class AmbienteMontanha extends Ambiente {
                 ui.escreverTexto("Porcaria, lá vem mais um...", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Rocha regenerativa", "recurso", 1);
+                    painel.getInventSystem().adicionarItem("Rocha regenerativa", "recurso", 1);
                     setRecursosColetados(true);
                 }
                 break;
@@ -214,8 +214,8 @@ public class AmbienteMontanha extends Ambiente {
                 ui.escreverTexto("Não importa, a alguns metros da trilha, você agarra umas frutas.", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Fruta", "consumo", 4);
-                    painel.getInvent().adicionarItem("Planta medicinal", "recurso", 1);
+                    painel.getInventSystem().adicionarItem("Fruta", "consumo", 4);
+                    painel.getInventSystem().adicionarItem("Planta medicinal", "recurso", 1);
                     setRecursosColetados(true);
                 }
                 break;
@@ -226,8 +226,8 @@ public class AmbienteMontanha extends Ambiente {
                 ui.escreverTexto("A cor é inesquecível.", y += tileSize);
                 ui.escreverTexto("Você agarra, e... cuidado!", y += tileSize * 2);
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Rocha regenerativa", "recurso", 2);
-                    painel.getInvent().adicionarItem("Rocha intensa", "recurso", 1);
+                    painel.getInventSystem().adicionarItem("Rocha regenerativa", "recurso", 2);
+                    painel.getInventSystem().adicionarItem("Rocha intensa", "recurso", 1);
                     setRecursosColetados(true);
                 }
                 break;
@@ -239,7 +239,7 @@ public class AmbienteMontanha extends Ambiente {
                 ui.escreverTexto("Uma pequena fonte jorra água. Você enche um cantil.", y += tileSize);
                 ui.escreverTexto("... talvez não devesse ter parado.", y += tileSize);
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                    painel.getInventSystem().adicionarItem("Cantil", "consumo", 1);
                     setRecursosColetados(true);
                 }
                 break;
@@ -251,7 +251,7 @@ public class AmbienteMontanha extends Ambiente {
                 ui.escreverTexto("E surge mais um leopardo.", y += tileSize);
                 ui.escreverTexto("Que seja. O que é mais um embate?", y += tileSize);
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Carvão estranho", "recurso", 1);
+                    painel.getInventSystem().adicionarItem("Carvão estranho", "recurso", 1);
                     setRecursosColetados(true);
                 }
                 break;

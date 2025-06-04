@@ -147,9 +147,9 @@ public class FuncaoBotao implements ActionListener {
 
                 // MONTANHA
                 case 300:
-                    boolean derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
-                    boolean derrotouBossCaverna = painel.getInvent().acharItem("Jóia vermelha");
-                    boolean derrotouBossFloresta = painel.getInvent().acharItem("Espada Insigne");
+                    boolean derrotouBossLago = painel.getInventSystem().acharItem("Jóia azul");
+                    boolean derrotouBossCaverna = painel.getInventSystem().acharItem("Jóia vermelha");
+                    boolean derrotouBossFloresta = painel.getInventSystem().acharItem("Espada Insigne");
 
                     if (derrotouBossCaverna && derrotouBossLago && derrotouBossFloresta) {
                         painel.setPlaySubState(301);

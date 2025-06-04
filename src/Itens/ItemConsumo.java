@@ -61,7 +61,7 @@ public class ItemConsumo extends Item {
                 break;
 
             case "sede":
-                if (!jogador.estaComSede()) {
+                if (jogador.getNivelSede().equals("alto")) {
                     System.out.println("Você está sem sede. Sede: " + jogador.estaComSede());
                 } else {
                     jogador.setSede(false);
@@ -148,9 +148,9 @@ public class ItemConsumo extends Item {
             setDurabilidade(getDurabilidadeMax() - 1);
 
             if (getDurabilidade() == 0) {
-                getPainel().getInvent().removerItem(getNome(), 1);
+                getPainel().getInventSystem().removerItem(getNome(), 1);
 
-                Item resto = getPainel().getInvent().getInvent().get(getNome());
+                Item resto = getPainel().getInventSystem().getInventario().get(getNome());
                 if (resto instanceof ItemConsumo proximaUnidade) {
                     proximaUnidade.setDurabilidade(proximaUnidade.getDurabilidadeMax());
                 }

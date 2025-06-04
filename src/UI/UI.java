@@ -258,7 +258,7 @@ public class UI {
     }
 
     public void mostrarInventario() {
-        painel.getInvent().abrir();
+        painel.getInventUI().abrir();
         painel.repaint();
     }
 
@@ -446,8 +446,8 @@ public class UI {
 
             desenharContadorChama(x, y);
 
-            if (painel.getCombate().getCriaturaEmCombate() != null
-                    && painel.getCombate().getCriaturaEmCombate().isBoss()) {
+            if (painel.getCombateSistema().getCriaturaEmCombate() != null
+                    && painel.getCombateSistema().getCriaturaEmCombate().isBoss()) {
                 g2.setColor(Color.blue);
             }
             else { g2.setColor(Color.red); }
@@ -469,8 +469,8 @@ public class UI {
                 }
 
                 if (numComando == i) {
-                    if (painel.getCombate().getCriaturaEmCombate() != null
-                            && painel.getCombate().getCriaturaEmCombate().isBoss()) {
+                    if (painel.getCombateSistema().getCriaturaEmCombate() != null
+                            && painel.getCombateSistema().getCriaturaEmCombate().isBoss()) {
                         g2.setColor(Color.blue);
                     }
                     else { g2.setColor(Color.red); }
@@ -485,8 +485,8 @@ public class UI {
     }
 
     public void desenharContadorChama(int x, int y) {
-        if (painel.getCombate().getCriaturaEmCombate() != null
-                && painel.getCombate().getCriaturaEmCombate().isBoss()) {
+        if (painel.getCombateSistema().getCriaturaEmCombate() != null
+                && painel.getCombateSistema().getCriaturaEmCombate().isBoss()) {
 
             switch (contadorChama) {
                 case 1: g2.drawImage(azul1, x - 65, y - 30, tileSize, tileSize, null); break;

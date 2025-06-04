@@ -10,7 +10,7 @@ public class Jogador {
     private String habilidade;
     private String localizacao;
 
-    private int vidaMax = 100;
+    private int vidaMax = 200;
     private int vida = getVidaMax();
 
     private boolean sede = false;
@@ -26,7 +26,7 @@ public class Jogador {
     private boolean envenenado;
 
     private String armaAtual = "Nenhuma arma equipada.";
-    private final int ataqueInicial = 1000;
+    private final int ataqueInicial = 10;
     private int ataqueAtual;
 
     public Jogador(Painel painel) {
@@ -64,14 +64,14 @@ public class Jogador {
                     && getFome() > getFomeMax() * 2 / 3
                     && getVida() < getVidaMax()
             ) {
-                setVida(getVida() + 1);
+                setVida(getVida() + 5);
             }
         } else {
             if (!estaComSede()
                     && getFome() > getFomeMax()/4
                     && getVida() < getVidaMax()
             ) {
-                setVida(getVida() + 1);
+                setVida(getVida() + 5);
             }
         }
 

@@ -128,7 +128,7 @@ public class AmbienteGruta extends Ambiente {
                 ui.escreverTexto("Como prosseguir agora?", y);
 
                 boolean achouAgua = painel.getAmbienteAtual().checarSeSubStateFoiVisitado(205);
-                boolean podeMinerar = painel.getInvent().acharItem("Picareta");
+                boolean podeMinerar = painel.getInventSystem().acharItem("Picareta");
 
                 String opcaoAgua = achouAgua ? "Pegar mais água" : "Achar fonte de água";
                 String opcaoMinerio = podeMinerar ? "Minerar" : "Buscar minérios";
@@ -175,11 +175,11 @@ public class AmbienteGruta extends Ambiente {
                 ui.escreverTexto("Você pode encher o cantil velho na sua mochila.", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    if (painel.getInvent().acharItem("Cantil")) {
-                        painel.getInvent().removerItem("Cantil", 1);
-                        painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                    if (painel.getInventSystem().acharItem("Cantil")) {
+                        painel.getInventSystem().removerItem("Cantil", 1);
+                        painel.getInventSystem().adicionarItem("Cantil", "consumo", 1);
                     } else {
-                        painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                        painel.getInventSystem().adicionarItem("Cantil", "consumo", 1);
                     }
                     setRecursosColetados(true);
                 }
@@ -195,7 +195,7 @@ public class AmbienteGruta extends Ambiente {
                 ui.escreverTexto("Melhor voltar ao ponto inicial para marcar este caminho.", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Picareta", "combate", 1);
+                    painel.getInventSystem().adicionarItem("Picareta", "combate", 1);
                     setRecursosColetados(true);
                 }
                 break;
@@ -207,11 +207,11 @@ public class AmbienteGruta extends Ambiente {
                 ui.escreverTexto("Seria ótimo se toda a gruta fosse recursiva assim...", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    if (painel.getInvent().acharItem("Cantil")) {
-                        painel.getInvent().removerItem("Cantil", 1);
-                        painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                    if (painel.getInventSystem().acharItem("Cantil")) {
+                        painel.getInventSystem().removerItem("Cantil", 1);
+                        painel.getInventSystem().adicionarItem("Cantil", "consumo", 1);
                     } else {
-                        painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                        painel.getInventSystem().adicionarItem("Cantil", "consumo", 1);
                     }
                     setRecursosColetados(true);
                 }
@@ -235,19 +235,21 @@ public class AmbienteGruta extends Ambiente {
                     if (probabilidade <= 70) {
                         if (!isRecursosColetados()) {
                             if (probabilidade >= 55) {
-                                painel.getInvent().adicionarItem("Carvão", "recurso", 1);
+                                painel.getInventSystem().adicionarItem("Carvão", "recurso", 1);
                             }
                             if (probabilidade >= 30) {
-                                painel.getInvent().adicionarItem("Rocha intensa", "recurso", 1);
+                                painel.getInventSystem().adicionarItem("Rocha intensa", "recurso", 1);
                             } else if (probabilidade > 5) {
-                                painel.getInvent().adicionarItem("Rocha regenerativa", "recurso", 1);
+                                painel.getInventSystem().adicionarItem("Rocha regenerativa", "recurso", 1);
                             } else if (probabilidade <= 5) {
-                                painel.getInvent().adicionarItem("Carvão estranho", "recurso", 1);
+                                painel.getInventSystem().adicionarItem("Carvão estranho", "recurso", 1);
                             }
                             setRecursosColetados(true);
                         }
                     }
-                    jogador.setEnergia(jogador.getEnergia() - 2);
+                    if (jogador.getEnergia() < 0) {
+                        jogador.setEnergia(jogador.getEnergia() - 2);
+                    }
                     setChanceTirada(true);
                 }
                 break;
@@ -277,12 +279,12 @@ public class AmbienteGruta extends Ambiente {
 
                     if (probabilidade <= 60) {
                         if (!isRecursosColetados()) {
-                            painel.getInvent().adicionarItem("Rocha regenerativa", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Rocha regenerativa", "recurso", 1);
 
                             boolean carvaoEstranho = probabilidade <= 5;
 
                             if (carvaoEstranho) {
-                                painel.getInvent().adicionarItem("Carvão estranho", "recurso", 1);
+                                painel.getInventSystem().adicionarItem("Carvão estranho", "recurso", 1);
                             }
                             setRecursosColetados(true);
                         }
@@ -343,7 +345,7 @@ public class AmbienteGruta extends Ambiente {
             case 217:
                 ui.escreverTexto("Uma das pedras, uma vermelha...", y );
                 ui.escreverTexto("Brilha mais que todo o resto.", y += tileSize);
-                if (painel.getInvent().acharItem("Jóia azul")) {
+                if (painel.getInventSystem().acharItem("Jóia azul")) {
                     ui.escreverTexto("Parece com aquela em sua bolsa...", y += tileSize);
                 }
                 ui.escreverTexto("E, no fundo da câmara, o que você queria: uma enorme subida.", y += tileSize * 2);
@@ -366,7 +368,7 @@ public class AmbienteGruta extends Ambiente {
 
                 if (!isChanceTirada()) {
                     if (!isRecursosColetados()) {
-                        painel.getInvent().adicionarItem("Rocha regenerativa", "recurso", 1);
+                        painel.getInventSystem().adicionarItem("Rocha regenerativa", "recurso", 1);
 
                         double probabilidade = painel.definirUmaProbabilidade();
                         if (jogador.getHabilidade().equals("RASTREADORA")) {
@@ -375,7 +377,7 @@ public class AmbienteGruta extends Ambiente {
                         boolean carvaoEstranho = probabilidade <= 5;
 
                         if (carvaoEstranho) {
-                            painel.getInvent().adicionarItem("Carvão estranho", "recurso", 1);
+                            painel.getInventSystem().adicionarItem("Carvão estranho", "recurso", 1);
                         }
                         setRecursosColetados(true);
                     }
@@ -473,7 +475,7 @@ public class AmbienteGruta extends Ambiente {
                 if (!isRecursosColetados()) {
                     jogador.setVidaMax(jogador.getVidaMax() + 10);
                     jogador.setVida(jogador.getVidaMax());
-                    painel.getInvent().adicionarItem("Jóia vermelha", "recurso", 1);
+                    painel.getInventSystem().adicionarItem("Jóia vermelha", "recurso", 1);
                     setRecursosColetados(true);
                 }
                 break;

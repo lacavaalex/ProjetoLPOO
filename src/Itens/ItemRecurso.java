@@ -22,20 +22,20 @@ public class ItemRecurso extends Item {
 
             if (getTipoNovoItem() != null && getItemParaRemoverNoCrafting() != null) {
 
-                if (getTipoNovoItem().equals("combate") && painel.getInvent().acharItem(getOpcaoCrafting())) {
+                if (getTipoNovoItem().equals("combate") && painel.getInventSystem().acharItem(getOpcaoCrafting())) {
                     System.out.println("Arma já existe no inventário.");
                 }
                 else {
-                    painel.getInvent().removerItem(getNome(), 1);
+                    painel.getInventSystem().removerItem(getNome(), 1);
 
-                    painel.getInvent().removerItem(getItemParaRemoverNoCrafting(), 1);
+                    painel.getInventSystem().removerItem(getItemParaRemoverNoCrafting(), 1);
                     if (getItemParaRemoverNoCrafting().equals(painel.getJogador().getArmaAtual())) {
                         painel.getJogador().setArmaAtual("Nenhuma arma definida.");
                     }
 
-                    painel.getInvent().adicionarItem(getOpcaoCrafting(), getTipoNovoItem(), 1);
+                    painel.getInventSystem().adicionarItem(getOpcaoCrafting(), getTipoNovoItem(), 1);
 
-                    if (getTipoNovoItem().equals("combate") && !painel.getInvent().acharItem(getOpcaoCrafting())) {
+                    if (getTipoNovoItem().equals("combate") && !painel.getInventSystem().acharItem(getOpcaoCrafting())) {
                         setOpcaoCrafting("...");
                     }
                 }
@@ -55,14 +55,14 @@ public class ItemRecurso extends Item {
                             painel.getAmbienteAtual().setBaseFortificacao(painel.getAmbienteAtual().getBaseFortificacao() + 1);
                             break;
                     }
-                    painel.getInvent().removerItem(getNome(), 1);
+                    painel.getInventSystem().removerItem(getNome(), 1);
                 }
                 if (painel.getPlaySubState() == 1 || painel.getPlaySubState() != 1) {
 
                     if (getOpcaoCrafting().equals("Curar veneno")) {
                         if (painel.getJogador().estaEnvenenado()) {
                             painel.getJogador().setEnvenenado(false);
-                            painel.getInvent().removerItem(getNome(), 1);
+                            painel.getInventSystem().removerItem(getNome(), 1);
                         }
                     }
                     else if (getOpcaoCrafting().equals("Regenerar")) {
@@ -73,7 +73,7 @@ public class ItemRecurso extends Item {
                             } else {
                                 painel.getJogador().setVida(painel.getJogador().getVidaMax());
                             }
-                            painel.getInvent().removerItem(getNome(), 1);
+                            painel.getInventSystem().removerItem(getNome(), 1);
                         }
                     }
                     else if (getOpcaoCrafting().equals("Se energizar")) {
@@ -84,7 +84,7 @@ public class ItemRecurso extends Item {
                             } else {
                                 painel.getJogador().setEnergia(painel.getJogador().getEnergiaMax());
                             }
-                            painel.getInvent().removerItem(getNome(), 1);
+                            painel.getInventSystem().removerItem(getNome(), 1);
                         }
                     }
                 }
@@ -99,7 +99,7 @@ public class ItemRecurso extends Item {
 
         switch (nome) {
             case "Madeira":
-                if (painel.getInvent().acharItem("Pedra")) {
+                if (painel.getInventSystem().acharItem("Pedra")) {
                     setItemParaRemoverNoCrafting("Pedra");
                     setOpcaoCrafting("Estilingue");
                     setTipoNovoItem("combate");
@@ -113,7 +113,7 @@ public class ItemRecurso extends Item {
                 break;
 
             case "Pedra":
-                if (painel.getInvent().acharItem("Madeira")) {
+                if (painel.getInventSystem().acharItem("Madeira")) {
                     setItemParaRemoverNoCrafting("Madeira");
                     setOpcaoCrafting("Estilingue");
                     setTipoNovoItem("combate");
@@ -157,7 +157,7 @@ public class ItemRecurso extends Item {
                 break;
 
             case "Lâmina metálica":
-                if (painel.getInvent().acharItem("Madeira")) {
+                if (painel.getInventSystem().acharItem("Madeira")) {
                     setItemParaRemoverNoCrafting("Madeira");
 
                     if (getQuantidade() == 1) {
@@ -196,7 +196,7 @@ public class ItemRecurso extends Item {
                 break;
 
             case "Carvão estranho":
-                if (painel.getInvent().acharItem("Espada Basilar")) {
+                if (painel.getInventSystem().acharItem("Espada Basilar")) {
                     setItemParaRemoverNoCrafting("Espada Basilar");
                     setOpcaoCrafting("Espada Flamejante");
                     setTipoNovoItem("combate");
@@ -208,12 +208,12 @@ public class ItemRecurso extends Item {
                 break;
 
             case "Corda":
-                if (painel.getInvent().acharItem("Espeto crustáceo")) {
+                if (painel.getInventSystem().acharItem("Espeto crustáceo")) {
                     setItemParaRemoverNoCrafting("Espeto crustáceo");
                     setOpcaoCrafting("Corda de escalada");
                     setTipoNovoItem("recurso");
                 } else {
-                    if (painel.getInvent().acharItem("Galho pontiagudo")) {
+                    if (painel.getInventSystem().acharItem("Galho pontiagudo")) {
                         setItemParaRemoverNoCrafting("Galho pontiagudo");
                         setOpcaoCrafting("Vara de pesca");
                         setTipoNovoItem("combate");

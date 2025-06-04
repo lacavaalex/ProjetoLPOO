@@ -34,7 +34,8 @@ public class EventoCriatura extends Evento {
             getPainel().getEventoCriatura().setEventoCriaturaAtivo(true);
             getPainel().setGameState(getPainel().getPlayState());
             criatura.definirCriatura(tipo);
-            getPainel().getCombate().iniciarCombate(criatura);
+            getPainel().getCombateSistema().iniciarCombate(criatura);
+            getPainel().getCombateUi().inicializarFundoCombate();
 
             if ((tipo == 1 || tipo == 3)) {
                 ataqueSurpresa();

@@ -2,6 +2,7 @@ package Controles;
 
 import Entidade.Jogador;
 import Main.Painel;
+import Sistema.InventarioSistema;
 import UI.*;
 
 import java.awt.event.KeyEvent;
@@ -10,7 +11,8 @@ import java.awt.event.KeyListener;
 public class Teclado implements KeyListener {
 
     private Painel painel;
-    private InventarioUI invent;
+    private InventarioSistema inventSystem;
+    private InventarioUI inventUi;
     private Jogador jogador;
     private UI ui;
 
@@ -19,9 +21,10 @@ public class Teclado implements KeyListener {
 
     private final int caranguejo = 2001;
 
-    public Teclado(Painel painel, InventarioUI invent) {
+    public Teclado(Painel painel, InventarioSistema inventSystem, InventarioUI inventUi) {
         this.painel = painel;
-        this.invent = invent;
+        this.inventSystem = inventSystem;
+        this.inventUi = inventUi;
         this.jogador = painel.getJogador();
         this.ui = painel.getUi();
     }
@@ -49,7 +52,7 @@ public class Teclado implements KeyListener {
         // Play state
         if (painel.getGameState() == painel.getPlayState()) {
 
-            if (!invent.isFechado() || painel.getClima().isAnalisandoClima()
+            if (!inventUi.isFechado() || painel.getClima().isAnalisandoClima()
             || painel.getAmbienteAtual().isCardVisivel()) {
                 kPTelasPopUp(e);
             }
@@ -183,18 +186,18 @@ public class Teclado implements KeyListener {
         int code = e.getKeyCode();
 
         // Configuração própria da tela de inventário
-        if (!invent.isFechado()) {
+        if (!inventUi.isFechado()) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                invent.subtrairNumComandoInvent();
+                inventSystem.subtrairNumComandoInvent();
             }
             if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                invent.adicionarNumComandoInvent();
+                inventSystem.adicionarNumComandoInvent();
             }
             if (code == KeyEvent.VK_ENTER) {
-                invent.selecionouItem();
+                inventSystem.selecionouItem();
             }
             if (code == KeyEvent.VK_ESCAPE) {
-                invent.fechar();
+                inventUi.fechar();
             }
         }
 
@@ -214,47 +217,47 @@ public class Teclado implements KeyListener {
     public void kPCombate(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (painel.getCombate().isTurnoJogador()) {
+        if (painel.getCombateSistema().isTurnoJogador()) {
 
-            if ((painel.getCombate().getCriaturaEmCombate() != null
-                    && painel.getCombate().getCriaturaEmCombate().isBoss())
+            if ((painel.getCombateSistema().getCriaturaEmCombate() != null
+                    && painel.getCombateSistema().getCriaturaEmCombate().isBoss())
                     || jogador.getLocalizacao().equals("MONTANHA EPOPEICA")) {
 
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                    painel.getCombate().subtrairNumComandoCombate(4);
+                    painel.getCombateSistema().subtrairNumComandoCombate(4);
                 }
                 if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    painel.getCombate().adicionarNumComandoCombate(4);
+                    painel.getCombateSistema().adicionarNumComandoCombate(4);
                 }
             } else {
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                    painel.getCombate().subtrairNumComandoCombate(5);
+                    painel.getCombateSistema().subtrairNumComandoCombate(5);
                 }
                 if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                    painel.getCombate().adicionarNumComandoCombate(5);
+                    painel.getCombateSistema().adicionarNumComandoCombate(5);
                 }
             }
 
             if (code == KeyEvent.VK_ENTER) {
-                int opcao = painel.getCombate().getNumComando();
+                int opcao = painel.getCombateSistema().getNumComando();
                 if (opcao == 0 || opcao == 1 || opcao == 2 || opcao == 4) {
-                    painel.getCombate().sistemaTurno();
+                    painel.getCombateSistema().sistemaTurno();
                 } else if (opcao == 3) {
                     painel.getUi().mostrarInventario();
                 }
             }
         }
         else {
-            painel.getCombate().setNumComando(0);
+            painel.getCombateSistema().setNumComando(0);
             if (code == KeyEvent.VK_ENTER) {
-                painel.getCombate().setResistiu(false);
-                painel.getCombate().sistemaTurno();
+                painel.getCombateSistema().setResistiu(false);
+                painel.getCombateSistema().sistemaTurno();
             }
         }
 
-        if (painel.getCombate().isCombateFinalizado() || painel.getCombate().conseguiuEscapar()) {
+        if (painel.getCombateSistema().isCombateFinalizado() || painel.getCombateSistema().conseguiuEscapar()) {
             if (code == KeyEvent.VK_ESCAPE) {
-                painel.getCombate().finalizarCombate();
+                painel.getCombateSistema().finalizarCombate();
                 painel.setPlaySubState(painel.getAmbienteAtual().getSubStateParaRetornar());
             }
         }
@@ -334,9 +337,9 @@ public class Teclado implements KeyListener {
                 }
             }
             else if (subState == 2 || subState == 6) {
-                boolean derrotouBossLago = painel.getInvent().acharItem("Jóia azul");
-                boolean derrotouBossCaverna = painel.getInvent().acharItem("Jóia vermelha");
-                boolean derrotouBossFloresta = painel.getInvent().acharItem("Espada Insigne");
+                boolean derrotouBossLago = painel.getInventSystem().acharItem("Jóia azul");
+                boolean derrotouBossCaverna = painel.getInventSystem().acharItem("Jóia vermelha");
+                boolean derrotouBossFloresta = painel.getInventSystem().acharItem("Espada Insigne");
 
                 if (opcao == 0) {
                     if (derrotouBossLago) {
@@ -377,8 +380,8 @@ public class Teclado implements KeyListener {
             else if (subState == 15 || subState == 38) {
                 painel.getAmbienteAtual().setSubStateOrigem(subState);
 
-                boolean podeCurar = painel.getInvent().acharItem("Planta medicinal");
-                boolean podeCacar = painel.getInvent().acharItem("Machado") || painel.getInvent().acharItem("Faca");
+                boolean podeCurar = painel.getInventSystem().acharItem("Planta medicinal");
+                boolean podeCacar = painel.getInventSystem().acharItem("Machado") || painel.getInventSystem().acharItem("Faca");
                 boolean opcaoFogueira = painel.getAmbienteAtual().checarSeSubStateFoiVisitado(1);
 
                 if (opcao == 0) {
@@ -442,7 +445,7 @@ public class Teclado implements KeyListener {
                 } else if (opcao == 1) {
                     painel.setPlaySubState(109);
                 } else if (opcao == 2) {
-                    if (painel.getInvent().acharItem("Vara de pesca")) {
+                    if (painel.getInventSystem().acharItem("Vara de pesca")) {
                         painel.setPlaySubState(114);
                     } else {
                         painel.setPlaySubState(113);
@@ -457,7 +460,7 @@ public class Teclado implements KeyListener {
 
             else if (subState == 201) {
                 boolean achouAgua = painel.getAmbienteAtual().checarSeSubStateFoiVisitado(205);
-                boolean podeMinerar = painel.getInvent().acharItem("Picareta");
+                boolean podeMinerar = painel.getInventSystem().acharItem("Picareta");
                 if (opcao == 0) {
                    if (!achouAgua) { painel.setPlaySubState(202); }
                    else { painel.setPlaySubState(207); }
@@ -492,7 +495,7 @@ public class Teclado implements KeyListener {
 
             if (subState == 12) {
                 if (opcao == 0) {
-                    if (painel.getInvent().acharItem("Jóia azul")) {
+                    if (painel.getInventSystem().acharItem("Jóia azul")) {
                         painel.trocarAmbiente("lago", 123);
                     } else {
                         painel.trocarAmbiente("lago", 100);
@@ -563,7 +566,7 @@ public class Teclado implements KeyListener {
                 }
             }
             else if (subState == 302) {
-                if (painel.getInvent().acharItem("Corda de escalada")) {
+                if (painel.getInventSystem().acharItem("Corda de escalada")) {
                     if (opcao == 0) { painel.setPlaySubState(303); }
                     else if (opcao == 1) {
                         painel.trocarAmbiente("floresta", 2); }
@@ -604,8 +607,8 @@ public class Teclado implements KeyListener {
         int opcao = ui.getNumComando();
 
         if (opcao == 0 || opcao == 1) {
-            if (!painel.getInvent().acharItem("Jóia azul")
-                    && (painel.getInvent().acharItem("Tridente") || painel.getInvent().acharItem("Cimitarra"))) {
+            if (!painel.getInventSystem().acharItem("Jóia azul")
+                    && (painel.getInventSystem().acharItem("Tridente") || painel.getInventSystem().acharItem("Cimitarra"))) {
                 painel.setPlaySubState(117);
             } else {
                 painel.setPlaySubState(114 + (opcao + 1));
@@ -613,7 +616,7 @@ public class Teclado implements KeyListener {
         }
 
         else if (opcao == 2) {
-            if (!painel.getInvent().acharItem("Jóia azul")) {
+            if (!painel.getInventSystem().acharItem("Jóia azul")) {
                 painel.getAmbienteAtual().setSubStateParaRetornar(111);
             }
             else {

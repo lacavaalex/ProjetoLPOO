@@ -18,7 +18,7 @@ public class Criatura {
                 setNomeCriatura("Víbora-Rubro");
                 setVidaMaxCriatura(50);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(8);
+                setAtaqueCriatura(10);
 
                 setNomeImagem("vibora_rubro");
                 setLarguraImagemEscala(4);
@@ -32,7 +32,7 @@ public class Criatura {
                 setNomeCriatura("Urso Pai");
                 setVidaMaxCriatura(250);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(20);
+                setAtaqueCriatura(25);
 
                 setNomeImagem("urso_pai");
                 setLarguraImagemEscala(11);
@@ -46,7 +46,7 @@ public class Criatura {
                 setNomeCriatura("Lobo Famélico");
                 setVidaMaxCriatura(80);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(10);
+                setAtaqueCriatura(14);
 
                 setNomeImagem("lobo_famelico");
                 setLarguraImagemEscala(8);
@@ -60,7 +60,7 @@ public class Criatura {
                 setNomeCriatura("Corvo Espectral");
                 setVidaMaxCriatura(100);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(6);
+                setAtaqueCriatura(8);
 
                 setNomeImagem("corvo_espectral");
                 setLarguraImagemEscala(4);
@@ -74,7 +74,7 @@ public class Criatura {
                 setNomeCriatura("Crustáceo Tríclope");
                 setVidaMaxCriatura(60);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(9);
+                setAtaqueCriatura(12);
 
                 setNomeImagem("crustaceo_triclope");
                 setLarguraImagemEscala(4);
@@ -88,7 +88,7 @@ public class Criatura {
                 setNomeCriatura("O Crustoso Cruel");
                 setVidaMaxCriatura(250);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(15);
+                setAtaqueCriatura(18);
 
                 setNomeImagem("crustoso_cruel");
                 setLarguraImagemEscala(12);
@@ -102,7 +102,7 @@ public class Criatura {
                 setNomeCriatura("Víbora-Mineral");
                 setVidaMaxCriatura(100);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(8);
+                setAtaqueCriatura(10);
 
                 setNomeImagem("vibora_mineral");
                 setLarguraImagemEscala(4);
@@ -116,7 +116,7 @@ public class Criatura {
                 setNomeCriatura("Goblin Salgado");
                 setVidaMaxCriatura(70);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(12);
+                setAtaqueCriatura(14);
 
                 setNomeImagem("goblin_sal");
                 setLarguraImagemEscala(6);
@@ -130,7 +130,7 @@ public class Criatura {
                 setNomeCriatura("Golem de Sódio");
                 setVidaMaxCriatura(400);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(15);
+                setAtaqueCriatura(18);
 
                 setNomeImagem("golem_sal");
                 setLarguraImagemEscala(12);
@@ -144,7 +144,7 @@ public class Criatura {
                 setNomeCriatura("Leopardo Glacial");
                 setVidaMaxCriatura(100);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(12);
+                setAtaqueCriatura(17);
 
                 setNomeImagem("leopardo_glacial");
                 setLarguraImagemEscala(8);
@@ -156,9 +156,9 @@ public class Criatura {
 
             case 32:
                 setNomeCriatura("O Funesto");
-                setVidaMaxCriatura(500);
+                setVidaMaxCriatura(400);
                 setVidaCriatura(getVidaMaxCriatura());
-                setAtaqueCriatura(20);
+                setAtaqueCriatura(35);
 
                 setNomeImagem("funesto");
                 setLarguraImagemEscala(10);

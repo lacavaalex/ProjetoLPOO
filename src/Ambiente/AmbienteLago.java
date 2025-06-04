@@ -109,7 +109,7 @@ public class AmbienteLago extends Ambiente {
                 ui.escreverTexto("Entretanto, há algumas sementes. Vale a pena pegar.", y += tileSize);
 
                 if (!isRecursosColetados()) {
-                    painel.getInvent().adicionarItem("Punhado de sementes", "recurso", 1);
+                    painel.getInventSystem().adicionarItem("Punhado de sementes", "recurso", 1);
                     setRecursosColetados(true);
                 }
 
@@ -153,29 +153,29 @@ public class AmbienteLago extends Ambiente {
                     if (recursoEncontrado) {
                         if (!isRecursosColetados()) {
                             if (probabilidade <= 50) {
-                                if (!painel.getInvent().acharItem("Corda")) {
-                                    painel.getInvent().adicionarItem("Corda", "recurso", 1);
+                                if (!painel.getInventSystem().acharItem("Corda")) {
+                                    painel.getInventSystem().adicionarItem("Corda", "recurso", 1);
                                 }
                             }
 
-                            if (painel.getInvent().getInvent().size() < 7) {
-                                painel.getInvent().adicionarItem("Galho pontiagudo", "combate", 1);
+                            if (painel.getInventSystem().getInventario().size() < 7) {
+                                painel.getInventSystem().adicionarItem("Galho pontiagudo", "combate", 1);
                                 if (probabilidade <= 65 && probabilidade >= 15) {
-                                    painel.getInvent().adicionarItem("Pedra", "recurso", 2);
+                                    painel.getInventSystem().adicionarItem("Pedra", "recurso", 2);
                                     if (probabilidade <= 45) {
-                                        painel.getInvent().adicionarItem("Madeira", "recurso", 1);
+                                        painel.getInventSystem().adicionarItem("Madeira", "recurso", 1);
                                             if (probabilidade <= 25) {
-                                                painel.getInvent().adicionarItem("Fruta", "consumo", 2);
+                                                painel.getInventSystem().adicionarItem("Fruta", "consumo", 2);
 
                                             }
                                         }
                                     }
 
                                 if (probabilidade <= 20) {
-                                    painel.getInvent().adicionarItem("Cantil", "consumo", 1);
+                                    painel.getInventSystem().adicionarItem("Cantil", "consumo", 1);
                                 }
                                 if (probabilidade <= 10) {
-                                    painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
+                                    painel.getInventSystem().adicionarItem("Lâmina metálica", "recurso", 1);
                                 }
                             }
                             setRecursosColetados(true);
@@ -230,7 +230,7 @@ public class AmbienteLago extends Ambiente {
 
                 ui.escreverTexto("Será que há algo produtivo para se fazer aqui?", y);
 
-                if (painel.getInvent().acharItem("Vara de pesca")) {
+                if (painel.getInventSystem().acharItem("Vara de pesca")) {
                     ui.desenharOpcoes(new String[] {"Observar brilho estranho", "Sair da margem", "Pescar"}, y += tileSize * 2, numComando);
                 } else {
                     ui.desenharOpcoes(new String[] {"Observar brilho estranho", "Sair da margem", "Chutar um crustáceo no lago"}, y += tileSize * 2, numComando);
@@ -264,14 +264,14 @@ public class AmbienteLago extends Ambiente {
 
                     if (recursoEncontrado) {
                         if (!isRecursosColetados()) {
-                            painel.getInvent().adicionarItem("Faca", "combate", 1);
+                            painel.getInventSystem().adicionarItem("Faca", "combate", 1);
                             setRecursosColetados(true);
                         }
                     }
                     setChanceTirada(true);
                 }
 
-                if (painel.getInvent().acharItem("Faca")) {
+                if (painel.getInventSystem().acharItem("Faca")) {
                     ui.escreverTexto("Espere, ele deixou cair alguma coisa?...", y += tileSize);
                 }
                 break;
@@ -308,7 +308,7 @@ public class AmbienteLago extends Ambiente {
                             if (jogador.getHabilidade().equals("RASTREADORA")) {
                                 probabilidade = probabilidade * 0.9;
                             }
-                            if (painel.getInvent().acharItem("Jóia azul")) {
+                            if (painel.getInventSystem().acharItem("Jóia azul")) {
                                 probabilidade = probabilidade * 0.80;
                             }
                             boolean pescouPeixe = probabilidade <= 60;
@@ -317,12 +317,12 @@ public class AmbienteLago extends Ambiente {
                             if (contadorEspera == 5 && contadorEspera > contadorMovimento) {
                                 if (probabilidade >= 50) {
                                     if (!isRecursosColetados()) {
-                                        painel.getInvent().adicionarItem("Tridente", "combate", 1);
+                                        painel.getInventSystem().adicionarItem("Tridente", "combate", 1);
                                         setRecursosColetados(true);
                                     }
                                 } else {
                                     if (!isRecursosColetados()) {
-                                        painel.getInvent().adicionarItem("Cimitarra", "combate", 1);
+                                        painel.getInventSystem().adicionarItem("Cimitarra", "combate", 1);
                                         setRecursosColetados(true);
                                     }
                                 }
@@ -330,16 +330,16 @@ public class AmbienteLago extends Ambiente {
 
                             if (pescouPeixe) {
                                 if (!isRecursosColetados()) {
-                                    painel.getInvent().adicionarItem("Peixe", "consumo", 1);
+                                    painel.getInventSystem().adicionarItem("Peixe", "consumo", 1);
                                     setRecursosColetados(true);
                                 }
                             } else if (pescouItem) {
                                 if (!isRecursosColetados()) {
                                     if (probabilidade < 90) {
-                                        painel.getInvent().adicionarItem("Planta medicinal", "recurso", 1);
+                                        painel.getInventSystem().adicionarItem("Planta medicinal", "recurso", 1);
                                     } else {
-                                        if (!painel.getInvent().acharItem("Lâmina metálica")) {
-                                            painel.getInvent().adicionarItem("Lâmina metálica", "recurso", 1);
+                                        if (!painel.getInventSystem().acharItem("Lâmina metálica")) {
+                                            painel.getInventSystem().adicionarItem("Lâmina metálica", "recurso", 1);
                                         }
                                     }
                                     setRecursosColetados(true);
@@ -375,20 +375,20 @@ public class AmbienteLago extends Ambiente {
                             if (jogador.getHabilidade().equals("RASTREADORA")) {
                                 probabilidade = probabilidade * 0.9;
                             }
-                            if (painel.getInvent().acharItem("Jóia azul")) {
+                            if (painel.getInventSystem().acharItem("Jóia azul")) {
                                 probabilidade = probabilidade * 0.80;
                             }
                             boolean pescouPeixe = probabilidade <= 50;
 
-                            if (contadorMovimento == 4 && contadorMovimento > contadorEspera) {
+                            if (contadorMovimento == 3 && contadorMovimento > contadorEspera) {
                                 if (probabilidade >= 85) {
                                     if (!isRecursosColetados()) {
-                                        painel.getInvent().adicionarItem("Tridente", "combate", 1);
+                                        painel.getInventSystem().adicionarItem("Tridente", "combate", 1);
                                         setRecursosColetados(true);
                                     }
                                 } else {
                                     if (!isRecursosColetados()) {
-                                        painel.getInvent().adicionarItem("Cimitarra", "combate", 1);
+                                        painel.getInventSystem().adicionarItem("Cimitarra", "combate", 1);
                                         setRecursosColetados(true);
                                     }
                                 }
@@ -396,7 +396,7 @@ public class AmbienteLago extends Ambiente {
 
                             if (pescouPeixe) {
                                 if (!isRecursosColetados()) {
-                                    painel.getInvent().adicionarItem("Peixe", "consumo", 1);
+                                    painel.getInventSystem().adicionarItem("Peixe", "consumo", 1);
                                     setRecursosColetados(true);
                                 }
                             }
@@ -451,7 +451,7 @@ public class AmbienteLago extends Ambiente {
                 resetAtributosTransicao();
 
                 if (!isRecursosGastos()) {
-                    painel.getInvent().removerItem("Vara de pesca", 1);
+                    painel.getInventSystem().removerItem("Vara de pesca", 1);
                     setRecursosGastos(true);
                 }
 
@@ -466,8 +466,8 @@ public class AmbienteLago extends Ambiente {
                 if (!isRecursosColetados()) {
                     jogador.setVidaMax(jogador.getVidaMax() + 10);
                     jogador.setVida(jogador.getVidaMax());
-                    painel.getInvent().adicionarItem("Espeto crustáceo", "combate", 1);
-                    painel.getInvent().adicionarItem("Jóia azul", "recurso", 1);
+                    painel.getInventSystem().adicionarItem("Espeto crustáceo", "combate", 1);
+                    painel.getInventSystem().adicionarItem("Jóia azul", "recurso", 1);
                     setRecursosColetados(true);
                 }
 

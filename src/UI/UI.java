@@ -56,9 +56,8 @@ public class UI {
 
         botoes = new Botoes(painel);
 
-        // Atribuição da fonte
+        // Carrega a fonte customizada a partir dos resources
         try {
-            // Carrega a fonte customizada a partir dos resources
             Font pixelFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Fonte/PixelSansSerif.ttf"));
 
             pixelsans_30 = pixelFont.deriveFont(Font.PLAIN, 30f);
@@ -71,7 +70,6 @@ public class UI {
             pixelsans_30 = new Font("Pixel Sans Serif", Font.PLAIN, 30);
         }
 
-    // Atribuição de imagens
         fundoTitulo = setupImagens("fundo_mao", "background");
         chama1 = setupImagens("chama-1", "animacao");
         chama2 = setupImagens("chama-2", "animacao");
@@ -84,7 +82,7 @@ public class UI {
         ursoFace3 = setupImagens("urso_face-3", "animacao");
     }
 
-    // Metodo geral de desenho
+    // Geral
     public void mostrarInterface(Graphics2D g2) {
         this.g2 = g2;
 
@@ -130,12 +128,12 @@ public class UI {
         }
     }
 
+    // Status
     public void mostrarStatus(Graphics2D g2) {
         tileSize = painel.getTileSize();
         int y = tileSize;
         int x = tileSize * 2/3;
 
-        // Visualizar tatus do jogador
         String statusTxt = "STATUS"; g2.drawString(statusTxt, x, y);
 
         desenharStatus(x, y += tileSize/2);
@@ -143,7 +141,6 @@ public class UI {
         y = tileSize * 5/2;
         g2.setColor(Color.white);
 
-        // Vida e ataque
         String vidaTxt = jogador.getVida() + "HP";
         String atkTxt = jogador.getAtaqueAtual() + " ATK";
 
@@ -164,7 +161,6 @@ public class UI {
         }
         g2.setColor(Color.white);
 
-        // Visualizar local e clima
         String textoLocal = painel.getPlaySubState() != 1 ? null : "ACAMPAMENTO";
 
         if (textoLocal != null) {
@@ -186,7 +182,7 @@ public class UI {
         g2.drawImage(imagemClima,painel.getLargura() - painel.getLargura()/8, painel.getAltura()/6, 130, 50, null);
     }
 
-    // Métodos para telas especiais
+    // Telas especiais
     public void mostrarTextoDoAutor(Graphics2D g2) {
 
         g2.setColor(Color.black);
@@ -643,7 +639,7 @@ public class UI {
         }
     }
 
-    // Metodos de comando
+    // Métodos de comando
     public void subtrairNumComando(int numOpcoes) {
         numComando--;
         if (numComando < 0) {

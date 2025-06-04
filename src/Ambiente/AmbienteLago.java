@@ -12,7 +12,6 @@ import java.awt.image.BufferedImage;
 
 public class AmbienteLago extends Ambiente {
 
-    private Graphics2D g2;
     private Painel painel;
     private Jogador jogador;
     private UI ui;
@@ -32,7 +31,7 @@ public class AmbienteLago extends Ambiente {
     private final int cruel = 2002;
 
     public AmbienteLago(Painel painel, Jogador jogador, UI ui) {
-        super(painel, jogador);
+        super(painel);
         this.painel = painel;
         this.jogador = jogador;
         this.ui = ui;

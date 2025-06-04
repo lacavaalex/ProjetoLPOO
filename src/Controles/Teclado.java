@@ -98,6 +98,7 @@ public class Teclado implements KeyListener {
         }
     }
 
+    // Casos de uso específicos para o keyPressed
     public void kPTelaInicial(KeyEvent e) {
         int code = e.getKeyCode();
         char character = e.getKeyChar();

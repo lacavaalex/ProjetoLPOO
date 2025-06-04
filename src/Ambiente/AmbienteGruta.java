@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 
 public class AmbienteGruta extends Ambiente {
 
-    private Graphics2D g2;
     private Painel painel;
     private Jogador jogador;
     private UI ui;
@@ -35,7 +34,7 @@ public class AmbienteGruta extends Ambiente {
     private final int golem = 3003;
 
     public AmbienteGruta(Painel painel, Jogador jogador, UI ui) {
-        super(painel, jogador);
+        super(painel);
         this.painel = painel;
         this.jogador = jogador;
         this.ui = ui;

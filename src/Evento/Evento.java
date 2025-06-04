@@ -21,10 +21,10 @@ public abstract class Evento {
         this.jogador = jogador;
     }
 
-    // Metodo-base para o polimorfismo da superclasse
+    // Base para o polimorfismo da superclasse
     public abstract void executar(Graphics2D g2, int tipo);
 
-    //Metodo-base par a probabilidade de evento
+    // Base polimórfica a probabilidade de evento
     public abstract void chance(Graphics2D g2, int tipo);
 
     // Getters e setters

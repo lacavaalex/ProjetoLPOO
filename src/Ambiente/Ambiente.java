@@ -1,7 +1,6 @@
 package Ambiente;
 
 import Controles.Botoes;
-import Entidade.Jogador;
 import Evento.EventoClimatico;
 import Evento.EventoCriatura;
 import UI.UI;
@@ -16,7 +15,6 @@ public abstract class Ambiente {
 
     private Painel painel;
     private UI ui;
-    private Jogador jogador;
     private Botoes botoes;
 
     private String nome;
@@ -37,9 +35,6 @@ public abstract class Ambiente {
     private boolean chanceClimaTirada = false;
     private boolean eventoEspecialDefinido = false;
 
-    private int subStateParaRetornar;
-    private int subStateOrigem;
-
     // Atributos do acampamento
     private boolean baseFontedeAlimento = false;
     private boolean colheitaPronta = false;
@@ -52,7 +47,9 @@ public abstract class Ambiente {
     private final int tempoDeEsperaEmFPS = 600;
     private boolean aguardando = true;
 
-    // Criacao de um set que conta os substates visitados
+    // Atributos relativos à gerência de substates
+    private int subStateParaRetornar;
+    private int subStateOrigem;
     private int subStateAtual;
     private int subStateAnterior = -1;
     private Set<Integer> subStatesVisitadosTotal = new HashSet<>();
@@ -62,20 +59,19 @@ public abstract class Ambiente {
     private boolean transicaoIniciada = false;
     private boolean transicaoFinalizada = false;
 
-    public Ambiente(Painel painel, Jogador jogador) {
+    public Ambiente(Painel painel) {
         this.painel = painel;
-        this.jogador = jogador;
         this.ui = painel.getUi();
         this.botoes = painel.getBotoes();
     }
 
-    // Metodo-base para o polimorfismo da superclasse
+    // Base para o polimorfismo da superclasse
     public abstract void descreverAmbiente();
 
-    // Metodo-base para integrar a UI
+    // Base polimórfica para integrar a UI
     public abstract void playState(Graphics2D g2);
 
-    // Metodo-base para construir o card de introdução de ambiente
+    // Visibilidade do local
     public void construirCard(Graphics2D g2, String nomeFundoCard) {
         if (isCardVisivel()) {
 
@@ -121,7 +117,6 @@ public abstract class Ambiente {
         botoes.mostrarBotao("Local");
     }
 
-    // Atualização da condição do acampamento
     public void atualizarAcampamento() {
         int numLimite = 40;
         timerAcampamento++;
@@ -137,7 +132,6 @@ public abstract class Ambiente {
         }
     }
 
-    // Metodos de definicao de evento
     public void definirOcorrenciaDeEventoCriatura (Graphics2D g2, EventoCriatura nomeEventoCriatura, int tipo) {
         if (!isChanceTirada()) {
             nomeEventoCriatura.chance(g2, tipo);
@@ -167,7 +161,7 @@ public abstract class Ambiente {
         }
     }
 
-    // Recursos visuais do playstate
+    // Recursos visuais do play state
     public void definirTelaDeBotao(String voltarOuContinuar) {
         switch (voltarOuContinuar) {
             case "continuar":
@@ -212,7 +206,7 @@ public abstract class Ambiente {
         aguardando = true;
     }
 
-    // Metodo que define o substate após um evento de criatura
+    // Define o substate após um evento de criatura
     public void definirSubStateParaRetornar () {
         int subState = painel.getPlaySubState();
 
@@ -228,7 +222,6 @@ public abstract class Ambiente {
         }
     }
 
-    // Metodos do Set de substates
     public int getSubState () { return subStateAtual; }
 
     public void setSubState ( int novoSubState){
@@ -321,11 +314,9 @@ public abstract class Ambiente {
     public String getNomeFundoCard() { return nomeFundoCard; }
     public void setNomeFundoCard(String nomeFundoCard) { this.nomeFundoCard = nomeFundoCard; }
 
-    public boolean isTransicaoIniciada() { return transicaoIniciada; }
     public void setTransicaoIniciada(boolean transicaoIniciada) { this.transicaoIniciada = transicaoIniciada; }
 
     public boolean isTransicaoFinalizada() { return transicaoFinalizada; }
-    public void setTransicaoFinalizada (boolean transicaoFinalizada) { this.transicaoFinalizada = transicaoFinalizada; }
 
     public int getContadorTimer() { return contadorTimer; }
     public void setContadorTimer(int contadorTimer) { this.contadorTimer = contadorTimer; }

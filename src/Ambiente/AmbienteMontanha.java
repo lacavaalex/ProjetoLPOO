@@ -33,7 +33,7 @@ public class AmbienteMontanha extends Ambiente {
     private final int funesto = 4002;
 
     public AmbienteMontanha(Painel painel, Jogador jogador, UI ui) {
-        super(painel, jogador);
+        super(painel);
         this.painel = painel;
         this.jogador = jogador;
         this.ui = ui;

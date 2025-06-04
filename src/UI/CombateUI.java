@@ -2,7 +2,6 @@ package UI;
 
 import Controles.Botoes;
 import Entidade.*;
-import Evento.EventoCriatura;
 import Main.Painel;
 import Sistema.CombateSistema;
 
@@ -32,7 +31,6 @@ public class CombateUI extends UI {
         this.pixelsans_30 = painel.getUi().getPixelsans_30();
     }
 
-    // UI da tela
     public void estruturaTelaCombate(Graphics2D g2) {
         setGraphics(g2);
 
@@ -202,6 +200,7 @@ public class CombateUI extends UI {
         g2.setComposite(composite);
     }
 
+    // Metodos da transição
     public void inimigoSeEsvaindo() {
         if (transicaoIniciada && alphaFade < 1.0f) {
             if (combateSistema.getCriaturaEmCombate().isBoss()
@@ -225,6 +224,7 @@ public class CombateUI extends UI {
         transicaoIniciada = false;
         transicaoFinalizada = false;
     }
+
 
     public void retornarLayoutBotoes() {
         resetAtributosTransicao();

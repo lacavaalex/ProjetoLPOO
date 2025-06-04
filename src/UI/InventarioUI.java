@@ -27,7 +27,6 @@ public class InventarioUI extends UI {
         fundoInventario = setupImagens("fundo_inventario", "background");
     }
 
-    // Metodos de construção e vizualização do layout da tela
     public void estruturaTelaDeInventario(Graphics2D g2, UI ui) {
         if (!fechado) {
 
@@ -66,71 +65,7 @@ public class InventarioUI extends UI {
         }
     }
 
-    public void estruturaArmaEquipada(Graphics2D g2) {
-
-        // Definições visuais
-        int tileSize = painel.getTileSize();
-        int x = painel.getLargura() - tileSize * 7;
-        int y = tileSize * 3/2;
-
-        int xCaixinha = x - 15;
-        int yCaixinha = y - tileSize;
-        int larguraCaixinha = tileSize * 7;
-        int alturaCaixinha = tileSize * 7;
-
-        g2.setColor(new Color(30, 0, 0));
-        g2.fillRect(xCaixinha, yCaixinha, larguraCaixinha, alturaCaixinha);
-
-        g2.setColor(Color.white);
-        g2.drawRect(xCaixinha, yCaixinha, larguraCaixinha, alturaCaixinha);
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-        g2.setColor(Color.yellow);
-
-        // Conteúdo
-        String textoArma = ("Arma atual: ");
-        g2.drawString(textoArma, x, y);
-        g2.setColor(Color.white);
-
-        armaAtual = painel.getJogador().getArmaAtual();
-        String nomeArma = (armaAtual);
-        g2.drawString(nomeArma, x, y += tileSize);
-
-        Item equipado = inventSystem.getInventario().get(armaAtual);
-
-        if (inventSystem.getListaItens().length > 0) {
-
-            String nomeSelecionado = inventSystem.getListaItens()[inventSystem.getNumComando()].split(" x")[0];
-            Item itemSelecionado = inventSystem.getInventario().get(nomeSelecionado);
-
-            if (itemSelecionado instanceof ItemCombate) {
-
-                int x2 = painel.getLargura() - tileSize * 7;
-                int y2 = tileSize * 17 / 2;
-
-                g2.setColor(Color.red);
-                g2.drawString(itemSelecionado.getNome(), x2, y2);
-
-                g2.setColor(Color.white);
-                g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12F));
-
-                g2.drawString("Equipar? (Aperte [ENTER])", x2, y2 += tileSize / 2);
-            }
-
-        }
-
-        if (equipado instanceof ItemCombate arma) {
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
-
-            if (arma.getNomeImagem() != null) {
-                imagemDaArma = setupImagens(arma.getNomeImagem(), "arma");
-                desenharArma(g2, x + tileSize * 2, y += tileSize);
-
-                String poderArma = ("Dano: " + arma.getPoder());
-                g2.drawString(poderArma, x + tileSize * 2, y + tileSize * 3);
-            }
-        }
-    }
-
+    // Metodos de vizualização das funções dos itens
     public void estruturaAlimentoSelecionado(Graphics2D g2) {
 
         // Definições visuais
@@ -240,7 +175,71 @@ public class InventarioUI extends UI {
         }
     }
 
-    // Metodo que desenha a arma equipada
+    public void estruturaArmaEquipada(Graphics2D g2) {
+
+        // Definições visuais
+        int tileSize = painel.getTileSize();
+        int x = painel.getLargura() - tileSize * 7;
+        int y = tileSize * 3/2;
+
+        int xCaixinha = x - 15;
+        int yCaixinha = y - tileSize;
+        int larguraCaixinha = tileSize * 7;
+        int alturaCaixinha = tileSize * 7;
+
+        g2.setColor(new Color(30, 0, 0));
+        g2.fillRect(xCaixinha, yCaixinha, larguraCaixinha, alturaCaixinha);
+
+        g2.setColor(Color.white);
+        g2.drawRect(xCaixinha, yCaixinha, larguraCaixinha, alturaCaixinha);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+        g2.setColor(Color.yellow);
+
+        // Conteúdo
+        String textoArma = ("Arma atual: ");
+        g2.drawString(textoArma, x, y);
+        g2.setColor(Color.white);
+
+        armaAtual = painel.getJogador().getArmaAtual();
+        String nomeArma = (armaAtual);
+        g2.drawString(nomeArma, x, y += tileSize);
+
+        Item equipado = inventSystem.getInventario().get(armaAtual);
+
+        if (inventSystem.getListaItens().length > 0) {
+
+            String nomeSelecionado = inventSystem.getListaItens()[inventSystem.getNumComando()].split(" x")[0];
+            Item itemSelecionado = inventSystem.getInventario().get(nomeSelecionado);
+
+            if (itemSelecionado instanceof ItemCombate) {
+
+                int x2 = painel.getLargura() - tileSize * 7;
+                int y2 = tileSize * 17 / 2;
+
+                g2.setColor(Color.red);
+                g2.drawString(itemSelecionado.getNome(), x2, y2);
+
+                g2.setColor(Color.white);
+                g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12F));
+
+                g2.drawString("Equipar? (Aperte [ENTER])", x2, y2 += tileSize / 2);
+            }
+
+        }
+
+        if (equipado instanceof ItemCombate arma) {
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 15F));
+
+            if (arma.getNomeImagem() != null) {
+                imagemDaArma = setupImagens(arma.getNomeImagem(), "arma");
+                desenharArma(g2, x + tileSize * 2, y += tileSize);
+
+                String poderArma = ("Dano: " + arma.getPoder());
+                g2.drawString(poderArma, x + tileSize * 2, y + tileSize * 3);
+            }
+        }
+    }
+
     public void desenharArma(Graphics2D g2, int x, int y) {
         int tileSize = painel.getTileSize();
         g2.drawImage(imagemDaArma, x, y, tileSize * 2, tileSize * 2, null);

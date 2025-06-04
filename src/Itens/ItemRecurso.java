@@ -22,13 +22,10 @@ public class ItemRecurso extends Item {
 
             if (getTipoNovoItem() != null && getItemParaRemoverNoCrafting() != null) {
 
-                if (getTipoNovoItem().equals("combate") && painel.getInventSystem().acharItem(getOpcaoCrafting())) {
-                    System.out.println("Arma já existe no inventário.");
-                }
-                else {
+                if (!(getTipoNovoItem().equals("combate") && painel.getInventSystem().acharItem(getOpcaoCrafting()))) {
                     painel.getInventSystem().removerItem(getNome(), 1);
-
                     painel.getInventSystem().removerItem(getItemParaRemoverNoCrafting(), 1);
+
                     if (getItemParaRemoverNoCrafting().equals(painel.getJogador().getArmaAtual())) {
                         painel.getJogador().setArmaAtual("Nenhuma arma definida.");
                     }

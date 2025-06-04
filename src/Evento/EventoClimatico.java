@@ -65,8 +65,6 @@ public class EventoClimatico extends Evento {
         else if (tipo == 6) { // Nevasca
             executavel = 1;
         }
-
-        System.out.println("Probabilidade evento climatico:" + getProbabilidade());
     }
 
     public void finalizarEventoClimatico() {

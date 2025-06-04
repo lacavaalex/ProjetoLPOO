@@ -367,8 +367,6 @@ public class FuncaoBotao implements ActionListener {
                 default:
                     if (painel.getPlaySubState() < 1000) {
                         painel.setPlaySubState(painel.getPlaySubState() + 1);
-                    } else {
-                        System.out.println("Combate ativo");
                     }
                     break;
             }

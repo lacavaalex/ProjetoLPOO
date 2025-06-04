@@ -49,8 +49,6 @@ public class InventarioSistema {
             novoItem.setNome(nome);
             novoItem.setQuantidade(quantidade);
             invent.put(nome, novoItem);
-
-            System.out.println("Quantidade " + nome + " é " + novoItem.getQuantidade());
         }
     }
 
@@ -75,7 +73,6 @@ public class InventarioSistema {
         return invent.containsKey(nome);
     }
 
-
     public void atualizarListaItens() {
         listaItens = new String[invent.size()];
         int i = 0;
@@ -87,7 +84,6 @@ public class InventarioSistema {
 
     public void esvazearInventario() { invent.clear(); }
 
-    // Define qual ítem foi selecionado
     public void selecionouItem() {
         if (!invent.isEmpty()) {
             itemEscolhido = listaItens[numComandoInvent];

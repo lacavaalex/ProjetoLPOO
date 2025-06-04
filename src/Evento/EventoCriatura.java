@@ -161,12 +161,9 @@ public class EventoCriatura extends Evento {
         else if (tipo == 32) { // Funesto
             executavel = 1;
         }
-
-        System.out.println("PROBABILIDADE: " + getProbabilidade());
     }
 
-    public void incrementarContador() { contadorDeEncontros++;
-        System.out.println("Contador de encontros: " + contadorDeEncontros); }
+    public void incrementarContador() { contadorDeEncontros++; }
     public void resetContador() { contadorDeEncontros = 0; }
 
     public void ataqueSurpresa() {

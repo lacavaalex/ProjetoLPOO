@@ -22,7 +22,7 @@ public class Item {
         durabilidade = getDurabilidade();
     }
 
-    // Metodo-base para o polimorfismo da superclasse
+    // Base do polimorfismo da superclasse
     public void usar(String nome) {}
 
     // Getters e Setters

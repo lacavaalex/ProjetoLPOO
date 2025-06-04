@@ -74,7 +74,5 @@ public class Botoes extends JPanel {
         if (painel != null) painel.setVisible(false);
     }
 
-    // Getters
     public JButton getBotao(String nome) { return botoes.get(nome); }
-    public JPanel getPainelBotao(String nome) { return paineisBotao.get(nome); }
 }

@@ -3,11 +3,10 @@ package Main;
 import Controles.*;
 import Entidade.*;
 import Ambiente.*;
+import Sistema.*;
+import UI.*;
 import Evento.EventoClimatico;
 import Evento.EventoCriatura;
-import Sistema.CombateSistema;
-import Sistema.InventarioSistema;
-import UI.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,20 +32,15 @@ public class Painel extends JPanel implements Runnable {
     private CombateUI combateUi;
     private Jogador jogador = new Jogador(this);
     private Criatura criatura = new Criatura();
-
     private Botoes botoes = new Botoes(this);
     private UI ui = new UI(this, jogador);
-
     private EventoCriatura eventoCriatura = new EventoCriatura(this, ui, jogador, criatura);
     private EventoClimatico eventoClimatico = new EventoClimatico(this, ui, jogador);
     private ClimaUI clima = new ClimaUI(this, jogador, botoes, eventoClimatico);
-
     private InventarioSistema inventSystem = new InventarioSistema(this, jogador);
     private InventarioUI inventUi = new InventarioUI(this, jogador, botoes, inventSystem);
-
     private Teclado teclado = new Teclado(this, inventSystem, inventUi);
 
-    // Definição de FPS
     private final int fps = 60;
 
     // Game States
@@ -56,20 +50,16 @@ public class Painel extends JPanel implements Runnable {
     private final int openingState = 2;
     private final int playState = 3;
     private final int victoryState = 4;
+    private final int tutorialControles = 5;
     private int dialogueState = 0;
     private boolean fightState = false;
-
-    private final int tutorialControles = 9999;
 
     // Atributos do sistema de substate
     private Map<String, Ambiente> ambientes = new HashMap<>();
     private Set<Integer> subStatesVisitadosTemporario = new HashSet<>();
 
-    private final int numSubStatesAtualizacao = 7;
-
 
     public Painel(){
-
         // Estabelecimento dos dados da tela
         this.setPreferredSize(new Dimension(larguraTela, alturaTela));
         this.setBackground(Color.black);
@@ -81,19 +71,17 @@ public class Painel extends JPanel implements Runnable {
 
         // Buffering mais preciso
         this.setDoubleBuffered(true);
+
         // Faz a classe priorizar o input do teclado mesmo na presença de botões
         this.addKeyListener(teclado);
         this.setFocusable(true);
 
-        // Adição do ambiente
+
         ambienteAtual = new AmbienteFloresta(this, jogador, ui);
-
         inicializarSistemaCombate();
-
         rand = new Random();
     }
 
-    // Inicialização do jogo e aplicação da Thread
     public void setupJogo() {
         gameState = titleState;
         jogador.setAtaqueAtual(jogador.getAtaqueInicial());
@@ -110,7 +98,7 @@ public class Painel extends JPanel implements Runnable {
         gameThread.start();
     }
 
-    // Atualização contínua
+    // Atualizações contínuas de mecânicas do jogo
     public void update() {
         ui.updateFrames();
 
@@ -118,12 +106,12 @@ public class Painel extends JPanel implements Runnable {
 
         ambienteAtual.definirSubStateParaRetornar();
 
+        int numSubStatesAtualizacao = 7;
         jogador.atualizarCondicaoJogador(numSubStatesAtualizacao);
 
         updateBotoes();
     }
 
-    // Atualizacoes contínuas de mecanicas do jogo
     public void updateBotoes() {
         if (gameState == titleState || !inventUi.isFechado()
                 || clima.isAnalisandoClima() || ambienteAtual.isCardVisivel()) {
@@ -193,7 +181,7 @@ public class Painel extends JPanel implements Runnable {
 
         double intervalo = 1000000000 / fps;
         double delta = 0; long lastTime = System.nanoTime();
-        long currentTime; long timer = 0; int drawCount = 0;
+        long currentTime; long timer = 0;
 
         while(gameThread != null) {
             currentTime = System.nanoTime();
@@ -205,11 +193,9 @@ public class Painel extends JPanel implements Runnable {
                 update();
                 repaint();
                 delta--;
-                drawCount++;
             }
 
             if (timer >= 1000000000) {
-                drawCount = 0;
                 timer = 0;
             }
         }
@@ -221,7 +207,6 @@ public class Painel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // Desenha a UI
         if (!fightState) {
             if (gameState == titleState || gameState == openingState || gameState == playState ||
                     gameState == gameOverState || gameState == tutorialControles || gameState == victoryState) {
@@ -239,7 +224,7 @@ public class Painel extends JPanel implements Runnable {
             clima.estruturaTelaDeClima(g2, ui);
         }
 
-        // Mostra o car do ambiente atual
+        // Mostra o card do ambiente atual
         if (ambienteAtual.isCardVisivel()) {
             ambienteAtual.construirCard(g2, ambienteAtual.getNomeFundoCard());
         }
@@ -250,14 +235,12 @@ public class Painel extends JPanel implements Runnable {
         }
     }
 
-    // Inicializa as classes de combate
     private void inicializarSistemaCombate() {
         this.combateUi = new CombateUI(this, jogador, botoes, null);
         this.combateSistema = new CombateSistema(this, jogador, eventoCriatura, combateUi);
         this.combateUi.setCombateSistema(combateSistema);
     }
 
-    // Transição de ambientes
     public void trocarAmbiente(String nome, int subStateNoNovoAmbiente) {
         if (!ambientes.containsKey(nome)) {
 
@@ -281,15 +264,13 @@ public class Painel extends JPanel implements Runnable {
         setPlaySubState(subStateNoNovoAmbiente);
     }
 
-
     // Gerador de número aleatório entre 1 e 100 (para probabilidades)
     public int definirUmaProbabilidade() {
         int probabilidade = (rand.nextInt(100) + 1);
-        System.out.println("Probabilidade :" + probabilidade);
         return probabilidade;
     }
 
-    // Definicoes de game over
+    // Reinicialização
     public void resetAposGameOver() {
         botoes.esconderBotao("Voltar à base");
 
@@ -310,14 +291,12 @@ public class Painel extends JPanel implements Runnable {
         ambienteAtual.setBaseFonteDeAlimento(false);
     }
 
-
     // Getters e setters
     public int getQuantidadeSubStatesVisitadosTemporario() { return subStatesVisitadosTemporario.size(); }
 
     public Set<Integer> getSubStatesVisitadosTemporario() { return subStatesVisitadosTemporario; }
 
     public void resetarSubStatesVisitadosTemporario() { subStatesVisitadosTemporario.clear(); }
-
 
     // G/S dos game states principais
     public int getGameState() { return gameState; }
@@ -382,9 +361,6 @@ public class Painel extends JPanel implements Runnable {
         if (ambienteAtual != null) {
             ambienteAtual.setSubState(novoSubState);
         }
-        System.out.println("Substate atual: " + getPlaySubState());
-        System.out.println("Substate para retornar: " + getAmbienteAtual().getSubStateParaRetornar());
-        System.out.println("Fome: " + jogador.getFome() + " / Sede: " + jogador.getNivelSede() + " / Energia: " + jogador.getEnergia());
     }
 
     public boolean getFightState() { return fightState; }

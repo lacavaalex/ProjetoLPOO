@@ -95,13 +95,11 @@ public class Jogador {
     }
 
     public void atualizarSede() {
-        // Se o jogador já está com sede, mantém o estado
         if (estaComSede()) {
             setNivelSede("baixa");
             return;
         }
 
-        // Verifica se o clima acelera a sede (cavernoso ou salgado)
         boolean climaAceleraSede = painel.getEventoClimatico().getClima().equals("cavernoso")
                 || painel.getEventoClimatico().getClima().equals("salgado");
 
@@ -199,13 +197,11 @@ public class Jogador {
     public void setFome(int fome) { this.fome = fome; }
     public void resetFome() { setFome(fomeMax); }
     public int getFomeMax() { return fomeMax; }
-    public void setFomeMax(int fomeMax) { this.fomeMax = fomeMax; }
 
     public int getEnergia() { return energia; }
     public void setEnergia(int energia) { this.energia = energia; }
     public void resetEnergia() { setEnergia(energiaMax); }
     public int getEnergiaMax() { return energiaMax; }
-    public void setEnergiaMax(int energiaMax) { this.energiaMax = energiaMax; }
 
     public boolean estaEnvenenado() { return envenenado; }
     public void setEnvenenado(boolean envenenado) {

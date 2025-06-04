@@ -17,7 +17,6 @@ public class ItemConsumo extends Item {
         this.jogador = jogador;
     }
 
-
     @Override
     public void usar(String nome) {
         definirConsumo(nome);
@@ -61,9 +60,7 @@ public class ItemConsumo extends Item {
                 break;
 
             case "sede":
-                if (jogador.getNivelSede().equals("alto")) {
-                    System.out.println("Você está sem sede. Sede: " + jogador.estaComSede());
-                } else {
+                if (!jogador.getNivelSede().equals("alto")) {
                     jogador.setSede(false);
                     gastarDurabilidade();
                 }
@@ -72,7 +69,6 @@ public class ItemConsumo extends Item {
             case "energia":
                 if (jogador.getEnergia() >= jogador.getEnergiaMax()) {
                     jogador.setEnergia(jogador.getEnergiaMax());
-                    System.out.println("Sua energia está no máximo.");
                 } else {
                     jogador.setEnergia(jogador.getEnergia() + getSustancia());
                     int energiaAtualizada = jogador.getEnergia();
@@ -89,7 +85,6 @@ public class ItemConsumo extends Item {
                 }
                 break;
         }
-        System.out.println("Durabilidade " + getDurabilidade());
     }
 
     // Itens

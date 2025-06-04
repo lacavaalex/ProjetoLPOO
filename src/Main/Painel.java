@@ -4,6 +4,7 @@ import Controles.*;
 import Entidade.*;
 import Ambiente.*;
 import Sistema.*;
+import Som.Trilha;
 import UI.*;
 import Evento.EventoClimatico;
 import Evento.EventoCriatura;
@@ -40,6 +41,7 @@ public class Painel extends JPanel implements Runnable {
     private InventarioSistema inventSystem = new InventarioSistema(this, jogador);
     private InventarioUI inventUi = new InventarioUI(this, jogador, botoes, inventSystem);
     private Teclado teclado = new Teclado(this, inventSystem, inventUi);
+    private Trilha trilha = new Trilha();
 
     private final int fps = 60;
 
@@ -91,6 +93,8 @@ public class Painel extends JPanel implements Runnable {
         this.add(botoes);
 
         this.requestFocusInWindow();
+
+        tocarMusica(0);
     }
 
     public void iniciarGameThread() {
@@ -233,6 +237,16 @@ public class Painel extends JPanel implements Runnable {
         if (!inventUi.isFechado()) {
             inventUi.estruturaTelaDeInventario(g2, ui);
         }
+    }
+
+    public void tocarMusica(int i) {
+        trilha.setFile(i);
+        trilha.play();
+        trilha.loop();
+    }
+
+    public void pararMusica() {
+        trilha.stop();
     }
 
     private void inicializarSistemaCombate() {
